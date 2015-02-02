@@ -1,0 +1,93 @@
+# ffmpeg-9999 is masked?
+=media-video/ffmpeg-9999
+
+# mplayer-9999 is masked, too?!
+=media-video/mplayer-9999
+
+# 12.4 is deprecated
+=x11-drivers/ati-drivers-12.6_beta_pre897
+
+# ???
+#=dev-haskell/time-1.4.0.1
+
+# Incompatible with 7.8.1
+=dev-haskell/deepseq-1.3.0.2
+
+# Masked for some reason
+<dev-lang/ghc-7.9
+
+# Probably better performance
+#=media-libs/mesa-9999
+#=x11-drivers/xf86-video-ati-9999
+#=x11-libs/glamor-9999
+
+## Overlay unmasking
+
+# Gamerlay
+games-emulation/mupen64plus*::gamerlay
+
+# Sunrise
+app-arch/paq8l::sunrise
+games-roguelike/dwarf-fortress::sunrise
+media-gfx/pinta::sunrise
+x11-misc/swarp::sunrise
+app-office/ganttproject-bin::sunrise
+dev-libs/libwiimote::sunrise
+sys-apps/evrouter::sunrise
+
+# Powerman
+dev-lang/go::powerman
+
+# Maggu2810-overlay
+app-misc/xwiimote::maggu2810-overlay
+x11-drivers/xf86-input-xwiimote::maggu2810-overlay
+app-misc/cwiid::maggu2810-overlay
+
+# Miramir
+app-office/openproj::miramir
+
+# MPD
+media-sound/mpd::mpd
+
+# X11
+<=x11-drivers/ati-drivers-12.4::x11
+media-libs/mesa:x11
+x11-drivers/xf86-video-ati:x11
+x11-libs/glamor:x11
+x11-libs/libvdpau-va-gl::x11
+
+# Multimedia
+media-libs/libass::multimedia
+
+# Booboo
+media-sound/oss::booboo
+
+# Emery
+dev-libs/libuv::emery
+net-misc/cjdns::emery
+media-sound/squishyball::emery
+
+# Ixit
+sys-apps/ksplice::ixit
+
+# Rust
+dev-lang/rust::rust
+dev-rust/*::rust
+app-vim/rust-mode::rust
+
+# Rebutia
+net-misc/trickle::rebutia
+
+# Mrueg
+net-im/tox-core::mrueg
+net-im/toxic::mrueg
+
+# Farmboy0
+www-client/palemoon::farmboy0
+app-benchmarks/phoronix-test-suite::farmboy0
+
+# Wichtounet
+app-misc/tagsistant::wichtounet
+
+# I've fixed this locally
+=app-shells/bash-completion-2.1*

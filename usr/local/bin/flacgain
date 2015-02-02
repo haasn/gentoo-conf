@@ -1,0 +1,2 @@
+#!/bin/sh
+! $(metaflac --show-tag=REPLAYGAIN_TRACK_GAIN "$1" | grep -q .) && ( metaflac --add-replay-gain "$@" && metaflac --show-tag=REPLAYGAIN_TRACK_GAIN "$@" )

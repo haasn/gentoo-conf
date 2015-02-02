@@ -1,0 +1,4 @@
+# Should work fine.
+media-libs/libass -harfbuzz
+net-im/bitlbee -skype
+sys-apps/portage -pypy2_0

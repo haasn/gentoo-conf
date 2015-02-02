@@ -1,0 +1,128 @@
+:seti -XPackageImports
+:seti -XTupleSections
+:seti -XDeriveFunctor
+:seti -XStandaloneDeriving
+:seti -XGADTs
+:seti -XTypeFamilies
+:seti -XDataKinds -XPolyKinds
+:seti -XTypeOperators
+:seti -XRankNTypes
+:seti -XConstraintKinds
+:seti -XMultiParamTypeClasses -XFunctionalDependencies
+:seti -XFlexibleInstances -XUndecidableInstances -XFlexibleContexts
+:seti -XLambdaCase -XMultiWayIf
+
+:def T return . (":t "++)
+:def k! return . (":kind! "++)
+:def data \d -> return ("data " ++ d ++ " deriving Show")
+
+-- :set prompt "\ESC[36;1mλ \ESC[m"
+:set prompt "λ "
+
+import Control.Applicative
+import Control.Arrow hiding (left, right)
+import Control.Comonad
+import Control.Kleislify
+import Control.Lens
+import Control.Lens.Extras
+import Numeric.Lens
+import Data.List.Split.Lens
+import Data.Bits.Lens
+import Control.Exception.Lens
+import Control.Monad
+import "mtl" Control.Monad.Cont
+import "mtl" Control.Monad.Except
+import Control.Monad.Fix
+import "mtl" Control.Monad.Identity
+-- import Control.Monad.Logic
+import "mtl" Control.Monad.RWS hiding ((<>))
+import "mtl" Control.Monad.Reader
+import Control.Monad.ST (ST, runST, fixST)
+import "mtl" Control.Monad.State
+import "mtl" Control.Monad.Writer hiding ((<>))
+import Control.Concurrent
+import Control.Parallel
+import Control.Parallel.Strategies
+import Data.Array hiding (index, indices)
+import Data.Bits
+import Data.Bool
+import Data.Char
+import Data.Complex
+import Data.Dynamic
+import Data.Either hiding (rights, lefts)
+import Data.Eq
+import Data.Fixed
+import Data.Function hiding ((.),flip)
+import Data.Generics hiding (GT)
+import Data.Graph
+import Data.Int
+import Data.Ix hiding (index)
+import Data.List hiding ((++),map)
+import Data.Maybe
+import Data.Monoid hiding ((<>))
+import Data.Semigroup
+import Data.Number.BigFloat
+import Data.Number.CReal
+import Data.Number.Dif
+import Data.Number.Interval
+import Data.Number.Symbolic
+import Data.Ord
+import Data.Ratio hiding ((%))
+import Data.STRef
+import Data.Tree hiding (levels)
+import Data.Tuple
+import Data.Typeable
+import Data.Word
+import Numeric
+import System.Random hiding (split)
+
+-- import Text.PrettyPrint.HughesPJ hiding (empty, (<>))
+-- import Text.Printf
+-- import Text.Regex.Posix
+
+import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BSC
+import qualified Data.ByteString.Lazy as LBS
+import qualified Data.ByteString.Lazy.Char8 as LBSC
+import qualified Data.Foldable as F
+import qualified Data.Generics
+import qualified Data.IntMap as IM
+import qualified Data.IntSet as IS
+import qualified Data.Map as M
+import qualified Data.Sequence as Seq
+import qualified Data.Set as S
+import qualified Data.Text as T
+import qualified Data.Traversable as Trav
+
+-- Hiding this to avoid pulling in its silly names
+-- import SimpleReflect hiding (var)
+
+-- import Math.OEIS
+import Control.Monad.Random hiding (split)
+
+import qualified Data.VectorSpace as VS
+
+-- Hiding this because of confusing instances
+-- import Data.NumInstances
+
+import Data.LinearMap
+
+import Data.Fixed
+
+-- Hiding this because it makes type errors confusing
+-- let (.) :: (Functor f) => (a -> b) -> f a -> f b; (.) = fmap; infixr 9 .
+-- let flip :: Functor f => f (a -> b) -> a -> f b; flip f x = fmap ($ x) f
+
+let asTypeIn :: a -> (a -> b) -> a; a `asTypeIn` f = let _ = f a in a; infixl 0 `asTypeIn`
+let f `asAppliedTo` x = f `asTypeIn` \f -> f x; infixl 0 `asAppliedTo`
+
+-- Hiding this because it pulls in too many modules on loading
+-- let describeSequence = fmap description . lookupSequence
+
+-- Higher order compositions
+let (.:)   = (.).(.); infixr 8 .:
+let (.::)  = (.).(.:); infixr 8 .::
+let (.:::) = (.).(.::); infixr 8 .:::
+
+-- If as a function
+let if' a b c = if a then b else c

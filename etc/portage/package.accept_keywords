@@ -1,0 +1,182 @@
+#################
+#### Haskell ####
+#################
+
+# Allow all of gentoo-haskell
+*/*::gentoo-haskell
+
+# Allow all of dev-haskell/
+dev-haskell/*
+
+# Rapid development
+dev-haskell/lens **
+# dev-haskell/pipes **
+dev-haskell/zippers **
+dev-haskell/tables **
+
+# Vimus development
+dev-haskell/libmpd **
+media-sound/vimus **
+
+# Fix compile bugs?
+dev-haskell/x11-xft **
+x11-misc/xmobar **
+x11-misc/taffybar **
+x11-wm/xmonad **
+x11-wm/xmonad-contrib **
+
+# Allow agda-9999, hopefully fixes compile error
+sci-mathematics/agda* **
+
+# Test out GHC 7.8.1
+=dev-lang/ghc-7.8.2 **
+=dev-haskell/haddock-2.14.2 **
+
+# Needed for compatibility with GHC 7.6.1
+#dev-haskell/haddock **
+
+# Unkeyworded
+dev-haskell/repa **
+
+############################
+#### Media applications ####
+############################
+
+# Needed for live streams
+media-video/rtmpdump **
+
+# Hopefully fixes .cue support
+media-sound/mpd ** # unstable HEAD
+
+# Color management, very important!!
+media-gfx/dispcalgui
+
+# No stable versions
+media-gfx/sxiv
+media-sound/autoplay **
+media-gfx/pinta
+media-sound/flacon
+games-simulation/pmars-sdl
+
+# mpv development and testing, also cms
+media-libs/libaacplus
+media-libs/x264 **
+media-libs/x265 **
+media-video/ffmpeg **
+media-video/mpv **
+media-video/mplayer **
+media-libs/libass **
+# media-libs/harfbuzz **
+
+# Because we already pull in unstable x264lib
+media-video/gpac **
+media-video/x264-encoder **
+
+# Git version is the to-go
+games-fps/xonotic **
+games-fps/xonotic-data **
+games-fps/xonotic-maps **
+games-util/fteqcc-xonotic **
+dev-libs/d0_blind_id **
+
+# Needed for single window mode
+=media-gfx/gimp-2.7*
+media-libs/babl
+media-libs/gegl
+
+# Fun games
+games-roguelike/dwarf-fortress
+games-emulation/dolphin-emu **
+games-emulation/mupen64plus* **
+
+
+#######################
+#### Miscellaneous ####
+#######################
+
+# Apparently unstable
+app-emulation/vmips **
+app-emulation/vmips-cross-bin **
+
+# Pretty much the only J compiler in portage
+dev-lang/j **
+
+# Needed for parallel startup
+sys-apps/openrc
+
+# Google's Go language
+# dev-lang/go **
+
+# No time for love
+app-misc/screenfetch **
+
+# Needed for testing new features
+net-irc/weechat **
+
+# Use portage 2.2, needed for @live-rebuild and other niceties
+=sys-apps/portage-2.2* **
+
+# Needed for raw3.patch, avoid rebuilding now.
+#app-emulation/wine **
+app-emulation/winetricks **
+#app-emulation/playonlinux **
+
+# No stable version yet
+=dev-db/sqlitebrowser-2.0*
+=app-portage/smart-live-rebuild-1.2*
+net-misc/youtube-dl
+
+# Standalone, shouldn't affect anything else
+app-arch/paq8l **
+
+# Suckless programs
+x11-terms/st **
+x11-misc/sselp
+x11-misc/swarp
+
+# Very fast development cycle, alpha is practically stable
+www-client/firefox
+# =dev-libs/nspr-4.9
+# =dev-libs/nss-3.13.3
+
+# Total commander-like file browser for vim
+app-vim/nerdtree
+
+# Replacement for GCC, experimental
+sys-devel/clang
+sys-devel/llvm
+sys-devel/dragonegg
+
+# C REPL
+sys-devel/c-repl **
+
+# Needed for school work
+app-office/openproj **
+
+# Custom patches in my git fork
+app-admin/pass **
+
+# Older version doesn't work (no sources found)
+sys-apps/ksplice **
+
+# Potentially fix USB-related bug in newer version
+=sys-power/apcupsd-3.14.12 **
+
+# Rust stuff
+#dev-lang/rust **
+#app-vim/rust-mode **
+#dev-rust/cargo **
+
+# Up-to-date versions
+net-im/tox **
+net-im/toxic **
+
+# Probably better performance
+#media-libs/mesa **
+#11-drivers/xf86-video-ati **
+#11-libs/glamor **
+
+########################################
+#### Other accept flags (auto unmask)...
+
+

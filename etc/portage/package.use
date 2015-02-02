@@ -1,0 +1,467 @@
+##########################
+#### Global USE flags ####
+##########################
+
+# Processor extensions available in Ivy Bridge
+*/* mmx sse sse2 sse3 ssse3 mmxext sse4 sse4_1 sse4_2 avx
+
+# Avoid pulling in sound unless I want it
+*/* -alsa -pulseaudio -sound -oss -jack
+
+# Programming language support where possible, customizability
+*/* perl python ruby guile ocaml lua
+
+# Proxy and encryption support
+*/* socks socks5 ssl crypt -gnutls sasl gpg polarssl
+
+# Support as many media formats as possible
+*/* flac theora vorbis ffmpeg mp3 mpeg ogg png jpeg jpeg2k tiff svg jbig wavpack tta
+
+# Support many compression methods
+*/* lzma xz lzo
+
+# Prefer bash over zsh
+*/* bash-completion -zsh-completion
+
+# Prefer vim over emacs
+*/* vim vim-syntax -emacs
+
+# I have no wireless or bluetooth internet
+*/* -bluetooth -wifi idn
+
+# Tunneling IPv6 over my other box
+*/* ipv6
+
+# Support for version control software where possible
+*/* git subversion bazaar cvs darcs mercurial
+
+# Dual monitor support
+*/* -xinerama
+
+# Browser choice
+*/* firefox -seamonkey
+
+# Support for spelling correction
+*/* aspell
+
+# Causes X segfault with fglrx, avoid for now
+*/* -xv
+
+# XeTeX is a modern TeX implementation with the best support for Unicode
+*/* xetex
+
+# Needed for multi-threading support in many applications
+*/* threads caps
+
+# Extra tinfoil security
+*/* hardened mem-scramble
+
+# Needed for gcc's -floop optimization flags
+*/* graphite
+
+# Get hibernation support in where possible
+*/* acpi
+
+# Compile in LLVM/clang support where applications support it, eg. GHC
+*/* llvm clang
+
+# No cups support needed for now
+*/* -cups
+
+# Lots of rdeps on ffmpeg
+# */* -sdl
+
+# Prefer Qt but don't pull in KDE
+*/* -kde qt4 qt -qt5
+
+# Bloated crap
+*/* -gstreamer -policykit -consolekit -dbus -udev -udisks -upower
+
+# For configuration in stuff like dwm/sxiv/whatever
+*/* savedconfig
+
+# Make sure we have btrfs and xfs support where possible
+*/* btrfs xfs
+
+# Miscellaneous
+*/* lzma ncurses fontconfig xft opengl unicode cjk -acl -startup-notification
+
+# Needed for ruby
+*/* ruby_targets_ruby22
+
+# As much FS support for gparted as possible
+sys-block/gparted btrfs dmraid fat jfs ntfs
+sys-block/gparted -dmraid -hfs # requires udev
+
+
+############################
+#### Media applications ####
+############################
+
+# Alternatives to dmix?
+media-plugins/alsa-plugins pulseaudio jack
+media-sound/pulseaudio alsa -X -gtk libsamplerate
+media-sound/jack-audio-connection-kit alsa
+media-video/ffmpeg jack pulseaudio
+media-libs/openal pulseaudio
+
+# Needed for equalizing, apparently
+media-sound/pulseaudio dbus
+#dev-python/PyQt4 dbus
+
+# Ensure they actually output sound
+media-video/mpv alsa pulseaudio oss
+media-sound/mpd alsa pulseaudio oss
+media-sound/mumble pulseaudio
+media-sound/audacity alsa
+games-emulation/dolphin-emu alsa
+media-libs/libmikmod alsa
+media-libs/libsdl pulseaudio -alsa
+app-emulation/wine pulseaudio jack alsa -realtime
+app-emulation/emul-linux-x86-soundlibs alsa
+app-emulation/virtualbox pulseaudio
+media-sound/teamspeak-client-bin pulseaudio
+games-emulation/higan pulseaudio
+media-libs/libsdl sound
+
+# Needed for some stupid reason by teamspeak3-client-bin
+dev-qt/qtgui xinerama
+
+# Uh oh, xmonad thinks I have one really big monitor otherwise
+dev-haskell/x11 xinerama
+
+# Needed for catalyst
+x11-drivers/ati-drivers qt4 disable-watermark
+
+# Curses mode
+#net-misc/electrum -gtk -qt4
+
+# No silly GUI
+dev-python/pyside -X -opengl -svg
+media-video/mkvtoolnix -wxwidgets
+
+# Needed for espeak
+#media-libs/portaudio alsa
+
+# Don't need its viewing facilities
+media-gfx/imagemagick -X
+
+# Hi10P support, essential
+media-libs/x264 10bit
+media-video/x264-encoder 10bit -mp4
+
+# Slim down mpv a bit
+media-video/mpv -a52 -dv dvd dvdnav gif jpeg -live -mng png -quicktime -rar -sdl -shm -speex -xv
+media-video/mplayer -a52 -dv -dvd -dvdnav gif jpeg -live -mng png -quicktime -rar -sdl -shm -speex -xv -cdio -quvi pulseaudio
+
+# Extra font candy for libass
+media-libs/libass harfbuzz
+media-libs/harfbuzz icu
+
+# Needed for games-emulation/mupen64plus
+sys-libs/zlib minizip
+
+# Build failure
+games-emulation/dolphin-emu -encode
+dev-haskell/arithmoi -llvm
+
+# Needed by rust
+#sys-devel/llvm multitarget
+
+# Needed for Wii Remote interaction
+games-emulation/dolphin-emu bluetooth
+net-wireless/bluez test-programs
+
+# Add experimental functionality
+media-video/mpv osd-chapters vapoursynth
+media-video/mpv vdpau
+x11-libs/libva vdpau
+#media-video/mpv style-override
+#media-libs/freetype infinality
+
+# The GUI pulls in too many dependencies
+app-emulation/winetricks -gtk -kde
+
+# Needed to get any sort of output
+#app-accessibility/espeak portaudio
+
+# Switching to zathura meta packages instead
+app-text/zathura-meta pdf cb djvu postscript
+app-text/zathura -deprecated
+
+# Social interactions
+net-im/bitlbee otr twitter skype
+
+# Required for sci-electronics/kicad
+x11-libs/wxGTK gnome
+
+# Stuff
+net-misc/tor scrypt tor-hardening
+
+# Needed for IPredator
+net-misc/openvpn passwordsave
+
+#################
+#### Firefox ####
+#################
+
+# Firefox nightly
+#www-client/firefox trunk -webm
+
+# Firefox stable
+www-client/firefox minimal -crashreporter -libnotify -startup-notification -webm -ipc -dbus
+
+# Fuck proprietary codecs
+www-client/firefox pulseaudio gstreamer
+media-plugins/gst-plugins-meta -a52 -aac -cdda -dts -dvd -flac ffmpeg mp3 mpeg -ogg -theora -vorbis -wavpack -x264 -xvid pulseaudio
+
+# gcc's -O3 is clang's -Ofast, not -O3
+www-client/firefox custom-cflags custom-optimization
+
+# JFIF v2 support
+www-client/firefox system-jpeg
+
+# Possible alternative?
+www-client/seamonkey -chatzilla custom-cflags custom-optimization -roaming
+
+# Who knows what will happen? Let's find out
+# Apparently nothing good
+#www-client/firefox system-libvpx
+#media-libs/libvpx postproc
+
+# Needed for super-GNU
+#www-client/firefox bindist
+
+# Profile guided optizimiation
+#www-client/firefox pgo
+#x11-base/xorg-server xvfb
+
+# Required for USE=system-sqlite
+www-client/firefox system-sqlite
+dev-db/sqlite secure-delete unlock-notify
+
+
+
+#######################
+#### Miscellaneous ####
+#######################
+
+# Needed for benchmarking
+sys-block/fio aio
+dev-lang/php curl gd pcntl zip
+
+# Needed for OpenColorIO
+sci-libs/hdf5 -threads
+
+# Slimmer KVM/qemu
+app-emulation/qemu -curl -jpeg -png -python -vnc pulseaudio spice usbredir
+app-emulation/spice client
+net-misc/spice-gtk usbredir gtk3
+
+# Flexible input method
+app-i18n/fcitx gtk3 qt4
+
+# Never upload anything
+net-libs/libtorrent noshare
+net-p2p/rtorrent color
+
+# Try fixing bitcoind?
+#dev-libs/boost mpi icu
+dev-libs/leveldb -snappy
+
+# Needed for cjdns
+dev-libs/libuv static-libs
+
+# Haddock failures
+dev-haskell/type-prelude -doc
+dev-haskell/singletons -doc
+dev-haskell/transformers-compat -doc
+dev-haskell/machines -doc
+x11-wm/xmonad -doc
+
+# Required for dev-vcs/git[subversion]
+dev-vcs/subversion -dso
+
+# Needed to statically link Haskell programs
+dev-libs/gmp static-libs
+dev-libs/libffi static-libs
+
+# None of this GUI nonsense needed
+app-text/aiksaurus -gtk
+
+# Drop out useless stuff
+net-libs/webkit-gtk -geoloc -webgl -introspection
+
+# Compile all haskell libraries for profiling, and enable documentation
+dev-haskell/* profile doc hscolour
+*/*::gentoo-haskell profile doc hscolour
+dev-vcs/darcs profile doc hscolour
+
+# Pull in a useful standard library
+sci-mathematics/agda stdlib
+sci-mathematics/agda-stdlib -profile
+
+# Required for newer mesa
+x11-libs/libdrm libkms
+media-libs/mesa gbm -opencl
+x11-drivers/xf86-video-ati glamor udev
+
+# Experimental Haskell editor
+app-editors/yi vty -gtk
+
+# Better looking tilde in terminus
+#media-fonts/terminus-font centered-tilde # default in 4.38
+
+# rxvt stuff
+x11-terms/rxvt-unicode -mousewheel -startup-notification unicode3 -wcwidth vanilla
+
+# Allows only one GUI
+net-analyzer/wireshark -gtk2 -gtk3 qt4 # qt is really slow, but gtk fails building..
+
+# It's trying to pull in alsa
+media-libs/libcanberra -udev
+
+# Needed for eudev
+sys-apps/hwids udev
+
+# Required to build
+x11-base/xorg-server udev -glamor
+
+# Don't pull in dev-haskell/x11-xft
+# Update: xmobar needs xft for proper unicode support
+#x11-misc/xmobar -xft
+#x11-wm/xmonad-contrib -xft
+
+# Pass focusing clicks to windows
+x11-wm/xmonad pass-focus-click
+
+# Fails build
+dev-lang/go -hardened
+
+# Required for weechat
+dev-scheme/guile networking
+
+# Don't need a graphical nmap
+net-analyzer/nmap -gtk -lua
+
+# Full support for the various protocols, needed
+app-portage/layman git subversion
+
+# To get gitk
+dev-vcs/git tk
+
+# Might be a performance enhancement
+sys-apps/portage -pypy2_0 python3_3 -python2_7 -python3_2
+app-portage/* -pypy2_0 python3_3 -python2_7 -python3_2
+
+# Get German correction support without getting it anywhere else
+app-text/aspell linguas_de
+
+# Maildir required for xmobar
+mail-mta/exim -X maildir
+
+# Required for autoplay
+dev-lang/python:2.7 sqlite
+
+# Use the saved configuration file
+x11-terms/st savedconfig
+
+# ntfs3g deprecates in-kernel ntfs completely
+sys-fs/ntfs3g ntfsprogs
+
+# Required to satisfy berkdb and threads
+net-dns/bind dlz geoip
+
+# Required to use mueval (@run and >)
+dev-haskell/lambdabot eval
+
+# Required for dragonegg
+#sys-devel/gcc lto
+
+# Avoid triggering a rebuild for now
+#dev-lang/ghc -doc
+
+# Use existing GHC installation to build next version
+dev-lang/ghc ghcbootstrap
+
+# Workaround for bug 406399
+net-dns/bind -dlz -berkdb -ldap
+
+# Workaround for build error
+media-sound/sox -ffmpeg
+
+# Needed for unionfs
+sys-fs/aufs3 kernel-patch
+
+# Needed for app-office/libreoffice, among others
+app-text/ghostscript-gpl cups
+
+# Needed for IcedTea JDK
+#sys-devel/gcc gcj
+
+# Remove binary blobs from the kernel
+#sys-kernel/aufs-sources deblob
+sys-kernel/aufs-sources symlink
+sys-kernel/gentoo-sources symlink
+
+# Additional codecs for mpd
+media-sound/mpd alsa inotify cue libsamplerate musepack mpg123 wavpack -wildmidi mikmod opus ffmpeg
+media-sound/audacity id3tag midi libsamplerate sbsms soundtouch vamp
+media-libs/sdl-mixer mikmod vorbis mod
+
+# Build issue with media-libs/faad2-2.7-r2
+media-sound/mpd -aac
+
+# Build failure
+media-sound/audacity -ffmpeg
+
+# Incompatible with clang
+sci-libs/fftw -openmp
+
+# Required by app-emulation/wine
+dev-libs/elfutils static-libs
+
+# Drop dbus dependency
+app-emulation/wine -udisks
+
+# Lighter dependencies
+www-servers/lighttpd -fam
+
+# Needed for steam
+gnome-extra/zenity -libnotify -webkit
+
+# Extra client programs
+net-libs/polarssl programs
+
+# Why is this even enabled by default?
+dev-libs/openssl -tls-heartbeat
+
+# Needed for libreswan
+dev-libs/nss utils
+
+# Needed for apcupsd
+sys-apps/util-linux tty-helpers
+
+# Crazy build dependencies
+dev-vcs/git-annex -assistant -desktop-notify -feed -quvi -s3 -testsuite -webapp -webapp-secure -webdav -xmpp
+
+# Needed by dillo
+x11-libs/fltk -cairo
+
+# Prefer sodium
+net-im/tox -nacl
+
+# Needs Qt for whatever insane reason, so I run it locally
+games-board/cockatrice server
+
+# Uncategorized
+x11-misc/xmobar timezone mail mpd inotify
+*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx gnutls vdpau
+media-libs/libsamplerate sndfile
+games-fps/xonotic alsa -sdl
+app-office/libreoffice -vba -webdav -nsplugin
+app-arch/p7zip -wxwidgets
+dev-libs/libwiimote force tilt
+# required by app-misc/anki-2.0.29
+# required by anki (argument)
+>=dev-python/PyQt4-4.11.2-r1 webkit

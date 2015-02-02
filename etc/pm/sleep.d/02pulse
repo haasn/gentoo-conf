@@ -1,0 +1,11 @@
+#!/bin/sh
+
+case "$1" in
+  hibernate|suspend)
+    killall pulseaudio
+    ;;
+
+  thaw|resume)
+    pulseaudio -D --system --disallow-module-loading --disallow-exit 2>/dev/null
+    ;;
+esac

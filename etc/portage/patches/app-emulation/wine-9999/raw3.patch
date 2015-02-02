@@ -1,0 +1,2828 @@
+commit 51e1810634de2c212e6515fbfb2ea92a3e2409ad
+Author: Vincas Miliūnas <vincas.miliunas@gmail.com>
+Date:   Wed Feb 22 21:48:26 2012 +0200
+
+    RAW
+
+diff --git a/dlls/user32/input.c b/dlls/user32/input.c
+index 050fb2b..23ad6f7 100644
+--- a/dlls/user32/input.c
++++ b/dlls/user32/input.c
+@@ -474,46 +474,325 @@ BOOL WINAPI GetLastInputInfo(PLASTINPUTINFO plii)
+ */
+ UINT WINAPI GetRawInputDeviceList(PRAWINPUTDEVICELIST pRawInputDeviceList, PUINT puiNumDevices, UINT cbSize)
+ {
+-    FIXME("(pRawInputDeviceList=%p, puiNumDevices=%p, cbSize=%d) stub!\n", pRawInputDeviceList, puiNumDevices, cbSize);
++    BOOL ret = FALSE;
++    UINT result;
+ 
+-    if(pRawInputDeviceList)
+-        memset(pRawInputDeviceList, 0, sizeof *pRawInputDeviceList);
+-    *puiNumDevices = 0;
+-    return 0;
++    TRACE("(pRawInputDeviceList=%p, puiNumDevices=%p, cbSize=%d)\n", pRawInputDeviceList, puiNumDevices, cbSize);
++
++    if (cbSize != sizeof( RAWINPUTDEVICELIST ))
++    {
++        SetLastError( ERROR_INVALID_PARAMETER );
++        return (UINT)-1;
++    }
++    if (puiNumDevices == NULL)
++    {
++        SetLastError( ERROR_NOACCESS );
++        return (UINT)-1;
++    }
++
++    SERVER_START_REQ( get_raw_input_device_list )
++    {
++        req->report_size_only = pRawInputDeviceList == NULL;
++        if (pRawInputDeviceList != NULL)
++            wine_server_set_reply( req, pRawInputDeviceList, *puiNumDevices * sizeof( RAWINPUTDEVICELIST ) );
++        ret = !wine_server_call_err( req );
++        if (!ret || pRawInputDeviceList == NULL)
++        {
++            *puiNumDevices = reply->num_devices;
++            result = 0;
++        }
++        else
++            result = reply->num_devices;
++    }
++    SERVER_END_REQ;
++
++    return ret ? result : (UINT)-1;
+ }
+ 
++#define HID_USAGE_PAGE_GENERIC     ((unsigned short)0x01)
++#define HID_USAGE_GENERIC_MOUSE    ((unsigned short)0x02)
++#define HID_USAGE_GENERIC_KEYBOARD ((unsigned short)0x06)
+ 
+ /******************************************************************
+ *		RegisterRawInputDevices (USER32.@)
+ */
+ BOOL WINAPI DECLSPEC_HOTPATCH RegisterRawInputDevices(PRAWINPUTDEVICE pRawInputDevices, UINT uiNumDevices, UINT cbSize)
+ {
+-    FIXME("(pRawInputDevices=%p, uiNumDevices=%d, cbSize=%d) stub!\n", pRawInputDevices, uiNumDevices, cbSize);
++    BOOL result = TRUE;
++    UINT i, registrations_size = uiNumDevices * sizeof( struct raw_input_device_registration );
++    struct raw_input_device_registration *registrations;
+ 
+-    return TRUE;
+-}
++    TRACE("(pRawInputDevices=%p, uiNumDevices=%d, cbSize=%d)\n", pRawInputDevices, uiNumDevices, cbSize);
++
++    if (pRawInputDevices == NULL || uiNumDevices == 0 || cbSize != sizeof( RAWINPUTDEVICE ))
++    {
++        SetLastError( ERROR_INVALID_PARAMETER );
++        return FALSE;
++    }
++
++    registrations = HeapAlloc( GetProcessHeap(), 0, registrations_size );
++    if (!registrations)
++    {
++        SetLastError( ERROR_NOT_ENOUGH_MEMORY );
++        return FALSE;
++    }
++
++    /* Construct and validate registration data */
++    for (i = 0; i < uiNumDevices; i++)
++    {
++        RAWINPUTDEVICE *device = &pRawInputDevices[i];
++        BOOL is_mouse    = device->usUsagePage == HID_USAGE_PAGE_GENERIC &&
++            device->usUsage == HID_USAGE_GENERIC_MOUSE;
++        BOOL is_keyboard = device->usUsagePage == HID_USAGE_PAGE_GENERIC &&
++            device->usUsage == HID_USAGE_GENERIC_KEYBOARD;
++        UINT device_flags = device->dwFlags, registration_flags = 0;
++
++        if (device->usUsagePage == 0)
++        {
++            SetLastError( ERROR_INVALID_PARAMETER );
++            result = FALSE;
++            break;
++        }
++
++        /* RIDEV_* values can overlap, therefore we need to remove confirmed cases */
++
++        if ((device_flags & RIDEV_REMOVE) == RIDEV_REMOVE)
++        {
++            if (device->hwndTarget != NULL)
++            {
++                SetLastError( ERROR_INVALID_PARAMETER );
++                result = FALSE;
++                break;
++            }
++            device_flags       &= ~RIDEV_REMOVE;
++            registration_flags |= RAW_INPUT_DEVICE_FLAG_REMOVE;
++        }
++
++        if ((device_flags & RIDEV_NOHOTKEYS) == RIDEV_NOHOTKEYS && is_keyboard)
++        {
++            FIXME("RIDEV_NOHOTKEYS support is not implemented\n");
++            device_flags       &= ~RIDEV_NOHOTKEYS;
++            registration_flags |= RAW_INPUT_DEVICE_FLAG_NOHOTKEYS;
++        }
++
++        if ((device_flags & RIDEV_NOLEGACY) == RIDEV_NOLEGACY && !is_mouse && !is_keyboard)
++        {
++            SetLastError( ERROR_INVALID_PARAMETER );
++            result = FALSE;
++            break;
++        }
++        else if ((device_flags & RIDEV_NOLEGACY) == RIDEV_NOLEGACY)
++        {
++            device_flags       &= ~RIDEV_NOLEGACY;
++            registration_flags |= RAW_INPUT_DEVICE_FLAG_NOLEGACY;
++
++            if ((device_flags & RIDEV_CAPTUREMOUSE) == RIDEV_CAPTUREMOUSE && is_mouse)
++            {
++                FIXME("RIDEV_CAPTUREMOUSE support is not implemented\n");
++                if (device->hwndTarget == NULL)
++                {
++                    SetLastError( ERROR_INVALID_FLAGS );
++                    result = FALSE;
++                    break;
++                }
++                device_flags       &= ~RIDEV_CAPTUREMOUSE;
++                registration_flags |= RAW_INPUT_DEVICE_FLAG_CAPTUREMOUSE;
++            }
++            /* RIDEV_CAPTUREMOUSE && is_keyboard is not possible, because
++               RIDEV_CAPTUREMOUSE == RIDEV_NOHOTKEYS */
++
++            if ((device_flags & RIDEV_APPKEYS) == RIDEV_APPKEYS && is_keyboard)
++            {
++                FIXME("RIDEV_APPKEYS support is not implemented\n");
++                device_flags       &= ~RIDEV_APPKEYS;
++                registration_flags |= RAW_INPUT_DEVICE_FLAG_APPKEYS;
++            }
++            else if ((device_flags & RIDEV_APPKEYS) == RIDEV_APPKEYS && is_mouse)
++            {
++                SetLastError( ERROR_INVALID_FLAGS );
++                result = FALSE;
++                break;
++            }
++        }
++        else if ((device_flags & RIDEV_CAPTUREMOUSE) == RIDEV_CAPTUREMOUSE ||
++            (device_flags & RIDEV_APPKEYS) == RIDEV_APPKEYS)
++        {
++            SetLastError( ERROR_INVALID_FLAGS );
++            result = FALSE;
++            break;
++        }
++
++        if ((device_flags & RIDEV_PAGEONLY) == RIDEV_PAGEONLY && device->usUsage == 0)
++        {
++            device_flags       &= ~RIDEV_PAGEONLY;
++            registration_flags |= RAW_INPUT_DEVICE_FLAG_PAGEONLY;
++        }
++        else if (((device_flags & RIDEV_PAGEONLY) == RIDEV_PAGEONLY && device->usUsage != 0) ||
++            ((device_flags & RIDEV_PAGEONLY) != RIDEV_PAGEONLY && device->usUsage == 0))
++        {
++            SetLastError( ERROR_INVALID_PARAMETER );
++            result = FALSE;
++            break;
++        }
++
++        if ((device_flags & RIDEV_EXCLUDE) == RIDEV_EXCLUDE)
++        {
++            if (device->hwndTarget != NULL)
++            {
++                SetLastError( ERROR_INVALID_PARAMETER );
++                result = FALSE;
++                break;
++            }
++            device_flags       &= ~RIDEV_EXCLUDE;
++            registration_flags |= RAW_INPUT_DEVICE_FLAG_EXCLUDE;
++        }
++
++        if ((device_flags & RIDEV_INPUTSINK) == RIDEV_INPUTSINK)
++        {
++            FIXME("RIDEV_INPUTSINK support is not implemented\n");
++            if (device->hwndTarget == NULL)
++            {
++                SetLastError( ERROR_INVALID_PARAMETER );
++                result = FALSE;
++                break;
++            }
++            device_flags       &= ~RIDEV_INPUTSINK;
++            registration_flags |= RAW_INPUT_DEVICE_FLAG_INPUTSINK;
++        }
++
++        if ((device_flags & RIDEV_EXINPUTSINK) == RIDEV_EXINPUTSINK)
++        {
++            FIXME("RIDEV_EXINPUTSINK support is not implemented\n");
++            if (device->hwndTarget == NULL)
++            {
++                SetLastError( ERROR_INVALID_PARAMETER );
++                result = FALSE;
++                break;
++            }
++            device_flags       &= ~RIDEV_EXINPUTSINK;
++            registration_flags |= RAW_INPUT_DEVICE_FLAG_EXINPUTSINK;
++        }
++
++        if ((device_flags & RIDEV_DEVNOTIFY) == RIDEV_DEVNOTIFY)
++        {
++            FIXME("RIDEV_DEVNOTIFY support is not implemented\n");
++            device_flags       &= ~RIDEV_DEVNOTIFY;
++            registration_flags |= RAW_INPUT_DEVICE_FLAG_DEVNOTIFY;
++        }
++
++        /* If anything is left, it's invalid */
++        if (device_flags)
++        {
++            SetLastError( ERROR_INVALID_FLAGS );
++            result = FALSE;
++            break;
++        }
++
++        registrations[i].usage_page    = device->usUsagePage;
++        registrations[i].usage         = device->usUsage;
++        registrations[i].flags         = registration_flags;
++        registrations[i].target_window = wine_server_user_handle( device->hwndTarget );
++    }
++
++    if (result)
++    {
++        BOOL ret;
+ 
++        SERVER_START_REQ( register_raw_input_devices )
++        {
++            req->count = uiNumDevices;
++            wine_server_add_data( req, registrations, registrations_size );
++            ret = !wine_server_call_err( req );
++        }
++        SERVER_END_REQ;
++
++        result = ret;
++    }
++
++    HeapFree( GetProcessHeap(), 0, registrations );
++
++    return result;
++}
+ 
+ /******************************************************************
+ *		GetRawInputData (USER32.@)
+ */
+ UINT WINAPI GetRawInputData(HRAWINPUT hRawInput, UINT uiCommand, LPVOID pData, PUINT pcbSize, UINT cbSizeHeader)
+ {
+-    FIXME("(hRawInput=%p, uiCommand=%d, pData=%p, pcbSize=%p, cbSizeHeader=%d) stub!\n",
++    BOOL ret;
++    UINT result;
++
++    TRACE("(hRawInput=%p, uiCommand=%d, pData=%p, pcbSize=%p, cbSizeHeader=%d)\n",
+             hRawInput, uiCommand, pData, pcbSize, cbSizeHeader);
+ 
+-    return 0;
+-}
++    if (cbSizeHeader != sizeof( RAWINPUTHEADER ))
++    {
++        SetLastError( ERROR_INVALID_PARAMETER );
++        return (UINT)-1;
++    }
+ 
++    SERVER_START_REQ( get_raw_input_data )
++    {
++        req->handle           = wine_server_user_handle( hRawInput );
++        req->command          = uiCommand;
++        req->report_size_only = pData == NULL || pcbSize == NULL;
++        req->header_size      = cbSizeHeader;
++        if (pData != NULL && pcbSize != NULL)
++            wine_server_set_reply( req, pData, *pcbSize );
++        ret = !wine_server_call_err( req );
++        if ((!ret || pData == NULL) && pcbSize != NULL)
++        {
++            *pcbSize = reply->size;
++            result = 0;
++        }
++        else
++            result = reply->size;
++    }
++    SERVER_END_REQ;
++
++    /* Error for an invalid handle is checked before checking if pcbSize is NULL on windows */
++    if (ret && pcbSize != NULL)
++        return result;
++    else if (ret && pcbSize == NULL)
++        SetLastError( ERROR_NOACCESS );
++
++    return (UINT)-1;
++}
+ 
+ /******************************************************************
+ *		GetRawInputBuffer (USER32.@)
+ */
+ UINT WINAPI DECLSPEC_HOTPATCH GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader)
+ {
+-    FIXME("(pData=%p, pcbSize=%p, cbSizeHeader=%d) stub!\n", pData, pcbSize, cbSizeHeader);
++    BOOL ret;
++    UINT result;
++
++    TRACE("(pData=%p, pcbSize=%p, cbSizeHeader=%d)\n", pData, pcbSize, cbSizeHeader);
++
++    if (pcbSize == NULL || cbSizeHeader != sizeof( RAWINPUTHEADER ))
++    {
++        SetLastError( ERROR_INVALID_PARAMETER );
++        return (UINT)-1;
++    }
++
++    SERVER_START_REQ( get_raw_input_buffer )
++    {
++        req->report_size_only = pData == NULL;
++        req->header_size      = cbSizeHeader;
++        if (pData != NULL)
++            wine_server_set_reply( req, pData, *pcbSize );
++        ret = !wine_server_call_err( req );
++        if (!ret || pData == NULL)
++        {
++            *pcbSize = reply->minimum_size;
++            result = 0;
++        }
++        else
++            result = reply->count;
++    }
++    SERVER_END_REQ;
+ 
+-    return 0;
++    return ret ? result : (UINT)-1;
+ }
+ 
+ 
+@@ -522,20 +801,91 @@ UINT WINAPI DECLSPEC_HOTPATCH GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize,
+ */
+ UINT WINAPI GetRawInputDeviceInfoA(HANDLE hDevice, UINT uiCommand, LPVOID pData, PUINT pcbSize)
+ {
+-    FIXME("(hDevice=%p, uiCommand=%d, pData=%p, pcbSize=%p) stub!\n", hDevice, uiCommand, pData, pcbSize);
++    TRACE("(hDevice=%p, uiCommand=%d, pData=%p, pcbSize=%p)\n", hDevice, uiCommand, pData, pcbSize);
+ 
+-    return 0;
+-}
++    if (pcbSize == NULL)
++    {
++        SetLastError( ERROR_NOACCESS );
++        return (UINT)-1;
++    }
+ 
++    if (uiCommand == RIDI_DEVICENAME && pData != NULL)
++    {
++        WCHAR buffer[256];
++        UINT size = 256;
++        const UINT ret = GetRawInputDeviceInfoW( hDevice, uiCommand, buffer, &size );
++        /* ret is the character count */
++        if (ret == (UINT)-1)
++        {
++            return ret;
++        }
++        else if (ret > 0 && *pcbSize >= ret)
++        {
++            const int ret2 = WideCharToMultiByte( CP_ACP, 0, buffer, ret, pData, *pcbSize, NULL, NULL );
++            return ret2 ? ret2 : (UINT)-1;
++        }
++        else if (ret > 0)
++        {
++            *pcbSize = ret;
++            SetLastError( ERROR_INSUFFICIENT_BUFFER );
++            return (UINT)-1;
++        }
++        else
++        {
++            *pcbSize = size;
++            return ret;
++        }
++    }
++    else
++        return GetRawInputDeviceInfoW( hDevice, uiCommand, pData, pcbSize );
++}
+ 
+ /******************************************************************
+ *		GetRawInputDeviceInfoW (USER32.@)
+ */
+ UINT WINAPI GetRawInputDeviceInfoW(HANDLE hDevice, UINT uiCommand, LPVOID pData, PUINT pcbSize)
+ {
+-    FIXME("(hDevice=%p, uiCommand=%d, pData=%p, pcbSize=%p) stub!\n", hDevice, uiCommand, pData, pcbSize);
++    BOOL ret;
++    UINT result, size_in_bytes;
++
++    TRACE("(hDevice=%p, uiCommand=%d, pData=%p, pcbSize=%p)\n", hDevice, uiCommand, pData, pcbSize);
++
++    if (pcbSize == NULL)
++    {
++        SetLastError( ERROR_NOACCESS );
++        return (UINT)-1;
++    }
++    if (uiCommand == RIDI_DEVICEINFO && pData != NULL)
++    {
++        RID_DEVICE_INFO *info = (RID_DEVICE_INFO *)pData;
++        if (info->cbSize != sizeof( RID_DEVICE_INFO ))
++        {
++            SetLastError( ERROR_INVALID_PARAMETER );
++            return (UINT)-1;
++        }
++    }
++
++    size_in_bytes = uiCommand == RIDI_DEVICENAME ? *pcbSize * sizeof( WCHAR ) : *pcbSize;
++
++    SERVER_START_REQ( get_raw_input_device_info )
++    {
++        req->handle           = wine_server_user_handle( hDevice );
++        req->command          = uiCommand;
++        req->report_size_only = pData == NULL;
++        if (pData != NULL)
++            wine_server_set_reply( req, pData, size_in_bytes );
++        ret = !wine_server_call_err( req );
++        if (!ret || pData == NULL)
++        {
++            *pcbSize = reply->size;
++            result = 0;
++        }
++        else
++            result = reply->size;
++    }
++    SERVER_END_REQ;
+ 
+-    return 0;
++    return ret ? result : (UINT)-1;
+ }
+ 
+ 
+@@ -544,9 +894,39 @@ UINT WINAPI GetRawInputDeviceInfoW(HANDLE hDevice, UINT uiCommand, LPVOID pData,
+ */
+ UINT WINAPI GetRegisteredRawInputDevices(PRAWINPUTDEVICE pRawInputDevices, PUINT puiNumDevices, UINT cbSize)
+ {
+-    FIXME("(pRawInputDevices=%p, puiNumDevices=%p, cbSize=%d) stub!\n", pRawInputDevices, puiNumDevices, cbSize);
++    BOOL ret = FALSE;
++    UINT result;
++
++    TRACE("(pRawInputDevices=%p, puiNumDevices=%p, cbSize=%d)\n", pRawInputDevices, puiNumDevices, cbSize);
++
++    if (cbSize != sizeof( RAWINPUTDEVICE ))
++    {
++        SetLastError( ERROR_INVALID_PARAMETER );
++        return (UINT)-1;
++    }
++    if (puiNumDevices == NULL)
++    {
++        SetLastError( ERROR_NOACCESS );
++        return (UINT)-1;
++    }
++
++    SERVER_START_REQ( get_registered_raw_input_devices )
++    {
++        req->report_size_only = pRawInputDevices == NULL;
++        if (pRawInputDevices != NULL)
++            wine_server_set_reply( req, pRawInputDevices, *puiNumDevices * sizeof( RAWINPUTDEVICE ) );
++        ret = !wine_server_call_err( req );
++        if (!ret || pRawInputDevices == NULL)
++        {
++            *puiNumDevices = reply->num_devices;
++            result = 0;
++        }
++        else
++            result = reply->num_devices;
++    }
++    SERVER_END_REQ;
+ 
+-    return 0;
++    return ret ? result : (UINT)-1;
+ }
+ 
+ 
+@@ -555,11 +935,19 @@ UINT WINAPI GetRegisteredRawInputDevices(PRAWINPUTDEVICE pRawInputDevices, PUINT
+ */
+ LRESULT WINAPI DefRawInputProc(PRAWINPUT *paRawInput, INT nInput, UINT cbSizeHeader)
+ {
+-    FIXME("(paRawInput=%p, nInput=%d, cbSizeHeader=%d) stub!\n", *paRawInput, nInput, cbSizeHeader);
++    TRACE("(paRawInput=%p, nInput=%d, cbSizeHeader=%d)\n", *paRawInput, nInput, cbSizeHeader);
+ 
+-    return 0;
+-}
++    if (cbSizeHeader != sizeof( RAWINPUTHEADER ))
++    {
++        /* Windows does not set last error code */
++        return (LRESULT)-1;
++    }
+ 
++    /* The supplied raw input entries can still be retrieved,
++       so they will have to be released later */
++
++    return S_OK;
++}
+ 
+ /**********************************************************************
+  *		AttachThreadInput (USER32.@)
+diff --git a/dlls/user32/tests/input.c b/dlls/user32/tests/input.c
+index cb090dd..3b0a76f 100644
+--- a/dlls/user32/tests/input.c
++++ b/dlls/user32/tests/input.c
+@@ -77,6 +77,18 @@ static struct {
+ 
+ static UINT (WINAPI *pSendInput) (UINT, INPUT*, size_t);
+ static int (WINAPI *pGetMouseMovePointsEx) (UINT, LPMOUSEMOVEPOINT, LPMOUSEMOVEPOINT, int, DWORD);
++static UINT (WINAPI *pDefRawInputProc) (PRAWINPUT*, INT, UINT);
++static UINT (WINAPI *pGetRawInputBuffer) (PRAWINPUT, PUINT, UINT);
++static INT (WINAPI *pGetRawInputData) (HRAWINPUT, UINT, LPVOID, PUINT, UINT);
++static UINT (WINAPI *pGetRawInputDeviceInfoA) (HANDLE, UINT, LPVOID, PUINT);
++static UINT (WINAPI *pGetRawInputDeviceInfoW) (HANDLE, UINT, LPVOID, PUINT);
++static UINT (WINAPI *pGetRawInputDeviceList) (PRAWINPUTDEVICELIST, PUINT, UINT);
++static UINT (WINAPI *pGetRegisteredRawInputDevices) (PRAWINPUTDEVICE, PUINT, UINT);
++static BOOL (WINAPI *pRegisterRawInputDevices) (PRAWINPUTDEVICE, UINT, UINT);
++
++#define HID_USAGE_PAGE_GENERIC     ((unsigned short)0x01)
++#define HID_USAGE_GENERIC_MOUSE    ((unsigned short)0x02)
++#define HID_USAGE_GENERIC_KEYBOARD ((unsigned short)0x06)
+ 
+ #define MAXKEYEVENTS 12
+ #define MAXKEYMESSAGES MAXKEYEVENTS /* assuming a key event generates one
+@@ -159,7 +171,15 @@ static void init_function_pointers(void)
+       trace("GetProcAddress(%s) failed\n", #func);
+ 
+     GET_PROC(SendInput)
++    GET_PROC(DefRawInputProc)
+     GET_PROC(GetMouseMovePointsEx)
++    GET_PROC(GetRawInputBuffer)
++    GET_PROC(GetRawInputData)
++    GET_PROC(GetRawInputDeviceInfoA)
++    GET_PROC(GetRawInputDeviceInfoW)
++    GET_PROC(GetRawInputDeviceList)
++    GET_PROC(GetRegisteredRawInputDevices)
++    GET_PROC(RegisterRawInputDevices)
+ 
+ #undef GET_PROC
+ }
+@@ -1643,6 +1663,1169 @@ static void test_key_names(void)
+     ok( bufferW[0] == 0xcccc, "wrong string %s\n", wine_dbgstr_w(bufferW) );
+ }
+ 
++static void test_def_raw_input_proc(void)
++{
++    RAWINPUT *input = NULL, raw;
++    LRESULT ret;
++
++    if (!pDefRawInputProc)
++    {
++        win_skip("DefRawInputProc is not available\n");
++        return;
++    }
++
++    ret = pDefRawInputProc(&input, 0, 0);
++    ok(ret == (LRESULT)-1, "DefRawInputProc returned wrong value: expected (LRESULT)-1, got %lu\n", ret);
++
++    ret = pDefRawInputProc(&input, 0, sizeof(RAWINPUTHEADER));
++    ok(ret == S_OK, "DefRawInputProc returned wrong value: expected S_OK, got %lu\n", ret);
++
++    /* Test that DefRawInputProc is ignorant of the other parameters */
++    memset(&raw, 0xFF, sizeof(raw));
++    input = &raw;
++
++    ret = pDefRawInputProc(&input, 1000000, sizeof(RAWINPUTHEADER));
++    ok(ret == S_OK, "DefRawInputProc returned wrong value: expected S_OK, got %lu\n", ret);
++
++    ret = pDefRawInputProc(&input, -1000000, sizeof(RAWINPUTHEADER));
++    ok(ret == S_OK, "DefRawInputProc returned wrong value: expected S_OK, got %lu\n", ret);
++}
++
++static void test_get_raw_input_device_list(void)
++{
++    RAWINPUTDEVICELIST *device_list;
++    UINT ret, count, count2;
++    DWORD error;
++
++    if (!pGetRawInputDeviceList)
++    {
++        win_skip("GetRawInputDeviceList is not available\n");
++        return;
++    }
++
++    count = 0;
++    ret = pGetRawInputDeviceList(NULL, &count, sizeof(RAWINPUTDEVICELIST));
++    ok(ret == 0, "GetRawInputDeviceList returned wrong value: "
++        "expected 0, got %u\n", ret);
++    ok(count >= 1, "GetRawInputDeviceList returned incorrect number of "
++        "raw input device available: expected x >= 1, got %u\n", count);
++
++    device_list = HeapAlloc(GetProcessHeap(), 0, count * sizeof(RAWINPUTDEVICELIST));
++    memset(device_list, 0xFF, count * sizeof(RAWINPUTDEVICELIST));
++
++    SetLastError(0xdeadbeef);
++    count2 = 0;
++    ret = pGetRawInputDeviceList(device_list, &count2, sizeof(RAWINPUTDEVICELIST));
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputDeviceList returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INSUFFICIENT_BUFFER, "GetRawInputDeviceList returned "
++        "wrong error code: %u\n", error);
++    ok(count2 == count, "GetRawInputDeviceList returned incorrect number of devices: "
++        "expected %u, got %u\n", count, count2);
++
++    count2 = count;
++    ret = pGetRawInputDeviceList(device_list, &count2, sizeof(RAWINPUTDEVICELIST));
++    ok(ret == count, "GetRawInputDeviceList returned wrong value: "
++        "expected %u, got %u\n", count, ret);
++    ok(count2 == count, "GetRawInputDeviceList returned incorrect number of devices: "
++        "expected %u, got %u\n", count, count2);
++
++    ok(device_list[0].hDevice != NULL, "First raw input device doesn't have "
++        "a non-null handle\n");
++    ok(device_list[0].dwType == RIM_TYPEMOUSE || device_list[0].dwType == RIM_TYPEKEYBOARD,
++        "First raw input device wasn't a mouse or a keyboard");
++
++    HeapFree(GetProcessHeap(), 0, device_list);
++}
++
++static void test_get_raw_input_device_info_w(void)
++{
++    UINT ret, size = 0, count;
++    RAWINPUTDEVICELIST *devices;
++    WCHAR buffer[512];
++    RID_DEVICE_INFO info;
++    DWORD error;
++
++    if (!pGetRawInputDeviceInfoW || !pGetRawInputDeviceList)
++    {
++        win_skip("GetRawInputDeviceInfoW and GetRawInputDeviceList are not available\n");
++        return;
++    }
++
++    SetLastError(0xdeadbeef);
++    ret = pGetRawInputDeviceInfoW(NULL, 0, NULL, NULL);
++    error = GetLastError();
++    ok(ret == (UINT)-1,  "GetRawInputDeviceInfoW returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_NOACCESS, "GetRawInputDeviceInfoW returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    size = 0;
++    ret = pGetRawInputDeviceInfoW(NULL, 0, NULL, &size);
++    error = GetLastError();
++    ok(ret == (UINT)-1,
++        "GetRawInputDeviceInfoW returned wrong value: expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_HANDLE,
++        "GetRawInputDeviceInfoW returned wrong error code: %u\n", error);
++
++    ret = pGetRawInputDeviceList(NULL, &count, sizeof(RAWINPUTDEVICELIST));
++    ok(ret == 0, "GetRawInputDeviceList failed to return raw input device count\n");
++    ok(count > 0, "Should have at least one raw input device available\n");
++
++    devices = HeapAlloc(GetProcessHeap(), 0, count * sizeof(RAWINPUTDEVICELIST));
++    ok(devices != NULL, "Failed to allocate memory for raw input devices\n");
++    if (!devices)
++        return;
++
++    ret = pGetRawInputDeviceList(devices, &count, sizeof(RAWINPUTDEVICELIST));
++    ok(ret == count, "GetRawInputDeviceList returned incorrect "
++        "number of devices: expected %u, got %u", count, ret);
++
++    SetLastError(0xdeadbeef);
++    size = 0;
++    ret = pGetRawInputDeviceInfoW(devices[0].hDevice, 0, NULL, &size);
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputDeviceInfoW returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_PARAMETER, "GetRawInputDeviceInfoW returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    size = 0;
++    ret = pGetRawInputDeviceInfoW(devices[0].hDevice, RIDI_DEVICENAME, buffer, &size);
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputDeviceInfoW returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INSUFFICIENT_BUFFER, "GetRawInputDeviceInfoW returned "
++        "wrong error code: %u\n", error);
++
++    size = 0;
++    ret = pGetRawInputDeviceInfoW(devices[0].hDevice, RIDI_DEVICENAME, NULL, &size);
++    ok(ret == 0, "GetRawInputDeviceInfoW returned wrong value: expected 0, got %u\n", ret);
++    ok(size > 5, "GetRawInputDeviceInfoW returned wrong "
++        "device name size: expected x > 5, got %u\n", size);
++
++    buffer[0] = 0;
++    ret = pGetRawInputDeviceInfoW(devices[0].hDevice, RIDI_DEVICENAME, buffer, &size);
++    ok(ret != (UINT)-1 && ret > 0, "GetRawInputDeviceInfoW returned wrong value: "
++        "expected 0 < x < (UINT)-1, got %u\n", ret);
++    size = lstrlenW(buffer);
++    ok(size > 5, "GetRawInputDeviceInfoW returned too short device name: "
++        "expected x > 5, got %u\n", size);
++
++    size = 0;
++    ret = pGetRawInputDeviceInfoW(devices[0].hDevice, RIDI_DEVICEINFO, NULL, &size);
++    ok(ret == 0, "GetRawInputDeviceInfoW returned wrong value: expected 0, got %u\n", ret);
++    ok(size == sizeof(RID_DEVICE_INFO), "GetRawInputDeviceInfoW returned "
++        "wrong device info size: expected sizeof(RID_DEVICE_INFO), got %u\n", size);
++
++    size = sizeof(RID_DEVICE_INFO);
++    info.cbSize = sizeof(RID_DEVICE_INFO);
++    ret = pGetRawInputDeviceInfoW(devices[0].hDevice, RIDI_DEVICEINFO, &info, &size);
++    ok(ret == sizeof(RID_DEVICE_INFO), "GetRawInputDeviceInfoW returned wrong value: "
++        "expected sizeof(RID_DEVICE_INFO), got %u\n", ret);
++
++    size = 0xdeadbeef;
++    ret = pGetRawInputDeviceInfoW(devices[0].hDevice, RIDI_PREPARSEDDATA, NULL, &size);
++    ok(ret == 0, "GetRawInputDeviceInfoW returned wrong value: "
++        "expected 0, got %u\n", ret);
++    ok(size == 0, "GetRawInputDeviceInfoW returned wrong preparsed data size: "
++        "expected 0, got %u\n", size);
++
++    HeapFree(GetProcessHeap(), 0, devices);
++}
++
++static void test_get_raw_input_device_info_a(void)
++{
++    UINT ret, size = 0, count;
++    RAWINPUTDEVICELIST *devices;
++    char buffer[512];
++    RID_DEVICE_INFO info;
++    DWORD error;
++
++    if (!pGetRawInputDeviceInfoA || !pGetRawInputDeviceList)
++    {
++        win_skip("GetRawInputDeviceInfoA and GetRawInputDeviceList are not available\n");
++        return;
++    }
++
++    SetLastError(0xdeadbeef);
++    ret = pGetRawInputDeviceInfoA(NULL, 0, NULL, NULL);
++    error = GetLastError();
++    ok(ret == (UINT)-1,  "GetRawInputDeviceInfoA returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_NOACCESS, "GetRawInputDeviceInfoA returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    size = 0;
++    ret = pGetRawInputDeviceInfoA(NULL, 0, NULL, &size);
++    error = GetLastError();
++    ok(ret == (UINT)-1,
++        "GetRawInputDeviceInfoA returned wrong value: expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_HANDLE,
++        "GetRawInputDeviceInfoA returned wrong error code: %u\n", error);
++
++    ret = pGetRawInputDeviceList(NULL, &count, sizeof(RAWINPUTDEVICELIST));
++    ok(ret == 0, "GetRawInputDeviceList failed to return raw input device count\n");
++    ok(count > 0, "Should have at least one raw input device available\n");
++
++    devices = HeapAlloc(GetProcessHeap(), 0, count * sizeof(RAWINPUTDEVICELIST));
++    ok(devices != NULL, "Failed to allocate memory for raw input devices\n");
++    if (!devices)
++        return;
++
++    ret = pGetRawInputDeviceList(devices, &count, sizeof(RAWINPUTDEVICELIST));
++    ok(ret == count, "GetRawInputDeviceList returned incorrect "
++        "number of devices: expected %u, got %u", count, ret);
++
++    SetLastError(0xdeadbeef);
++    size = 0;
++    ret = pGetRawInputDeviceInfoA(devices[0].hDevice, 0, NULL, &size);
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputDeviceInfoA returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_PARAMETER, "GetRawInputDeviceInfoA returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    size = 0;
++    ret = pGetRawInputDeviceInfoA(devices[0].hDevice, RIDI_DEVICENAME, buffer, &size);
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputDeviceInfoA returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INSUFFICIENT_BUFFER, "GetRawInputDeviceInfoA returned "
++        "wrong error code: %u\n", error);
++
++    size = 0;
++    ret = pGetRawInputDeviceInfoA(devices[0].hDevice, RIDI_DEVICENAME, NULL, &size);
++    ok(ret == 0, "GetRawInputDeviceInfoA returned wrong value: expected 0, got %u\n", ret);
++    ok(size > 5, "GetRawInputDeviceInfoA returned wrong "
++        "device name size: expected x > 5, got %u\n", size);
++
++    buffer[0] = 0;
++    ret = pGetRawInputDeviceInfoA(devices[0].hDevice, RIDI_DEVICENAME, buffer, &size);
++    ok(ret != (UINT)-1 && ret > 0, "GetRawInputDeviceInfoA returned wrong value: "
++        "expected 0 < x < (UINT)-1, got %u\n", ret);
++    size = strlen(buffer);
++    ok(size > 5, "GetRawInputDeviceInfoA returned too short device name: "
++        "expected x > 5, got %u\n", size);
++
++    size = 0;
++    ret = pGetRawInputDeviceInfoA(devices[0].hDevice, RIDI_DEVICEINFO, NULL, &size);
++    ok(ret == 0, "GetRawInputDeviceInfoA returned wrong value: expected 0, got %u\n", ret);
++    ok(size == sizeof(RID_DEVICE_INFO), "GetRawInputDeviceInfoA returned "
++        "wrong device info size: expected sizeof(RID_DEVICE_INFO), got %u\n", size);
++
++    size = sizeof(RID_DEVICE_INFO);
++    info.cbSize = sizeof(RID_DEVICE_INFO);
++    ret = pGetRawInputDeviceInfoA(devices[0].hDevice, RIDI_DEVICEINFO, &info, &size);
++    ok(ret == sizeof(RID_DEVICE_INFO), "GetRawInputDeviceInfoA returned wrong value: "
++        "expected sizeof(RID_DEVICE_INFO), got %u\n", ret);
++
++    size = 0xdeadbeef;
++    ret = pGetRawInputDeviceInfoA(devices[0].hDevice, RIDI_PREPARSEDDATA, NULL, &size);
++    ok(ret == 0, "GetRawInputDeviceInfoA returned wrong value: "
++        "expected 0, got %u\n", ret);
++    ok(size == 0, "GetRawInputDeviceInfoA returned wrong preparsed data size: "
++        "expected 0, got %u\n", size);
++
++    HeapFree(GetProcessHeap(), 0, devices);
++}
++
++static void test_basic_get_registered_raw_input_devices(void)
++{
++    RAWINPUTDEVICE device, devices[2];
++    BOOL ret;
++    UINT ret2, count;
++    DWORD error;
++
++    if (!pGetRegisteredRawInputDevices || !pRegisterRawInputDevices)
++    {
++        win_skip("GetRegisteredRawInputDevices and RegisterRawInputDevices are not available\n");
++        return;
++    }
++
++    /* Basic tests for GetRegisteredRawInputDevices */
++    SetLastError(0xdeadbeef);
++    ret2 = pGetRegisteredRawInputDevices(NULL, NULL, 0);
++    error = GetLastError();
++    ok(ret2 == (UINT)-1, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret2);
++    ok(error == ERROR_INVALID_PARAMETER, "GetRegisteredRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    ret2 = pGetRegisteredRawInputDevices(NULL, NULL, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(ret2 == (UINT)-1, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret2);
++    ok(error == ERROR_NOACCESS, "GetRegisteredRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, 1);
++    error = GetLastError();
++    ok(ret2 == (UINT)-1, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret2);
++    ok(error == ERROR_INVALID_PARAMETER, "GetRegisteredRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++
++    device.usUsagePage = HID_USAGE_PAGE_GENERIC;
++    device.usUsage     = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags     = 0;
++    device.hwndTarget  = NULL;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to subscribe to mouse raw input\n");
++
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 1, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 1, got %u\n", count);
++
++    memset(&devices[0], 0xFF, sizeof(RAWINPUTDEVICE));
++    ret2 = pGetRegisteredRawInputDevices(&devices[0], &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 1, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 1, got %u\n", ret2);
++    ok(memcmp(&device, &devices[0], sizeof(RAWINPUTDEVICE)) == 0,
++        "GetRegisteredRawInputDevices returned incorrect raw input device registration\n");
++
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to resubscribe to mouse raw input\n");
++
++    /* Verify that there is still the only one registration */
++    memset(&devices[0], 0xFF, sizeof(RAWINPUTDEVICE));
++    ret2 = pGetRegisteredRawInputDevices(&devices[0], &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 1, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 1, got %u\n", ret2);
++    ok(memcmp(&device, &devices[0], sizeof(RAWINPUTDEVICE)) == 0,
++        "GetRegisteredRawInputDevices returned incorrect raw input device registration\n");
++
++    device.dwFlags = RIDEV_REMOVE;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe from mouse raw input\n");
++
++    /* Verify that no registrations are present */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++}
++
++static void test_basic_register_raw_input_devices(void)
++{
++    RAWINPUTDEVICE device;
++    BOOL ret;
++    UINT ret2, count;
++    DWORD error;
++
++    if (!pGetRegisteredRawInputDevices || !pRegisterRawInputDevices)
++    {
++        win_skip("GetRegisteredRawInputDevices and RegisterRawInputDevices are not available\n");
++        return;
++    }
++
++    /* Basic tests for RegisterRawInputDevices */
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(NULL, 0, 0);
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_PARAMETER, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(NULL, 0, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_PARAMETER, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    device.usUsagePage = 0;
++    device.usUsage     = 0;
++    device.dwFlags     = 0;
++    device.hwndTarget  = NULL;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 0, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_PARAMETER, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_PARAMETER, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    device.usUsagePage = HID_USAGE_PAGE_GENERIC;
++    device.usUsage     = HID_USAGE_GENERIC_MOUSE;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to subscribe to mouse raw input\n");
++
++    device.dwFlags = RIDEV_REMOVE;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe from mouse raw input\n");
++
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to reunsubscribe from mouse raw input\n");
++
++    device.usUsagePage = 0xFF;
++    device.usUsage     = 0xFF;
++    device.dwFlags     = 0;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to subscribe to a non-existing device\n");
++
++    device.dwFlags = RIDEV_REMOVE;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe from a non-existing device\n");
++
++    /* Assert that no registrations are present */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++}
++
++static void test_raw_input_device_flag_preconditions(void)
++{
++    RAWINPUTDEVICE device;
++    BOOL ret;
++    UINT ret2, count;
++    DWORD error;
++
++    if (!pGetRegisteredRawInputDevices || !pRegisterRawInputDevices)
++    {
++        win_skip("GetRegisteredRawInputDevices and RegisterRawInputDevices are not available\n");
++        return;
++    }
++
++    /* Test that RIDEV_REMOVE flags requires hwndTarget to be null*/
++    device.usUsagePage = HID_USAGE_PAGE_GENERIC;
++    device.usUsage     = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags     = RIDEV_REMOVE;
++    device.hwndTarget  = (HWND)-1;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_PARAMETER, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Test that RIDEV_PAGEONLY requires usUsage to be 0 */
++    device.usUsage    = 0xFF;
++    device.dwFlags    = RIDEV_PAGEONLY;
++    device.hwndTarget = NULL;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_PARAMETER, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Test that RIDEV_EXCLUDE requires usUsage to be non-0 */
++    device.usUsage    = 0;
++    device.dwFlags    = RIDEV_EXCLUDE;
++    device.hwndTarget = NULL;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_PARAMETER, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Test that RIDEV_NOLEGACY cannot be used with other device then mouse and keyboard */
++    device.usUsage    = 0xFF;
++    device.dwFlags    = RIDEV_NOLEGACY;
++    device.hwndTarget = NULL;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_PARAMETER, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Test that RIDEV_INPUTSINK requires hwndTarget to be non-null */
++    device.usUsage    = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags    = RIDEV_INPUTSINK;
++    device.hwndTarget = NULL;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_PARAMETER, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Test that RIDEV_CAPTUREMOUSE must be combined with RIDEV_NOLEGACY
++       Since RIDEV_CAPTUREMOUSE == RIDEV_NOHOTKEYS, scope it for the mouse device */
++    device.usUsage    = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags    = RIDEV_CAPTUREMOUSE;
++    device.hwndTarget = NULL;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_FLAGS, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Test that RIDEV_APPKEYS must be combined with RIDEV_NOLEGACY */
++    device.usUsage    = HID_USAGE_GENERIC_KEYBOARD;
++    device.dwFlags    = RIDEV_APPKEYS;
++    device.hwndTarget = NULL;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_FLAGS, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Test that RIDEV_APPKEYS cannot be used with mouse */
++    device.usUsage    = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags    = RIDEV_NOLEGACY | RIDEV_APPKEYS;
++    device.hwndTarget = NULL;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_FLAGS, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Test that RIDEV_NOHOTKEYS cannot be used with mouse */
++    device.usUsage    = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags    = RIDEV_NOHOTKEYS;
++    device.hwndTarget = NULL;
++    SetLastError(0xdeadbeef);
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_FLAGS, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Test reaction to an invalid flag */
++    SetLastError(0xdeadbeef);
++    device.usUsagePage = HID_USAGE_PAGE_GENERIC;
++    device.usUsage     = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags     = 0x80000000;
++    device.hwndTarget  = NULL;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    error = GetLastError();
++    ok(!ret, "RegisterRawInputDevices should have failed\n");
++    ok(error == ERROR_INVALID_FLAGS, "RegisterRawInputDevices returned "
++        "wrong error code: %u\n", error);
++
++    /* Assert that no registrations are present */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++}
++
++static void test_extended_register_raw_input_devices(void)
++{
++    RAWINPUTDEVICE device, devices[2];
++    BOOL ret;
++    UINT ret2, count;
++
++    if (!pGetRegisteredRawInputDevices || !pRegisterRawInputDevices)
++    {
++        win_skip("GetRegisteredRawInputDevices and RegisterRawInputDevices are not available\n");
++        return;
++    }
++
++    /* Subscribe and unsubscribe from all devices in usage page */
++    device.usUsagePage = HID_USAGE_PAGE_GENERIC;
++    device.usUsage     = 0;
++    device.dwFlags     = RIDEV_PAGEONLY;
++    device.hwndTarget  = NULL;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to subscribe to a usage page\n");
++
++    device.dwFlags = RIDEV_REMOVE | RIDEV_PAGEONLY;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe to a usage page\n");
++
++    /* Assert that there are no devices registered */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++
++    /* Should allow to exclude a device */
++    device.usUsagePage = HID_USAGE_PAGE_GENERIC;
++    device.usUsage     = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags     = RIDEV_EXCLUDE;
++    device.hwndTarget  = NULL;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to exclude mouse raw input\n");
++    ok(ret, "Given (&device{1,2,RIDEV_EXCLUDE,0}, 1, sizeof), "
++        "RegisterRawInputDevices should successfully exclude a device from input feed\n");
++
++    /* Assert that there is one registration */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 1, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 1, got %u\n", count);
++
++    device.dwFlags = RIDEV_REMOVE;
++    ret = pRegisterRawInputDevices(&device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe\n");
++
++    /* Should override a device exclusion with an inclusion */
++    devices[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
++    devices[0].usUsage     = HID_USAGE_GENERIC_MOUSE;
++    devices[0].dwFlags     = RIDEV_EXCLUDE;
++    devices[0].hwndTarget  = NULL;
++    devices[1].usUsagePage = HID_USAGE_PAGE_GENERIC;
++    devices[1].usUsage     = HID_USAGE_GENERIC_MOUSE;
++    devices[1].dwFlags     = 0;
++    devices[1].hwndTarget  = NULL;
++    ret = pRegisterRawInputDevices(devices, 2, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to exclude and include mouse raw input "
++        "in the same call\n");
++
++    devices[1].dwFlags = RIDEV_REMOVE;
++    ret = pRegisterRawInputDevices(&devices[1], 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe\n");
++
++    /* Assert that there are no devices registered */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++
++    /* Should register a usage page and a device from that usage page,
++       unsubscribing from them separately */
++    devices[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
++    devices[0].usUsage     = 0;
++    devices[0].dwFlags     = RIDEV_PAGEONLY;
++    devices[0].hwndTarget  = NULL;
++    devices[1].usUsagePage = HID_USAGE_PAGE_GENERIC;
++    devices[1].usUsage     = HID_USAGE_GENERIC_MOUSE;
++    devices[1].dwFlags     = 0;
++    devices[1].hwndTarget  = NULL;
++    ret = pRegisterRawInputDevices(devices, 2, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to subscribe\n");
++
++    devices[0].dwFlags = RIDEV_REMOVE | RIDEV_PAGEONLY;
++    ret = pRegisterRawInputDevices(&devices[0], 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe\n");
++
++    /* Assert that one device is registered */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 1, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 1, got %u\n", count);
++
++    devices[1].dwFlags = RIDEV_REMOVE;
++    ret = pRegisterRawInputDevices(&devices[1], 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe\n");
++
++    /* Assert that there are no devices registered */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++
++    /* Should include a usage page and exclude a device */
++    devices[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
++    devices[0].usUsage     = 0;
++    devices[0].dwFlags     = RIDEV_PAGEONLY;
++    devices[0].hwndTarget  = NULL;
++    devices[1].usUsagePage = HID_USAGE_PAGE_GENERIC;
++    devices[1].usUsage     = HID_USAGE_GENERIC_MOUSE;
++    devices[1].dwFlags     = RIDEV_EXCLUDE;
++    devices[1].hwndTarget  = NULL;
++    ret = pRegisterRawInputDevices(devices, 2, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to subscribe\n");
++
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 2, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 2, got %u\n", count);
++
++    devices[0].dwFlags = RIDEV_REMOVE | RIDEV_PAGEONLY;
++    devices[1].dwFlags = RIDEV_REMOVE;
++    ret = pRegisterRawInputDevices(devices, 2, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe\n");
++
++    /* Assert that there are no devices registered */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++
++    /* Should allow to subscribe and unsubscribe in the same call */
++    devices[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
++    devices[0].usUsage     = HID_USAGE_GENERIC_MOUSE;
++    devices[0].dwFlags     = 0;
++    devices[0].hwndTarget  = NULL;
++    devices[1].usUsagePage = HID_USAGE_PAGE_GENERIC;
++    devices[1].usUsage     = HID_USAGE_GENERIC_MOUSE;
++    devices[1].dwFlags     = RIDEV_REMOVE;
++    devices[1].hwndTarget  = NULL;
++    ret = pRegisterRawInputDevices(devices, 2, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to subscribe and unsubscribe in the same call\n");
++
++    /* Assert that there are no devices registered */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++
++    /* Test that RegisterRawInputDevices is atomic,
++       if one device fails to register, no changes are made */
++    devices[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
++    devices[0].usUsage     = HID_USAGE_GENERIC_MOUSE;
++    devices[0].dwFlags     = 0;
++    devices[0].hwndTarget  = NULL;
++    devices[1].usUsagePage = 0;
++    devices[1].usUsage     = 0;
++    devices[1].dwFlags     = 0;
++    devices[1].hwndTarget  = NULL;
++    ret = pRegisterRawInputDevices(devices, 2, sizeof(RAWINPUTDEVICE));
++    ok(!ret, "RegisterRawInputDevices should fail to register the devices\n");
++
++    /* Assert that there are no devices registered */
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++}
++
++static void test_get_raw_input_data(void)
++{
++    UINT ret, count;
++    DWORD error;
++
++    if (!pGetRawInputData)
++    {
++        win_skip("GetRawInputData is not available\n");
++        return;
++    }
++
++    SetLastError(0xdeadbeef);
++    ret = pGetRawInputData(NULL, 0, NULL, NULL, 0);
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputData returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_PARAMETER, "GetRawInputData returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    ret = pGetRawInputData(NULL, 0, NULL, NULL, sizeof(RAWINPUTHEADER));
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputData returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_HANDLE, "GetRawInputData returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    ret = pGetRawInputData(NULL, 0, NULL, &count, 1);
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputData returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_PARAMETER, "GetRawInputData returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    ret = pGetRawInputData(NULL, 0, NULL, &count, sizeof(RAWINPUTHEADER));
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputData returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_HANDLE, "GetRawInputData returned "
++        "wrong error code: %u\n", error);
++}
++
++static void test_get_raw_input_buffer(void)
++{
++    UINT ret, size;
++    DWORD error;
++
++    if (!pGetRawInputBuffer)
++    {
++        win_skip("GetRawInputBuffer is not available\n");
++        return;
++    }
++
++    SetLastError(0xdeadbeef);
++    ret = pGetRawInputBuffer(NULL, NULL, 0);
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputBuffer returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_PARAMETER, "GetRawInputBuffer returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    ret = pGetRawInputBuffer(NULL, NULL, sizeof(RAWINPUTHEADER));
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputBuffer returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_PARAMETER, "GetRawInputBuffer returned "
++        "wrong error code: %u\n", error);
++
++    SetLastError(0xdeadbeef);
++    ret = pGetRawInputBuffer(NULL, &size, 1);
++    error = GetLastError();
++    ok(ret == (UINT)-1, "GetRawInputBuffer returned wrong value: "
++        "expected (UINT)-1, got %u\n", ret);
++    ok(error == ERROR_INVALID_PARAMETER, "GetRawInputBuffer returned "
++        "wrong error code: %u\n", error);
++
++    size = 0xdeadbeef;
++    ret = pGetRawInputBuffer(NULL, &size, sizeof(RAWINPUTHEADER));
++    ok(ret == 0, "GetRawInputBuffer returned wrong value: expected 0, got %u\n", ret);
++    ok(size == 0, "GetRawInputBuffer returned wrong minimal buffer size: "
++        "expected 0, got %u\n", size);
++}
++
++static BOOL wm_input_recieved;
++static BOOL legacy_mouse_message_recieved;
++static BOOL legacy_keyboard_message_recieved;
++
++static LRESULT CALLBACK get_raw_input_data_wnd_proc(HWND hWnd, UINT msg,
++    WPARAM wParam, LPARAM lParam)
++{
++    UINT dwSize, ret2;
++    RAWINPUT *raw;
++    BOOL ret;
++    LRESULT ret3;
++    DWORD error;
++
++    legacy_mouse_message_recieved    |= msg >= WM_MOUSEFIRST && msg <= WM_MOUSELAST;
++    legacy_keyboard_message_recieved |= msg >= WM_KEYFIRST   && msg <= WM_KEYLAST;
++
++    switch (msg)
++    {
++    case WM_INPUT:
++        /* Now that we have a valid HRAWINPUT handle,
++           let's test the case, when &dwSize is NULL */
++        SetLastError(0xdeadbeef);
++        ret = pGetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, NULL,
++            sizeof(RAWINPUTHEADER));
++        error = GetLastError();
++        ok(ret == (UINT)-1, "GetRawInputData returned wrong value: "
++            "expected (UINT)-1, got %u\n", ret);
++        ok(error == ERROR_NOACCESS, "GetRawInputData returned "
++            "wrong error code: %u\n", error);
++
++        /* Test retrieving of RAWINPUT data */
++        ret2 = pGetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dwSize,
++            sizeof(RAWINPUTHEADER));
++        ok(ret2 == 0, "GetRawInputData failed to retrieve raw input data size\n");
++
++        if (!(raw = HeapAlloc(GetProcessHeap(), 0, dwSize)))
++            break;
++        ret2 = pGetRawInputData((HRAWINPUT)lParam, RID_INPUT, raw, &dwSize,
++            sizeof(RAWINPUTHEADER));
++        ok(ret2 == dwSize, "GetRawInputData failed to retrieve raw input data\n");
++        ok(raw->header.dwType == RIM_TYPEMOUSE || raw->header.dwType == RIM_TYPEKEYBOARD,
++            "Raw input data entry was not from mouse or keyboard, expected otherwise\n");
++
++        ret3 = pDefRawInputProc(&raw, 1, sizeof(RAWINPUTHEADER));
++        ok(ret3 == S_OK, "DefRawInputProc failed\n");
++
++        ret2 = pGetRawInputData((HRAWINPUT)lParam, RID_INPUT, raw, &dwSize,
++            sizeof(RAWINPUTHEADER));
++        ok(ret2 == dwSize, "GetRawInputData failed to reretrieve raw input data after "
++            "calling DefRawInputProc\n");
++
++        HeapFree(GetProcessHeap(), 0, raw);
++        wm_input_recieved = TRUE;
++        return ret3;
++    }
++    return DefWindowProcA(hWnd, msg, wParam, lParam);
++}
++
++#define ID_TIMER 1
++
++static void timer_proc(HWND hParent, UINT uMsg, UINT uEventID, DWORD dwTimer)
++{
++    PostQuitMessage(0);
++}
++
++static HWND test_get_raw_input_data_simulation_setup(HANDLE hInstance, const char *class_name,
++    RAWINPUTDEVICE *device, INPUT *input, UINT input_count)
++{
++    MSG msg;
++    BOOL ret;
++    UINT ret2, size, ret3, i;
++    RAWINPUT *raw, *raw2;
++
++    HWND hWnd = CreateWindowA(class_name, "GetRawInputDataTest", WS_OVERLAPPEDWINDOW,
++        10, 10, 200, 200, NULL, NULL, hInstance, NULL);
++    assert(hWnd);
++
++    ShowWindow(hWnd, SW_SHOW);
++    SetWindowPos(hWnd, HWND_TOPMOST, 10, 10, 200, 200, SWP_NOSIZE|SWP_NOMOVE);
++    SetForegroundWindow(hWnd);
++    UpdateWindow(hWnd);
++    SetFocus(hWnd);
++
++    /* Flush queued messages */
++    while (PeekMessageA(&msg, 0, 0, 0, PM_REMOVE))
++    {
++        TranslateMessage(&msg);
++        DispatchMessageA(&msg);
++    }
++
++    wm_input_recieved                = FALSE;
++    legacy_mouse_message_recieved    = FALSE;
++    legacy_keyboard_message_recieved = FALSE;
++
++    device->hwndTarget = hWnd;
++    ret = pRegisterRawInputDevices(device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to subscribe to "
++        "a raw input device: %u\n", GetLastError());
++
++    ok(!GetInputState(), "GetInputState returned that there are mouse or keyboard "
++        "messages queued, expected otherwise\n");
++    size = 0xdeadbeef;
++    ret2 = pGetRawInputBuffer(NULL, &size, sizeof(RAWINPUTHEADER));
++    ok(ret2 == 0, "GetRawInputBuffer returned wrong value: expected 0, got %u\n", ret2);
++    ok(size == 0, "GetRawInputBuffer returned incorrect minimum buffer size: "
++        "expected 0, got %u\n", size);
++
++    /* First send input to test raw input buffer */
++    pSendInput(input_count, input, sizeof(INPUT));
++
++    ok(GetQueueStatus(QS_RAWINPUT), "GetQueueStatus returned that the queue was "
++        "not marked as containing raw input messages, expected otherwise\n");
++    size = 0;
++    ret2 = pGetRawInputBuffer(NULL, &size, sizeof(RAWINPUTHEADER));
++    ok(ret2 == 0, "GetRawInputBuffer returned wrong value: expected 0, got %u\n", ret2);
++    ok(size > 0, "GetRawInputBuffer returned incorrect minimum buffer size: "
++        "expected x > 0, got %u\n", size);
++
++    /* Size variable is the size of a single entry of what GetRawInputBuffer will return,
++       therefore we will allocate enough space to accommodate 16 entries */
++    size *= 16;
++    raw = HeapAlloc(GetProcessHeap(), 0, size * sizeof(RAWINPUT));
++    ok(raw != NULL, "HeapAlloc failed to allocate memory for raw input buffer data\n");
++    if (raw)
++    {
++        ret3 = pGetRawInputBuffer(raw, &size, sizeof(RAWINPUTHEADER));
++        ok(ret3 > 0 && ret3 != (UINT)-1, "GetRawInputBuffer failed to read raw input buffer\n");
++        for (i = 0, raw2 = raw; ret3 != (UINT)-1 && i < ret3; i++)
++        {
++            ok(raw2->header.dwType == RIM_TYPEMOUSE || raw2->header.dwType == RIM_TYPEKEYBOARD,
++                "Raw input event was not from mouse or keyboard, expected otherwise\n");
++            ok(
++                (raw2->header.dwType == RIM_TYPEMOUSE &&
++                raw2->header.dwSize == sizeof(RAWINPUTHEADER) + sizeof(RAWMOUSE)) ||
++                (raw2->header.dwType == RIM_TYPEKEYBOARD &&
++                raw2->header.dwSize == sizeof(RAWINPUTHEADER) + sizeof(RAWKEYBOARD)),
++                "Raw input event size didn't match the one expected for mouse or keyboard\n");
++            raw2 = NEXTRAWINPUTBLOCK(raw2);
++        }
++        HeapFree(GetProcessHeap(), 0, raw);
++    }
++    ret2 = pGetRawInputBuffer(NULL, &size, sizeof(RAWINPUTHEADER));
++    ok(ret2 == 0, "GetRawInputBuffer returned wrong value: expected 0, got %u\n", ret2);
++    ok(size == 0, "GetRawInputBuffer returned incorrect minimum buffer size: "
++        "expected 0, got %u\n", size);
++
++    /* Proceed with testing other functionality */
++    pSendInput(input_count, input, sizeof(INPUT));
++
++    ok(GetQueueStatus(QS_RAWINPUT), "GetQueueStatus returned that the queue was "
++        "not marked as containing raw input messages, expected otherwise\n");
++    ret2 = pGetRawInputBuffer(NULL, &size, sizeof(RAWINPUTHEADER));
++    ok(ret2 == 0, "GetRawInputBuffer returned wrong value: expected 0, got %u\n", ret2);
++    ok(size > 0, "GetRawInputBuffer returned incorrect minimum buffer size: "
++        "expected x > 0, got %u\n", size);
++
++    /* Give half a second of running time for each test to be sure all messages are processed */
++    SetTimer(hWnd, ID_TIMER, 500, (TIMERPROC)timer_proc);
++
++    while (1 == 1)
++    {
++        ret = GetMessageA(&msg, NULL, 0, 0);
++        if (!ret || ret == (BOOL)-1)
++            break;
++        TranslateMessage(&msg);
++        DispatchMessageA(&msg);
++    }
++
++    ok(ret != -1, "Error getting window message: %u\n", GetLastError());
++    ok(wm_input_recieved, "WM_INPUT was not received\n");
++    ok(!GetQueueStatus(QS_RAWINPUT), "GetQueueStatus returned that the queue was "
++        "marked as containing raw input messages, expected otherwise\n");
++
++    return hWnd;
++}
++
++static void test_get_raw_input_data_simulation_teardown(HWND hWnd, RAWINPUTDEVICE *device)
++{
++    BOOL ret;
++    UINT ret2;
++    DWORD count;
++
++    KillTimer(hWnd, ID_TIMER);
++
++    device->dwFlags    = RIDEV_REMOVE | (device->usUsage == 0 ? RIDEV_PAGEONLY : 0);
++    device->hwndTarget = NULL;
++    ret = pRegisterRawInputDevices(device, 1, sizeof(RAWINPUTDEVICE));
++    ok(ret, "RegisterRawInputDevices failed to unsubscribe from "
++        "a raw input device: %u\n", GetLastError());
++
++    count = 0xdeadbeef;
++    ret2 = pGetRegisteredRawInputDevices(NULL, &count, sizeof(RAWINPUTDEVICE));
++    ok(ret2 == 0, "GetRegisteredRawInputDevices returned wrong value: "
++        "expected 0, got %u\n", ret2);
++    ok(count == 0, "GetRegisteredRawInputDevices returned incorrect registration count: "
++        "expected 0, got %u\n", count);
++
++    DestroyWindow(hWnd);
++}
++
++static void test_get_raw_input_data_simulation(void)
++{
++    HWND hWnd;
++    WNDCLASSA wclass;
++    HANDLE hInstance = GetModuleHandleA( NULL );
++    INPUT mouse_input[5], keyboard_input;
++    ATOM registration;
++    RAWINPUTDEVICE device;
++    unsigned int i;
++
++    if (!pRegisterRawInputDevices || !pGetRawInputData || !pDefRawInputProc ||
++        !pGetRawInputBuffer || !pSendInput)
++    {
++        win_skip("Functions required to perform raw input simulation are not available\n");
++        return;
++    }
++
++    wclass.lpszClassName = "GetRawInputDataTestClass";
++    wclass.style         = CS_HREDRAW | CS_VREDRAW;
++    wclass.lpfnWndProc   = get_raw_input_data_wnd_proc;
++    wclass.hInstance     = hInstance;
++    wclass.hIcon         = LoadIconA(0, IDI_APPLICATION);
++    wclass.hCursor       = LoadCursorA(NULL, IDC_ARROW);
++    wclass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
++    wclass.lpszMenuName  = NULL;
++    wclass.cbClsExtra    = 0;
++    wclass.cbWndExtra    = 0;
++    registration = RegisterClassA(&wclass);
++    assert(registration);
++
++    /* Setup fixtures */
++    device.usUsagePage = HID_USAGE_PAGE_GENERIC;
++
++    memset(&keyboard_input, 0, sizeof(keyboard_input));
++    keyboard_input.type   = INPUT_KEYBOARD;
++    keyboard_input.ki.wVk = VK_SPACE;
++
++    /* Be sure to move over the window, because the absolute window position on the screen
++       depends on how desktop widgets are placed */
++    memset(&mouse_input, 0, sizeof(mouse_input));
++    mouse_input[0].type           = INPUT_MOUSE;
++    mouse_input[0].mi.dx          = mouse_input[0].mi.dy = 15;
++    mouse_input[0].mi.dwFlags     = MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE;
++    mouse_input[1].type           = INPUT_MOUSE;
++    mouse_input[1].mi.mouseData   = 0x0078;
++    mouse_input[1].mi.dwFlags     = MOUSEEVENTF_WHEEL;
++    for (i = 2; i < sizeof(mouse_input) / sizeof(mouse_input[0]); i++)
++    {
++        mouse_input[i].type       = INPUT_MOUSE;
++        mouse_input[i].mi.dx      = mouse_input[i].mi.dy = 30;
++        mouse_input[i].mi.dwFlags = MOUSEEVENTF_MOVE;
++    }
++
++    /* Test WM_INPUT for mouse */
++    device.usUsage = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags = 0;
++
++    hWnd = test_get_raw_input_data_simulation_setup(hInstance, wclass.lpszClassName, &device,
++        mouse_input, 5);
++    ok(legacy_mouse_message_recieved,
++        "Didn't receive legacy mouse messages, while was expecting to\n");
++    test_get_raw_input_data_simulation_teardown(hWnd, &device);
++
++    /* Test WM_INPUT for keyboard */
++    device.usUsage = HID_USAGE_GENERIC_KEYBOARD;
++    device.dwFlags = 0;
++
++    hWnd = test_get_raw_input_data_simulation_setup(hInstance, wclass.lpszClassName, &device,
++        &keyboard_input, 1);
++    ok(legacy_keyboard_message_recieved,
++        "Didn't receive keyboard messages, while was expecting to\n");
++    test_get_raw_input_data_simulation_teardown(hWnd, &device);
++
++    /* Test RIDEV_PAGEONLY using mouse */
++    device.usUsage = 0;
++    device.dwFlags = RIDEV_PAGEONLY;
++
++    hWnd = test_get_raw_input_data_simulation_setup(hInstance, wclass.lpszClassName, &device,
++        mouse_input, 5);
++    ok(legacy_mouse_message_recieved,
++        "Didn't receive legacy mouse messages, while was expecting to\n");
++    test_get_raw_input_data_simulation_teardown(hWnd, &device);
++
++    /* Test RIDEV_PAGEONLY using keyboard */
++    device.usUsage = 0;
++    device.dwFlags = RIDEV_PAGEONLY;
++
++    hWnd = test_get_raw_input_data_simulation_setup(hInstance, wclass.lpszClassName, &device,
++        &keyboard_input, 1);
++    ok(legacy_keyboard_message_recieved,
++        "Didn't receive legacy keyboard messages, while was expecting to\n");
++    test_get_raw_input_data_simulation_teardown(hWnd, &device);
++
++    /* Test RIDEV_NOLEGACY for mouse */
++    device.usUsage = HID_USAGE_GENERIC_MOUSE;
++    device.dwFlags = RIDEV_NOLEGACY;
++
++    hWnd = test_get_raw_input_data_simulation_setup(hInstance, wclass.lpszClassName, &device,
++        mouse_input, 5);
++    ok(!legacy_mouse_message_recieved,
++        "Did receive legacy mouse messages, while was expecting not to\n");
++    test_get_raw_input_data_simulation_teardown(hWnd, &device);
++
++    /* Test RIDEV_NOLEGACY for keyboard */
++    device.usUsage = HID_USAGE_GENERIC_KEYBOARD;
++    device.dwFlags = RIDEV_NOLEGACY;
++
++    hWnd = test_get_raw_input_data_simulation_setup(hInstance, wclass.lpszClassName, &device,
++        &keyboard_input, 1);
++    ok(!legacy_keyboard_message_recieved,
++        "Did receive legacy mouse messages, while was expecting not to\n");
++    test_get_raw_input_data_simulation_teardown(hWnd, &device);
++}
++
+ START_TEST(input)
+ {
+     init_function_pointers();
+@@ -1663,6 +2846,18 @@ START_TEST(input)
+     test_keyboard_layout_name();
+     test_key_names();
+ 
++    test_def_raw_input_proc();
++    test_get_raw_input_device_list();
++    test_get_raw_input_device_info_w();
++    test_get_raw_input_device_info_a();
++    test_basic_get_registered_raw_input_devices();
++    test_basic_register_raw_input_devices();
++    test_raw_input_device_flag_preconditions();
++    test_extended_register_raw_input_devices();
++    test_get_raw_input_data();
++    test_get_raw_input_buffer();
++    test_get_raw_input_data_simulation();
++
+     if(pGetMouseMovePointsEx)
+         test_GetMouseMovePointsEx();
+     else
+diff --git a/server/Makefile.in b/server/Makefile.in
+index a2f1a52..c12b2df 100644
+--- a/server/Makefile.in
++++ b/server/Makefile.in
+@@ -28,6 +28,7 @@ C_SRCS = \
+ 	procfs.c \
+ 	ptrace.c \
+ 	queue.c \
++	raw_input.c \
+ 	region.c \
+ 	registry.c \
+ 	request.c \
+diff --git a/server/process.c b/server/process.c
+index de3b594..806e4ae 100644
+--- a/server/process.c
++++ b/server/process.c
+@@ -48,6 +48,7 @@
+ #include "request.h"
+ #include "user.h"
+ #include "security.h"
++#include "raw_input.h"
+ 
+ /* process structure */
+ 
+@@ -333,10 +334,14 @@ struct thread *create_process( int fd, struct thread *parent_thread, int inherit
+     process->desktop         = 0;
+     process->token           = NULL;
+     process->trace_data      = 0;
++    process->raw_input_len   = 0;
++    process->raw_input_index = 0;
+     list_init( &process->thread_list );
+     list_init( &process->locks );
+     list_init( &process->classes );
+     list_init( &process->dlls );
++    list_init( &process->raw_registered );
++    list_init( &process->raw_inputs );
+ 
+     process->start_time = current_time;
+     process->end_time = 0;
+@@ -419,6 +424,7 @@ static void process_destroy( struct object *obj )
+ 
+     close_process_handles( process );
+     set_process_startup_state( process, STARTUP_ABORTED );
++    release_raw_input( &process->raw_registered, &process->raw_inputs );
+     if (process->console) release_object( process->console );
+     if (process->parent) release_object( process->parent );
+     if (process->msg_fd) release_object( process->msg_fd );
+diff --git a/server/process.h b/server/process.h
+index 93ec6c7..97d3120 100644
+--- a/server/process.h
++++ b/server/process.h
+@@ -22,6 +22,7 @@
+ #define __WINE_SERVER_PROCESS_H
+ 
+ #include "object.h"
++#include "raw_input.h"
+ 
+ struct atom_table;
+ struct handle_table;
+@@ -81,6 +82,10 @@ struct process
+     client_ptr_t         peb;             /* PEB address in client address space */
+     client_ptr_t         ldt_copy;        /* pointer to LDT copy in client addr space */
+     unsigned int         trace_data;      /* opaque data used by the process tracing mechanism */
++    struct list          raw_registered;  /* registered raw input devices */
++    struct list          raw_inputs;      /* queued raw inputs */
++    unsigned int         raw_input_len;   /* number of valid raw input event ids */
++    unsigned int         raw_input_index; /* number of raw input events issued */
+ };
+ 
+ struct process_snapshot
+diff --git a/server/protocol.def b/server/protocol.def
+index 80c0cd3..903ddee 100644
+--- a/server/protocol.def
++++ b/server/protocol.def
+@@ -3375,3 +3375,74 @@ enum coords_relative
+ @REQ(set_suspend_context)
+     VARARG(context,context);   /* thread context */
+ @END
++
++
++/* Get the raw input device list */
++@REQ(get_raw_input_device_list)
++    unsigned int   report_size_only; /* reply only with the device count */
++@REPLY
++    unsigned int   num_devices;      /* number of raw input device in the system */
++    VARARG(devices,bytes);           /* RAWINPUTDEVICELIST structures */
++@END
++
++/* Get the raw input device info */
++@REQ(get_raw_input_device_info)
++    user_handle_t  handle;           /* raw input device handle */
++    unsigned int   command;          /* desired characteristic of the device */
++    unsigned int   report_size_only; /* reply only the with the required size to store the data */
++@REPLY
++    data_size_t    size;             /* size of the data about the device */
++    VARARG(info,bytes);              /* string or data structure about the device */
++@END
++
++/* Get the registered raw input devices */
++@REQ(get_registered_raw_input_devices)
++    unsigned int   report_size_only; /* reply only with the device count */
++@REPLY
++    unsigned int   num_devices;      /* number of raw input device registrations */
++    VARARG(devices,bytes);           /* RAWINPUTDEVICE structures */
++@END
++
++/* Register raw input devices */
++@REQ(register_raw_input_devices)
++    unsigned int   count;            /* number of registrations submitted */
++    VARARG(registrations,bytes);     /* raw_input_device_registration structures (see below) */
++@END
++struct raw_input_device_registration
++{
++    unsigned short usage_page;       /* usage page of the device group to register to */
++    unsigned short usage;            /* usage id of the device to register to */
++    unsigned int   flags;            /* configuration of the registration (see below) */
++    user_handle_t  target_window;    /* optional window handle to receive input messages */
++};
++#define RAW_INPUT_DEVICE_FLAG_REMOVE       0x0001
++#define RAW_INPUT_DEVICE_FLAG_PAGEONLY     0x0002
++#define RAW_INPUT_DEVICE_FLAG_EXCLUDE      0x0004
++#define RAW_INPUT_DEVICE_FLAG_NOLEGACY     0x0008
++#define RAW_INPUT_DEVICE_FLAG_NOHOTKEYS    0x0010
++#define RAW_INPUT_DEVICE_FLAG_CAPTUREMOUSE 0x0020
++#define RAW_INPUT_DEVICE_FLAG_APPKEYS      0x0040
++#define RAW_INPUT_DEVICE_FLAG_INPUTSINK    0x0080
++#define RAW_INPUT_DEVICE_FLAG_EXINPUTSINK  0x0100
++#define RAW_INPUT_DEVICE_FLAG_DEVNOTIFY    0x0200
++
++/* Get raw input data */
++@REQ(get_raw_input_data)
++    user_handle_t  handle;           /* raw input event handle */
++    unsigned int   command;          /* instruction to reply with just the header or the whole data */
++    unsigned int   report_size_only; /* reply only with the required size to store the data */
++    unsigned int   header_size;      /* client size of RAWINPUTHEADER data structure */
++@REPLY
++    data_size_t    size;             /* size of the raw input data */
++    VARARG(data,bytes);              /* RAWINPUTHEADER or RAWINPUT data structure */
++@END
++
++/* Get buffered raw input data */
++@REQ(get_raw_input_buffer)
++    unsigned int   report_size_only; /* reply only with the minimum size to get the first entry */
++    unsigned int   header_size;      /* client size of RAWINPUTHEADER data structure */
++@REPLY
++    unsigned int   count;            /* count of raw input events returned */
++    data_size_t    minimum_size;     /* minimum buffer size to retrieve a buffered entry */
++    VARARG(data,bytes);              /* RAWINPUT data structures */
++@END
+diff --git a/server/queue.c b/server/queue.c
+index 4fd32ed..ae436ef 100644
+--- a/server/queue.c
++++ b/server/queue.c
+@@ -40,6 +40,7 @@
+ #include "process.h"
+ #include "request.h"
+ #include "user.h"
++#include "raw_input.h"
+ 
+ #define WM_NCMOUSEFIRST WM_NCMOUSEMOVE
+ #define WM_NCMOUSELAST  (WM_NCMOUSEFIRST+(WM_MOUSELAST-WM_MOUSEFIRST))
+@@ -121,6 +122,7 @@ struct msg_queue
+     unsigned int           changed_mask;    /* changed wakeup mask */
+     int                    paint_count;     /* pending paint messages count */
+     int                    hotkey_count;    /* pending hotkey messages count */
++    int                    rawinput_count;  /* pending raw input messages count */
+     int                    quit_message;    /* is there a pending quit message? */
+     int                    exit_code;       /* exit code of pending quit message */
+     int                    cursor_count;    /* per-queue cursor show count */
+@@ -281,6 +283,7 @@ static struct msg_queue *create_msg_queue( struct thread *thread, struct thread_
+         queue->changed_mask    = 0;
+         queue->paint_count     = 0;
+         queue->hotkey_count    = 0;
++        queue->rawinput_count  = 0;
+         queue->quit_message    = 0;
+         queue->cursor_count    = 0;
+         queue->recv_result     = NULL;
+@@ -437,6 +440,12 @@ static inline int is_keyboard_msg( struct message *msg )
+     return (msg->msg >= WM_KEYFIRST && msg->msg <= WM_KEYLAST);
+ }
+ 
++/* check whether msg is a mouse message */
++static inline int is_mouse_msg( struct message *msg )
++{
++    return (msg->msg >= WM_MOUSEFIRST && msg->msg <= WM_MOUSELAST);
++}
++
+ /* check if message is matched by the filter */
+ static inline int check_msg_filter( unsigned int msg, unsigned int first, unsigned int last )
+ {
+@@ -604,6 +613,8 @@ static void remove_queue_message( struct msg_queue *queue, struct message *msg,
+             clear_queue_bits( queue, QS_POSTMESSAGE|QS_ALLPOSTMESSAGE );
+         if (msg->msg == WM_HOTKEY && --queue->hotkey_count == 0)
+             clear_queue_bits( queue, QS_HOTKEY );
++        if (msg->msg == WM_INPUT && --queue->rawinput_count == 0)
++            clear_queue_bits( queue, QS_RAWINPUT );
+         break;
+     }
+     free_message( msg );
+@@ -1452,7 +1463,10 @@ static void queue_hardware_message( struct desktop *desktop, struct message *msg
+     if (win != desktop->cursor.win) always_queue = 1;
+     desktop->cursor.win = win;
+ 
+-    if (!always_queue || merge_message( input, msg )) free_message( msg );
++    if ((is_keyboard_msg( msg ) && is_nolegacy_set_for_raw_input_keyboard()) ||
++            (is_mouse_msg( msg ) && is_nolegacy_set_for_raw_input_mouse()) ||
++            !always_queue || merge_message( input, msg ))
++        free_message( msg );
+     else
+     {
+         msg->unique_id = 0;  /* will be set once we return it to the app */
+@@ -1957,6 +1971,11 @@ void post_message( user_handle_t win, unsigned int message, lparam_t wparam, lpa
+             set_queue_bits( thread->queue, QS_HOTKEY );
+             thread->queue->hotkey_count++;
+         }
++        if (message == WM_INPUT)
++        {
++            set_queue_bits( thread->queue, QS_RAWINPUT );
++            thread->queue->rawinput_count++;
++        }
+     }
+     release_object( thread );
+ }
+@@ -2019,6 +2038,52 @@ void free_hotkeys( struct desktop *desktop, user_handle_t window )
+ }
+ 
+ 
++/* Get the count and handles of queued raw input messages */
++BOOL get_queued_raw_input_message_handles( lparam_t **handles, unsigned int *count )
++{
++    struct msg_queue *queue = get_current_queue();
++    struct message *msg;
++    unsigned int index = 0;
++
++    if (!queue->rawinput_count)
++    {
++        *handles = NULL;
++        *count = 0;
++        return TRUE;
++    }
++
++    *handles = mem_alloc( queue->rawinput_count * sizeof( lparam_t ) );
++    if (!*handles)
++        return FALSE;
++
++    *count = queue->rawinput_count;
++
++    LIST_FOR_EACH_ENTRY( msg, &queue->msg_list[POST_MESSAGE], struct message, entry )
++    {
++        if (msg->msg == WM_INPUT)
++            (*handles)[index++] = msg->lparam;
++    }
++
++    return TRUE;
++}
++
++/* Remove given amount of raw input messages */
++void dequeue_raw_input_messages( unsigned int count )
++{
++    struct msg_queue *queue = get_current_queue();
++    struct message *msg, *msg2;
++
++    LIST_FOR_EACH_ENTRY_SAFE( msg, msg2, &queue->msg_list[POST_MESSAGE], struct message, entry )
++    {
++        if (msg->msg != WM_INPUT)
++            continue;
++        if (!count--)
++            break;
++        remove_queue_message( queue, msg, POST_MESSAGE );
++    }
++}
++
++
+ /* check if the thread owning the window is hung */
+ DECL_HANDLER(is_window_hung)
+ {
+@@ -2210,9 +2275,15 @@ DECL_HANDLER(send_hardware_message)
+     switch (req->input.type)
+     {
+     case INPUT_MOUSE:
++        queue_mouse_raw_input( req->input.mouse.flags, req->input.mouse.info,
++            req->input.mouse.data, req->input.mouse.x, req->input.mouse.y, desktop->cursor.x,
++            desktop->cursor.y, desktop->foreground_input ? desktop->foreground_input->focus : 0 );
+         reply->wait = queue_mouse_message( desktop, req->win, &req->input, req->flags, sender );
+         break;
+     case INPUT_KEYBOARD:
++        queue_keyboard_raw_input( req->input.kbd.flags, req->input.kbd.info,
++            req->input.kbd.vkey, req->input.kbd.scan,
++            desktop->foreground_input ? desktop->foreground_input->focus : 0 );
+         reply->wait = queue_keyboard_message( desktop, req->win, &req->input, req->flags, sender );
+         break;
+     case INPUT_HARDWARE:
+diff --git a/server/raw_input.c b/server/raw_input.c
+new file mode 100644
+index 0000000..4841683
+--- /dev/null
++++ b/server/raw_input.c
+@@ -0,0 +1,747 @@
++/*
++ * Server-side Raw Input Handling
++ *
++ * Copyright (C) 2011 Vincas Miliūnas
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
++ */
++
++#include "config.h"
++#include "wine/port.h"
++
++#include <assert.h>
++#include <stdarg.h>
++#include <stdio.h>
++
++#include "ntstatus.h"
++#define WIN32_NO_STATUS
++#include "windef.h"
++#include "winbase.h"
++#include "winuser.h"
++#include "winternl.h"
++
++#include "object.h"
++#include "process.h"
++#include "request.h"
++#include "user.h"
++
++#define MAX_RAW_INPUT_QUEUE_LENGTH 32
++
++#define MOUSE_DEVICE_HANDLE    ((user_handle_t)0x01)
++#define KEYBOARD_DEVICE_HANDLE ((user_handle_t)0x02)
++
++#define HID_USAGE_PAGE_GENERIC     ((unsigned short)0x01)
++#define HID_USAGE_GENERIC_MOUSE    ((unsigned short)0x02)
++#define HID_USAGE_GENERIC_KEYBOARD ((unsigned short)0x06)
++
++extern BOOL get_queued_raw_input_message_handles( lparam_t **handles, unsigned int *count );
++extern void dequeue_raw_input_messages( unsigned int count );
++
++struct raw_registration
++{
++    struct list      entry;
++    unsigned short   usage_page;
++    unsigned short   usage;
++    unsigned int     flags;
++    user_handle_t    target_window;
++};
++
++struct raw_input
++{
++    struct list      entry;
++    unsigned int     handle;
++    user_handle_t    device_handle;
++    unsigned short   input_usage_page;
++    unsigned short   input_usage;
++    BOOL             retrieved;
++    RAWINPUT         raw;
++};
++
++struct raw_device
++{
++    user_handle_t    handle;
++    const WCHAR     *name;
++    RID_DEVICE_INFO  info;
++};
++
++/* Data structures to supply data for 32bit client from a 64bit server */
++struct RAWINPUTHEADER32
++{
++    DWORD            dwType;
++    DWORD            dwSize;
++    DWORD            hDevice;
++    DWORD            wParam;
++};
++
++struct RAWINPUT32
++{
++    struct RAWINPUTHEADER32  header;
++    union
++    {
++        RAWMOUSE      mouse;
++        RAWKEYBOARD   keyboard;
++    } data;
++};
++
++/* Raw input device names */
++static const WCHAR mouse_raw_input_device_name[] =
++    {'W','I','N','E',' ','R','a','w',' ','I','n','p','u','t',' ',
++        'M','o','u','s','e','\0'};
++static const WCHAR keyboard_raw_input_device_name[] =
++    {'W','I','N','E',' ','R','a','w',' ','I','n','p','u','t',' ',
++        'K','e','y','b','o','a','r','d','\0'};
++
++/* Standard raw input devices with typical device info values */
++static const struct raw_device raw_devices[] =
++{
++    {MOUSE_DEVICE_HANDLE, mouse_raw_input_device_name,
++        {sizeof( RID_DEVICE_INFO ), RIM_TYPEMOUSE, {.mouse = {1, 3, 100, FALSE}}}},
++    {KEYBOARD_DEVICE_HANDLE, keyboard_raw_input_device_name,
++        {sizeof( RID_DEVICE_INFO ), RIM_TYPEKEYBOARD, {.keyboard = {4, 0, 1, 12, 3, 101}}}}
++};
++#define NUM_RAW_DEVICES (sizeof( raw_devices ) / sizeof( raw_devices[0] ))
++
++/* Release allocated raw input data */
++void release_raw_input( struct list *registrations, struct list *inputs )
++{
++    struct raw_registration *registration, *registration2;
++    struct raw_input *input, *input2;
++
++    LIST_FOR_EACH_ENTRY_SAFE( registration, registration2, registrations,
++        struct raw_registration, entry )
++    {
++        list_remove( &registration->entry );
++        free( registration );
++    }
++
++    LIST_FOR_EACH_ENTRY_SAFE( input, input2, inputs, struct raw_input, entry )
++    {
++        list_remove( &input->entry );
++        free( input );
++    }
++}
++
++/* Register or unregister a given raw input device registration */
++static void register_raw_input_device( struct raw_input_device_registration *new_registration )
++{
++    struct raw_registration *registration;
++    LIST_FOR_EACH_ENTRY( registration, &current->process->raw_registered,
++        struct raw_registration, entry )
++    {
++        /* * They must be on the same usage page
++           * both marked as PAGEONLY or
++             both not marked as PAGEONLY and have identical usage ids */
++        if (registration->usage_page != new_registration->usage_page ||
++                (!(registration->flags & RAW_INPUT_DEVICE_FLAG_PAGEONLY &&
++                new_registration->flags & RAW_INPUT_DEVICE_FLAG_PAGEONLY) &&
++                (registration->flags & RAW_INPUT_DEVICE_FLAG_PAGEONLY ||
++                new_registration->flags & RAW_INPUT_DEVICE_FLAG_PAGEONLY ||
++                registration->usage != new_registration->usage)))
++            continue;
++
++        if (new_registration->flags & RAW_INPUT_DEVICE_FLAG_REMOVE)
++        {
++            list_remove( &registration->entry );
++            free( registration );
++            return;
++        }
++
++        /* Update existing registration */
++        registration->flags         = new_registration->flags;
++        registration->target_window = new_registration->target_window;
++        return;
++    }
++
++    if (new_registration->flags & RAW_INPUT_DEVICE_FLAG_REMOVE ||
++            !(registration = mem_alloc( sizeof( *registration ) )))
++        return;
++
++    registration->usage_page    = new_registration->usage_page;
++    registration->usage         = new_registration->usage;
++    registration->flags         = new_registration->flags;
++    registration->target_window = new_registration->target_window;
++
++    list_add_tail( &current->process->raw_registered, &registration->entry );
++}
++
++/* Remove a raw input event from the queue */
++static void remove_raw_input( struct raw_input *input )
++{
++    list_remove( &input->entry );
++    current->process->raw_input_len -= 1;
++    free( input );
++}
++
++/* Queue a raw input event */
++static void queue_raw_input( struct raw_input *input, struct raw_registration *registration,
++    user_handle_t focus )
++{
++    user_handle_t target;
++    struct raw_input *queued, *prev = NULL;
++
++    input->handle = current->process->raw_input_index++;
++
++    /* Prevent unprocessed raw input entries from being queued indefinitely */
++    if (current->process->raw_input_len == MAX_RAW_INPUT_QUEUE_LENGTH)
++    {
++        struct raw_input *head = LIST_ENTRY( list_head( &current->process->raw_inputs ),
++            struct raw_input, entry );
++        remove_raw_input( head );
++    }
++
++    /* Select raw input events that come from this device's input subcomponent and release
++       already processed ones, except for the last one, because it can still be
++       retrieved multiple times while processing its WIM_INPUT message */
++    LIST_FOR_EACH_ENTRY( queued, &current->process->raw_inputs, struct raw_input, entry )
++	{
++        /* Scope for the particular device and it's input subcomponent */
++        if (queued->device_handle != input->device_handle ||
++                queued->input_usage_page != input->input_usage_page ||
++                queued->input_usage != input->input_usage)
++            continue;
++
++        if (!queued->retrieved)
++            break;
++
++        if (prev)
++            remove_raw_input( prev );
++
++        prev = queued;
++    }
++
++    list_add_tail( &current->process->raw_inputs, &input->entry );
++    current->process->raw_input_len += 1;
++
++    target = registration->target_window ? registration->target_window : focus;
++    if (target)
++        post_message( target, WM_INPUT, RIM_INPUT, input->handle );
++}
++
++/* Find a queued raw input event by its handle id */
++static struct raw_input *find_raw_input_event( unsigned int handle )
++{
++    struct raw_input *input;
++    LIST_FOR_EACH_ENTRY( input, &current->process->raw_inputs, struct raw_input, entry )
++    {
++        if (input->handle == handle)
++            return input;
++    }
++    return NULL;
++}
++
++/* Find a raw input registration, that matches given usage page/id */
++static struct raw_registration *find_registered_usage( unsigned short usage_page,
++    unsigned short usage )
++{
++    struct raw_registration *registration, *found = NULL;
++    LIST_FOR_EACH_ENTRY( registration, &current->process->raw_registered,
++        struct raw_registration, entry )
++    {
++        if (registration->usage_page != usage_page)
++            continue;
++        else if (registration->flags & RAW_INPUT_DEVICE_FLAG_EXCLUDE &&
++                registration->usage == usage)
++            return NULL;
++        else if (registration->flags & RAW_INPUT_DEVICE_FLAG_PAGEONLY)
++            found = registration;
++        else if (registration->usage == usage)
++            return registration;
++    }
++    return found;
++}
++
++/* Determine mouse flags */
++static unsigned int map_mouse_flags( unsigned int flags, unsigned int mouse_data )
++{
++    unsigned int result = 0;
++    if (flags & MOUSEEVENTF_LEFTDOWN)
++        result |= RI_MOUSE_LEFT_BUTTON_DOWN;
++    if (flags & MOUSEEVENTF_LEFTUP)
++        result |= RI_MOUSE_LEFT_BUTTON_UP;
++    if (flags & MOUSEEVENTF_RIGHTDOWN)
++        result |= RI_MOUSE_RIGHT_BUTTON_DOWN;
++    if (flags & MOUSEEVENTF_RIGHTUP)
++        result |= RI_MOUSE_RIGHT_BUTTON_UP;
++    if (flags & MOUSEEVENTF_MIDDLEDOWN)
++        result |= RI_MOUSE_MIDDLE_BUTTON_DOWN;
++    if (flags & MOUSEEVENTF_MIDDLEUP)
++        result |= RI_MOUSE_MIDDLE_BUTTON_UP;
++    if (flags & MOUSEEVENTF_WHEEL)
++        result |= RI_MOUSE_WHEEL;
++    if (flags & MOUSEEVENTF_HWHEEL)
++        result |= RI_MOUSE_HORIZONTAL_WHEEL;
++    if (flags & MOUSEEVENTF_XDOWN && mouse_data == XBUTTON1)
++        result |= RI_MOUSE_BUTTON_4_DOWN;
++    if (flags & MOUSEEVENTF_XUP   && mouse_data == XBUTTON1)
++        result |= RI_MOUSE_BUTTON_4_UP;
++    if (flags & MOUSEEVENTF_XDOWN && mouse_data == XBUTTON2)
++        result |= RI_MOUSE_BUTTON_5_DOWN;
++    if (flags & MOUSEEVENTF_XUP   && mouse_data == XBUTTON2)
++        result |= RI_MOUSE_BUTTON_5_UP;
++    return result;
++}
++
++/* Queue a mouse raw input event */
++void queue_mouse_raw_input( unsigned int flags, unsigned int info,
++    unsigned int data, unsigned int input_x, unsigned int input_y,
++    unsigned int desktop_x, unsigned int desktop_y, user_handle_t focus )
++{
++    /* We know the device handle and its input subcomponent usage page/id in advance */
++    const user_handle_t device_handle = MOUSE_DEVICE_HANDLE;
++    const unsigned short input_usage_page = HID_USAGE_PAGE_GENERIC;
++    const unsigned short input_usage = HID_USAGE_GENERIC_MOUSE;
++    struct raw_input *input;
++
++    struct raw_registration *registration = find_registered_usage( input_usage_page, input_usage );
++    if (!registration || !(input = mem_alloc( sizeof( *input ) )))
++        return;
++
++    input->device_handle    = device_handle;
++    input->input_usage_page = input_usage_page;
++    input->input_usage      = input_usage;
++    input->retrieved        = FALSE;
++
++    input->raw.header.dwType  = RIM_TYPEMOUSE;
++    input->raw.header.dwSize  = sizeof( RAWINPUTHEADER ) + sizeof( RAWMOUSE );
++    input->raw.header.hDevice = (HANDLE)(ULONG_PTR)device_handle;
++    input->raw.header.wParam  = RIM_INPUT;
++
++    if (flags & MOUSEEVENTF_MOVE && flags & MOUSEEVENTF_ABSOLUTE)
++    {
++        input->raw.data.mouse.lLastX = input_x - desktop_x;
++        input->raw.data.mouse.lLastY = input_y - desktop_y;
++        if (flags & ~(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE) &&
++                input_x == desktop_x && input_y == desktop_y)
++            flags &= ~MOUSEEVENTF_MOVE;
++    }
++    else if (flags & MOUSEEVENTF_MOVE)
++    {
++        input->raw.data.mouse.lLastX = input_x;
++        input->raw.data.mouse.lLastY = input_y;
++    }
++    else
++    {
++        input->raw.data.mouse.lLastX = 0;
++        input->raw.data.mouse.lLastY = 0;
++    }
++
++    input->raw.data.mouse.usFlags            = MOUSE_MOVE_RELATIVE;
++    input->raw.data.mouse.usButtonFlags      = map_mouse_flags( flags, data );
++    if (input->raw.data.mouse.usButtonFlags & (RI_MOUSE_WHEEL | RI_MOUSE_HORIZONTAL_WHEEL))
++        input->raw.data.mouse.usButtonData   = data;
++    else
++        input->raw.data.mouse.usButtonData   = 0;
++    /* ulRawButtons is undocumented and hardware/drivers dependent,
++       therefore 0 is a valid value */
++    input->raw.data.mouse.ulRawButtons       = 0;
++    input->raw.data.mouse.ulExtraInformation = info;
++
++    /* Filter out zero values that come after a scroll wheel event,
++       so it would be identical to windows */
++    if (!input->raw.data.mouse.usButtonFlags &&
++        !input->raw.data.mouse.lLastX && !input->raw.data.mouse.lLastY)
++    {
++        free( input );
++        return;
++    }
++
++    queue_raw_input( input, registration, focus );
++}
++
++/* Determine keyboard flags */
++static unsigned int map_keyboard_flags( unsigned int flags, unsigned int vk_code )
++{
++    unsigned int result = 0;
++
++    if (flags & KEYEVENTF_KEYUP)
++        result |= RI_KEY_BREAK;
++    else
++        result |= RI_KEY_MAKE;
++
++    /* The extended keys are placed on the right side
++       Right shift doesn't have this flag */
++    if (flags & KEYEVENTF_EXTENDEDKEY && vk_code != VK_SHIFT && vk_code != VK_RSHIFT)
++        result |= RI_KEY_E0;
++
++    return result;
++}
++
++/* Determine keyboard virtual key-code */
++static unsigned int map_keyboard_vk_code( unsigned int vk_code )
++{
++    switch (vk_code)
++    {
++    case VK_LSHIFT:
++    case VK_RSHIFT:
++        return VK_SHIFT;
++    case VK_LCONTROL:
++    case VK_RCONTROL:
++        return VK_CONTROL;
++    case VK_LMENU:
++    case VK_RMENU:
++        return VK_MENU;
++    default:
++        return vk_code;
++    }
++}
++
++/* Determine keyboard message code */
++static unsigned int map_keyboard_message_code( unsigned int flags, unsigned int vk_code )
++{
++    /* Windows use WM_SYSKEYDOWN only for alt key-press */
++    if (!(flags & KEYEVENTF_KEYUP) && (vk_code == VK_MENU || vk_code == VK_LMENU ||
++            vk_code == VK_RMENU))
++        return WM_SYSKEYDOWN;
++    else if (flags & KEYEVENTF_KEYUP)
++        return WM_KEYUP;
++    else
++        return WM_KEYDOWN;
++}
++
++/* Queue a keyboard raw input event */
++void queue_keyboard_raw_input( unsigned int flags, unsigned int info, unsigned int vk_code,
++    unsigned int scan_code, user_handle_t focus )
++{
++    /* We know the device handle and its input subcomponent usage page/id in advance */
++    const user_handle_t device_handle = KEYBOARD_DEVICE_HANDLE;
++    const unsigned short input_usage_page = HID_USAGE_PAGE_GENERIC;
++    const unsigned short input_usage = HID_USAGE_GENERIC_KEYBOARD;
++    struct raw_input *input;
++
++    struct raw_registration *registration = find_registered_usage( input_usage_page, input_usage );
++    if (!registration || !(input = mem_alloc( sizeof( *input ) )))
++        return;
++
++    input->device_handle    = device_handle;
++    input->input_usage_page = input_usage_page;
++    input->input_usage      = input_usage;
++    input->retrieved        = FALSE;
++
++    input->raw.header.dwType  = RIM_TYPEKEYBOARD;
++    input->raw.header.dwSize  = sizeof( RAWINPUTHEADER ) + sizeof( RAWKEYBOARD );
++    input->raw.header.hDevice = (HANDLE)(ULONG_PTR)device_handle;
++    input->raw.header.wParam  = RIM_INPUT;
++
++    input->raw.data.keyboard.MakeCode         = scan_code;
++    input->raw.data.keyboard.Flags            = map_keyboard_flags( flags, vk_code );
++    input->raw.data.keyboard.Reserved         = 0;
++    input->raw.data.keyboard.VKey             = map_keyboard_vk_code( vk_code );
++    input->raw.data.keyboard.Message          = map_keyboard_message_code( flags, vk_code );
++    input->raw.data.keyboard.ExtraInformation = info;
++
++    queue_raw_input( input, registration, focus );
++}
++
++/* Check if nolegacy flag is set for a mouse device registration */
++BOOL is_nolegacy_set_for_raw_input_mouse(void)
++{
++    struct raw_registration *registration = find_registered_usage( HID_USAGE_PAGE_GENERIC, HID_USAGE_GENERIC_MOUSE );
++    return registration ? registration->flags & RAW_INPUT_DEVICE_FLAG_NOLEGACY : FALSE;
++}
++
++/* Check if nolegacy flag is set for a keyboard device registration */
++BOOL is_nolegacy_set_for_raw_input_keyboard(void)
++{
++    struct raw_registration *registration = find_registered_usage( HID_USAGE_PAGE_GENERIC, HID_USAGE_GENERIC_KEYBOARD );
++    return registration ? registration->flags & RAW_INPUT_DEVICE_FLAG_NOLEGACY : FALSE;
++}
++
++static UINT apply_32bit_header_size(UINT size)
++{
++    return size - sizeof( RAWINPUTHEADER ) + sizeof( struct RAWINPUTHEADER32 );
++}
++
++static void copy_32bit_raw_input_data(void *target, RAWINPUT *source, UINT size)
++{
++    struct RAWINPUT32 *ptr32bit = (struct RAWINPUT32 *)target;
++    ptr32bit->header.dwType = source->header.dwType;
++    ptr32bit->header.dwSize = size;
++    ptr32bit->header.hDevice = (DWORD)(ULONG_PTR)source->header.hDevice;
++    ptr32bit->header.wParam = (DWORD)(ULONG_PTR)source->header.wParam;
++    memcpy( &ptr32bit->data, &source->data, size - sizeof( struct RAWINPUTHEADER32 ) );
++}
++
++/* Get the raw input device list */
++DECL_HANDLER(get_raw_input_device_list)
++{
++    unsigned int i, size_in_bytes;
++    RAWINPUTDEVICELIST *result;
++
++    reply->num_devices = NUM_RAW_DEVICES;
++    if (!reply->num_devices || req->report_size_only)
++        return;
++
++    size_in_bytes = reply->num_devices * sizeof( RAWINPUTDEVICELIST );
++    if (size_in_bytes > get_reply_max_size())
++    {
++        set_error( STATUS_BUFFER_TOO_SMALL );
++        return;
++    }
++
++    result = set_reply_data_size( size_in_bytes );
++    if (!result)
++    {
++        set_error( STATUS_NO_MEMORY );
++        return;
++    }
++
++    for (i = 0; i < reply->num_devices; i++)
++    {
++        /* Currently fake handles are provided, however they are only used to
++           identify the devices for the GetRawInputDeviceInfo function, thus it
++           should not create any undesirable side effects */
++        result[i].hDevice = (HANDLE)(ULONG_PTR)raw_devices[i].handle;
++        result[i].dwType  = raw_devices[i].info.dwType;
++    }
++}
++
++/* Get the raw input device info */
++DECL_HANDLER(get_raw_input_device_info)
++{
++    BOOL valid = FALSE;
++    unsigned int i, size_in_bytes;
++    void *source = NULL;
++
++    for (i = 0; i < NUM_RAW_DEVICES; i++)
++    {
++        if (raw_devices[i].handle != req->handle)
++            continue;
++        valid = TRUE;
++
++        switch (req->command)
++        {
++        case RIDI_DEVICENAME:
++            /* reply->size is the character count */
++            reply->size = lstrlenW( raw_devices[i].name ) + 1;
++            source      = (void *)raw_devices[i].name;
++            break;
++        case RIDI_DEVICEINFO:
++            reply->size = sizeof( RID_DEVICE_INFO );
++            source      = (void *)&raw_devices[i].info;
++            break;
++        case RIDI_PREPARSEDDATA:
++            /* No preparsed data available */
++            reply->size = 0;
++            break;
++        default:
++            set_error( STATUS_INVALID_PARAMETER );
++            break;
++        }
++        if (get_error() > 0 || req->report_size_only)
++            break;
++
++        size_in_bytes = req->command == RIDI_DEVICENAME ?
++            reply->size * sizeof( WCHAR ) : reply->size;
++        if (size_in_bytes > get_reply_max_size())
++        {
++            set_error( STATUS_BUFFER_TOO_SMALL );
++        }
++        else if (size_in_bytes > 0)
++        {
++            void *target = set_reply_data_size( size_in_bytes );
++            if (!target)
++            {
++                set_error( STATUS_NO_MEMORY );
++                break;
++            }
++
++            memcpy( target, source, size_in_bytes );
++        }
++        break;
++    }
++    if (!valid)
++        set_error( STATUS_INVALID_HANDLE );
++}
++
++/* Get the registered raw input devices */
++DECL_HANDLER(get_registered_raw_input_devices)
++{
++    unsigned int index = 0, size_in_bytes;
++    struct raw_registration *registration;
++    RAWINPUTDEVICE *result;
++
++    reply->num_devices = list_count(&current->process->raw_registered);
++    if (!reply->num_devices || req->report_size_only)
++        return;
++
++    size_in_bytes = reply->num_devices * sizeof( RAWINPUTDEVICE );
++    if (size_in_bytes > get_reply_max_size())
++    {
++        set_error( STATUS_BUFFER_TOO_SMALL );
++        return;
++    }
++
++    result = set_reply_data_size( size_in_bytes );
++    if (!result)
++    {
++        set_error( STATUS_NO_MEMORY );
++        return;
++    }
++
++    LIST_FOR_EACH_ENTRY( registration, &current->process->raw_registered,
++        struct raw_registration, entry )
++    {
++        result[index].usUsagePage = registration->usage_page;
++        result[index].usUsage     = registration->usage;
++        result[index].dwFlags     = registration->flags;
++        result[index].hwndTarget  = (HWND)(ULONG_PTR)registration->target_window;
++        index += 1;
++    }
++}
++
++/* Register raw input devices */
++DECL_HANDLER(register_raw_input_devices)
++{
++    struct raw_input_device_registration *registrations =
++        (struct raw_input_device_registration *)get_req_data();
++    unsigned int i;
++    for (i = 0; i < req->count; i++)
++        register_raw_input_device( &registrations[i] );
++}
++
++/* Get raw input data */
++DECL_HANDLER(get_raw_input_data)
++{
++    void *ptr;
++    struct raw_input *input = find_raw_input_event( req->handle );
++    const unsigned int is_server64bit = sizeof( RAWINPUTHEADER ) != sizeof( struct RAWINPUTHEADER32 );
++    const unsigned int is_client32bit = req->header_size == sizeof( struct RAWINPUTHEADER32 );
++    const unsigned int is_64bit_to_32bit = is_server64bit && is_client32bit;
++
++    if (!input)
++    {
++        set_error( STATUS_INVALID_HANDLE );
++        return;
++    }
++
++    if (req->command == RID_HEADER && is_64bit_to_32bit)
++        reply->size = sizeof( struct RAWINPUTHEADER32 );
++    else if (req->command == RID_HEADER)
++        reply->size = sizeof( RAWINPUTHEADER );
++    else if (req->command == RID_INPUT && is_64bit_to_32bit)
++        reply->size = apply_32bit_header_size( input->raw.header.dwSize );
++    else if (req->command == RID_INPUT)
++        reply->size = input->raw.header.dwSize;
++    else
++    {
++        set_error( STATUS_INVALID_PARAMETER );
++        return;
++    }
++
++    if (req->report_size_only)
++        return;
++
++    if (reply->size > get_reply_max_size())
++    {
++        set_error( STATUS_BUFFER_TOO_SMALL );
++        return;
++    }
++
++    ptr = set_reply_data_size( reply->size );
++    if (!ptr)
++    {
++        set_error( STATUS_NO_MEMORY );
++        return;
++    }
++
++    if (is_64bit_to_32bit)
++        copy_32bit_raw_input_data( ptr, &input->raw, reply->size );
++    else
++        memcpy( ptr, &input->raw, reply->size );
++
++    if (req->command == RID_INPUT)
++        input->retrieved = TRUE;
++}
++
++/* Get buffered raw input data */
++DECL_HANDLER(get_raw_input_buffer)
++{
++    unsigned int i, count, written_count = 0, written_size = 0;
++    lparam_t *handles;
++    RAWINPUT *result = NULL;
++    UINT tmp_size;
++    const unsigned int is_server64bit = sizeof( RAWINPUTHEADER ) != sizeof( struct RAWINPUTHEADER32 );
++    const unsigned int is_client32bit = req->header_size == sizeof( struct RAWINPUTHEADER32 );
++    const unsigned int is_64bit_to_32bit = is_server64bit && is_client32bit;
++
++    reply->count = 0;
++    reply->minimum_size = 0;
++
++    if (!get_queued_raw_input_message_handles( &handles, &count ))
++    {
++        set_error( STATUS_NO_MEMORY );
++        return;
++    }
++    if (!count)
++        return;
++
++    if (!req->report_size_only)
++    {
++        result = set_reply_data_size( get_reply_max_size() );
++        if (!result)
++        {
++            free( handles );
++            set_error( STATUS_NO_MEMORY );
++            return;
++        }
++    }
++
++    for (i = 0; i < count; i++)
++    {
++        struct raw_input *input = find_raw_input_event( handles[i] );
++
++        if (!input)
++            continue;
++
++        if (is_64bit_to_32bit)
++            tmp_size = apply_32bit_header_size( input->raw.header.dwSize );
++        else
++            tmp_size = input->raw.header.dwSize;
++
++        if (!reply->minimum_size)
++            reply->minimum_size = tmp_size;
++
++        if (written_size + tmp_size > get_reply_max_size() || req->report_size_only)
++            break;
++
++        if (is_64bit_to_32bit)
++            copy_32bit_raw_input_data( result, &input->raw, tmp_size );
++        else
++            memcpy( result, &input->raw, tmp_size );
++
++        written_count += 1;
++        written_size += tmp_size;
++        result = NEXTRAWINPUTBLOCK( result );
++
++        remove_raw_input( input );
++    }
++
++    free( handles );
++
++    if (req->report_size_only)
++        return;
++
++    /* Windows needs the buffer to be at least 1 byte larger then
++       the minimum needed space */
++    if (reply->minimum_size >= get_reply_max_size() || !written_count)
++    {
++        set_error( STATUS_BUFFER_TOO_SMALL );
++        return;
++    }
++
++    reply->count = written_count;
++
++    dequeue_raw_input_messages( written_count );
++}
+diff --git a/server/raw_input.h b/server/raw_input.h
+new file mode 100644
+index 0000000..4a4acf0
+--- /dev/null
++++ b/server/raw_input.h
+@@ -0,0 +1,38 @@
++/*
++ * Server-side Raw Input Handling
++ *
++ * Copyright (C) 2011 Vincas Miliūnas
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
++ */
++
++#ifndef __WINE_SERVER_RAW_INPUT_H
++#define __WINE_SERVER_RAW_INPUT_H
++
++#include "wine/server_protocol.h"
++#include "wine/list.h"
++
++extern void release_raw_input( struct list *registrations, struct list *inputs );
++
++extern void queue_mouse_raw_input( unsigned int flags, unsigned int info,
++    unsigned int data, unsigned int input_x, unsigned int input_y,
++    unsigned int desktop_x, unsigned int desktop_y, user_handle_t focus );
++extern void queue_keyboard_raw_input( unsigned int flags, unsigned int info,
++    unsigned int vk_code, unsigned int scan_code, user_handle_t focus );
++
++extern BOOL is_nolegacy_set_for_raw_input_mouse(void);
++extern BOOL is_nolegacy_set_for_raw_input_keyboard(void);
++
++#endif  /* __WINE_SERVER_RAW_INPUT_H */

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+case "$1" in
+  hibernate)
+    umount /mnt/C
+    umount /mnt/Fabulous
+    umount /mnt/Awesome
+    ;;
+
+  thaw)
+    mount -a
+    ;;
+esac

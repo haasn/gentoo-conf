@@ -1,0 +1,13 @@
+#!/bin/sh
+
+case "$1" in
+  hibernate)
+    # Load the required swap partition
+    swapon /dev/sda3
+    ;;
+
+  thaw)
+    # Unload it again, putting everything back into memory
+    swapoff /dev/sda3
+    ;;
+esac

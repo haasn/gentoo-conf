@@ -1,0 +1,95 @@
+# default mappings
+#
+# A mapping maps a shortcut to one or more commands.  Whenever the user enters
+# a shortcut, the corresponding commands are executed.
+
+# quit
+map <C-C>       :quit<CR>
+
+# settings
+map r           :toggle-repeat<CR>
+map R           :toggle-random<CR>
+map c           :toggle-consume<CR>
+map s           :toggle-single<CR>
+
+# movement
+map k           :move-up<CR>
+map <Up>        :move-up<CR>
+map j           :move-down<CR>
+map <Down>      :move-down<CR>
+map {           :move-album-prev<CR>
+map }           :move-album-next<CR>
+map h           :move-out<CR>
+map l           :move-in<CR>
+map gg          :move-first<CR>
+map G           :move-last<CR>
+map <C-Y>       :scroll-up<CR>
+map <C-E>       :scroll-down<CR>
+map <C-U>       :scroll-half-page-up<CR>
+map <C-B>       :scroll-page-up<CR>
+map <PageUp>    :scroll-page-up<CR>
+map <C-D>       :scroll-half-page-down<CR>
+map <C-F>       :scroll-page-down<CR>
+map <PageDown>  :scroll-page-down<CR>
+
+# tab navigation
+map q           :close<CR>
+map <C-P>       :window-prev<CR>
+map <C-N>       :window-next<CR>
+map 1           :window-playlist<CR>
+map 2           :window-library<CR>
+map 3           :window-browser<CR>
+map 4           :window-search<CR>
+
+# playback
+map <CR>        :default-action<CR>
+map t           :toggle<CR>
+map d           :remove<CR>
+map y           :copy<CR>
+map p           :paste<CR>
+map P           :paste-prev<CR>
+map a           :add<CR>
+map i           :insert<CR>
+map A           :add-album<CR>
+map <Left>      :seek -5<CR>
+map <Right>     :seek 5<CR>
+map +           :volume +5<CR>
+map -           :volume -5<CR>
+
+# search
+map n           :search-next<CR>
+map N           :search-prev<CR>
+
+# selecting
+map v           :visual<CR>
+map <ESC>       :novisual<CR>
+# Colors
+
+color tab green black
+color main default black
+color ruler white black
+color songstatus cyan black
+color playstatus blue black
+color error white red
+color input default black
+color suggestions yellow black
+
+# Fix keybindings
+
+map J :scroll-down<CR>
+map K :scroll-up<CR>
+map ( :move-album-prev<CR>
+map ) :move-album-next<CR>
+map ÿ <Esc>
+map ! :window-playlist<CR>
+map @ :window-library<CR>
+map # :window-browser<CR>
+map $ :window-search<CR>
+
+# Set up MPD path
+
+set-library-path ~/music
+
+# Console window title
+
+autotitle

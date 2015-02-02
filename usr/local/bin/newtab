@@ -1,0 +1,2 @@
+#!/bin/sh
+nohup firefox -new-tab "$*" >/dev/null 2>&1 &

@@ -1,0 +1,79 @@
+URxvt.font: xft:Terminus:pixelsize=20:lang=af,xft:Fixed:SemiCondensed:pixelsize=21:lang=cs,xft:DejaVu Sans:pixelsize=20
+
+URxvt.saveLines:        12000
+URxvt.scrollBar:        false
+URxvt.urgentOnBell:     true
+
+! perl extensions
+URxvt.perl-ext: default,url-select,clipboard
+
+! for yankable URLs
+
+URxvt.keysym.M-y: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/firefox -new-tab
+URxvt.url-select.button: -
+
+! for using the clipboard
+
+URxvt.keysym.4-c: perl:clipboard:copy
+URxvt.keysym.4-v: perl:clipboard:paste
+
+! ???
+Xcursor.size: 16
+
+!photons
+
+! slightly beige white
+*foreground: #DDCCBB
+*background: #0e1112
+
+! black
+*color0: #0e1112
+
+! red
+*color1: #E03C52
+
+! green
+*color2: #85c600
+
+! orange/yellow
+*color3: #ffa600
+
+! blue
+*color4: #0099bc
+
+! pink
+*color5: #E51688
+
+! light blue gray
+*color6: #7FC5C6
+
+! light gray
+*color7: #cccccc
+
+! very dark gray
+*color8: #2e3537
+
+! orange
+*color9: #ff5d4a
+
+! light green
+*color10: #b3ff1d
+
+! orange/yellow
+*color11: #ffaa0f
+
+! light blue
+*color12: #5cdede
+
+! raspberry
+*color13: #be4773
+
+! light blue gray
+*color14: #76b2b3
+
+! gray
+*color15: #eeeeee
+
+! border
+! #80766C

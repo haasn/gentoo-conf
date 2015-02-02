@@ -1,0 +1,11 @@
+#!/bin/sh
+
+case "$1" in
+  hibernate|suspend)
+    rc-service fetchmail stop
+    ;;
+
+  thaw|resume)
+    rc-service fetchmail start
+    ;;
+esac

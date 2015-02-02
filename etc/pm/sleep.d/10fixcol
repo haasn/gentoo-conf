@@ -1,0 +1,8 @@
+#!/bin/sh
+
+case "$1" in
+  thaw|resume)
+    argyll-dispwin -d2 -c /home/nand/icc/alt.cal
+    argyll-dispwin -d1 -I /home/nand/icc/main.icc
+    ;;
+esac

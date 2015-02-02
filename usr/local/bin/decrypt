@@ -1,0 +1,2 @@
+#!/bin/sh
+gpg -qd "$1" | less

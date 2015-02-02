@@ -1,0 +1,16 @@
+Config { font = "xft:Terminus-16,Kochi Gothic-16,unifont-16"
+       , bgColor = "black"
+       , fgColor = "grey"
+       , position = Static { xpos = 0, ypos = 0, width = 4096, height = 34 }
+       , commands = [ Run Cpu ["-L","5","-H","50","--normal","#85c600","--high","#E03C52"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run Date "%Y %b %d (%a) %H:%M %Z" "date" 10
+                    , Run Network "eth0" ["-t", "Down: <fc=#7FC5C6><rx></fc> kB/s | Up: <fc=#ffa600><tx></fc> kB/s"] 10
+                    , Run MPD ["-t", "<state>: <artist> - <title> (<album>)"] 10
+                    , Run Mail [(" nanovps:", "~/.imap/nanovps/INBOX")] "nanovps"
+                    , Run Mail [(" uulm:", "~/.imap/uulm/INBOX")] "uulm"
+                    , Run Mail [("gmail:", "~/.imap/gmail/[Google Mail]/.All Mail")] "gmail"
+                    , Run StdinReader
+                    ]
+       , template = "%StdinReader% }{ <fc=#ffa600>%gmail%</fc><fc=#e51688>%nanovps%</fc><fc=#5cdede>%uulm%</fc> <fc=#85c600>%mpd%</fc> | %eth0% | %cpu% | <fc=#85919b>%memory%</fc>   <fc=#DACCBB>%date%</fc>"
+       }

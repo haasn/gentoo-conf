@@ -1,0 +1,6 @@
+# Required by icc
+dev-lang/icc Intel-SDP
+dev-libs/intel-common Intel-SDP
+
+# Required by skype
+net-im/skype skype-4.0.0.7-copyright

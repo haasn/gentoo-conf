@@ -1,0 +1,45 @@
+style "default-style"
+{
+	# Modify the padding on many elements
+	xthickness = 3
+	ythickness = 3
+
+	## fix colors
+
+	bg[NORMAL]        = "#0e1112"
+	bg[PRELIGHT]      = "#1e2224"
+	bg[ACTIVE]        = "#0e1112"
+	bg[INSENSITIVE]   = "#0e1112"
+	bg[SELECTED]      = "#666666"
+
+	fg[NORMAL]        = "#ddccc0"
+	fg[PRELIGHT]      = "#b3ff1d"
+	fg[ACTIVE]        = "#ffa600"
+	fg[INSENSITIVE]   = "#cccccc"
+	fg[SELECTED]      = "#eeddcc"
+
+	# Simply the same as above, for consistency
+
+	base[NORMAL]      = "#0e1112"
+	base[PRELIGHT]    = "#1e2224"
+	base[ACTIVE]      = "#1e2224"
+	base[INSENSITIVE] = "#0e1112"
+	base[SELECTED]    = "#666666"
+
+	text[NORMAL]      = "#ddccc0"
+	text[PRELIGHT]    = "#b3ff1d"
+	text[ACTIVE]      = "#7fc5c6"
+	text[INSENSITIVE] = "#cccccc"
+	text[SELECTED]    = "#eeddcc"
+
+	# Links
+
+	GtkWidget::link-color = "#ff5d4a"
+
+	# Hopefully fix up borders
+
+	GtkWidget::default_border         = "#444444"
+	GtkWidget::default_outside_border = "#444444"
+}
+
+class "GtkWidget" style "default-style"

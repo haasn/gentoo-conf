@@ -1,0 +1,86 @@
+"hg7127
+
+loadplugins '\.(js|penta)$'
+group user
+highlight Addon:not([active]) color: #4f585d !important;
+highlight Addon:nth-child(2n+1) background: rgba(0, 0, 0, .2);
+highlight AddonDescription color: #85919b;
+highlight AddonDescrption:not([active]) color: #4f585d;
+highlight Bell /* &dactyl.appName;’s visual bell */ background-color: #ff0000 !important;
+highlight Boolean /* JavaScript booleans */ color: #e03c52;
+highlight Button /* A button widget */ display: inline-block; font-weight: bold; cursor: pointer; color: #ffaa0f; text-decoration: none;
+highlight Button::after content: "]"; color: #4f585d; text-decoration: none !important;
+highlight Button::before content: "["; color: #4f585d; text-decoration: none !important;
+highlight Comment /* JavaScriptor CSS comments */ color: #85919b;
+highlight CompDesc /* The description column of the completion list */ color: #85919b; width: 62%; padding-left: 1em;
+highlight CompItem:nth-child(2n+1) background: rgba(0, 0, 0, .2);
+highlight CompItem[selected] /* A selected row of completion list */ color: #b3ff1d; background: #1e2224 !important;
+highlight CompTitle /* Completion row titles */ color: #85c600; background: #05090a; font-weight: bold;
+highlight CompTitleSep /* The element which separates the completion title from its results */ height: 1px; background: -moz-linear-gradient(60deg, #85c600, #070909);
+highlight Disabled /* Disabled items */ color: #4f585d    !important;
+highlight Download:nth-child(2n+1) background: rgba(0, 0, 0, .2);
+highlight EditorBlink1 /* Text fields briefly after successfully running the external editor, alternated with EditorBlink2 */ background: #ffaa0f !important;
+highlight EditorError /* Text fields briefly after an error has occurred running the external editor */ background: #e03c52 !important;
+highlight Enabled /* Enabled item indicator text */ color: #be4773;
+highlight ErrorMsg /* Error messages */ color: #ffffff   !important; background: #8b0000         !important; font-weight: bold !important;
+highlight FrameIndicator /* The styling applied to briefly indicate the active frame */ background-color: #e03c52; opacity: 0.5; z-index: 999999; position: fixed; top: 0; bottom: 0; left: 0; right: 0;
+highlight Function /* JavaScript functions */ color: #0099bc;
+highlight -link=FontCode HelpArg /* A required command argument indicator */ color: #ff5d4a;
+highlight -link=FontCode HelpKey /* A keyboard key specification */ color: #85c600;
+highlight HelpNote /* The indicator for a note */ color: #e03c52; font-weight: bold;
+highlight -link=FontCode HelpType /* An option type */ color: #5cdede !important; margin-right: 2ex;
+highlight Hint font: bold 10px "Terminus", monospace !important; margin: -.2ex; padding: 0 0 0 1px; outline: 1px solid rgba(179, 255, 29, 1); background: rgba(0, 0, 0, .8); color: #b3ff1d; text-transform: uppercase;
+highlight Hint[active] background: #e51688; color: white !important; outline: 1px solid white;
+highlight HintActive /* The hint element of link which will be followed by <k name="CR" link="false"/> */ background-color: #e51688 !important; color: white !important;
+highlight HintElem /* The hintable element */ background-color: /*rgba(179, 255, 29, 0.5)*/ rgba(118, 178, 179, 0.5)  !important; color: #ffffff !important;
+highlight Indicator /* The <em>#</em> and  <em>%</em> in the <ex>:buffers</ex> list */ color: #7fc5c6; width: 1.5em; text-align: center;
+highlight InfoMsg /* Information messages */ color: #76b2b3   !important; background: #070909       !important;
+highlight Keyword /* A bookmark keyword for a URL */ color: #e03c52;
+highlight LineNr /* The line number of an error */ color: #e51688  !important; background: #070909       !important;
+highlight ModeMsg /* The mode indicator */ color: #ddccc0   !important; background: #070909       !important;
+highlight MoreMsg /* The indicator that there is more text to view */ color: #85c600   !important; background: #070909       !important;
+highlight NonText /* The <em>~</em> indicators which mark blank lines in the completion list */ color: #5cdede; background: transparent !important;
+highlight Normal /* Normal text */ color: #ddccc0   !important; background: #070909       !important; font-weight: normal !important;
+highlight Null /* JavaScript null values */ color: # b3ff1d;
+highlight Number /* JavaScript numbers */ color: #e51688;
+highlight Object /* JavaScript objects */ color: #be4773;
+highlight Question /* A prompt for a decision */ color: #85c600   !important; background: #070909       !important; font-weight: bold !important;
+highlight StatusLineBroken /* The status bar for a broken web page */ color: #e03c52 !important; background: #05090a !important;
+highlight StatusLineExtended /* The status bar for a secure web page with an Extended Validation (EV) certificate */ color: #85c600 !important; background: #05090a !important;
+highlight StatusLineNormal /* The status bar for an ordinary web page */ color: #ddccc0 !important; background: #05090a   !important;
+highlight StatusLineSecure /* The status bar for a secure web page */ color: #7fc5c6 !important; background: #05090a !important;
+highlight StatusQuestion /* A prompt for a decision in the status line */ color: #85c600   !important; background: transparent !important;
+highlight StatusWarningMsg /* A warning message in the status line */ color: #e03c52     !important; background: transparent !important;
+highlight String /* String values */ color: #85c600; white-space: pre;
+highlight TabIconNumber /* The number of a browser tab, over its icon */ cursor: default; width: 16px; margin: 0 2px 0 -18px !important; font-weight: bold; color: #ddccc0; text-align: center; text-shadow: black -1px 0 1px, black 0 1px 1px, black 1px 0 1px, black 0 -1px 1px;
+highlight TabNumber /* The number of a browser tab, next to its icon */ font-weight: bold; margin: 0px; padding-right: .8ex; cursor: default; color: #0099bc !important;
+highlight Tag /* A bookmark tag for a URL */ color: #0099bc;
+highlight URL /* A URL */ text-decoration: none; color: #85c600; background: inherit;
+highlight URLExtra /* Extra information about a URL */ color: #85919b;
+map -count -modes=n ` -builtin <count><C-6>
+map -count -modes=n,v <C-c> -builtin <count><C-[>
+map -count -modes=n,v <C-j> -builtin <count><C-p>
+map -count -modes=n,v <C-k> -builtin <count><C-n>
+map -count -modes=n,v d -builtin <count>q
+map -count -modes=n h -builtin <count>3h
+map -count -modes=n j -builtin <count>3j
+map -count -modes=n,v J -builtin <count><C-p>
+map -count -modes=n k -builtin <count>3k
+map -count -modes=n,v K -builtin <count><C-n>
+map -count -modes=n l -builtin <count>3l
+map -count -modes=n,v q -builtin <count>:tabclose<Return>
+map -modes=n zt -javascript content.document.toggleImageSize()
+map -count -modes=I,m <C-c> <C-[>
+map -count -modes=b,o <C-c> <Esc>
+set defsearch=s
+set guioptions=Cs
+set hintkeys=abcdefghijklmnoprstuvwxyz
+set showtabline=never
+set yankshort=www.youtube.com,youtube.com,bugzilla.mozilla.org
+style mathworld.wolfram.com img.tex, img.numberedequation, img.inlineformula { background-color: white !important; }
+style * * { -moz-transition-delay: 0s !important; -moz-transition-duration: 0s !important; }
+style www.haskellforall.com .cap-top { display: none !important; }
+style hub.darcs.net .added { border-color: #85c600 !important; } .removed { border-color: #E03C52 !important; }
+style boards.4chan.org .quote { color: #789922 !important; } div.center { display: none !important; }
+
+" vim: set ft=pentadactyl:

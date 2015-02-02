@@ -1,0 +1,1 @@
+urxvtc -keysym.Escape ÿ -e dtach -A /tmp/weechat -Ez weechat-curses
