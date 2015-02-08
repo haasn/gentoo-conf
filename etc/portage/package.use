@@ -174,8 +174,8 @@ net-wireless/bluez test-programs
 
 # Add experimental functionality
 media-video/mpv osd-chapters vapoursynth
-media-video/mpv vdpau
-x11-libs/libva vdpau
+#media-video/mpv vdpau
+#x11-libs/libva vdpau
 #media-video/mpv style-override
 #media-libs/freetype infinality
 

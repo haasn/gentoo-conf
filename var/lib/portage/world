@@ -187,6 +187,7 @@ games-action/supertuxkart
 games-board/cockatrice
 games-emulation/desmume
 games-emulation/visualboyadvance
+games-misc/fortune-mod-hitchhiker
 gnome-base/gconf
 gnome-extra/zenity
 mail-client/nail
@@ -368,7 +369,6 @@ x11-apps/mesa-progs
 x11-apps/xfontsel
 x11-apps/xmag
 x11-base/xorg-x11
-x11-libs/libvdpau-va-gl
 x11-misc/compton
 x11-misc/dmenu
 x11-misc/gbdfed
@@ -377,7 +377,6 @@ x11-misc/sselp
 x11-misc/swarp
 x11-misc/unclutter
 x11-misc/urxvt-perls
-x11-misc/vdpauinfo
 x11-misc/xautomation
 x11-misc/xbindkeys
 x11-misc/xclip

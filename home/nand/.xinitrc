@@ -20,7 +20,7 @@ xmodmap ~/.Xmodmap
 
 # Load the correct color management profile
 argyll-dispwin -I -d1 ~/icc/main.icc &
-argyll-dispwin    -d2 ~/icc/alt.cal &
+argyll-dispwin -I -d2 ~/icc/alt.icc &
 
 # Fix the fan speed
 aticonfig --pplib-cmd "set fanspeed 0 18"
