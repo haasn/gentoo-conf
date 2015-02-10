@@ -1,8 +1,14 @@
 # The following lines were added by compinstall
 
 zstyle ':completion:*' completer _expand _complete _ignored _match _correct _approximate _prefix
+zstyle ':completion:*' expand suffix
+zstyle ':completion:*' insert-unambiguous true
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} r:|[._-]=** r:|=**'
 zstyle ':completion:*' max-errors 2
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' original true
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle :compinstall filename '/home/nand/.zshrc'
 
 autoload -Uz compinit
@@ -19,6 +25,7 @@ bindkey -e
 
 # My own configuration
 setopt dotglob
+mailpath=""
 
 export MAILDIR=~/.imap
 export MAIL=$MAILDIR
