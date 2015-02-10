@@ -3,11 +3,11 @@
 case "$1" in
   hibernate)
     # Load the required swap partition
-    swapon /dev/sda3
+    swapon /dev/disk/by-uuid/c37ec59f-66ea-4e40-bd6d-9fa20931d05f
     ;;
 
   thaw)
     # Unload it again, putting everything back into memory
-    swapoff /dev/sda3
+    swapoff /dev/disk/by-uuid/c37ec59f-66ea-4e40-bd6d-9fa20931d05f
     ;;
 esac

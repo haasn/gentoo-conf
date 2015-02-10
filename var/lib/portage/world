@@ -46,7 +46,9 @@ app-portage/smart-live-rebuild
 app-shells/bash-completion
 app-shells/fish
 app-shells/gentoo-bashcomp
+app-shells/gentoo-zsh-completions
 app-shells/zsh
+app-shells/zsh-completions
 app-text/a2ps
 app-text/aiksaurus
 app-text/asciidoc

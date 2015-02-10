@@ -17,11 +17,14 @@
 # Support as many media formats as possible
 */* flac theora vorbis ffmpeg mp3 mpeg ogg png jpeg jpeg2k tiff svg jbig wavpack tta
 
+# Why would I want to use libav?
+*/* -libav
+
 # Support many compression methods
 */* lzma xz lzo
 
-# Prefer bash over zsh
-*/* bash-completion -zsh-completion
+# Switched to zsh, so I want to prefer both scripts
+*/* zsh zsh-completion bash-completion
 
 # Prefer vim over emacs
 */* vim vim-syntax -emacs
@@ -82,6 +85,9 @@
 
 # Make sure we have btrfs and xfs support where possible
 */* btrfs xfs
+
+# Stuff actually uses this
+*/* xattr
 
 # Miscellaneous
 */* lzma ncurses fontconfig xft opengl unicode cjk -acl -startup-notification

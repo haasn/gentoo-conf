@@ -71,8 +71,9 @@ PS1='$(__git_ps1 "\[\e[38;5;70m\]%s ")\[\e[1;32m\]\u@\h\[\e[1;34m\] \w λ\[\e[0m
 
 # Increase history size and auto-syncronize
 HISTSIZE=100000
+HISTFILE=~/.histfile
 PROMPT_COMMAND="history -a"
-export HISTSIZE PROMPT_COMMAND
+export HISTSIZE HISTFILE PROMPT_COMMAND
 
 export EDITOR=vim
 
@@ -81,3 +82,5 @@ export EDITOR=vim
 
 # Vi mode :)
 # set -o vi
+
+source ~/.aliases

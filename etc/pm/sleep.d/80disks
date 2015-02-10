@@ -5,6 +5,7 @@ case "$1" in
     umount /mnt/C
     umount /mnt/Fabulous
     umount /mnt/Awesome
+    umount /mnt/gentoo
     ;;
 
   thaw)
