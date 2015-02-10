@@ -218,7 +218,7 @@ alias :kind='ghcid :kind'
 
 alias :q=':quit'
 alias :h=':help'
-alias :?=':help'
+#alias :?=':help'
 alias :l=':load'
 alias :i=':info'
 alias :t=':type'

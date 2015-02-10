@@ -6,9 +6,8 @@ zstyle ':completion:*' insert-unambiguous true
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} r:|[._-]=** r:|=**'
 zstyle ':completion:*' max-errors 2
-zstyle ':completion:*' menu select=long
 zstyle ':completion:*' original true
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' select-prompt ''
 zstyle :compinstall filename '/home/nand/.zshrc'
 
 autoload -Uz compinit
@@ -18,8 +17,8 @@ compinit
 HISTFILE=~/.histfile
 HISTSIZE=100000
 SAVEHIST=100000
-setopt appendhistory autocd notify
-unsetopt beep nomatch
+setopt appendhistory autocd nomatch notify
+unsetopt beep
 bindkey -e
 # End of lines configured by zsh-newuser-install
 
@@ -69,6 +68,7 @@ bindkey "${terminfo[kdch1]}" delete-char
 
 # Make these a bit more like bash
 bindkey "^U" backward-kill-line
+bindkey '^[[Z' reverse-menu-complete
 
 autoload edit-command-line
 zle -N edit-command-line
