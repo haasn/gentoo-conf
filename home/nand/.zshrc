@@ -5,7 +5,7 @@ zstyle ':completion:*' expand suffix
 zstyle ':completion:*' insert-unambiguous true
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} r:|[._-]=** r:|=**'
-zstyle ':completion:*' max-errors 2
+zstyle ':completion:*' max-errors 1
 zstyle ':completion:*' original true
 zstyle ':completion:*' select-prompt ''
 zstyle :compinstall filename '/home/nand/.zshrc'
@@ -24,10 +24,8 @@ bindkey -e
 
 # My own configuration
 setopt dotglob
-mailpath=""
+unsetopt ALWAYS_LAST_PROMPT
 
-export MAILDIR=~/.imap
-export MAIL=$MAILDIR
 export EDITOR=vim
 
 # Colors!
@@ -49,8 +47,11 @@ source ~/.git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUPSTREAM="auto"
 
+nbsp=$'\u00A0'
+
 setopt PROMPT_SUBST
-PS1=$'$(__git_ps1 "%%{\e[38;5;70m%%}%s ")%{\e[1;32m%}%n@%m%{\e[1;34m%} %~ λ%{\e[0m%} '
+PS1=$'$(__git_ps1 "%%{\e[38;5;70m%%}%s ")%{\e[1;32m%}%n@%m%{\e[1;34m%} %~ λ%{\e[0m%}$nbsp'
+bindkey "$nbsp" backward-kill-line
 
 source ~/.aliases
 
@@ -73,3 +74,10 @@ bindkey '^[[Z' reverse-menu-complete
 autoload edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
+
+autoload -Uz copy-earlier-word
+zle -N copy-earlier-word
+bindkey '^[m' copy-earlier-word
+
+# Less greedy word boundaries
+WORDCHARS=${WORDCHARS/\/}

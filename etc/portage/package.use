@@ -235,8 +235,8 @@ www-client/seamonkey -chatzilla custom-cflags custom-optimization -roaming
 #www-client/firefox system-libvpx
 #media-libs/libvpx postproc
 
-# Needed for super-GNU
-#www-client/firefox bindist
+# I don't want to see their ugly non-free logo
+www-client/firefox bindist
 
 # Profile guided optizimiation
 #www-client/firefox pgo

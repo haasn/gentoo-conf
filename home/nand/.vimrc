@@ -19,6 +19,7 @@ set smartcase
 set nojoinspaces
 set scrolloff=3
 set timeoutlen=0
+set modeline
 
 set expandtab
 set shiftwidth=4

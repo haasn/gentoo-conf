@@ -26,7 +26,7 @@ import Control.Kleislify
 import Control.Lens
 import Control.Lens.Extras
 import Numeric.Lens
-import Data.List.Split.Lens
+-- import Data.List.Split.Lens
 import Data.Bits.Lens
 import Control.Exception.Lens
 import Control.Monad
@@ -114,7 +114,7 @@ import Data.Fixed
 -- let flip :: Functor f => f (a -> b) -> a -> f b; flip f x = fmap ($ x) f
 
 let asTypeIn :: a -> (a -> b) -> a; a `asTypeIn` f = let _ = f a in a; infixl 0 `asTypeIn`
-let f `asAppliedTo` x = f `asTypeIn` \f -> f x; infixl 0 `asAppliedTo`
+let f `asAppliedTo` x = f `asTypeIn` \g -> g x; infixl 0 `asAppliedTo`
 
 -- Hiding this because it pulls in too many modules on loading
 -- let describeSequence = fmap description . lookupSequence

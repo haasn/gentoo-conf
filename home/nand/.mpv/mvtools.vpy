@@ -1,6 +1,7 @@
+# vim: set ft=python:
+
 import vapoursynth as vs
 core = vs.get_core()
-
 clip = video_in
 
 # Skip interpolation for >1080p or 60 Hz content due to performance

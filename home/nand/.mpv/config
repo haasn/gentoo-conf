@@ -1,4 +1,4 @@
-vo=opengl-hq:scale=ewa_lanczos:scale-antiring=0.8:cscale=ewa_lanczos:cscale-antiring=1.0:scale-down=mitchell:scaler-resizes-only:temporal-dither:icc-profile=~/icc/main.icc:icc-cache=~/.cache/3dlut:3dlut-size=256x256x256:gamma=0.89136:fbo-format=rgb16
+vo=opengl-hq:scale=ewa_lanczos:scale-antiring=0.8:cscale=ewa_lanczos:cscale-antiring=1.0:scale-down=mitchell:scaler-resizes-only:temporal-dither:icc-profile=~/icc/main.icc:icc-cache=~/.cache/3dlut:3dlut-size=256x256x256:gamma=0.89136:fbo-format=rgb32f
 
 # MVTools integration for motion smoothing
 vf=format=yuv420p,vapoursynth=~/.mpv/mvtools.vpy:2:8
