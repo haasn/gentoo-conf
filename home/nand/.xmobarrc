@@ -1,4 +1,4 @@
-Config { font = "xft:Terminus-16,Kochi Gothic-16,unifont-16"
+Config { font = "xft:Terminus-10,Kochi Gothic-10,unifont-10"
        , bgColor = "black"
        , fgColor = "grey"
        , position = Static { xpos = 0, ypos = 0, width = 4096, height = 34 }

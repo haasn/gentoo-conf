@@ -59,7 +59,7 @@ main = do
 
     } `additionalKeys` extraKeys
 
-myLayout = spacing 32 (navi (GridRatio 1)) ||| navi (GridRatio 2) ||| Full
+myLayout = navi (GridRatio 1) ||| navi (GridRatio 2) ||| Full
   where navi = configurableNavigation noNavigateBorders
 
 extraKeys =

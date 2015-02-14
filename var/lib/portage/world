@@ -231,6 +231,7 @@ media-libs/libptp2
 media-libs/opencolorio
 media-libs/openexr
 media-libs/quvi
+media-libs/rubberband
 media-plugins/tap-plugins
 media-sound/audacity
 media-sound/autoplay
@@ -257,6 +258,7 @@ media-tv/xawtv
 media-video/mediainfo
 media-video/mplayer
 media-video/mpv
+media-video/nvidia-settings
 media-video/rtmpdump
 media-video/x264-encoder
 net-analyzer/arpoison
@@ -275,9 +277,9 @@ net-analyzer/tcpdump
 net-analyzer/traceroute
 net-analyzer/vnstat
 net-analyzer/wireshark
-net-dns/bind
 net-dns/bind-tools
 net-dns/namecoind
+net-dns/unbound
 net-fs/samba
 net-im/bitlbee
 net-im/pidgin
@@ -375,6 +377,7 @@ x11-base/xorg-x11
 x11-misc/compton
 x11-misc/dmenu
 x11-misc/gbdfed
+x11-misc/read-edid
 x11-misc/slock
 x11-misc/sselp
 x11-misc/swarp
@@ -382,6 +385,7 @@ x11-misc/unclutter
 x11-misc/urxvt-perls
 x11-misc/xautomation
 x11-misc/xbindkeys
+x11-misc/xcalib
 x11-misc/xclip
 x11-misc/xcompmgr
 x11-misc/xmobar

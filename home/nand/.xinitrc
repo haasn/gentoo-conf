@@ -12,22 +12,22 @@ setterm -blank 0 -powersave off -powerdown 0
 xset s off
 xset +fp /usr/share/fonts/terminus/
 
-# Load the correct modes
-xrandr --output DFP1 --mode 4096x2160 --primary --output DFP7 --mode 1920x1200 --rotate left --pos 4096x240
+# Load the correct resolution
+xrandr output DP-0 --mode 4096x2160 --primary --output DVI-I-1 --mode 1920x1200 --rotate left --pos 4096x120
 
 # Load the correct keyboard map
 xmodmap ~/.Xmodmap
 
 # Load the correct color management profile
-argyll-dispwin -I -d1 ~/icc/main.icc &
-argyll-dispwin -I -d2 ~/icc/alt.icc &
+argyll-dispwin -I -d2 ~/icc/main.icc &
+argyll-dispwin -I -d1 ~/icc/alt.icc &
 
 # Fix the fan speed
-aticonfig --pplib-cmd "set fanspeed 0 18"
+#aticonfig --pplib-cmd "set fanspeed 0 18"
 
 # Automatically update the mail cache on new emails
 #while inotifywait -e CREATE ./new/; do notmuch new & done &
-mailsync
+#mailsync
 
 # Attempt to start the autoplay script
 # autoplay info >/dev/null &

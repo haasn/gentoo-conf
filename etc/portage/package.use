@@ -150,7 +150,7 @@ media-video/mkvtoolnix -wxwidgets
 #media-libs/portaudio alsa
 
 # Don't need its viewing facilities
-media-gfx/imagemagick -X
+media-gfx/imagemagick X hdri lqr opencl openexr q64 raw webp
 
 # Hi10P support, essential
 media-libs/x264 10bit
@@ -460,9 +460,12 @@ net-im/tox -nacl
 # Needs Qt for whatever insane reason, so I run it locally
 games-board/cockatrice server
 
+# Not sure which version I want, to be honest
+x11-drivers/nvidia-drivers gtk3
+
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify
-*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx gnutls vdpau
+*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx gnutls -vdpau
 media-libs/libsamplerate sndfile
 games-fps/xonotic alsa -sdl
 app-office/libreoffice -vba -webdav -nsplugin

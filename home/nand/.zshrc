@@ -46,6 +46,7 @@ fi
 source ~/.git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUPSTREAM="auto"
+export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 
 nbsp=$'\u00A0'
 
