@@ -465,7 +465,7 @@ x11-drivers/nvidia-drivers gtk3
 
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify
-*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx gnutls -vdpau
+*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls -vdpau
 media-libs/libsamplerate sndfile
 games-fps/xonotic alsa -sdl
 app-office/libreoffice -vba -webdav -nsplugin

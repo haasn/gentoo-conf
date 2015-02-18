@@ -20,6 +20,7 @@ app-crypt/aesutil
 app-editors/bvi
 app-editors/nano
 app-editors/vim
+app-editors/yi
 app-emulation/playonlinux
 app-emulation/qemu
 app-emulation/qtemu

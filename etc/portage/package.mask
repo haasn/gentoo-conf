@@ -13,20 +13,13 @@ dev-haskell/diagrams-gtk::local_overlay
 dev-haskell/diagrams-lib::local_overlay
 dev-haskell/diagrams-svg::local_overlay
 dev-haskell/netwire::local_overlay
+#app-editors/yi::local_overlay
 
 # Unwanted “features”
 #>=www-client/firefox-26
 
 # Changes the theme for some reason
 >=x11-libs/gtk+-3.14
-
-# Bullshit
->=media-sound/pulseaudio-5
-# and the stuff that requires it
-#>media-plugins/alsa-plugins-1.0.27-r1
-#>media-libs/libsdl-1.2.15-r4
-#>media-libs/sdl-image-1.2.12
-#>media-libs/sdl-mixer-1.2.12-r3
 
 # Changed header layout breaks tons of programs
 #>=media-libs/freetype-2.5
