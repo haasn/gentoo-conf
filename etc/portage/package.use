@@ -93,7 +93,7 @@
 */* lzma ncurses fontconfig xft opengl unicode cjk -acl -startup-notification
 
 # Needed for ruby
-*/* ruby_targets_ruby22
+*/* ruby_targets_ruby21 ruby_targets_ruby22
 
 # As much FS support for gparted as possible
 sys-block/gparted btrfs dmraid fat jfs ntfs
@@ -474,3 +474,10 @@ dev-libs/libwiimote force tilt
 # required by app-misc/anki-2.0.29
 # required by anki (argument)
 >=dev-python/PyQt4-4.11.2-r1 webkit
+# required by dev-qt/qtwebkit-5.4.0::gentoo
+# required by qtwebkit (argument)
+>=dev-qt/qtcore-5.4.0 icu
+# required by dev-qt/qtcore-5.4.0::gentoo
+# required by dev-qt/qttranslations-5.4.0::gentoo
+# required by qttranslations (argument)
+>=dev-libs/libpcre-8.36 pcre16
