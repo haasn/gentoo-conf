@@ -51,6 +51,7 @@ media-libs/libass::local_overlay
 */*::mrueg
 */*::farmboy0
 */*::wichtounet
+*/*::benf
 
 # No longer needed
 #x11-misc/xmobar::local_overlay

@@ -89,5 +89,8 @@ app-benchmarks/phoronix-test-suite::farmboy0
 # Wichtounet
 app-misc/tagsistant::wichtounet
 
+# Benf
+app-misc/ddccontrol-db::benf
+
 # I've fixed this locally
 =app-shells/bash-completion-2.1*

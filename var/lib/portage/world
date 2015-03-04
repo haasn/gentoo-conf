@@ -33,6 +33,7 @@ app-misc/bgrep
 app-misc/cmatrix
 app-misc/colordiff
 app-misc/cwiid
+app-misc/ddccontrol
 app-misc/dtach
 app-misc/screenfetch
 app-misc/tmux
@@ -64,6 +65,7 @@ app-text/wgetpaste
 app-text/zathura
 app-text/zathura-meta
 app-vim/nerdtree
+app-vim/pathogen
 app-vim/rust-mode
 app-vim/vim-spell-en
 dev-embedded/sdcc
@@ -192,6 +194,7 @@ games-board/cockatrice
 games-emulation/desmume
 games-emulation/visualboyadvance
 games-misc/fortune-mod-hitchhiker
+games-roguelike/dwarf-fortress
 gnome-base/gconf
 gnome-extra/zenity
 mail-client/nail

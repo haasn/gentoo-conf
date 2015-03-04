@@ -61,4 +61,9 @@ command -bang -bar -nargs=? -complete=file -range=% Write <line1>,<line2>w<bang>
 set autoindent
 set backspace=indent
 
+execute pathogen#infect()
 filetype plugin indent on
+
+" auto-load correct highlighting highlighting
+au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl
+au BufNewFile,BufRead *.vpy setf python
