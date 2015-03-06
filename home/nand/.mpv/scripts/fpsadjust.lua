@@ -22,6 +22,11 @@ end
 
 function adjust_speed(event)
     fps = mp.get_property_number("fps")
+
+    if not fps then
+        return
+    end
+
     display_fps = opt.displayfps
     ratio = display_fps / fps
 
