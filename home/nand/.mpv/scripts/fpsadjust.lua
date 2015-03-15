@@ -1,9 +1,8 @@
 require 'mp.options'
 local opt = {
-    maxiters = 3,
+    maxiters = 5,
     maxdelta = 0.01,
     mindelta = 0.0005,
-    displayfps = 60
 }
 read_options(opt)
 
@@ -21,17 +20,15 @@ function get_scale(ratio, factor)
 end
 
 function adjust_speed(event)
-    fps = mp.get_property_number("fps")
+    clip_fps = mp.get_property_number("fps")
+    disp_fps = mp.get_property_number("display-fps")
 
-    if not fps then
+    if not clip_fps or not disp_fps or disp_fps == 0 then
         return
     end
 
-    display_fps = opt.displayfps
-    ratio = display_fps / fps
-
     for i=1,opt.maxiters do
-        scale = get_scale(ratio, i)
+        scale = get_scale(disp_fps / clip_fps, i)
         if scale then
             break
         end
@@ -39,6 +36,7 @@ function adjust_speed(event)
 
     if scale then
         mp.set_property("speed", scale)
+        print("Setting speed to", scale)
     end
 end
 

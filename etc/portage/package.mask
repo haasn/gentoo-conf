@@ -31,7 +31,7 @@ sys-apps/man
 #sys-auth/consolekit
 
 # Potentially a cause of mplayer2 white line issue, debugging
-media-libs/libass::local_overlay
+#media-libs/libass::local_overlay
 # media-libs/harfbuzz::local_overlay
 
 # Let's avoid things we don't necessarily need

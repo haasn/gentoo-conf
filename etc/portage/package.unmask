@@ -64,7 +64,7 @@ media-sound/oss::booboo
 
 # Emery
 dev-libs/libuv::emery
-net-misc/cjdns::emery
+net-p2p/cjdns::emery
 media-sound/squishyball::emery
 
 # Ixit

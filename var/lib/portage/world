@@ -78,6 +78,7 @@ dev-haskell/base64-bytestring
 dev-haskell/bitmap
 dev-haskell/cabal
 dev-haskell/cabal-install
+dev-haskell/colour
 dev-haskell/comonad
 dev-haskell/complex-generic
 dev-haskell/cond
@@ -225,6 +226,7 @@ media-gfx/pstoedit
 media-gfx/scrot
 media-gfx/swftools
 media-gfx/sxiv
+media-gfx/zbar
 media-libs/aalib
 media-libs/exiftool
 media-libs/flac
@@ -295,7 +297,6 @@ net-mail/isync
 net-mail/mswatch
 net-mail/notmuch
 net-mail/offlineimap
-net-misc/cjdns
 net-misc/corkscrew
 net-misc/electrum
 net-misc/httptunnel
@@ -315,6 +316,7 @@ net-misc/youtube-dl
 net-misc/zsync
 net-nntp/sabnzbd
 net-p2p/bitcoind
+net-p2p/cjdns
 net-p2p/rtorrent
 net-wireless/aircrack-ng
 net-wireless/bluez
@@ -386,6 +388,7 @@ x11-misc/sselp
 x11-misc/swarp
 x11-misc/unclutter
 x11-misc/urxvt-perls
+x11-misc/vdpauinfo
 x11-misc/xautomation
 x11-misc/xbindkeys
 x11-misc/xcalib

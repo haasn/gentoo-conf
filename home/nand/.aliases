@@ -157,8 +157,14 @@ demerge() {
   deworld $@ && edepclean
 }
 
-up() {
+sprunge() {
     local src='-'
+    [ "$1" ] && src="$1"
+    curl -sF "sprunge=@$src" http://sprunge.us | tee /dev/stderr | xclip -selection primary
+}
+
+up() {
+    local src='-;type=text/plain;filename=stdin.txt'
     [ "$1" ] && src="$1"
     curl -sF "file=@$src" http://0x0.st | tee /dev/stderr | xclip -selection primary
 }

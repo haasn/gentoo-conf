@@ -150,14 +150,14 @@ media-video/mkvtoolnix -wxwidgets
 #media-libs/portaudio alsa
 
 # Don't need its viewing facilities
-media-gfx/imagemagick X hdri lqr opencl openexr q64 raw webp
+media-gfx/imagemagick X hdri lqr opencl openexr q32 raw webp
 
 # Hi10P support, essential
 media-libs/x264 10bit
 media-video/x264-encoder 10bit -mp4
 
 # Slim down mpv a bit
-media-video/mpv -a52 -dv dvd dvdnav gif jpeg -live -mng png -quicktime -rar -sdl -shm -speex -xv
+media-video/mpv -a52 -dv dvd dvdnav gif jpeg -live -mng png -quicktime -rar -sdl -shm -speex -xv vdpau
 media-video/mplayer -a52 -dv -dvd -dvdnav gif jpeg -live -mng png -quicktime -rar -sdl -shm -speex -xv -cdio -quvi pulseaudio
 
 # Extra font candy for libass
@@ -465,7 +465,7 @@ x11-drivers/nvidia-drivers gtk3
 
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify
-*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls -vdpau
+*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau
 media-libs/libsamplerate sndfile
 games-fps/xonotic alsa -sdl
 app-office/libreoffice -vba -webdav -nsplugin
