@@ -149,6 +149,9 @@ media-video/mkvtoolnix -wxwidgets
 # Needed for espeak
 #media-libs/portaudio alsa
 
+# Needed for squishyball
+media-libs/libao pulseaudio
+
 # Don't need its viewing facilities
 media-gfx/imagemagick X hdri lqr opencl openexr q32 raw webp
 

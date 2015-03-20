@@ -51,8 +51,7 @@ export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 nbsp=$'\u00A0'
 
 setopt PROMPT_SUBST
-PS1=$'$(__git_ps1 "%%{\e[38;5;70m%%}%s ")%{\e[1;32m%}%n@%m%{\e[1;34m%} %~ λ%{\e[0m%}$nbsp'
-bindkey "$nbsp" backward-kill-line
+PS1=$'$(__git_ps1 "%%{\e[38;5;70m%%}%s ")%{\e[1;32m%}%n@%m%{\e[1;34m%} %~ λ%{\e[0m%} '
 
 source ~/.aliases
 

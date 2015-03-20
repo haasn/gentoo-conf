@@ -169,6 +169,10 @@ up() {
     curl -sF "file=@$src" http://0x0.st | tee /dev/stderr | xclip -selection primary
 }
 
+short() {
+    curl -sF "shorten=$1" http://0x0.st | tee /dev/stderr | xclip -selection primary
+}
+
 mailsync() {
   nohup mswatch -c ~/.mswatch-nanovps &>/dev/null &
   nohup mswatch -c ~/.mswatch-uulm    &>/dev/null &
