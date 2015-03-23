@@ -52,6 +52,7 @@ sys-apps/man
 */*::farmboy0
 */*::wichtounet
 */*::benf
+*/*::vapoursynth
 
 # No longer needed
 #x11-misc/xmobar::local_overlay

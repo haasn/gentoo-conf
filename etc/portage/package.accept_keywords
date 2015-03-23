@@ -5,6 +5,9 @@
 # Allow all of gentoo-haskell
 */*::gentoo-haskell
 
+# Allow all of vapoursynth at ver 9999
+*/*::vapoursynth **
+
 # Allow all of dev-haskell/
 dev-haskell/*
 

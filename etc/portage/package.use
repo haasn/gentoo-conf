@@ -188,6 +188,9 @@ media-video/mpv osd-chapters vapoursynth
 #media-video/mpv style-override
 #media-libs/freetype infinality
 
+# Vapoursynth stuff
+media-libs/vapoursynth -imagemagick
+
 # The GUI pulls in too many dependencies
 app-emulation/winetricks -gtk -kde
 
@@ -388,7 +391,7 @@ dev-haskell/lambdabot eval
 #sys-devel/gcc lto
 
 # Avoid triggering a rebuild for now
-#dev-lang/ghc -doc
+dev-lang/ghc doc
 
 # Use existing GHC installation to build next version
 dev-lang/ghc ghcbootstrap

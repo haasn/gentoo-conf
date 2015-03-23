@@ -180,7 +180,7 @@ mailsync() {
 }
 
 # Set up PTT redirection
-alias evrouter='sudo evrouter /dev/input/event16 -c ~/.evrouterrc'
+alias evrouter='sudo evrouter /dev/input/event6 -c ~/.evrouterrc'
 
 # GHCid integration
 

@@ -92,5 +92,13 @@ app-misc/tagsistant::wichtounet
 # Benf
 app-misc/ddccontrol-db::benf
 
+# Vapoursynth
+media-libs/vapoursynth::vapoursynth
+media-plugins/vapoursynth-ffmpegsource::vapoursynth
+media-plugins/vapoursynth-flash3kyuu_deband::vapoursynth
+media-plugins/vapoursynth-fmtconv::vapoursynth
+media-plugins/vapoursynth-mvtools::vapoursynth
+media-plugins/vapoursynth-nnedi3::vapoursynth
+
 # I've fixed this locally
 =app-shells/bash-completion-2.1*
