@@ -27,6 +27,7 @@ import Control.Lens
 import Control.Lens.Extras
 import Numeric.Lens
 -- import Data.List.Split.Lens
+import Data.List.Split
 import Data.Bits.Lens
 import Control.Exception.Lens
 import Control.Monad
@@ -126,3 +127,6 @@ let (.:::) = (.).(.::); infixr 8 .:::
 
 -- If as a function
 let if' a b c = if a then b else c
+
+-- Utility
+let unhex s = [chr d | [(d,"")] <- map readHex . f $ filter isHexDigit s] where f (x:y:xs) = [x,y]:f xs; f xs = map pure xs
