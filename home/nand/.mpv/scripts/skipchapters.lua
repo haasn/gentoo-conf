@@ -5,6 +5,9 @@ local opt = {
 read_options(opt)
 
 function check_chapter(_, chapter)
+    if not chapter then
+        return
+    end
     for _, p in pairs(opt.patterns) do
         if string.match(chapter, p) then
             print("Skipping chapter:", chapter)
