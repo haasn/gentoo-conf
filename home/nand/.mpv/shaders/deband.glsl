@@ -1,6 +1,6 @@
 // vim: set ft=glsl:
 
-// roughly corresponds to fk3db parameters, which this algorithm is
+// roughly corresponds to f3kdb parameters, which this algorithm is
 // loosely inspired by
 #define threshold 64
 #define range     32
@@ -13,9 +13,9 @@ float rand(vec2 co){
 vec4 sample(sampler2D tex, vec2 pos, vec2 size, vec2 sub, float cmul)
 {
     // Compute a random angle and distance
-    float dist = rand(pos) * range;
+    float dist = rand(pos + vec2(random)) * range;
     vec2 pt = dist / (size * sub);
-    float dir = rand(pos.yx) * 6.2831853;
+    float dir = rand(pos.yx - vec2(random)) * 6.2831853;
     vec2 o = vec2(cos(dir), sin(dir));
 
     // Sample at quarter-turn intervals around the source pixel
@@ -34,6 +34,6 @@ vec4 sample(sampler2D tex, vec2 pos, vec2 size, vec2 sub, float cmul)
     col = mix(avg, col, greaterThan(diff, vec4(threshold/16384.0)));
 
     // Add some random noise to the output
-    col.rgb += (grain/8192.0) * (vec3(rand(2*pos) - vec3(0.5)));
+    col.rgb += (grain/8192.0) * (vec3(rand(2*pos + vec2(random)) - vec3(0.5)));
     return col;
 }
