@@ -10,7 +10,7 @@ float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-vec4 sample(sampler2D tex, vec2 pos, vec2 size, vec2 sub)
+vec4 sample(sampler2D tex, vec2 pos, vec2 size, vec2 sub, float cmax)
 {
     // Compute a random angle and distance
     float dist = rand(pos) * range;
@@ -31,9 +31,9 @@ vec4 sample(sampler2D tex, vec2 pos, vec2 size, vec2 sub)
     vec4 diff = abs(col - avg);
 
     // Use the average if below the threshold
-    col = mix(avg, col, greaterThan(diff, vec4(threshold/16384.0)));
+    col = mix(avg, col, greaterThan(diff, vec4(threshold*cmax/16384.0)));
 
     // Add some random noise to the output
-    col.rgb += (grain/8192.0) * (vec3(rand(2*pos) - vec3(0.5)));
+    col.rgb += (grain*cmax/8192.0) * (vec3(rand(2*pos) - vec3(0.5)));
     return col;
 }
