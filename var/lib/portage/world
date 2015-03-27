@@ -194,6 +194,7 @@ games-action/supertuxkart
 games-board/cockatrice
 games-emulation/desmume
 games-emulation/visualboyadvance
+games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
 games-roguelike/dwarf-fortress
 gnome-base/gconf

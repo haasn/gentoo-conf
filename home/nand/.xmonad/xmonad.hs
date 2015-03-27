@@ -134,7 +134,7 @@ manageFloats = composeAll $ fullF : [ title =? x `to` doFloat | x <- floatTitles
 floatTitles =
   [ "Firefox Preferences", "About Firefox", "Resize Canvas"
   , "Downloads", "Software Update", "World of Warcraft", "Limbo"
-  , "Audiosurf", "Audiosurf 2", "Heroes of the Storm"
+  , "Audiosurf", "Audiosurf 2", "Heroes of the Storm", "scaler_test"
   ]
 
 -- Programs that should start in fullscreen mode. Normally EWMH handles this
