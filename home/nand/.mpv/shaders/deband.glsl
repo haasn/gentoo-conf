@@ -3,7 +3,7 @@
 // roughly corresponds to fk3db parameters, which this algorithm is
 // loosely inspired by
 #define threshold 64
-#define range     15
+#define range     32
 #define grain     16
 
 float rand(vec2 co){
@@ -13,15 +13,17 @@ float rand(vec2 co){
 vec4 sample(sampler2D tex, vec2 pos, vec2 size, vec2 sub)
 {
     // Compute a random angle and distance
-    float dist = rand(pos + 5/size) * range;
+    float dist = rand(pos) * range;
     vec2 pt = dist / (size * sub);
-    float turn = 1.570796;
-    float dir = rand(pos - 7/size) * 4*turn;
+    float dir = rand(pos.yx) * 6.2831853;
+    vec2 o = vec2(cos(dir), sin(dir));
 
     // Sample at quarter-turn intervals around the source pixel
     vec4 ref[4];
-    for (int n = 0; n < 4; n++)
-        ref[n] = texture(tex, pos + pt * vec2(cos(dir+n*turn),sin(dir+n*turn)));
+    ref[0] = texture(tex, pos + pt * vec2( o.x,  o.y));
+    ref[1] = texture(tex, pos + pt * vec2(-o.y,  o.x));
+    ref[2] = texture(tex, pos + pt * vec2(-o.x, -o.y));
+    ref[3] = texture(tex, pos + pt * vec2( o.y, -o.x));
 
     // Average and compare with the actual sample
     vec4 avg = (ref[0] + ref[1] + ref[2] + ref[3])/4.0;
@@ -31,8 +33,7 @@ vec4 sample(sampler2D tex, vec2 pos, vec2 size, vec2 sub)
     // Use the average if below the threshold
     col = mix(avg, col, greaterThan(diff, vec4(threshold/16384.0)));
 
-    // Add some random noise to each channel
-    col.rgb += (grain/8192.0) *
-        (vec3(rand(pos), rand(pos+vec2(3*dir)), rand(pos-vec2(11*dist))) - vec3(0.5));
+    // Add some random noise to the output
+    col.rgb += (grain/8192.0) * (vec3(rand(2*pos) - vec3(0.5)));
     return col;
 }
