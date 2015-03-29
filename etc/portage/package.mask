@@ -19,7 +19,7 @@ dev-haskell/netwire::local_overlay
 #>=www-client/firefox-26
 
 # Changes the theme for some reason
->=x11-libs/gtk+-3.14
+#>=x11-libs/gtk+-3.14
 
 # Changed header layout breaks tons of programs
 #>=media-libs/freetype-2.5

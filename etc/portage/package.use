@@ -9,7 +9,7 @@
 */* -alsa -pulseaudio -sound -oss -jack
 
 # Programming language support where possible, customizability
-*/* perl python ruby guile ocaml lua
+*/* perl python ruby guile -ocaml lua
 
 # Proxy and encryption support
 */* socks socks5 ssl crypt -gnutls sasl gpg polarssl
@@ -89,6 +89,9 @@
 # Stuff actually uses this
 */* xattr
 
+# Multilib support
+*/* abi_x86_32
+
 # Miscellaneous
 */* lzma ncurses fontconfig xft opengl unicode cjk -acl -startup-notification
 
@@ -103,6 +106,9 @@ sys-block/gparted -dmraid -hfs # requires udev
 ############################
 #### Media applications ####
 ############################
+
+# FFmpeg stuff
+*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec
 
 # Alternatives to dmix?
 media-plugins/alsa-plugins pulseaudio jack
@@ -131,7 +137,7 @@ games-emulation/higan pulseaudio
 media-libs/libsdl sound
 
 # Needed for some stupid reason by teamspeak3-client-bin
-dev-qt/qtgui xinerama
+dev-qt/qtgui xinerama accessibility
 
 # Uh oh, xmonad thinks I have one really big monitor otherwise
 dev-haskell/x11 xinerama
@@ -471,7 +477,6 @@ x11-drivers/nvidia-drivers gtk3
 
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify
-*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec
 media-libs/libsamplerate sndfile
 games-fps/xonotic alsa -sdl
 app-office/libreoffice -vba -webdav -nsplugin

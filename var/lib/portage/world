@@ -162,7 +162,6 @@ dev-lang/rust
 dev-lang/swi-prolog
 dev-lang/tk
 dev-libs/cloog
-dev-libs/cloog-ppl
 dev-libs/libwiimote
 dev-perl/Archive-Zip
 dev-perl/Text-CharWidth
@@ -196,7 +195,6 @@ games-emulation/desmume
 games-emulation/visualboyadvance
 games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
-games-roguelike/dwarf-fortress
 gnome-base/gconf
 gnome-extra/zenity
 mail-client/nail
@@ -291,7 +289,6 @@ net-analyzer/wireshark
 net-dns/bind-tools
 net-dns/namecoind
 net-dns/unbound
-net-fs/samba
 net-im/bitlbee
 net-im/pidgin
 net-im/skype
