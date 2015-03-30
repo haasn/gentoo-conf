@@ -111,10 +111,10 @@ sys-block/gparted -dmraid -hfs # requires udev
 */ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec
 
 # Alternatives to dmix?
-media-plugins/alsa-plugins pulseaudio jack
+media-plugins/alsa-plugins pulseaudio -jack
 media-sound/pulseaudio alsa -X -gtk libsamplerate
 media-sound/jack-audio-connection-kit alsa
-media-video/ffmpeg jack pulseaudio
+media-video/ffmpeg -jack pulseaudio
 media-libs/openal pulseaudio
 
 # Needed for equalizing, apparently
@@ -129,7 +129,7 @@ media-sound/audacity alsa
 games-emulation/dolphin-emu alsa
 media-libs/libmikmod alsa
 media-libs/libsdl pulseaudio -alsa
-app-emulation/wine pulseaudio jack alsa -realtime
+app-emulation/wine pulseaudio -jack alsa -realtime
 app-emulation/emul-linux-x86-soundlibs alsa
 app-emulation/virtualbox pulseaudio
 media-sound/teamspeak-client-bin pulseaudio

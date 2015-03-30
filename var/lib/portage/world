@@ -166,6 +166,7 @@ dev-libs/libwiimote
 dev-perl/Archive-Zip
 dev-perl/Text-CharWidth
 dev-python/eyeD3
+dev-python/mako
 dev-python/python-dateutil
 dev-python/twisted-core
 dev-tex/biblatex
