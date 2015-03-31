@@ -34,6 +34,6 @@ vec4 sample(sampler2D tex, vec2 pos, vec2 size)
     col = mix(avg, col, greaterThan(diff, vec4(threshold/16384.0)));
 
     // Add some random noise to the output
-    col.rgb += (grain/8192.0) * (vec3(rand(2*pos + vec2(random)) - vec3(0.5)));
+    col.rgb += cmul * (grain/8192.0) * (vec3(rand(2*pos + vec2(random)) - vec3(0.5)));
     return col;
 }
