@@ -37,6 +37,6 @@ vec4 sample(sampler2D tex, vec2 pos, vec2 size)
     vec3 noise = vec3(rand(2*pos + vec2(random)),
                       rand(3*pos + vec2(random)),
                       rand(4*pos + vec2(random)));
-    col.rgb += cmul * (grain/8192.0) * (noise - vec3(0.5));
+    col.rgb += (grain/8192.0) * (noise - vec3(0.5));
     return col;
 }
