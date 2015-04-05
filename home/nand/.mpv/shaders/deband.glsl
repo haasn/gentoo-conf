@@ -10,11 +10,11 @@ float rand(vec2 co){
     return fract(sin(dot(co, vec2(12.9898,78.233))) * 43758.5453);
 }
 
-vec4 sample(sampler2D tex, vec2 pos, vec2 size)
+vec4 sample(sampler2D tex, vec2 pos, vec2 tex_size)
 {
     // Compute a random angle and distance
     float dist = rand(pos + vec2(random)) * range;
-    vec2 pt = dist / (size * subsample);
+    vec2 pt = dist / image_size;
     float dir = rand(pos.yx - vec2(random)) * 6.2831853;
     vec2 o = vec2(cos(dir), sin(dir));
 

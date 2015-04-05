@@ -1,3 +1,5 @@
+// vim: set ft=c:
+
 #ifdef _WINDOW_CONFIG
 
 /* default window dimensions (overwritten via -g option): */
