@@ -15,8 +15,8 @@ compinit
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=100000
-SAVEHIST=100000
+HISTSIZE=1000000
+SAVEHIST=1000000
 setopt appendhistory autocd nomatch notify
 unsetopt beep
 bindkey -e
@@ -25,6 +25,9 @@ bindkey -e
 # My own configuration
 setopt dotglob
 unsetopt ALWAYS_LAST_PROMPT
+
+# History sharing
+setopt sharehistory incappendhistory
 
 export EDITOR=vim
 
