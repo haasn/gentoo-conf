@@ -3,11 +3,11 @@
 // roughly corresponds to f3kdb parameters, which this algorithm is
 // loosely inspired by
 #define threshold 48
-#define range     32
+#define range     16
 #define grain     24
 
 float rand(vec2 co){
-    return fract(sin(dot(co, vec2(12.9898,78.233))) * 43758.5453);
+    return fract(sin(dot(co.yx, vec2(12.9898,78.233))) * 43758.5453);
 }
 
 vec4 sample(sampler2D tex, vec2 pos, vec2 tex_size)

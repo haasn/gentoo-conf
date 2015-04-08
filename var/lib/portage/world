@@ -374,8 +374,11 @@ sys-process/lsof
 sys-process/parallel
 virtual/cron
 virtual/latex-base
+www-client/dwb
 www-client/firefox
 www-client/lynx
+www-client/vimb
+www-client/vimprobable2
 www-client/w3m
 www-plugins/mozplugger
 www-servers/mighttpd2
