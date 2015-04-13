@@ -33,6 +33,7 @@ export EDITOR=vim
 
 # Colors!
 export DARCS_DO_COLOR_LINES=1
+export GCC_COLORS=1
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"

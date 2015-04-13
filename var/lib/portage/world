@@ -198,6 +198,7 @@ games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
 gnome-base/gconf
 gnome-extra/zenity
+kde-base/okular
 mail-client/nail
 mail-filter/procmail
 mail-mta/msmtp
@@ -291,7 +292,6 @@ net-dns/bind-tools
 net-dns/namecoind
 net-dns/unbound
 net-im/bitlbee
-net-im/pidgin
 net-im/skype
 net-im/toxic
 net-irc/weechat

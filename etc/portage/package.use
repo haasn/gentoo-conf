@@ -75,7 +75,7 @@
 # */* -sdl
 
 # Prefer Qt but don't pull in KDE
-*/* -kde qt4 qt -qt5
+*/* -kde qt4 -qt5 qt
 
 # Bloated crap
 */* -gstreamer -policykit -consolekit -dbus -udev -udisks -upower
@@ -218,6 +218,12 @@ net-misc/tor scrypt tor-hardening
 
 # Needed for IPredator
 net-misc/openvpn passwordsave
+
+# Okay, let's try this...
+media-libs/phonon -pulseaudio -gstreamer -vlc
+kde-base/libkexiv2 -xmp
+kde-base/okular -crypt
+kde-base/* -handbook
 
 #################
 #### Firefox ####
