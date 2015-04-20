@@ -37,6 +37,7 @@ app-misc/ddccontrol
 app-misc/dtach
 app-misc/screenfetch
 app-misc/tmux
+app-office/calligra
 app-portage/eix
 app-portage/elogv
 app-portage/genlop

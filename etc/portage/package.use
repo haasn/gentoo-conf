@@ -93,7 +93,7 @@
 */* abi_x86_32
 
 # Miscellaneous
-*/* lzma ncurses fontconfig xft opengl unicode cjk -acl -startup-notification
+*/* lzma ncurses fontconfig xft opencl openexr opengl unicode cjk -acl -startup-notification
 
 # Needed for ruby
 */* ruby_targets_ruby21 ruby_targets_ruby22
@@ -108,7 +108,7 @@ sys-block/gparted -dmraid -hfs # requires udev
 ############################
 
 # FFmpeg stuff
-*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec
+*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec -abi_x86_32
 
 # Alternatives to dmix?
 media-plugins/alsa-plugins pulseaudio -jack
@@ -159,7 +159,7 @@ media-video/mkvtoolnix -wxwidgets
 media-libs/libao pulseaudio
 
 # Don't need its viewing facilities
-media-gfx/imagemagick X hdri lqr opencl openexr q32 raw webp
+media-gfx/imagemagick X hdri lqr q32 raw webp
 
 # Hi10P support, essential
 media-libs/x264 10bit
@@ -221,6 +221,7 @@ net-misc/openvpn passwordsave
 
 # Okay, let's try this...
 media-libs/phonon -pulseaudio -gstreamer -vlc
+app-office/calligra -handbook -kdepim fftw gsl vc
 kde-base/libkexiv2 -xmp
 kde-base/okular -crypt
 kde-base/* -handbook
@@ -441,6 +442,7 @@ media-sound/audacity -ffmpeg
 
 # Incompatible with clang
 sci-libs/fftw -openmp
+media-libs/libraw -openmp
 
 # Required by app-emulation/wine
 dev-libs/elfutils static-libs
