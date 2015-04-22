@@ -108,7 +108,14 @@ sys-block/gparted -dmraid -hfs # requires udev
 ############################
 
 # FFmpeg stuff
-*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec -abi_x86_32
+*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec -abi_x86_32 libsoxr
+media-video/ffmpeg -hardcoded-tables # build failure
+
+# Hmm...
+x11-libs/cairo -abi_x86_32
+x11-libs/pango -abi_x86_32
+x11-libs/gdk-pixbuf -abi_x86_32
+x11-libs/gtk+ -abi_x86_32
 
 # Alternatives to dmix?
 media-plugins/alsa-plugins pulseaudio -jack

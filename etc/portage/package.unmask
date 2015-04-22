@@ -100,5 +100,8 @@ media-plugins/vapoursynth-fmtconv::vapoursynth
 media-plugins/vapoursynth-mvtools::vapoursynth
 media-plugins/vapoursynth-nnedi3::vapoursynth
 
+# Dotnet
+dev-lang/mono::dotnet
+
 # I've fixed this locally
 =app-shells/bash-completion-2.1*

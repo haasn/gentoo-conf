@@ -162,6 +162,7 @@ dev-lang/python
 dev-lang/rust
 dev-lang/swi-prolog
 dev-lang/tk
+dev-lang/vala
 dev-libs/cloog
 dev-libs/libwiimote
 dev-perl/Archive-Zip
@@ -200,6 +201,7 @@ games-misc/fortune-mod-hitchhiker
 gnome-base/gconf
 gnome-extra/zenity
 kde-base/okular
+lxde-base/lxappearance
 mail-client/nail
 mail-filter/procmail
 mail-mta/msmtp
@@ -375,11 +377,8 @@ sys-process/lsof
 sys-process/parallel
 virtual/cron
 virtual/latex-base
-www-client/dwb
 www-client/firefox
 www-client/lynx
-www-client/vimb
-www-client/vimprobable2
 www-client/w3m
 www-plugins/mozplugger
 www-servers/mighttpd2

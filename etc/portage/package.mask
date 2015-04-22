@@ -53,6 +53,7 @@ sys-apps/man
 */*::wichtounet
 */*::benf
 */*::vapoursynth
+*/*::dotnet
 
 # No longer needed
 #x11-misc/xmobar::local_overlay
