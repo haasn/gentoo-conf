@@ -45,6 +45,9 @@ dev-haskell/repa **
 #### Media applications ####
 ############################
 
+# Krita 2.9.x
+#app-office/calligra **
+
 # Needed for live streams
 media-video/rtmpdump **
 

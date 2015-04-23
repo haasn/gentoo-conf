@@ -200,6 +200,7 @@ games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
 gnome-base/gconf
 gnome-extra/zenity
+kde-base/kmix
 kde-base/okular
 lxde-base/lxappearance
 mail-client/nail

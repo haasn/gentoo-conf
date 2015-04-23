@@ -233,6 +233,8 @@ kde-base/libkexiv2 -xmp
 kde-base/okular -crypt
 kde-base/* -handbook
 
+kde-base/kmix pulseaudio
+
 #################
 #### Firefox ####
 #################
