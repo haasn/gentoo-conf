@@ -210,6 +210,35 @@ alias :i=':info'
 alias :t=':type'
 alias :k=':kind'
 
+# Git aliases
+alias add='git add'
+alias bisect='git bisect'
+alias branch='git branch'
+alias checkout='git checkout'
+alias clone='git clone'
+alias commit='git commit'
+#alias diff='git diff'
+alias fetch='git fetch'
+#alias grep='git grep'
+alias init='git init'
+alias log='git log'
+alias merge='git merge'
+#alias mv='git mv'
+alias pull='git pull'
+alias push='git push'
+alias rebase='git rebase'
+#alias reset='git reset'
+#alias rm='git rm'
+alias show='git show'
+alias status='git status'
+alias tag='git tag'
+
+# More git aliases
+alias cherry-pick='git cherry-pick'
+alias blame='git blame'
+alias remote='git remote'
+alias stash='git stash'
+
 # Newer GHCi
 
 alias ghci-head='PATH="~/ghc-head/bin:$PATH" ghci'
