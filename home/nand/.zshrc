@@ -83,5 +83,9 @@ autoload -Uz copy-earlier-word
 zle -N copy-earlier-word
 bindkey '^[m' copy-earlier-word
 
+# Don't blow up on URLs
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
+
 # Less greedy word boundaries
 WORDCHARS=${WORDCHARS/\/}

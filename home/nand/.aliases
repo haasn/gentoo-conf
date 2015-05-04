@@ -236,6 +236,7 @@ alias tag='git tag'
 # More git aliases
 alias cherry-pick='git cherry-pick'
 alias blame='git blame'
+alias format-patch='git format-patch'
 alias remote='git remote'
 alias stash='git stash'
 
