@@ -59,8 +59,9 @@ main = do
 
     } `additionalKeys` extraKeys
 
-myLayout = navi (GridRatio 1) ||| navi (GridRatio 2) ||| Full
+myLayout = s (navi (GridRatio 1)) ||| navi (GridRatio 2) ||| Full
   where navi = configurableNavigation noNavigateBorders
+        s = id -- spacing 32
 
 extraKeys =
   [ ((0, xK_Print), spawn "scrot -e 'convert $f -red-primary 0.6881,0.3068 -green-primary 0.2214,0.7160 -blue-primary 0.1468,0.061 -white-point 0.312874,0.329226 +gamma 0.45454545 $f; optipng $f; mv $f ~/scrot/'")
@@ -91,7 +92,7 @@ extraKeys =
     -- never terminate X please
   , ((mod4Mask .|. shiftMask, xK_q), return ())
 
-  , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn -*-terminus-medium-r-normal-*-24-*-*-*-*-*-*-* -i -nf '#daccbb' -nb '#0e1112')")
+  , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-24' -i -nf '#daccbb' -nb '#0e1112')")
 
     -- lock the screen when not in use
   , ((mod4Mask, xK_s), spawn "slock")

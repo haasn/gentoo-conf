@@ -1,4 +1,4 @@
-"hg7127
+"hg7166
 
 loadplugins '\.(js|penta)$'
 group user
@@ -23,6 +23,7 @@ highlight EditorBlink1 /* Text fields briefly after successfully running the ext
 highlight EditorError /* Text fields briefly after an error has occurred running the external editor */ background: #e03c52 !important;
 highlight Enabled /* Enabled item indicator text */ color: #be4773;
 highlight ErrorMsg /* Error messages */ color: #ffffff   !important; background: #8b0000         !important; font-weight: bold !important;
+highlight FontFixed font-family: monospace !important; font-size: 9pt !important;
 highlight FrameIndicator /* The styling applied to briefly indicate the active frame */ background-color: #e03c52; opacity: 0.5; z-index: 999999; position: fixed; top: 0; bottom: 0; left: 0; right: 0;
 highlight Function /* JavaScript functions */ color: #0099bc;
 highlight -link=FontCode HelpArg /* A required command argument indicator */ color: #ff5d4a;
@@ -72,6 +73,7 @@ map -count -modes=n,v q -builtin <count>:tabclose<Return>
 map -modes=n zt -javascript content.document.toggleImageSize()
 map -count -modes=I,m <C-c> <C-[>
 map -count -modes=b,o <C-c> <Esc>
+set cdpath=''
 set defsearch=s
 set guioptions=Cs
 set hintkeys=abcdefghijklmnoprstuvwxyz

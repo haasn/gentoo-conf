@@ -1,7 +1,7 @@
-Config { font = "xft:Terminus:pixelsize=22:lang=af,Kochi Gothic:pixelsize=22:Fixed:SemiCondensed:pixelsize=23:lang=cs,DejaVu Sans:pixelsize=22"
+Config { font = "xft:Terminus-22:lang=af,Kochi Gothic-10:Fixed:SemiCondensed-23:lang=cs,DejaVu Sans-22"
        , bgColor = "black"
        , fgColor = "grey"
-       , position = Static { xpos = 0, ypos = 0, width = 4096, height = 34 }
+       , position = Static { xpos = 0, ypos = -14, width = 4096, height = 48 }
        , commands = [ Run Cpu ["-L","5","-H","50","--normal","#85c600","--high","#E03C52"] 10
                     , Run Memory ["-t","Mem: <usedratio>%"] 10
                     , Run Date "%Y %b %d (%a) %H:%M %Z" "date" 10

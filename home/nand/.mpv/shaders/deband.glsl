@@ -2,7 +2,7 @@
 
 // roughly corresponds to f3kdb parameters, which this algorithm is
 // loosely inspired by
-#define threshold 48
+#define threshold 64
 #define range     16
 #define grain     24
 

@@ -28,6 +28,7 @@ app-emulation/virtualbox
 app-emulation/vmips
 app-emulation/wine
 app-emulation/winetricks
+app-forensics/rkhunter
 app-misc/anki
 app-misc/bgrep
 app-misc/cmatrix
@@ -73,7 +74,6 @@ app-vim/vim-spell-en
 dev-embedded/sdcc
 dev-haskell/acid-state
 dev-haskell/acme-realworld
-dev-haskell/acme-schoenfinkel
 dev-haskell/ad
 dev-haskell/applicative-quoters
 dev-haskell/arithmoi
@@ -162,7 +162,6 @@ dev-lang/lua
 dev-lang/mercury
 dev-lang/perl
 dev-lang/python
-dev-lang/rust
 dev-lang/swi-prolog
 dev-lang/tk
 dev-lang/vala
@@ -220,6 +219,7 @@ media-gfx/argyllcms
 media-gfx/aview
 media-gfx/dcraw
 media-gfx/dispcalgui
+media-gfx/feh
 media-gfx/gimp
 media-gfx/gphoto2
 media-gfx/graphviz
@@ -229,7 +229,6 @@ media-gfx/mypaint
 media-gfx/openexr_viewers
 media-gfx/optipng
 media-gfx/pdf2svg
-media-gfx/pinta
 media-gfx/pstoedit
 media-gfx/scrot
 media-gfx/swftools
@@ -311,7 +310,6 @@ net-mail/mswatch
 net-mail/notmuch
 net-mail/offlineimap
 net-misc/corkscrew
-net-misc/electrum
 net-misc/httptunnel
 net-misc/iodine
 net-misc/iperf
@@ -319,7 +317,6 @@ net-misc/libreswan
 net-misc/ntp
 net-misc/openvpn
 net-misc/proxychains
-net-misc/sipsak
 net-misc/socat
 net-misc/tor
 net-misc/trickle

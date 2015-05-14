@@ -75,7 +75,7 @@
 # */* -sdl
 
 # Prefer Qt but don't pull in KDE
-*/* -kde qt4 -qt5 qt
+*/* -kde -qt4 qt5 qt
 
 # Bloated crap
 */* -gstreamer -policykit -consolekit -dbus -udev -udisks -upower
@@ -108,14 +108,15 @@ sys-block/gparted -dmraid -hfs # requires udev
 ############################
 
 # FFmpeg stuff
-*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec -abi_x86_32 libsoxr
+*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec libsoxr
 media-video/ffmpeg -hardcoded-tables # build failure
+#*/ffmpeg -abi_x86_32
 
 # Hmm...
-x11-libs/cairo -abi_x86_32
-x11-libs/pango -abi_x86_32
-x11-libs/gdk-pixbuf -abi_x86_32
-x11-libs/gtk+ -abi_x86_32
+#x11-libs/cairo -abi_x86_32
+#x11-libs/pango -abi_x86_32
+#x11-libs/gdk-pixbuf -abi_x86_32
+#x11-libs/gtk+ -abi_x86_32
 
 # Alternatives to dmix?
 media-plugins/alsa-plugins pulseaudio -jack
@@ -150,7 +151,7 @@ dev-qt/qtgui xinerama accessibility
 dev-haskell/x11 xinerama
 
 # Needed for catalyst
-x11-drivers/ati-drivers qt4 disable-watermark
+#x11-drivers/ati-drivers qt4 disable-watermark
 
 # Curses mode
 #net-misc/electrum -gtk -qt4
@@ -233,6 +234,8 @@ kde-base/libkexiv2 -xmp
 kde-base/okular -crypt
 kde-base/* -handbook
 
+app-text/poppler qt4 # for okular
+
 kde-base/kmix pulseaudio
 
 #################
@@ -293,7 +296,7 @@ app-emulation/spice client
 net-misc/spice-gtk usbredir gtk3
 
 # Flexible input method
-app-i18n/fcitx gtk3 qt4
+#app-i18n/fcitx gtk3 qt4
 
 # Never upload anything
 net-libs/libtorrent noshare
@@ -350,7 +353,7 @@ app-editors/yi vty -gtk
 x11-terms/rxvt-unicode -mousewheel -startup-notification unicode3 -wcwidth vanilla
 
 # Allows only one GUI
-net-analyzer/wireshark -gtk2 -gtk3 qt4 # qt is really slow, but gtk fails building..
+net-analyzer/wireshark -gtk2 -gtk3 qt5 # qt is really slow, but gtk fails building..
 
 # It's trying to pull in alsa
 media-libs/libcanberra -udev
@@ -509,3 +512,6 @@ dev-libs/libwiimote force tilt
 # required by dev-qt/qttranslations-5.4.0::gentoo
 # required by qttranslations (argument)
 >=dev-libs/libpcre-8.36 pcre16
+# required by app-forensics/rkhunter-1.4.2::gentoo
+# required by rkhunter (argument)
+>=sys-process/lsof-4.88-r1 rpc
