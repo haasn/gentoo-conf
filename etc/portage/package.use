@@ -229,12 +229,13 @@ net-misc/openvpn passwordsave
 
 # Okay, let's try this...
 media-libs/phonon -pulseaudio -gstreamer -vlc
-app-office/calligra -handbook -kdepim fftw gsl vc
+app-office/calligra -handbook -kdepim fftw gsl vc kde
 kde-base/libkexiv2 -xmp
 kde-base/okular -crypt
 kde-base/* -handbook
 
 app-text/poppler qt4 # for okular
+app-crypt/pinentry qt4 -gtk
 
 kde-base/kmix pulseaudio
 

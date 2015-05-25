@@ -33,7 +33,6 @@ app-misc/anki
 app-misc/bgrep
 app-misc/cmatrix
 app-misc/colordiff
-app-misc/cwiid
 app-misc/ddccontrol
 app-misc/dtach
 app-misc/ranger
@@ -69,7 +68,6 @@ app-text/zathura
 app-text/zathura-meta
 app-vim/nerdtree
 app-vim/pathogen
-app-vim/rust-mode
 app-vim/vim-spell-en
 dev-embedded/sdcc
 dev-haskell/acid-state
@@ -105,7 +103,6 @@ dev-haskell/gloss
 dev-haskell/groupoids
 dev-haskell/haddock
 dev-haskell/haxml
-dev-haskell/hcwiid
 dev-haskell/hinotify
 dev-haskell/hlint
 dev-haskell/hmatrix
@@ -114,6 +111,7 @@ dev-haskell/kan-extensions
 dev-haskell/kleislify
 dev-haskell/lens
 dev-haskell/lhs2tex
+dev-haskell/linear
 dev-haskell/list
 dev-haskell/listzipper
 dev-haskell/maybet
@@ -166,7 +164,6 @@ dev-lang/swi-prolog
 dev-lang/tk
 dev-lang/vala
 dev-libs/cloog
-dev-libs/libwiimote
 dev-perl/Archive-Zip
 dev-perl/Text-CharWidth
 dev-python/eyeD3
@@ -202,6 +199,7 @@ games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
 gnome-base/gconf
 gnome-extra/zenity
+kde-base/kdialog
 kde-base/kmix
 kde-base/okular
 lxde-base/lxappearance
@@ -272,7 +270,6 @@ media-sound/teamspeak-client-bin
 media-sound/vimus
 media-sound/vorbis-tools
 media-sound/vorbisgain
-media-tv/xawtv
 media-video/mediainfo
 media-video/mkvtoolnix
 media-video/mplayer
@@ -282,7 +279,6 @@ media-video/rtmpdump
 media-video/x264-encoder
 net-analyzer/arpoison
 net-analyzer/bwm-ng
-net-analyzer/dsniff
 net-analyzer/ettercap
 net-analyzer/iftop
 net-analyzer/ipband
@@ -304,7 +300,6 @@ net-im/skype
 net-im/toxic
 net-irc/weechat
 net-libs/glib-networking
-net-libs/polarssl
 net-mail/isync
 net-mail/mswatch
 net-mail/notmuch
@@ -328,8 +323,6 @@ net-nntp/sabnzbd
 net-p2p/bitcoind
 net-p2p/cjdns
 net-p2p/rtorrent
-net-wireless/aircrack-ng
-net-wireless/bluez
 sci-electronics/kicad
 sci-libs/fftw
 sci-libs/libqalculate
@@ -389,7 +382,6 @@ x11-apps/mesa-progs
 x11-apps/xfontsel
 x11-apps/xmag
 x11-base/xorg-x11
-x11-misc/compton
 x11-misc/dmenu
 x11-misc/gbdfed
 x11-misc/read-edid
@@ -408,5 +400,6 @@ x11-misc/xmobar
 x11-misc/xsnow
 x11-misc/yeganesh
 x11-terms/rxvt-unicode
+x11-themes/gtk-engines-murrine
 x11-wm/xmonad
 x11-wm/xmonad-contrib
