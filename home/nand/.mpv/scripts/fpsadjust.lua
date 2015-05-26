@@ -1,8 +1,15 @@
 require 'mp.options'
 local opt = {
-    maxiters = 5,
-    maxdelta = 0.01,
-    mindelta = 0.0005,
+    maxiters = 5,      -- Frames involving at most this many frames will be
+                       -- considered acceptable.
+
+    maxdelta = 0.01,   -- Maximum allowed speed change (setting this too high
+                       -- could cause noticeable change in pitch and tempo)
+
+    mindelta = 0.0005, -- Minimum speed change that would be considered
+                       -- significant enough to be worth calculating. Any lower
+                       -- and it will just play at 100% speed to preserve CPU
+                       -- cycles.
 }
 read_options(opt)
 
