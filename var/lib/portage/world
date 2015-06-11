@@ -69,6 +69,7 @@ app-text/zathura-meta
 app-vim/nerdtree
 app-vim/pathogen
 app-vim/vim-spell-en
+dev-db/sqlitebrowser
 dev-embedded/sdcc
 dev-haskell/acid-state
 dev-haskell/acme-realworld
@@ -199,6 +200,7 @@ games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
 gnome-base/gconf
 gnome-extra/zenity
+kde-base/gwenview
 kde-base/kdialog
 kde-base/kmix
 kde-base/okular
@@ -227,6 +229,7 @@ media-gfx/mypaint
 media-gfx/openexr_viewers
 media-gfx/optipng
 media-gfx/pdf2svg
+media-gfx/pqiv
 media-gfx/pstoedit
 media-gfx/scrot
 media-gfx/swftools
@@ -305,6 +308,7 @@ net-mail/mswatch
 net-mail/notmuch
 net-mail/offlineimap
 net-misc/corkscrew
+net-misc/dhcpcd
 net-misc/httptunnel
 net-misc/iodine
 net-misc/iperf

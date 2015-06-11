@@ -1,5 +1,4 @@
-# The following lines were added by compinstall
-
+# Custom completion settings
 zstyle ':completion:*' completer _expand _complete _ignored _match _correct _approximate _prefix
 zstyle ':completion:*' expand suffix
 zstyle ':completion:*' insert-unambiguous true
@@ -10,31 +9,22 @@ zstyle ':completion:*' original true
 zstyle ':completion:*' select-prompt ''
 zstyle :compinstall filename '/home/nand/.zshrc'
 
+setopt nomatch
 autoload -Uz compinit
 compinit
-# End of lines added by compinstall
-# Lines configured by zsh-newuser-install
+
+# History settings
 HISTFILE=~/.histfile
 HISTSIZE=1000000
 SAVEHIST=1000000
-setopt appendhistory autocd nomatch notify
-unsetopt beep
+setopt incappendhistory sharehistory
+
+# Miscellaneous
+setopt dotglob autocd nomatch notify
+unsetopt beep alwayslastprompt
 bindkey -e
-# End of lines configured by zsh-newuser-install
 
-# My own configuration
-setopt dotglob
-unsetopt ALWAYS_LAST_PROMPT
-
-# History sharing
-setopt sharehistory incappendhistory
-
-export EDITOR=vim
-
-# Colors!
-export DARCS_DO_COLOR_LINES=1
-export GCC_COLORS=1
-
+# Custom aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
@@ -47,20 +37,29 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep -i --color=auto'
 fi
 
+source ~/.aliases
+
+# Git prompt
 source ~/.git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUPSTREAM="auto"
-export __GL_SYNC_DISPLAY_DEVICE="DP-0"
+setopt promptsubst
 
-nbsp=$'\u00A0'
+autoload -U colors && colors
+local lb='%{$fg_no_bold[default]%}[%{$reset_color%}'
+      rb='%{$fg_no_bold[default]%}]%{$reset_color%}'
 
-setopt PROMPT_SUBST
-PS1=$'$(__git_ps1 "%%{\e[38;5;70m%%}%s ")%{\e[1;32m%}%n@%m%{\e[1;34m%} %~ λ%{\e[0m%} '
+PS1="$lb%{$fg_bold[yellow]%}%D{%H:%M}$rb"\
+"$lb%{$fg_bold[green]%}%n@%m$rb"\
+"$lb%{$fg_bold[blue]%}%~$rb"\
+$'$(__git_ps1 "[%%{\e[38;5;70m%%}%s%%{$reset_color%%}]")'\
+"%(?..$lb%{$fg_bold[red]%?$rb)"\
+$'\n%{%(?.$fg[green].$fg[red])%}λ%{$reset_color%} '
 
-source ~/.aliases
+PS2="... "
 
-# Git tab completion is really slow otherwise
 __git_files () {
+    # git tab completion is really slow otherwise
     _wanted files expl 'local files' _files
 }
 
@@ -89,3 +88,9 @@ zle -N self-insert url-quote-magic
 
 # Less greedy word boundaries
 WORDCHARS=${WORDCHARS/\/}
+
+# Environment vars
+export EDITOR=vim
+export DARCS_DO_COLOR_LINES=1
+export GCC_COLORS=1
+export __GL_SYNC_DISPLAY_DEVICE="DP-0"

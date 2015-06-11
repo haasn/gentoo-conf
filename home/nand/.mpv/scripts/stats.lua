@@ -10,11 +10,15 @@
 -- Please note: not every property is always available and therefore not always
 -- visible.
 
-require 'mp.options'
+local options = require 'mp.options'
 
+-- Options
 local o = {
+    ass_formatting = true,
     duration = 3,
-    -- text formatting
+    debug = false,
+
+    -- Text style
     font = "Source Sans Pro Semibold",
     font_size = 11,
     font_color = "FFFFFF",
@@ -24,17 +28,27 @@ local o = {
     shadow_y_offset = 0.0,
     shadow_color = "000000",
     alpha = "11",
-    -- indentation
+
+    -- Custom header for ASS tags to style the text output.
+    -- Specifying this will ignore the text style values above and just
+    -- use this string instead.
+    custom_header = "",
+
+    -- Text formatting
+    -- With ASS
     nl = "\\N",
     prop_indent = "\\h\\h\\h\\h\\h",
-    kv_sep = "\\h\\h",  -- key<kv_sep>value
-
-    -- Custom header for ASS tags to format the text output.
-    -- Specifying this will ignore the text formatting values above and just
-    -- use this string instead.
-    custom_header = ""
+    kv_sep = "\\h\\h",
+    b1 = "{\\b1}",
+    b0 = "{\\b0}",
+    -- Without ASS
+    no_ass_nl = "\n",
+    no_ass_prop_indent = "\t",
+    no_ass_kv_sep = " ",
+    no_ass_b1 = "",
+    no_ass_b0 = "",
 }
-read_options(o)
+options.read_options(o)
 
 
 function main()
@@ -44,7 +58,16 @@ function main()
         video = "",
         audio = ""
     }
-    
+
+    o.ass_formatting = o.ass_formatting and has_vo_window()
+    if not o.ass_formatting then
+        o.nl = o.no_ass_nl
+        o.prop_indent = o.no_ass_prop_indent
+        o.kv_sep = o.no_ass_kv_sep
+        o.b1 = o.no_ass_b1
+        o.b0 = o.no_ass_b0
+    end
+
     add_header(stats)
     add_file(stats)
     add_video(stats)
@@ -56,28 +79,25 @@ end
 
 function add_file(s)
     s.file = ""
-    local fn = mp.get_property_osd("filename")
-    s.file = s.file .. b("File:") .. o.kv_sep .. no_ASS(fn)
-    
+    local r = mp.get_property_osd("filename")
+    s.file = s.file .. b("File:") .. o.kv_sep .. no_ASS(r)
+
     append_property(s, "file", "metadata/title", "Title:")
     append_property(s, "file", "chapter", "Chapter:")
     if append_property(s, "file", "cache-used", "Cache:") then
         append_property_inline(s, "file", "demuxer-cache-duration", "+", " sec", true, true)
     end
-
-    s.file = s.file .. o.nl .. o.nl
 end
 
 
 function add_video(s)
     s.video = ""
-    local r = mp.get_property_osd("video")
-    if not r or r == "no" or r == "" then
+    if not has_video() then
         return
     end
-    local fn = mp.get_property_osd("video-codec")
-    s.video = s.video .. b("Video:") .. o.kv_sep .. no_ASS(fn)
-    
+    local r = mp.get_property_osd("video-codec")
+    s.video = s.video .. b("Video:") .. o.kv_sep .. no_ASS(r)
+
     append_property(s, "video", "avsync", "A-V:")
     if append_property(s, "video", "drop-frame-count", "Dropped:") then
         append_property_inline(s, "video", "vo-drop-frame-count", "   VO:")
@@ -93,38 +113,37 @@ function add_video(s)
     append_property(s, "video", "video-params/pixelformat", "Pixel format:")
     append_property(s, "video", "video-params/colormatrix", "Colormatrix:")
     append_property(s, "video", "video-params/primaries", "Primaries:")
-    append_property(s, "video", "video-params/gamma", "Gamma:")
     append_property(s, "video", "video-params/colorlevels", "Levels:")
     append_property(s, "video", "packet-video-bitrate", "Bitrate:", " kbps")
-
-    s.video = s.video .. o.nl .. o.nl
 end
 
 
 function add_audio(s)
     s.audio = ""
-    local r = mp.get_property_osd("audio-codec")
-    if not r or r == "no" or r == "" then
+    if not has_audio() then
         return
     end
+    local r = mp.get_property_osd("audio-codec")
     s.audio = s.audio .. b("Audio:") .. o.kv_sep .. no_ASS(r)
 
-    append_property(s, "audio", "audio-samplerate", "Sample Rate:")
-    append_property(s, "audio", "audio-channels", "Channels:")
+    append_property(s, "audio", "audio-params/samplerate", "Sample Rate:")
+    append_property(s, "audio", "audio-params/channel-count", "Channels:")
     append_property(s, "audio", "packet-audio-bitrate", "Bitrate:", " kbps")
-
-    s.audio = s.audio .. o.nl .. o.nl
 end
 
 
 function add_header(s)
+    if not o.ass_formatting then
+        s.header = ""
+        return
+    end
     if o.custom_header and o.custom_header ~= "" then
         s.header = set_ASS(true) .. o.custom_header
     else
         s.header = string.format([[%s{\\fs%d}{\\fn%s}{\\bord%f}{\\3c&H%s&}{\\1c&H%s&}
                                  {\\alpha&H%s&}{\\xshad%f}{\\yshad%f}{\\4c&H%s&}]],
-                        set_ASS(true), o.font_size, o.font, o.border_size, 
-                        o.border_color, o.font_color, o.alpha, o.shadow_x_offset, 
+                        set_ASS(true), o.font_size, o.font, o.border_size,
+                        o.border_color, o.font_color, o.alpha, o.shadow_x_offset,
                         o.shadow_y_offset, o.shadow_color)
     end
 end
@@ -133,6 +152,9 @@ end
 function append_property(s, sec, prop, prefix, suffix)
     local ret = mp.get_property_osd(prop)
     if ret == nil or ret == "" then
+        if o.debug then
+            print("No value for property: " .. prop)
+        end
         return false
     end
 
@@ -144,10 +166,13 @@ function append_property(s, sec, prop, prefix, suffix)
 end
 
 
--- one could merge this into append_property, it's just a bit more verbose this way imo
+-- One could merge this into append_property, it's just a bit more verbose this way imo
 function append_property_inline(s, sec, prop, prefix, suffix, no_prefix_markup, no_prefix_sep, no_indent)
     local ret = mp.get_property_osd(prop)
     if ret == nil or ret == "" then
+        if o.debug then
+            print("No value for property: " .. prop)
+        end
         return false
     end
 
@@ -167,24 +192,48 @@ end
 
 
 function set_ASS(b)
+    if not o.ass_formatting then
+        return ""
+    end
     return mp.get_property_osd("osd-ass-cc/" .. (b and "0" or "1"))
 end
 
 
 function join_stats(s)
-    return s.header .. s.file .. s.video .. s.audio
+    r = s.header .. s.file
+
+    if s.video and s.video ~= "" then
+        r = r .. o.nl .. o.nl .. s.video
+    end
+    if s.audio and s.audio ~= "" then
+        r = r .. o.nl .. o.nl .. s.audio
+    end
+
+    return r
+end
+
+
+function has_vo_window()
+    return mp.get_property("vo-configured") == "yes"
+end
+
+
+function has_video()
+    local r = mp.get_property("video")
+    return r and r ~= "no" and r ~= ""
+end
+
+
+function has_audio()
+    local r = mp.get_property("audio")
+    return r and r ~= "no" and r ~= ""
 end
 
 
 function b(t)
-    return "{\\b1}" .. t .. "{\\b0}"
-end
-function i(t)
-    return "{\\i1}" .. t .. "{\\i0}"
-end
-function u(t)
-    return "{\\u1}" .. t .. "{\\u0}"
+    return o.b1 .. t .. o.b0
 end
 
 
-mp.add_key_binding("J", "stats", main, {repeatable=true})
+
+mp.add_key_binding("J", mp.get_script_name(), main, {repeatable=true})
