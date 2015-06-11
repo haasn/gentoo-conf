@@ -1,0 +1,75 @@
+<!DOCTYPE kpartgui>
+<kpartgui version="10" name="konsole">
+ <MenuBar>
+  <Menu name="file">
+   <text>File</text>
+   <Action name="new-window"/>
+   <Action name="new-tab"/>
+   <Action name="clone-tab"/>
+   <Separator/>
+   <DefineGroup name="session-operations"/>
+   <Separator/>
+   <DefineGroup name="session-tab-operations"/>
+   <Action name="close-window"/>
+  </Menu>
+  <Menu name="edit">
+   <text>Edit</text>
+   <DefineGroup name="session-edit-operations"/>
+  </Menu>
+  <Menu name="view">
+   <text>View</text>
+   <Menu name="view-split">
+    <text>Split View</text>
+    <Action name="split-view-left-right"/>
+    <Action name="split-view-top-bottom"/>
+    <Action name="close-active-view"/>
+    <Action name="close-other-views"/>
+    <Action name="expand-active-view"/>
+    <Action name="shrink-active-view"/>
+   </Menu>
+   <Separator/>
+   <Action name="detach-view"/>
+   <Separator/>
+   <DefineGroup name="session-view-operations"/>
+  </Menu>
+  <Action name="bookmark"/>
+  <Menu name="settings">
+   <text>Settings</text>
+   <DefineGroup name="session-settings"/>
+   <Action name="manage-profiles"/>
+   <Action name="show-menubar"/>
+   <Separator/>
+   <Action name="view-full-screen"/>
+   <Separator/>
+   <Action name="configure-shortcuts"/>
+   <Action name="configure-notifications"/>
+   <Action name="configure-settings"/>
+  </Menu>
+  <Menu name="help">
+   <text>Help</text>
+  </Menu>
+ </MenuBar>
+ <ActionProperties scheme="Default">
+  <Action shortcut="" name="add_bookmark"/>
+  <Action shortcut="" name="help_contents"/>
+  <Action shortcut="" name="help_whats_this"/>
+  <Action shortcut="" name="activate-menu"/>
+  <Action shortcut="" name="close-active-view"/>
+  <Action shortcut="" name="close-other-views"/>
+  <Action shortcut="" name="close-window"/>
+  <Action shortcut="" name="detach-view"/>
+  <Action shortcut="" name="expand-active-view"/>
+  <Action shortcut="" name="fullscreen"/>
+  <Action shortcut="" name="move-view-left"/>
+  <Action shortcut="" name="move-view-right"/>
+  <Action shortcut="" name="new-tab"/>
+  <Action shortcut="" name="new-window"/>
+  <Action shortcut="" name="next-container"/>
+  <Action shortcut="" name="next-view"/>
+  <Action shortcut="" name="options_show_menubar"/>
+  <Action shortcut="" name="previous-view"/>
+  <Action shortcut="" name="shrink-active-view"/>
+  <Action shortcut="" name="split-view-left-right"/>
+  <Action shortcut="" name="split-view-top-bottom"/>
+ </ActionProperties>
+</kpartgui>

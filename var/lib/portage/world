@@ -203,6 +203,7 @@ gnome-extra/zenity
 kde-base/gwenview
 kde-base/kdialog
 kde-base/kmix
+kde-base/knotify
 kde-base/konsole
 kde-base/okular
 lxde-base/lxappearance
