@@ -3,6 +3,10 @@ AntiAliasFonts=false
 ColorScheme=Photons
 Font=Terminus,10,-1,5,50,0,0,0,0,0
 
+[Cursor Options]
+CustomCursorColor=221,204,187
+UseCustomCursorColor=true
+
 [General]
 Command=/usr/bin/dtach -A /tmp/weechat -Ez weechat-curses
 Environment=TERM=konsole-linux
@@ -25,4 +29,5 @@ HistorySize=12000
 ScrollBarPosition=2
 
 [Terminal Features]
+BidiRenderingEnabled=false
 FlowControlEnabled=false

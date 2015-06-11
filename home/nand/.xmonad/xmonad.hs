@@ -47,7 +47,7 @@ main = do
 
         modMask             = mod4Mask, -- Capslock
 
-        terminal            = "konsole",
+        terminal            = "urxvtc",
 
         normalBorderColor   = "#0e1112",
         focusedBorderColor  = "#85919b",

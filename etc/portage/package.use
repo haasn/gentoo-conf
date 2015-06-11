@@ -228,11 +228,12 @@ net-misc/tor scrypt tor-hardening
 net-misc/openvpn passwordsave
 
 # Okay, let's try this...
-media-libs/phonon -pulseaudio -gstreamer -vlc
+media-libs/phonon -pulseaudio -gstreamer -vlc qt5 qt4
 app-office/calligra -handbook -kdepim fftw gsl vc kde
 kde-base/libkexiv2 -xmp
 kde-base/okular -crypt
 kde-base/* -handbook
+kde-apps/* -handbook
 
 app-text/poppler qt4 # for okular
 app-crypt/pinentry qt4 -gtk

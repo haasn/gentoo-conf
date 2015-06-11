@@ -1,4 +1,4 @@
-URxvt.font: xft:Terminus-20:lang=af,xft:Fixed:SemiCondensed-20:lang=cs,xft:DejaVu Sans-20
+URxvt.font: xft:Terminus-20,xft:DejaVu Sans Mono:pixelsize=16,xft:unifont,xft:STIX,xft:STIX Math
 
 URxvt.saveLines:        12000
 URxvt.scrollBar:        false

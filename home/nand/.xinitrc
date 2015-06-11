@@ -33,7 +33,7 @@ argyll-dispwin -I -d1 ~/icc/alt.icc &
 # autoplay info >/dev/null &
 
 # Daemonize urxvt
-#urxvtd -q -o -f
+urxvtd -q -o -f
 
 # Hide mouse cursor when not in use
 unclutter -noevents -idle 2 -jitter 1 -root >/dev/null 2>&1 &

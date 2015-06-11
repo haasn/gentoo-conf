@@ -214,9 +214,11 @@ media-fonts/dejavu
 media-fonts/efont-unicode
 media-fonts/kochi-substitute
 media-fonts/opendesktop-fonts
+media-fonts/stix-fonts
 media-fonts/symbola
 media-fonts/terminus-font
 media-fonts/unifont
+media-fonts/unifraktur
 media-gfx/argyllcms
 media-gfx/aview
 media-gfx/dcraw

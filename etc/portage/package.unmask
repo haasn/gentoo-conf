@@ -66,6 +66,7 @@ media-sound/oss::booboo
 dev-libs/libuv::emery
 net-p2p/cjdns::emery
 media-sound/squishyball::emery
+media-fonts/unifraktur::emery
 
 # Ixit
 sys-apps/ksplice::ixit
@@ -102,6 +103,9 @@ media-plugins/vapoursynth-nnedi3::vapoursynth
 
 # Dotnet
 dev-lang/mono::dotnet
+
+# KDE
+kde-apps/konsole::kde
 
 # I've fixed this locally
 =app-shells/bash-completion-2.1*
