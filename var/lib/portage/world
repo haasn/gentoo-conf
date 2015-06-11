@@ -203,6 +203,7 @@ gnome-extra/zenity
 kde-base/gwenview
 kde-base/kdialog
 kde-base/kmix
+kde-base/konsole
 kde-base/okular
 lxde-base/lxappearance
 mail-client/nail
@@ -403,6 +404,7 @@ x11-misc/xcompmgr
 x11-misc/xmobar
 x11-misc/xsnow
 x11-misc/yeganesh
+x11-terms/qterminal
 x11-terms/rxvt-unicode
 x11-themes/gtk-engines-murrine
 x11-wm/xmonad

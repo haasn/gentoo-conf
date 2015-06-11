@@ -53,7 +53,7 @@ PS1="$lb%{$fg_bold[yellow]%}%D{%H:%M}$rb"\
 "$lb%{$fg_bold[green]%}%n@%m$rb"\
 "$lb%{$fg_bold[blue]%}%~$rb"\
 $'$(__git_ps1 "[%%{\e[38;5;70m%%}%s%%{$reset_color%%}]")'\
-"%(?..$lb%{$fg_bold[red]%?$rb)"\
+"%(?..$lb%{$fg_bold[red]%}%?$rb)"\
 $'\n%{%(?.$fg[green].$fg[red])%}λ%{$reset_color%} '
 
 PS2="... "
