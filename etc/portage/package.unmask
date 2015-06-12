@@ -107,5 +107,8 @@ dev-lang/mono::dotnet
 # KDE
 kde-apps/konsole::kde
 
+# Mva
+dev-qt/qt5ct::mva
+
 # I've fixed this locally
 =app-shells/bash-completion-2.1*

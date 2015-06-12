@@ -249,3 +249,26 @@ alias ghci-head='PATH="~/ghc-head/bin:$PATH" ghci'
 itag() {
   convert "$1" -red-primary 0.6881,0.3068 -green-primary 0.2214,0.7160 -blue-primary 0.1468,0.061 -white-point 0.312874,0.329226 +gamma 0.45454545 "$1"
 }
+
+# Compute a simple string hash
+
+sumcharvals() {
+    if [[ $# -eq 0 ]]; then
+      echo "Usage: $0 [string] [mod] [parameter]"
+      echo
+      echo "sums the char values of string and modulates with mod"
+      echo "if parameter is given, assign result to it, otherwise echo"
+      return 0
+    fi
+    local name=$1 sum=0
+    integer i
+    for (( i=1; i <= $#name; i++ )) {
+      (( sum+=##$name[i] ))
+    }
+    [[ -n $2 ]] && (( sum%=$2 ))
+    if [[ -n $3 ]]; then
+      typeset -g $3=$sum
+    else
+      echo $sum
+    fi
+}

@@ -6,7 +6,7 @@
 #define range     16
 #define grain     24
 
-float rand(vec2 co){
+float rand(vec2 co) {
     return fract(sin(dot(co.yx, vec2(12.9898,78.233))) * 43758.5453);
 }
 

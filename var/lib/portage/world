@@ -171,6 +171,7 @@ dev-python/eyeD3
 dev-python/mako
 dev-python/python-dateutil
 dev-python/twisted-core
+dev-qt/qt5ct
 dev-tex/biblatex
 dev-tex/latex-beamer
 dev-tex/pgf

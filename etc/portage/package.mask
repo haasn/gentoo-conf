@@ -55,6 +55,7 @@ sys-apps/man
 */*::vapoursynth
 */*::dotnet
 */*::kde
+*/*::mva
 
 # No longer needed
 #x11-misc/xmobar::local_overlay
