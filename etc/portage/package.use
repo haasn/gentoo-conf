@@ -395,6 +395,7 @@ app-portage/* -pypy2_0 python3_3 -python2_7 -python3_2
 
 # Get German correction support without getting it anywhere else
 app-text/aspell linguas_de
+app-text/texlive linguas_de
 
 # Maildir required for xmobar
 mail-mta/exim -X maildir

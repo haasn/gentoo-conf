@@ -4,6 +4,10 @@ URxvt.saveLines:        12000
 URxvt.scrollBar:        false
 URxvt.urgentOnBell:     true
 
+URxvt.scrollTtyOutput:      false
+URxvt.scrollWithBuffer:     true
+URxvt.scrollTtyKeypress:    true
+
 ! perl extensions
 URxvt.perl-ext: default,url-select,clipboard
 

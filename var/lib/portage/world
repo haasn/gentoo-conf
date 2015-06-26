@@ -172,11 +172,16 @@ dev-python/mako
 dev-python/python-dateutil
 dev-python/twisted-core
 dev-qt/qt5ct
+dev-ruby/bundler
+dev-ruby/rack-test
+dev-ruby/rspec
 dev-tex/biblatex
 dev-tex/latex-beamer
 dev-tex/pgf
 dev-tex/tex4ht
 dev-texlive/texlive-fontsextra
+dev-texlive/texlive-langenglish
+dev-texlive/texlive-langeuropean
 dev-texlive/texlive-xetex
 dev-util/android-tools
 dev-util/apitrace
@@ -393,6 +398,7 @@ x11-apps/xmag
 x11-base/xorg-x11
 x11-misc/dmenu
 x11-misc/gbdfed
+x11-misc/i3lock
 x11-misc/read-edid
 x11-misc/slock
 x11-misc/sselp

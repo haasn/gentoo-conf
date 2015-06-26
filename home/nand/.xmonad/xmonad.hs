@@ -140,8 +140,8 @@ floatTitles =
 
 -- Programs that should start in fullscreen mode. Normally EWMH handles this
 -- properly, but eg. mpv does something weird on initial startup so we have to
--- do it manually.
-fullTitles = [ "mpv" ]
+-- do it manually. (Update: turns out mpv got fixed upstream)
+fullTitles = [  ]
 
 fullF = fmap (\t -> any (`L.isPrefixOf` t) fullTitles) title --> doFullFloat
 

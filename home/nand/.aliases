@@ -12,13 +12,15 @@ alias grep='grep -i --color=auto'
 alias ll='ls -l --si'
 alias la='ls -A'
 alias l='ls -CF'
+alias lt='ll -rt'
 
 alias df='df --total -H'
 alias du='du --si'
 alias ds='du --total --summarize -- *'
 
-# allow colors in less
+# allow colors in less and tmux
 alias less='less -R'
+alias tmux='tmux -2'
 
 # Sort by memory usage per default
 alias htop='htop -s PERCENT_MEM'
@@ -264,6 +266,7 @@ sumcharvals() {
     integer i
     for (( i=1; i <= $#name; i++ )) {
       (( sum+=##$name[i] ))
+      (( sum*=17 ))
     }
     [[ -n $2 ]] && (( sum%=$2 ))
     if [[ -n $3 ]]; then

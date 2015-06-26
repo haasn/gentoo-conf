@@ -1,30 +1,30 @@
 diff --git a/libavcodec/hevcpred.c b/libavcodec/hevcpred.c
-index 4598229..03e5b1f 100644
+index 02c1766..bd7ddc9 100644
 --- a/libavcodec/hevcpred.c
 +++ b/libavcodec/hevcpred.c
-@@ -74,4 +74,6 @@ void ff_hevc_pred_init(HEVCPredContext *hpc, int bit_depth)
-         HEVC_PRED(8);
-         break;
-     }
-+
-+    if (ARCH_X86) ff_hevc_pred_init_x86(hpc, bit_depth);
+@@ -77,4 +77,6 @@ void ff_hevc_pred_init(HEVCPredContext *hpc, int bit_depth)
+ 
+     if (ARCH_MIPS)
+         ff_hevc_pred_init_mips(hpc, bit_depth);
++    if (ARCH_X86)
++        ff_hevc_pred_init_x86(hpc, bit_depth);
  }
 diff --git a/libavcodec/hevcpred.h b/libavcodec/hevcpred.h
-index 7f14a76..81e5031 100644
+index eb17663..57e233d 100644
 --- a/libavcodec/hevcpred.h
 +++ b/libavcodec/hevcpred.h
-@@ -41,5 +41,6 @@ typedef struct HEVCPredContext {
- } HEVCPredContext;
+@@ -42,5 +42,6 @@ typedef struct HEVCPredContext {
  
  void ff_hevc_pred_init(HEVCPredContext *hpc, int bit_depth);
+ void ff_hevc_pred_init_mips(HEVCPredContext *hpc, int bit_depth);
 +void ff_hevc_pred_init_x86(HEVCPredContext *hpc, int bit_depth);
  
  #endif /* AVCODEC_HEVCPRED_H */
 diff --git a/libavcodec/x86/Makefile b/libavcodec/x86/Makefile
-index 87985f2..f291397 100644
+index 08cee1c..9f998d2 100644
 --- a/libavcodec/x86/Makefile
 +++ b/libavcodec/x86/Makefile
-@@ -137,7 +137,10 @@ YASM-OBJS-$(CONFIG_HEVC_DECODER)       += x86/hevc_mc.o                 \
+@@ -138,7 +138,9 @@ YASM-OBJS-$(CONFIG_HEVC_DECODER)       += x86/hevc_mc.o                 \
                                            x86/hevc_deblock.o            \
                                            x86/hevc_idct.o               \
                                            x86/hevc_res_add.o            \
@@ -32,10 +32,9 @@ index 87985f2..f291397 100644
 +                                          x86/hevc_sao.o                \
 +                                          x86/hevc_idct_intrinsic.o     \
 +                                          x86/hevc_intra_intrinsic.o
-+
+ YASM-OBJS-$(CONFIG_JPEG2000_DECODER)   += x86/jpeg2000dsp.o
  YASM-OBJS-$(CONFIG_MLP_DECODER)        += x86/mlpdsp.o
  YASM-OBJS-$(CONFIG_MPEG4_DECODER)      += x86/xvididct.o
- YASM-OBJS-$(CONFIG_PNG_DECODER)        += x86/pngdsp.o
 diff --git a/libavcodec/x86/hevc_idct_intrinsic.c b/libavcodec/x86/hevc_idct_intrinsic.c
 new file mode 100644
 index 0000000..7f732d2
