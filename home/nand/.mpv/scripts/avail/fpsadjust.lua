@@ -47,4 +47,4 @@ function adjust_speed(event)
     end
 end
 
--- mp.register_event("playback-restart", adjust_speed)
+mp.register_event("playback-restart", adjust_speed)
