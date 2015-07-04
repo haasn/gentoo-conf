@@ -21,6 +21,7 @@ app-editors/bvi
 app-editors/nano
 app-editors/vim
 app-editors/yi
+app-emulation/lxc
 app-emulation/playonlinux
 app-emulation/qemu
 app-emulation/qtemu
@@ -167,6 +168,7 @@ dev-lang/vala
 dev-libs/cloog
 dev-perl/Archive-Zip
 dev-perl/Text-CharWidth
+dev-php/ZendFramework
 dev-python/eyeD3
 dev-python/mako
 dev-python/python-dateutil

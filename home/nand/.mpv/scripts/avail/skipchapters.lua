@@ -1,6 +1,8 @@
 require 'mp.options'
 local opt = {
-    patterns = {"^OP$","^[Oo]pening$"}
+    patterns = {"^OP$","^[Oo]pening$"
+               ,"^ED$","^[Ee]nding$"
+               ,"^[Pp]review$"}
 }
 read_options(opt)
 

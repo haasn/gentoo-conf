@@ -279,11 +279,16 @@ www-client/firefox bindist
 www-client/firefox system-sqlite
 dev-db/sqlite secure-delete unlock-notify
 
+# Alternative to firefox?
+www-client/palemoon -official-branding alsa
 
 
 #######################
 #### Miscellaneous ####
 #######################
+
+# For work
+app-emulation/lxc doc examples
 
 # Needed for benchmarking
 sys-block/fio aio

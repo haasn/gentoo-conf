@@ -110,5 +110,8 @@ kde-apps/konsole::kde
 # Mva
 dev-qt/qt5ct::mva
 
+# Palemoon
+www-client/palemoon::palemoon
+
 # I've fixed this locally
 =app-shells/bash-completion-2.1*

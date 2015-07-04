@@ -62,7 +62,7 @@ keycode  75 = EuroSign cent F9 F9 F9 F9 XF86Switch_VT_9
 keycode  76 = yen F10 F10 F10 F10 F10 XF86Switch_VT_10
 
 keycode  94 = backslash bar U2227 U2228
-keycode  95 = sterling U222B F11 F11 F11 F11 XF86Switch_VT_11
+keycode  95 = sterling U222B F11 U1F4F7 F11 F11 XF86Switch_VT_11
 keycode  96 = U2603 U221A Greek_SIGMA U16A6 F12 F12 XF86Switch_VT_12
 
 keycode 108 = Mode_switch Meta_R Mode_switch Meta_R

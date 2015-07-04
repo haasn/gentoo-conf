@@ -145,6 +145,7 @@ aln() {
 # More aggressive rate limiting
 alias trickle='trickle -s -w 50 -t 0.5'
 alias nethogs='sudo nethogs tun0'
+alias scpl='scp -l 400'
 
 # Some darcs aliases
 alias da='darcs'
