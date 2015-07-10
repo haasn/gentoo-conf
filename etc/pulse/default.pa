@@ -17,15 +17,12 @@
 # Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
 
 ### Load permanent devices
-load-module module-alsa-sink device=iec958
-
-#load-module module-alsa-sink device=hw:2,0
-#load-module module-alsa-sink device=hw:1,0 tsched=0
-#load-module module-alsa-sink device=hw:0,0 tsched=1
-#load-module module-alsa-source device_id=0
+load-module module-alsa-sink device=iec958:CARD=ODACrevB
+load-module module-alsa-sink device=front:CARD=Microphone
+load-module module-alsa-source device=iec958:CARD=Microphone
 
 ### Automatically load driver modules depending on the hardware available
-load-module module-detect
+#load-module module-detect
 
 ### Equalizer
 #load-module module-ladspa-sink channels=2 sink_name=Equalizer master=alsa_output.iec958 plugin=tap_eq label=tap_equalizer control=10,,,,,,,,50,100,200,500,1000,3000,8000,15000

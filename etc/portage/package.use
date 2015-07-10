@@ -230,15 +230,15 @@ net-misc/openvpn passwordsave
 # Okay, let's try this...
 media-libs/phonon -pulseaudio -gstreamer -vlc qt5 qt4
 app-office/calligra -handbook -kdepim fftw gsl vc kde
-kde-base/libkexiv2 -xmp
-kde-base/okular -crypt
+kde-apps/libkexiv2 -xmp
+kde-apps/okular -crypt
 kde-base/* -handbook
 kde-apps/* -handbook
 
 app-text/poppler qt4 # for okular
 app-crypt/pinentry qt4 -gtk
 
-kde-base/kmix pulseaudio
+kde-apps/kmix pulseaudio
 
 #################
 #### Firefox ####
