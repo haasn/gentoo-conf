@@ -34,6 +34,7 @@ x11-misc/swarp::sunrise
 app-office/ganttproject-bin::sunrise
 dev-libs/libwiimote::sunrise
 sys-apps/evrouter::sunrise
+www-plugins/okularplugin::sunrise
 
 # Powerman
 dev-lang/go::powerman
@@ -47,7 +48,7 @@ app-misc/cwiid::maggu2810-overlay
 app-office/openproj::miramir
 
 # MPD
-media-sound/mpd::mpd
+#media-sound/mpd::mpd
 
 # X11
 <=x11-drivers/ati-drivers-12.4::x11

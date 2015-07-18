@@ -92,7 +92,7 @@ extraKeys =
     -- never terminate X please
   , ((mod4Mask .|. shiftMask, xK_q), return ())
 
-  , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-24' -i -nf '#daccbb' -nb '#0e1112')")
+  , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#0e1112')")
 
     -- lock the screen when not in use
   , ((mod4Mask, xK_s), spawn "slock")

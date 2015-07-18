@@ -139,13 +139,13 @@ media-libs/libmikmod alsa
 media-libs/libsdl pulseaudio -alsa
 app-emulation/wine pulseaudio -jack alsa -realtime
 app-emulation/emul-linux-x86-soundlibs alsa
-app-emulation/virtualbox pulseaudio
+app-emulation/virtualbox pulseaudio qt4
 media-sound/teamspeak-client-bin pulseaudio
 games-emulation/higan pulseaudio
 media-libs/libsdl sound
 
 # Needed for some stupid reason by teamspeak3-client-bin
-dev-qt/qtgui xinerama accessibility
+dev-qt/qtgui xinerama accessibility dbus
 
 # Uh oh, xmonad thinks I have one really big monitor otherwise
 dev-haskell/x11 xinerama
@@ -251,7 +251,7 @@ kde-apps/kmix pulseaudio
 www-client/firefox minimal -crashreporter -libnotify -startup-notification -webm -ipc -dbus
 
 # Fuck proprietary codecs
-www-client/firefox pulseaudio gstreamer
+www-client/firefox -pulseaudio -gstreamer # actually, fuck audio output even harder
 media-plugins/gst-plugins-meta -a52 -aac -cdda -dts -dvd -flac ffmpeg mp3 mpeg -ogg -theora -vorbis -wavpack -x264 -xvid pulseaudio
 
 # gcc's -O3 is clang's -Ofast, not -O3

@@ -1,6 +1,6 @@
 # Disallow all unpatched versions of libtorrent
 net-libs/libtorrent::gentoo
->=net-p2p/rtorrent-0.9.2
+#>=net-p2p/rtorrent-0.9.2
 
 # Not really stable
 x11-terms/st::local_overlay
@@ -62,16 +62,24 @@ sys-apps/man
 #x11-misc/xmobar::local_overlay
 #media-video/mpv::local_overlay
 app-admin/pass::local_overlay
+dev-haskell/linear::local_overlay
 
 # Portage can't resolve these slot conflicts, help out a bit
 <dev-haskell/attoparsec-0.11
 <dev-haskell/aeson-0.7
+=dev-libs/isl-0.15:0/15
 
 # Dependency issues
 <dev-haskell/text-1
 
 # Skipping this version
 # =dev-lang/ghc-7.6.3*
+
+# mpd interop stuff
+=x11-misc/xmobar-9999
+=dev-haskell/libmpd-9999
+=dev-haskell/x11-xft-9999
+=media-sound/mpd-9999
 
 # Weird unstable crap
 >=media-libs/opencolorio-1.0.9

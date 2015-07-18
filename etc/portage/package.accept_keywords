@@ -12,7 +12,7 @@
 dev-haskell/*
 
 # Rapid development
-dev-haskell/lens **
+#dev-haskell/lens **
 # dev-haskell/pipes **
 dev-haskell/zippers **
 dev-haskell/tables **

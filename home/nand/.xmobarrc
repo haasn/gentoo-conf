@@ -1,4 +1,4 @@
-Config { font = "xft:Terminus-22,DejaVu Sans Mono:pixelsize=16,Kochi Gothic:pixelsize=16"
+Config { font = "xft:Terminus-10,DejaVu Sans Mono:pixelsize=16,Kochi Gothic:pixelsize=16"
        , bgColor = "black"
        , fgColor = "grey"
        , position = Static { xpos = 0, ypos = 0, width = 4096, height = 32 }

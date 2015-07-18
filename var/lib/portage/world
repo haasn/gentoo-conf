@@ -21,9 +21,7 @@ app-crypt/aesutil
 app-editors/bvi
 app-editors/nano
 app-editors/vim
-app-editors/yi
 app-emulation/lxc
-app-emulation/playonlinux
 app-emulation/qemu
 app-emulation/qtemu
 app-emulation/virtualbox
@@ -35,9 +33,7 @@ app-misc/anki
 app-misc/bgrep
 app-misc/cmatrix
 app-misc/colordiff
-app-misc/ddccontrol
 app-misc/dtach
-app-misc/ranger
 app-misc/screenfetch
 app-misc/tmux
 app-office/calligra
@@ -62,7 +58,6 @@ app-text/aiksaurus
 app-text/asciidoc
 app-text/docx2txt
 app-text/dos2unix
-app-text/flpsed
 app-text/odt2txt
 app-text/sloccount
 app-text/tesseract
@@ -103,7 +98,6 @@ dev-haskell/gd
 dev-haskell/generic-deriving
 dev-haskell/ghc-man-completion
 dev-haskell/glfw-b
-dev-haskell/gloss
 dev-haskell/groupoids
 dev-haskell/haddock
 dev-haskell/haxml
@@ -174,9 +168,7 @@ dev-php/ZendFramework
 dev-python/eyeD3
 dev-python/mako
 dev-python/python-dateutil
-dev-python/twisted-core
 dev-qt/qt5ct
-dev-ruby/bundler
 dev-ruby/rack-test
 dev-ruby/rspec
 dev-tex/biblatex
@@ -198,9 +190,7 @@ dev-util/valgrind
 dev-vcs/bzr
 dev-vcs/cvs
 dev-vcs/darcs
-dev-vcs/git-annex
 dev-vcs/mercurial
-dev-vcs/tig
 games-action/extreme-tuxracer
 games-action/supertuxkart
 games-board/cockatrice
@@ -210,12 +200,10 @@ games-fps/ut2004
 games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
 gnome-base/gconf
-gnome-extra/zenity
 kde-apps/gwenview
 kde-apps/kdialog
 kde-apps/kmix
 kde-apps/knotify
-kde-apps/konsole
 kde-apps/okular
 lxde-base/lxappearance
 mail-client/nail
@@ -237,10 +225,8 @@ media-gfx/dispcalgui
 media-gfx/feh
 media-gfx/gimp
 media-gfx/gphoto2
-media-gfx/graphviz
 media-gfx/imagemagick
 media-gfx/jpeg2ps
-media-gfx/mypaint
 media-gfx/openexr_viewers
 media-gfx/optipng
 media-gfx/pdf2svg
@@ -249,7 +235,6 @@ media-gfx/pstoedit
 media-gfx/scrot
 media-gfx/swftools
 media-gfx/sxiv
-media-gfx/zbar
 media-libs/aalib
 media-libs/exiftool
 media-libs/flac
@@ -270,7 +255,6 @@ media-sound/audacity
 media-sound/autoplay
 media-sound/flacon
 media-sound/id3v2
-media-sound/jack-audio-connection-kit
 media-sound/mac
 media-sound/mp3gain
 media-sound/mpc
@@ -290,10 +274,8 @@ media-sound/vorbis-tools
 media-sound/vorbisgain
 media-video/mediainfo
 media-video/mkvtoolnix
-media-video/mplayer
 media-video/mpv
 media-video/nvidia-settings
-media-video/rtmpdump
 media-video/x264-encoder
 net-analyzer/arpoison
 net-analyzer/bwm-ng
@@ -315,13 +297,13 @@ net-dns/namecoind
 net-dns/unbound
 net-im/bitlbee
 net-im/skype
-net-im/toxic
 net-irc/weechat
 net-libs/glib-networking
 net-mail/isync
 net-mail/mswatch
 net-mail/notmuch
 net-mail/offlineimap
+net-misc/bridge-utils
 net-misc/corkscrew
 net-misc/dhcpcd
 net-misc/httptunnel
@@ -346,7 +328,6 @@ sci-electronics/kicad
 sci-libs/fftw
 sci-libs/libqalculate
 sci-mathematics/msieve
-sci-visualization/gnuplot
 sys-apps/dstat
 sys-apps/evrouter
 sys-apps/gsmartcontrol
@@ -357,7 +338,7 @@ sys-apps/kexec-tools
 sys-apps/lm_sensors
 sys-apps/lsb-release
 sys-apps/man-db
-sys-apps/memtester
+sys-apps/memtest86+
 sys-apps/portage
 sys-apps/preload
 sys-apps/smartmontools
@@ -365,6 +346,7 @@ sys-apps/usbutils
 sys-block/fio
 sys-block/gparted
 sys-boot/grub
+sys-boot/os-prober
 sys-boot/unetbootin
 sys-devel/clang
 sys-devel/crossdev
@@ -372,6 +354,7 @@ sys-devel/distcc
 sys-devel/gcc:4.8
 sys-devel/gdb
 sys-fs/cryptsetup
+sys-fs/duperemove
 sys-fs/eudev
 sys-fs/inotify-tools
 sys-fs/ncdu
@@ -388,6 +371,7 @@ sys-libs/libfaketime
 sys-power/apcupsd
 sys-power/pm-utils
 sys-process/htop
+sys-process/iotop
 sys-process/lsof
 sys-process/parallel
 virtual/cron
@@ -396,7 +380,6 @@ www-client/firefox
 www-client/lynx
 www-client/w3m
 www-plugins/mozplugger
-www-servers/mighttpd2
 x11-apps/mesa-progs
 x11-apps/xfontsel
 x11-apps/xmag
@@ -404,7 +387,6 @@ x11-base/xorg-x11
 x11-misc/dmenu
 x11-misc/gbdfed
 x11-misc/i3lock
-x11-misc/read-edid
 x11-misc/slock
 x11-misc/sselp
 x11-misc/swarp
