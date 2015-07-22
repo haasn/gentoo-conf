@@ -124,6 +124,7 @@ media-sound/pulseaudio alsa -X -gtk libsamplerate
 media-sound/jack-audio-connection-kit alsa
 media-video/ffmpeg -jack pulseaudio
 media-libs/openal pulseaudio
+net-im/skype pulseaudio
 
 # Needed for equalizing, apparently
 media-sound/pulseaudio dbus

@@ -11,6 +11,7 @@ app-arch/paq8l
 app-arch/rpm2targz
 app-arch/unp
 app-arch/unrar
+app-arch/zpaq
 app-benchmarks/bonnie++
 app-benchmarks/httperf
 app-benchmarks/iozone
