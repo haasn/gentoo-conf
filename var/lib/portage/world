@@ -1,0 +1,17 @@
+app-admin/logrotate
+app-admin/syslog-ng
+app-arch/lz4
+app-editors/vim
+app-misc/tmux
+app-portage/eix
+app-portage/gentoolkit
+app-portage/portage-utils
+app-shells/zsh
+dev-vcs/git
+net-misc/dhcpcd
+sys-apps/pciutils
+sys-boot/grub
+sys-fs/btrfs-progs
+sys-kernel/genkernel-next
+sys-kernel/gentoo-sources
+virtual/cron

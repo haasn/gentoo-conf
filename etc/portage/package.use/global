@@ -1,0 +1,9 @@
+# CPU features, for backwards compatibility
+*/* mmx sse sse2 ssse3 mmxext sse4 sse4_1 sse4_2
+
+# Decrease attack surface
+*/* -perl -python -ruby -guilde -ocaml -lua -php
+
+# Administration tools
+*/* zsh zsh-completion
+*/* vim vim-syntax

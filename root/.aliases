@@ -1,0 +1,112 @@
+# grep should always be case insensitive
+alias grep='grep -i --color=auto'
+
+# some more ls aliases
+alias ll='ls -l --si'
+alias la='ls -A'
+alias l='ls -CF'
+alias lt='ll -rt'
+
+alias df='df --total -H'
+alias du='du --si'
+alias ds='du --total --summarize -- *'
+
+# allow colors in less and tmux
+alias less='less -R'
+alias tmux='tmux -2'
+
+# Sort by memory usage per default
+alias htop='htop -s PERCENT_MEM'
+
+# automatically resume and stuff
+alias wget='wget -c -4 --timeout 10'
+
+alias esync='emerge --ask=n --sync'
+alias epull='layman -S && hackport update && esync && eix-update'
+alias eworld='emerge --update --newuse --deep @world --exclude portage'
+alias deworld='emerge --ask=n --deselect'
+alias esmart='smart-live-rebuild -E'
+alias eupdate='epull && eworld && esmart'
+
+# ln with absolute paths
+aln() {
+  LNARGS=
+  while [[ $1 == -* ]]; do
+    LNARGS="$LNARGS $1"
+    shift
+  done
+
+  P=$(readlink -f "$1")
+  shift
+  ln $LNARGS "$P" "$*"
+}
+
+sprunge() {
+    local src='-'
+    [ "$1" ] && src="$1"
+    curl -sF "sprunge=@$src" http://sprunge.us
+}
+
+up() {
+    local src='-;type=text/plain;filename=stdin.txt'
+    [ "$1" ] && src="$1"
+    curl -sF "file=@$src" http://0x0.st
+}
+
+short() {
+    curl -sF "shorten=$1" http://0x0.st
+}
+
+# Git aliases
+alias add='git add'
+alias bisect='git bisect'
+alias branch='git branch'
+alias checkout='git checkout'
+alias clone='git clone'
+alias commit='git commit'
+#alias diff='git diff'
+alias fetch='git fetch'
+#alias grep='git grep'
+alias init='git init'
+alias log='git log'
+alias merge='git merge'
+#alias mv='git mv'
+alias pull='git pull'
+alias push='git push'
+alias rebase='git rebase'
+#alias reset='git reset'
+#alias rm='git rm'
+alias show='git show'
+alias status='git status'
+alias tag='git tag'
+
+# More git aliases
+alias cherry-pick='git cherry-pick'
+alias blame='git blame'
+alias format-patch='git format-patch'
+alias remote='git remote'
+alias stash='git stash'
+
+# Compute a simple string hash
+
+sumcharvals() {
+    if [[ $# -eq 0 ]]; then
+      echo "Usage: $0 [string] [mod] [parameter]"
+      echo
+      echo "sums the char values of string and modulates with mod"
+      echo "if parameter is given, assign result to it, otherwise echo"
+      return 0
+    fi
+    local name=$1 sum=0
+    integer i
+    for (( i=1; i <= $#name; i++ )) {
+      (( sum+=##$name[i] ))
+      (( sum*=17 ))
+    }
+    [[ -n $2 ]] && (( sum%=$2 ))
+    if [[ -n $3 ]]; then
+      typeset -g $3=$sum
+    else
+      echo $sum
+    fi
+}

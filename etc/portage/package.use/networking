@@ -1,0 +1,5 @@
+# SSL/TLS and SASL support
+*/* ssl sasl
+
+# IPv6 support where possible
+*/* ipv6

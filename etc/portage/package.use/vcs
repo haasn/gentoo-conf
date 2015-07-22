@@ -1,0 +1,5 @@
+# Too many dependencies
+dev-vcs/git -gpg
+
+# Needed for interactive mode
+dev-vcs/git perl

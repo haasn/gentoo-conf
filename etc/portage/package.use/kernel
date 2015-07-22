@@ -1,0 +1,5 @@
+# Quality of life
+sys-kernel/*-sources symlink
+
+# Disable unnecessary proprietary functionality
+#sys-kernel/*-sources deblob

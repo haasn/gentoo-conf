@@ -1,0 +1,2 @@
+# Older versions fail building
+<=sys-block/thin-provisioning-tools-0.4.1
