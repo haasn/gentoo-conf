@@ -7,3 +7,6 @@
 # Administration tools
 */* zsh zsh-completion
 */* vim vim-syntax
+
+# I have kernel modules globally disabled
+*/* -kmod

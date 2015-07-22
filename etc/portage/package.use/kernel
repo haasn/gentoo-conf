@@ -2,4 +2,4 @@
 sys-kernel/*-sources symlink
 
 # Disable unnecessary proprietary functionality
-#sys-kernel/*-sources deblob
+sys-kernel/*-sources deblob

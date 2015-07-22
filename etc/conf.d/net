@@ -1,1 +1,5 @@
-config_eth0="dhcp"
+config_eth0="149.210.147.184/24
+             2A01:7C8:AAB0:187::1/48"
+
+routes_eth0="default via 149.210.147.1
+             default via 2A01:7C8:AAB0::1"

@@ -9,9 +9,15 @@ app-portage/portage-utils
 app-shells/zsh
 dev-vcs/git
 net-misc/dhcpcd
+net-misc/ndisc6
+net-misc/radvd
 sys-apps/pciutils
 sys-boot/grub
 sys-fs/btrfs-progs
+sys-fs/cryptsetup
+sys-fs/eudev
 sys-kernel/genkernel-next
 sys-kernel/gentoo-sources
+sys-kernel/hardened-sources
+sys-process/htop
 virtual/cron

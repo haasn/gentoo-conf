@@ -11,6 +11,9 @@
 # See the manpage fstab(5) for more information.
 #
 
-# <fs>						<mountpoint>	<type>		<opts>		<dump/pass>
-UUID=060022b2-4664-4bb0-af78-7a0d358a404e	/		btrfs		noatime,ssd	0 0
-UUID=94fc6b57-9c4b-44f0-b10c-52fc78fdea4a	none		swap		sw		0 0
+# <fs>						<mountpoint>	<type>		<opts>			<dump/pass>
+UUID=060022b2-4664-4bb0-af78-7a0d358a404e	/		btrfs		noatime,ssd		0 0
+UUID=94fc6b57-9c4b-44f0-b10c-52fc78fdea4a	none		swap		sw			0 0
+
+# Faster /tmp that doesn't show up in snapshots
+tmpfs						/tmp		tmpfs		defaults,size=5% 	0 0

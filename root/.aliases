@@ -27,6 +27,7 @@ alias eworld='emerge --update --newuse --deep @world --exclude portage'
 alias deworld='emerge --ask=n --deselect'
 alias esmart='smart-live-rebuild -E'
 alias eupdate='epull && eworld && esmart'
+alias qlop='qlop -H'
 
 # ln with absolute paths
 aln() {
