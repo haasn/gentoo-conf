@@ -1,6 +1,7 @@
 app-admin/logrotate
 app-admin/syslog-ng
 app-arch/lz4
+app-editors/nano
 app-editors/vim
 app-misc/colordiff
 app-misc/tmux
@@ -15,6 +16,7 @@ net-misc/dhcpcd
 net-misc/ndisc6
 net-misc/ntp
 net-misc/radvd
+sec-policy/selinux-backup
 sys-apps/pciutils
 sys-boot/grub
 sys-fs/btrfs-progs
@@ -23,4 +25,6 @@ sys-fs/eudev
 sys-kernel/genkernel-next
 sys-kernel/hardened-sources
 sys-process/htop
+sys-process/lsof
 virtual/cron
+www-servers/nginx

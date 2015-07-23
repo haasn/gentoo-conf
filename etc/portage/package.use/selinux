@@ -1,0 +1,2 @@
+# Don't need this in strict mode either way
+sec-policy/selinux-base -unconfined

@@ -7,3 +7,6 @@ app-shells/gentoo-zsh-completions
 
 # Updated SELinux policies (fixes some bugs)
 sec-policy/*
+
+# No stable :mainline versions
+www-servers/nginx
