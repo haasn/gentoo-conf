@@ -2,14 +2,18 @@ app-admin/logrotate
 app-admin/syslog-ng
 app-arch/lz4
 app-editors/vim
+app-misc/colordiff
 app-misc/tmux
 app-portage/eix
 app-portage/gentoolkit
 app-portage/portage-utils
+app-shells/gentoo-zsh-completions
 app-shells/zsh
+app-shells/zsh-completions
 dev-vcs/git
 net-misc/dhcpcd
 net-misc/ndisc6
+net-misc/ntp
 net-misc/radvd
 sys-apps/pciutils
 sys-boot/grub
@@ -17,7 +21,6 @@ sys-fs/btrfs-progs
 sys-fs/cryptsetup
 sys-fs/eudev
 sys-kernel/genkernel-next
-sys-kernel/gentoo-sources
 sys-kernel/hardened-sources
 sys-process/htop
 virtual/cron

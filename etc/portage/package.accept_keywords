@@ -1,2 +1,9 @@
 # Older versions fail building
 <=sys-block/thin-provisioning-tools-0.4.1
+
+# Zsh stuff
+app-shells/zsh-completions
+app-shells/gentoo-zsh-completions
+
+# Updated SELinux policies (fixes some bugs)
+sec-policy/*
