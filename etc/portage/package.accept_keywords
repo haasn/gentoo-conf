@@ -8,5 +8,9 @@ app-shells/gentoo-zsh-completions
 # Updated SELinux policies (fixes some bugs)
 sec-policy/*
 
-# No stable :mainline versions
+# Keeping this in sync with my clients
+net-misc/openvpn
+
+# No suitable stable versions availabl
 www-servers/nginx
+net-dns/nsd

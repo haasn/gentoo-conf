@@ -10,3 +10,7 @@
 # IPv4 and IPv6 localhost aliases
 127.0.0.1	localhost valkyrja
 ::1		localhost valkyrja
+
+# Old VPS
+78.46.126.102           nanovps
+2A01:4F8:D13:5245::2    nanovps

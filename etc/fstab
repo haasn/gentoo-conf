@@ -16,5 +16,5 @@ UUID=060022b2-4664-4bb0-af78-7a0d358a404e	/		btrfs		noatime,ssd		0 0
 UUID=94fc6b57-9c4b-44f0-b10c-52fc78fdea4a	none		swap		sw			0 0
 
 # Needed for SELinux
-tmpfs						/tmp		tmpfs		defaults,size=5%,noexec,nosuid,rootcontext=system_u:object_r:tmp_t	0 0
-tmpfs						/run		tmpfs		mode=0755,nosuid,nodev,rootcontext=system_u:object_r:var_run_t		0 0
+tmpfs		/tmp		tmpfs		defaults,size=5%,noexec,nosuid,rootcontext=system_u:object_r:tmp_t	0 0
+tmpfs		/run		tmpfs		size=5%,mode=0755,nosuid,nodev,rootcontext=system_u:object_r:var_run_t	0 0
