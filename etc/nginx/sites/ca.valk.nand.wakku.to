@@ -1,0 +1,17 @@
+server {
+    server_name ca.valk.nand.wakku.to;
+    listen [::]:80;
+    listen [::]:443 ssl spdy;
+    listen 80;
+    listen 443 ssl spdy;
+
+    root /etc/ssl/ca/;
+
+    location = /crl.pem {
+        try_files /crl.pem =500;
+    }
+
+    location = /ca.crt {
+        try_files /ca.crt =500;
+    }
+}

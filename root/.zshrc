@@ -16,7 +16,7 @@ compinit
 HISTFILE=~/.histfile
 HISTSIZE=1000000
 SAVEHIST=1000000
-setopt appendhistory
+setopt incappendhistory
 
 # Miscellaneous
 setopt dotglob autocd nomatch notify

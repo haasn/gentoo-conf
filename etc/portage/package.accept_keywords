@@ -14,3 +14,4 @@ net-misc/openvpn
 # No suitable stable versions availabl
 www-servers/nginx
 net-dns/nsd
+sys-kernel/dracut

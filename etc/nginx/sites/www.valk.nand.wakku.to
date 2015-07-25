@@ -1,7 +1,9 @@
 server {
     server_name valk.nand.wakku.to www.valk.nand.wakku.to;
-    listen [::]:80;
-    listen 80;
+    listen [::]:80 default_server;
+    listen [::]:443 ssl spdy default_server;
+    listen 80 default_server;
+    listen 443 ssl spdy default_server;
 
     root /var/www/localhost/root;
 
@@ -9,7 +11,7 @@ server {
         try_files $uri /index.html;
     }
 
-    location /echo {
+    location = /echo {
         add_header Content-Type "text/plain";
         echo_duplicate 1 $echo_client_request_headers;
         echo "\r";

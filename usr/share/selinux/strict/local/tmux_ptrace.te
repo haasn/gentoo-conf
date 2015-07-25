@@ -1,0 +1,10 @@
+
+module tmux_ptrace 1.0;
+
+require {
+	type sysadm_screen_t;
+	class capability sys_ptrace;
+}
+
+#============= sysadm_screen_t ==============
+dontaudit sysadm_screen_t self:capability sys_ptrace;

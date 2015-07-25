@@ -7,6 +7,7 @@ alias la='ls -A'
 alias l='ls -CF'
 alias lt='ll -rt'
 alias lz='ll -Z'
+alias lza='lz -A'
 
 alias df='df --total -H'
 alias du='du --si'

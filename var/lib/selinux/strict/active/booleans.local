@@ -4,3 +4,4 @@
 global_ssp=1
 ssh_sysadm_login=1
 nginx_enable_http_server=1
+console_login=0

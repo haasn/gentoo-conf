@@ -8,3 +8,4 @@
 /usr/sbin/nsd-checkzone    system_u:object_r:nsd_exec_t
 /usr/sbin/nsd-checkconf    system_u:object_r:nsd_exec_t
 /var/spool/cron/lastrun/cron\..*    system_u:object_r:system_cronjob_tmp_t
+/etc/ssl/ca/private/(.*)? -- system_u:object_r:cert_t

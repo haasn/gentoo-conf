@@ -1,0 +1,12 @@
+server {
+    server_name xn--n3h.valk.nand.wakku.to;
+    listen [::]:80;
+    listen [::]:443 ssl spdy;
+    listen 80;
+    listen 443 ssl spdy;
+
+    location / {
+        default_type text/html;
+        echo '<div style="text-align:center; font-size:4000%">&#9731;</div>';
+    }
+}

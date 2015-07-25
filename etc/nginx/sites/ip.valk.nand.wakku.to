@@ -1,10 +1,12 @@
 server {
     server_name ip.valk.nand.wakku.to;
     listen [::]:80;
+    listen [::]:443 ssl spdy;
     listen 80;
+    listen 443 ssl spdy;
 
     location / {
-        add_header Content-Type "text/plain";
+        default_type text/plain;
         echo $remote_addr;
     }
 }
@@ -12,9 +14,10 @@ server {
 server {
     server_name ip4.valk.nand.wakku.to;
     listen 80;
+    listen 443 ssl spdy;
 
     location / {
-        add_header Content-Type "text/plain";
+        default_type text/plain;
         echo $remote_addr;
     }
 }
@@ -22,6 +25,7 @@ server {
 server {
     server_name ip6.valk.nand.wakku.to;
     listen [::]:80 ipv6only=on;
+    listen [::]:443 ipv6only=on ssl spdy;
 
     location / {
         add_header Content-Type "text/plain";
