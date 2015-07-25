@@ -15,7 +15,7 @@ app-shells/zsh
 app-shells/zsh-completions
 dev-util/strace
 dev-vcs/git
-mail-mta/postfix
+net-analyzer/netcat6
 net-dns/nsd
 net-irc/znc
 net-misc/dhcpcd

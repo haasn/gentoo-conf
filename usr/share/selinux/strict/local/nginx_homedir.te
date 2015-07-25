@@ -1,0 +1,17 @@
+policy_module(nginx_homedir, 1.0)
+
+gen_require(`
+    type nginx_t;
+')
+
+## <desc>
+##      <p>
+##      Determine whether nginx can traverse
+##      user home directories.
+##      </p>
+## </desc>
+gen_tunable(nginx_enable_homedirs, false)
+
+tunable_policy(`nginx_enable_homedirs',`
+        userdom_search_user_home_dirs(nginx_t)
+')

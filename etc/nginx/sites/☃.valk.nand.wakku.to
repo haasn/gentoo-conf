@@ -9,4 +9,10 @@ server {
         default_type text/html;
         echo '<div style="text-align:center; font-size:4000%">&#9731;</div>';
     }
+
+    location ~ ^/~([^./]+)/([^/]+)$ {
+        default_type text/plain;
+        root /home/$1/www/;
+        try_files /$2 =404;
+    }
 }
