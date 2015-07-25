@@ -13,6 +13,7 @@ server {
     location ~ ^/~([^./]+)/([^/]+)$ {
         default_type text/plain;
         root /home/$1/www/;
+        disable_symlinks on;
         try_files /$2 =404;
     }
 }
