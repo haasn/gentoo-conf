@@ -72,7 +72,7 @@ copy_extensions = copy
 
 default_days	= 3650			# how long to certify for
 default_crl_days= 3			# how long before next CRL
-default_md	= sha256		# use public key default MD
+default_md	= sha384		# use public key default MD
 preserve	= no			# keep passed DN ordering
 
 # A few difference way of specifying how similar the request should look
