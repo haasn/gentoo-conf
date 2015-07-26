@@ -110,6 +110,7 @@ alias eix-update='sudo eix-update'
 alias eix-sync='sudo eix-sync'
 alias layman='sudo layman'
 alias genlop='sudo genlop'
+alias qlop='sudo qlop -H'
 alias egencache='sudo egencache'
 alias econf='sudo dispatch-conf'
 alias eclean='sudo eclean'
@@ -304,3 +305,6 @@ sumcharvals() {
       echo $sum
     fi
 }
+
+# ☃ \o/
+source ~/dev/haskell/☃/client.zsh

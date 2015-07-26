@@ -16,6 +16,7 @@ URxvt.perl-ext: default,url-select,clipboard
 URxvt.keysym.M-y: perl:url-select:select_next
 URxvt.url-select.launcher: /usr/bin/firefox -new-tab
 URxvt.url-select.button: -
+URxvt.matcher.pattern: (?:https?://|ftp://|news://|mailto:|file://|\\bwww\\.)[\\w\\-\\@;\\/?:&=%\\$.+!*\\x27,~#\\x{2603}]*(\\([\\w\\-\\@;\\/?:&=%\\$.+!*\\x27,~#]*\\)|[\\w\\-\\@;\\/?:&=%\\$+*~])+
 
 ! for using the clipboard
 

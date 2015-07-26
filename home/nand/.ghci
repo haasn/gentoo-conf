@@ -18,6 +18,7 @@
 
 -- :set prompt "\ESC[36;1mλ \ESC[m"
 :set prompt "λ "
+:set prompt2 "… "
 
 import Control.Applicative
 import Control.Arrow hiding (left, right)
