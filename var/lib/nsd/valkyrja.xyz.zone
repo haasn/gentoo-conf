@@ -1,0 +1,44 @@
+$ORIGIN valkyrja.xyz.
+$TTL 3600
+
+@ IN SOA valkyrja.wakku.to. admin@valkyrja.xyz. (
+	2015072401	; serial
+	3H		; refresh
+	1H		; retry
+	1W		; expire
+	1D		; ttl
+	)
+
+  IN A 149.210.147.184
+  IN AAAA 2A01:7C8:AAB0:187::1
+
+  IN MX 10 mail
+  IN TXT "v=spf1 mx a:home.nand.wakku.to ip6:2A01:7C8:AAB0:187::/64 -all"
+  IN SPF "v=spf1 mx a:home.nand.wakku.to ip6:2A01:7C8:AAB0:187::/64 -all"
+
+; webserver runs on the NS
+www IN CNAME valkyrja.xyz.
+
+; so does the mail server
+mail IN A 149.210.147.184
+mail IN AAAA 2A01:7C8:AAB0:187::1
+
+; and every other server, come to think of it
+ts3 IN CNAME valkyrja.xyz.
+vps IN CNAME valkyrja.xyz.
+ts IN CNAME valkyrja.xyz.
+ca IN CNAME valkyrja.xyz.
+dyndns IN CNAME valkyrja.xyz.
+ip IN CNAME valkyrja.xyz.
+
+; these are mapped to 4-only and 6-only, respectively
+ip4 IN A 149.210.147.184
+ip6 IN AAAA 2A01:7C8:AAB0:187::1
+
+; IDN testing
+xn--n3h IN CNAME valkyrja.xyz.
+
+; XMPP server
+jabber IN CNAME valkyrja.xyz.
+_xmpp-client._tcp.jabber IN SRV 10 0 5222 valkyrja.xyz.
+_xmpp-server._tcp.jabber IN SRV 10 0 5269 valkyrja.xyz.

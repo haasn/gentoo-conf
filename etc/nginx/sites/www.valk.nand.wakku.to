@@ -1,5 +1,5 @@
 server {
-    server_name valk.nand.wakku.to www.valk.nand.wakku.to;
+    server_name valk.nand.wakku.to www.valk.nand.wakku.to valkyrja.xyz www.valkyrja.xyz;
     listen [::]:80 default_server;
     listen [::]:443 ssl spdy default_server;
     listen 80 default_server;

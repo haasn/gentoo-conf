@@ -122,7 +122,7 @@ x509_extensions	= v3_ca	# The extentions to add to the self signed cert
 # WARNING: ancient versions of Netscape crash on BMPStrings or UTF8Strings.
 string_mask = utf8only
 
-# req_extensions = v3_req # The extensions to add to a certificate request
+req_extensions = v3_req # The extensions to add to a certificate request
 
 [ req_distinguished_name ]
 #countryName			= Country Name (2 letter code)
@@ -223,6 +223,8 @@ crlDistributionPoints           = URI:http://ca.valk.nand.wakku.to/crl.pem
 
 basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+
+subjectAltName=DNS:*.valk.nand.wakku.to,DNS:valk.nand.wakku.to,DNS:*.valkyrja.xyz,DNS:valkyrja.xyz
 
 [ v3_ca ]
 

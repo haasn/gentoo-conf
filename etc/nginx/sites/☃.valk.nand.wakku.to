@@ -1,5 +1,5 @@
 server {
-    server_name xn--n3h.valk.nand.wakku.to;
+    server_name xn--n3h.valk.nand.wakku.to xn--n3h.valkyrja.xyz;
     listen [::]:80;
     listen [::]:443 ssl spdy;
     listen 80;

@@ -1,5 +1,5 @@
 server {
-    server_name ip.valk.nand.wakku.to;
+    server_name ip.valk.nand.wakku.to ip.valkyrja.xyz;
     listen [::]:80;
     listen [::]:443 ssl spdy;
     listen 80;
@@ -12,7 +12,7 @@ server {
 }
 
 server {
-    server_name ip4.valk.nand.wakku.to;
+    server_name ip4.valk.nand.wakku.to ip4.valkyrja.xyz;
     listen 80;
     listen 443 ssl spdy;
 
@@ -23,7 +23,7 @@ server {
 }
 
 server {
-    server_name ip6.valk.nand.wakku.to;
+    server_name ip6.valk.nand.wakku.to ip6.valkyrja.xyz;
     listen [::]:80 ipv6only=on;
     listen [::]:443 ipv6only=on ssl spdy;
 
