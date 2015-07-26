@@ -1,0 +1,4 @@
+/etc/ocspd(/.*)?        gen_context(system_u:object_r:ocspd_conf_t,s0)
+/usr/sbin/ocspd     --  gen_context(system_u:object_r:ocspd_exec_t,s0)
+
+/var/run/ocspd(/.*)?    gen_context(system_u:object_r:ocspd_var_run_t,s0)

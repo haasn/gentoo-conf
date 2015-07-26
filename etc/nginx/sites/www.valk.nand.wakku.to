@@ -1,8 +1,6 @@
 server {
     server_name valk.nand.wakku.to www.valk.nand.wakku.to valkyrja.xyz www.valkyrja.xyz;
-    listen [::]:80 default_server;
     listen [::]:443 ssl spdy default_server;
-    listen 80 default_server;
     listen 443 ssl spdy default_server;
 
     root /var/www/localhost/root;
@@ -19,4 +17,11 @@ server {
         echo_read_request_body;
         echo_request_body;
     }
+}
+
+# Redirect HTTP traffic to HTTPS
+server {
+    listen [::]:80 default_server;
+    listen 80 default_server;
+    return 301 https://$host$request_uri;
 }

@@ -1,0 +1,2 @@
+# Settings for ocspd
+OCSPD_OPTS="-d"

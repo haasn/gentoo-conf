@@ -1,8 +1,6 @@
 server {
     server_name ca.valk.nand.wakku.to ca.valkyrja.xyz;
-    listen [::]:80;
     listen [::]:443 ssl spdy;
-    listen 80;
     listen 443 ssl spdy;
 
     root /etc/ssl/ca/;

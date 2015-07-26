@@ -15,3 +15,12 @@ net-misc/openvpn
 www-servers/nginx
 net-dns/nsd
 sys-kernel/dracut
+app-misc/openca-ocspd
+dev-libs/libpki
+
+# Keeping this up-to-date
+dev-lang/ghc
+dev-haskell/*
+
+# Needed for repos.conf method
+app-portage/layman

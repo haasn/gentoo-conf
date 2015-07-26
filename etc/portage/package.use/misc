@@ -1,2 +1,5 @@
 # No need
 app-admin/sudo -sendmail
+
+# Sync layman overlays via portage
+app-portage/layman sync-plugin-portage

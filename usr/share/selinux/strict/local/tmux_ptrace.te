@@ -7,4 +7,4 @@ require {
 }
 
 #============= sysadm_screen_t ==============
-dontaudit sysadm_screen_t self:capability sys_ptrace;
+allow sysadm_screen_t self:capability sys_ptrace;

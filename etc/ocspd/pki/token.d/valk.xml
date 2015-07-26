@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!-- PKI service configurations -->
+<pki:tokenConfig xmlns:pki="http://www.openca.org/openca/pki/1/0/0">
+  <!-- Token Name -->
+  <pki:name>valkToken</pki:name>
+  <!-- Token Type (software, hardware) -->
+  <pki:type>software</pki:type>
+  <!-- HSM specification for server token -->
+  <!-- <pki:hsm>software</pki:hsm> -->
+  <!-- Private key identifier (URI - file:// id:// etc.. ) -->
+  <pki:keypair>file:////etc/ssl/ca/private/ocsp.pem</pki:keypair>
+  <!-- Certificate identifier (URI) -->
+  <pki:cert>file:////etc/ssl/ca/ocsp.crt</pki:cert>
+  <!-- CA Certificate -->
+  <pki:cacert>file:////etc/ssl/ca/ca.crt</pki:cacert>
+  <!-- Certificates -->
+  <pki:othercerts>file::////etc/ssl/ca/cert-bundle.pem</pki:othercerts>
+  <pki:trustedcerts>file::////etc/ssl/ca/cert-bundle.pem</pki:trustedcerts>
+  <!-- passin is used to specify the method for reading the token
+       password. The following options are available:
+         none ...... : do not prompt for any password
+         stdin ..... : reads from standard input
+         env:name .. : reads the password from env variable 'name'
+         -->
+  <pki:passin>none</pki:passin> -->
+  <!-- ... or simply specify the password here -->
+  <!-- <pki:password></pki:password> -->
+</pki:tokenConfig>

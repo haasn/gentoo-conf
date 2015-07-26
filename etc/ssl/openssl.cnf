@@ -72,7 +72,7 @@ copy_extensions = copy
 
 default_days	= 3650			# how long to certify for
 default_crl_days= 3			# how long before next CRL
-default_md	= default		# use public key default MD
+default_md	= sha256		# use public key default MD
 preserve	= no			# keep passed DN ordering
 
 # A few difference way of specifying how similar the request should look
@@ -212,7 +212,8 @@ authorityKeyIdentifier=keyid,issuer
 #nsSslServerName
 
 # CRL distribution
-crlDistributionPoints           = URI:http://ca.valk.nand.wakku.to/crl.pem
+crlDistributionPoints=URI:https://ca.valk.nand.wakku.to/crl.pem
+authorityInfoAccess = OCSP;URI:http://ca.valk.nand.wakku.to:9080
 
 # This is required for TSA certificates.
 # extendedKeyUsage = critical,timeStamping
@@ -238,7 +239,7 @@ subjectKeyIdentifier=hash
 
 authorityKeyIdentifier=keyid:always,issuer
 
-crlDistributionPoints           = URI:http://ca.valk.nand.wakku.to/crl.pem
+crlDistributionPoints=URI:https://ca.valk.nand.wakku.to/crl.pem
 
 # This is what PKIX recommends but some broken software chokes on critical
 # extensions.
@@ -269,10 +270,16 @@ subjectAltName=email:copy
 
 subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid:always,issuer
-crlDistributionPoints = URI:http://ca.valk.nand.wakku.to/crl.pem
+crlDistributionPoints=URI:https://ca.valk.nand.wakku.to/crl.pem
 basicConstraints = CA:true
 keyUsage = cRLSign
 subjectAltName=email:copy
+
+[ v3_OCSP ]
+
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = OCSPSigning
 
 [ crl_ext ]
 

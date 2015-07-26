@@ -1,0 +1,45 @@
+# OpenCA OCSPd
+policy_module(ocspd, 1.0)
+
+gen_require(`
+    type cert_t;
+    type user_home_dir_t;
+')
+
+# Types needed for daemonizing it
+type ocspd_t;
+type ocspd_exec_t;
+init_daemon_domain(ocspd_t, ocspd_exec_t)
+
+# Type for its config files
+type ocspd_conf_t;
+files_type(ocspd_conf_t)
+list_dirs_pattern(ocspd_t, ocspd_conf_t, ocspd_conf_t)
+read_files_pattern(ocspd_t, ocspd_conf_t, ocspd_conf_t)
+
+# Needed to read /etc/ssl/openssl.cnf as well as its own keys
+files_read_etc_files(ocspd_t)
+list_dirs_pattern(ocspd_t, cert_t, cert_t)
+read_files_pattern(ocspd_t, cert_t, cert_t)
+
+# Needed to listen to OCSP requests
+allow ocspd_t self:tcp_socket create_stream_socket_perms;
+corenet_tcp_bind_generic_node(ocspd_t)
+corenet_tcp_bind_ocsp_port(ocspd_t)
+corenet_sendrecv_ocsp_server_packets(ocspd_t)
+
+# pid file
+type ocspd_var_run_t;
+files_pid_file(ocspd_var_run_t)
+manage_dirs_pattern(ocspd_t, ocspd_var_run_t, ocspd_var_run_t)
+manage_files_pattern(ocspd_t, ocspd_var_run_t, ocspd_var_run_t)
+files_pid_filetrans(ocspd_t, ocspd_var_run_t, file)
+
+# Permission drop
+allow ocspd_t self:capability { setuid setgid };
+
+# No idea why it even wants to look at ~/.pki
+dontaudit ocspd_t user_home_dir_t:dir { search };
+
+# Misc stuff
+miscfiles_read_localization(ocspd_t)

@@ -6,3 +6,4 @@ ssh_sysadm_login=1
 nginx_enable_http_server=1
 console_login=0
 nginx_enable_homedirs=1
+nginx_can_network_connect=1

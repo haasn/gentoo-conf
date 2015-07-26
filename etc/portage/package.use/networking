@@ -4,14 +4,14 @@
 # IPv6 support where possible
 */* ipv6
 
-# PolarSSL instead of OpenSSL
-*/* polarssl
-
 # No idea what this is useful for, but disable it anyway (shrug)
 net-misc/openvpn -modules
 
 # Prevent this being used as a DDoS relay
 net-dns/nsd mmap ratelimit
+
+# Completely unnecessary “accidental” backdoor
+dev-libs/openssl -tls-heartbeat
 
 # Run this as a service
 net-irc/znc daemon

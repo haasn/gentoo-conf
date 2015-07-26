@@ -5,6 +5,7 @@ app-arch/lz4
 app-editors/nano
 app-editors/vim
 app-misc/colordiff
+app-misc/openca-ocspd
 app-misc/tmux
 app-portage/eix
 app-portage/gentoolkit
@@ -13,9 +14,12 @@ app-portage/portage-utils
 app-shells/gentoo-zsh-completions
 app-shells/zsh
 app-shells/zsh-completions
+dev-haskell/temporary
+dev-lang/ghc
 dev-util/strace
 dev-vcs/git
 net-analyzer/netcat6
+net-dns/bind-tools
 net-dns/nsd
 net-irc/znc
 net-misc/dhcpcd
