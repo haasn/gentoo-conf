@@ -1,0 +1,3 @@
+# Unmasking overlays
+app-misc/openca-ocspd::hacking-gentoo
+dev-libs/libpki::hacking-gentoo

@@ -24,7 +24,7 @@ alias htop='htop -s PERCENT_MEM'
 alias wget='wget -c -4 --timeout 10'
 
 alias esync='emerge --ask=n --sync'
-alias epull='layman -S && hackport update && esync && eix-update'
+alias epull='esync && eix-update'
 alias eworld='emerge --update --newuse --deep @world --exclude portage'
 alias deworld='emerge --ask=n --deselect'
 alias esmart='smart-live-rebuild -E'
