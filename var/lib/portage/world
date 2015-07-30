@@ -130,6 +130,7 @@ dev-haskell/pointed
 dev-haskell/pointless-fun
 dev-haskell/pretty-tree
 dev-haskell/primes
+dev-haskell/punycode
 dev-haskell/random-shuffle
 dev-haskell/reactive-banana
 dev-haskell/readline

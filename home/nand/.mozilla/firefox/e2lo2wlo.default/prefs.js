@@ -3670,7 +3670,6 @@ user_pref("privacy.popups.showBrowserMessage", false);
 user_pref("privacy.sanitize.migrateFx3Prefs", true);
 user_pref("privacy.sanitize.timeSpan", 0);
 user_pref("security.OCSP.disable_button.managecrl", false);
-user_pref("security.OCSP.enabled", 0);
 user_pref("security.default_personal_cert", "Select Automatically");
 user_pref("security.dialog_enable_delay", 0);
 user_pref("security.disable_button.openCertManager", false);
