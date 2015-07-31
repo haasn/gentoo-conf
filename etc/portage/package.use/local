@@ -60,7 +60,7 @@
 */* hardened mem-scramble
 
 # Needed for gcc's -floop optimization flags
-*/* graphite
+#*/* graphite
 
 # Get hibernation support in where possible
 */* acpi
@@ -85,6 +85,9 @@
 
 # Make sure we have btrfs and xfs support where possible
 */* btrfs xfs
+
+# I don't want this garbage on my system
+*/* -java
 
 # Stuff actually uses this
 */* xattr
@@ -503,6 +506,9 @@ games-board/cockatrice server
 
 # Not sure which version I want, to be honest
 x11-drivers/nvidia-drivers gtk3
+
+# SELinux
+sec-policy/* doc -unconfined
 
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify
