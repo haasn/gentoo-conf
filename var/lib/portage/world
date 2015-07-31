@@ -35,7 +35,6 @@ sys-fs/btrfs-progs
 sys-fs/cryptsetup
 sys-fs/eudev
 sys-kernel/dracut
-sys-kernel/genkernel-next
 sys-kernel/hardened-sources
 sys-process/htop
 sys-process/lsof
