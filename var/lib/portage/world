@@ -319,6 +319,7 @@ sci-libs/fftw
 sci-libs/libqalculate
 sci-mathematics/msieve
 sec-policy/selinux-backup
+sec-policy/selinux-mplayer
 sys-apps/dstat
 sys-apps/evrouter
 sys-apps/gsmartcontrol

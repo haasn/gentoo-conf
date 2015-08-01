@@ -48,11 +48,12 @@ setopt promptsubst
 autoload -U colors && colors
 
 # hash the hostname
-local col=0
+local col=0 role="$(id -Z | awk -F: '{print $2}')"
 sumcharvals "$USER@$HOST" $terminfo[colors] col
 
 PS1="[%B%F{yellow}%D{%H:%M}%f%b]"\
 "[%B%F{$col}%n@%m%f%b]"\
+"[%B%F{red}$role%f%b]"\
 "[%B%F{blue}%~%f%b]"\
 $'$(__git_ps1 "[%%F{70}%s%%f]")'\
 "%(?..[%B%F{red}%?%f%b])"\
