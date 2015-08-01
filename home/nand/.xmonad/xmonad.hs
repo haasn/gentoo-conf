@@ -35,8 +35,8 @@ main = do
     xmproc <- spawnPipe "xmobar"
     xmonad $ withUrgencyHook (NoUrgencyHook)
            $ fullscreenFix
-           $ defaultConfig {
-        manageHook          = manageFloats <+> manageDocks <+> manageHook defaultConfig,
+           $ def {
+        manageHook          = manageFloats <+> manageDocks <+> manageHook def,
         layoutHook          = smartBorders $ avoidStruts $ myLayout,
         handleEventHook     = fullscreenEventHook <+> docksEventHook,
         logHook             = dynamicLogWithPP xmobarPP {
@@ -95,7 +95,7 @@ extraKeys =
   , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#0e1112')")
 
     -- lock the screen when not in use
-  , ((mod4Mask, xK_s), spawn "slock")
+  , ((mod4Mask, xK_s), spawn "i3lock -c 000000")
 
     -- reset the mouse cursor
   , ((mod4Mask, xK_Escape), spawn "swarp 0 0")

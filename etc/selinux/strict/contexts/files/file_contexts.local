@@ -2,14 +2,16 @@
 # Do not edit directly.
 
 /snapshots(/.*)?    system_u:object_r:backup_store_t
-/y/misc/distfiles/cvs-src(/.*)?    system_u:object_r:portage_srcrepo_t
+/var/log/mpd.log    system_u:object_r:mpd_log_t
+/.git(/.*)?    root:object_r:user_home_t
+/y    system_u:object_r:etc_t
+/y/.*    staff_u:object_r:user_home_t
+/y/misc    system_u:object_r:etc_t
+/y/misc/distfiles(/.*)?    system_u:object_r:portage_ebuild_t
+/y/misc/distfiles/svn-src(/.*)?    system_u:object_r:portage_srcrepo_t
 /y/misc/distfiles/egit-src(/.*)?    system_u:object_r:portage_srcrepo_t
 /y/misc/distfiles/git.?-src(/.*)?    system_u:object_r:portage_srcrepo_t
-/y/misc/distfiles/svn-src(/.*)?    system_u:object_r:portage_srcrepo_t
-/y/misc/distfiles(/.*)?    system_u:object_r:portage_ebuild_t
-/y/backup/.*    system_u:object_r:backup_store_t
+/y/misc/distfiles/cvs-src(/.*)?    system_u:object_r:portage_srcrepo_t
 /y/backup    system_u:object_r:etc_t
-/var/log/mpd.log    system_u:object_r:mpd_log_t
+/y/backup/.*    system_u:object_r:backup_store_t
 /y/media/.autoplay(/.*)?    staff_u:object_r:xdg_data_home_t
-/y(/.*)?    staff_u:object_r:user_home_t
-/.git(/.*)?    root:object_r:user_home_t

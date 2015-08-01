@@ -253,6 +253,7 @@ kde-apps/kmix pulseaudio
 
 # Firefox stable
 www-client/firefox minimal -crashreporter -libnotify -startup-notification -webm -ipc -dbus
+www-client/jit # manually override this for performance
 
 # Fuck proprietary codecs
 www-client/firefox -pulseaudio -gstreamer # actually, fuck audio output even harder
@@ -351,7 +352,7 @@ sci-mathematics/agda-stdlib -profile
 
 # Required for newer mesa
 x11-libs/libdrm libkms
-media-libs/mesa gbm -opencl
+media-libs/mesa gbm opencl
 x11-drivers/xf86-video-ati glamor udev
 
 # Experimental Haskell editor
@@ -507,8 +508,9 @@ games-board/cockatrice server
 # Not sure which version I want, to be honest
 x11-drivers/nvidia-drivers gtk3
 
-# SELinux
+# SELinux/hardened stuff
 sec-policy/* doc -unconfined
+sys-devel/gcc fortran
 
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify
