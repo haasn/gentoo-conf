@@ -32,10 +32,10 @@ remedia() {
 
     sudo btrfs device scan /dev/mapper/$^devices
     sudo mount -o noatime /dev/mapper/${${devices}[1]} /y || return 1
+    sudo setenforce 1
 
     echo 'Mounted...'
     sudo rc-service mpd start && nohup autoplay info >/dev/null 2>&1
-    sudo setenforce 1
 }
 
 # grep should always be case insensitive

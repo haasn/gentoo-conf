@@ -41,6 +41,9 @@ sci-mathematics/agda* **
 # Unkeyworded
 dev-haskell/repa **
 
+# Upstream policy stuff ASAP
+sec-policy/* **
+
 ############################
 #### Media applications ####
 ############################

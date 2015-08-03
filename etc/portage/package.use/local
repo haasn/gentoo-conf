@@ -77,8 +77,13 @@
 # Prefer Qt but don't pull in KDE
 */* -kde -qt4 qt5 qt
 
-# Bloated crap
-*/* -gstreamer -policykit -consolekit -dbus -udev -udisks -upower
+# Bloated or unneeded crap
+*/* -gstreamer -policykit -consolekit -dbus -udisks -upower
+*/* -udev
+
+# Because OpenRC is just even worse.
+# Well, as soon as it's supported upstream, anyway
+#*/* systemd udev
 
 # For configuration in stuff like dwm/sxiv/whatever
 */* savedconfig
@@ -130,7 +135,7 @@ media-libs/openal pulseaudio
 net-im/skype pulseaudio
 
 # Needed for equalizing, apparently
-media-sound/pulseaudio dbus
+#media-sound/pulseaudio dbus
 #dev-python/PyQt4 dbus
 
 # Ensure they actually output sound
@@ -149,7 +154,8 @@ games-emulation/higan pulseaudio
 media-libs/libsdl sound
 
 # Needed for some stupid reason by teamspeak3-client-bin
-dev-qt/qtgui xinerama accessibility dbus
+dev-qt/qtgui xinerama -dbus
+dev-qt/qtgui:5 -accessibility
 
 # Uh oh, xmonad thinks I have one really big monitor otherwise
 dev-haskell/x11 xinerama
