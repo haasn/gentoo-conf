@@ -49,6 +49,7 @@ app-portage/mirrorselect
 app-portage/pfl
 app-portage/smart-live-rebuild
 app-shells/bash-completion
+app-shells/dash
 app-shells/gentoo-bashcomp
 app-shells/gentoo-zsh-completions
 app-shells/zsh
