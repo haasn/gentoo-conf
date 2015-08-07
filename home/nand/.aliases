@@ -133,6 +133,7 @@ alias hackport='sudo hackport -p /usr/local/portage'
 alias ghc-pkg='sudo ghc-pkg'
 alias elogv='sudo elogv'
 alias btrfs='sudo btrfs'
+alias gcc-config='sudo gcc-config'
 
 # SELinux
 alias ausearch='sudo ausearch'
@@ -144,6 +145,7 @@ alias getsebool='sudo getsebool'
 alias setsebool='sudo setsebool'
 alias setenforce='sudo setenforce'
 alias rlpkg='sudo rlpkg'
+alias restorecon='sudo restorecon'
 
 alias esync='emerge --ask=n --sync'
 alias epull='layman -S && hackport update && esync && eix-update'

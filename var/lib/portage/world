@@ -155,6 +155,7 @@ dev-lang/go
 dev-lang/j
 dev-lang/lua
 dev-lang/mercury
+dev-lang/mono
 dev-lang/perl
 dev-lang/python
 dev-lang/swi-prolog
@@ -355,6 +356,7 @@ sys-fs/xfsprogs
 sys-kernel/dracut
 sys-kernel/genkernel-next
 sys-kernel/gentoo-sources
+sys-kernel/hardened-sources
 sys-kernel/linux-firmware
 sys-libs/libfaketime
 sys-power/apcupsd

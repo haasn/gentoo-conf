@@ -456,9 +456,8 @@ app-text/ghostscript-gpl cups
 #sys-devel/gcc gcj
 
 # Remove binary blobs from the kernel
-#sys-kernel/aufs-sources deblob
-sys-kernel/aufs-sources symlink
-sys-kernel/gentoo-sources symlink
+sys-kernel/*-sources deblob
+sys-kernel/*-sources symlink
 
 # Additional codecs for mpd
 media-sound/mpd alsa inotify cue libsamplerate musepack mpg123 wavpack -wildmidi mikmod opus ffmpeg
