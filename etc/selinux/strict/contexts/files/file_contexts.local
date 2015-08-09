@@ -15,3 +15,9 @@
 /y/backup    system_u:object_r:etc_t
 /y/backup/.*    system_u:object_r:backup_store_t
 /y/media/.autoplay(/.*)?    staff_u:object_r:xdg_data_home_t
+/var/notmpfs    system_u:object_r:tmp_t
+/var/notmpfs/portage(/.*)?    system_u:object_r:portage_tmp_t
+/etc/unbound/unbound.log    system_u:object_r:named_log_t
+/home/nand/.password-store(/.*)?    staff_u:object_r:gpg_secret_t
+/y/media    system_u:object_r:user_home_dir_t
+/home/nand/.rtorrent.rc    system_u:object_r:rtorrent_home_t

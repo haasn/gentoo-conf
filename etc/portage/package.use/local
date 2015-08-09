@@ -259,7 +259,7 @@ kde-apps/kmix pulseaudio
 
 # Firefox stable
 www-client/firefox minimal -crashreporter -libnotify -startup-notification -webm -ipc -dbus
-www-client/jit # manually override this for performance
+www-client/firefox jit # manually override this for performance
 
 # Fuck proprietary codecs
 www-client/firefox -pulseaudio -gstreamer # actually, fuck audio output even harder
@@ -438,7 +438,7 @@ dev-haskell/lambdabot eval
 dev-lang/ghc doc
 
 # Use existing GHC installation to build next version
-dev-lang/ghc ghcbootstrap
+#dev-lang/ghc ghcbootstrap
 
 # Workaround for bug 406399
 net-dns/bind -dlz -berkdb -ldap
@@ -512,10 +512,15 @@ games-board/cockatrice server
 
 # Not sure which version I want, to be honest
 x11-drivers/nvidia-drivers gtk3
+x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
 
 # SELinux/hardened stuff
 sec-policy/* doc -unconfined
 sys-devel/gcc fortran
+
+# For Skype
+app-emulation/docker lxc
+x11-base/xorg-server xnest xephyr kdrive
 
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify

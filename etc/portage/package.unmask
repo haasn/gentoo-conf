@@ -1,15 +1,6 @@
 # ffmpeg-9999 is masked?
 =media-video/ffmpeg-9999
 
-# mplayer-9999 is masked, too?!
-=media-video/mplayer-9999
-
-# 12.4 is deprecated
-=x11-drivers/ati-drivers-12.6_beta_pre897
-
-# ???
-#=dev-haskell/time-1.4.0.1
-
 # Incompatible with 7.8.1
 =dev-haskell/deepseq-1.3.0.2
 
@@ -58,7 +49,6 @@ x11-libs/glamor:x11
 x11-libs/libvdpau-va-gl::x11
 
 # Multimedia
-media-libs/libass::multimedia
 
 # Booboo
 media-sound/oss::booboo
@@ -114,5 +104,8 @@ dev-qt/qt5ct::mva
 # Palemoon
 www-client/palemoon::palemoon
 
-# I've fixed this locally
-=app-shells/bash-completion-2.1*
+## Hardened
+
+# Unsupported but works fine
+media-video/nvidia-settings
+net-im/skype

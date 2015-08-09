@@ -26,7 +26,6 @@ app-emulation/lxc
 app-emulation/qemu
 app-emulation/qtemu
 app-emulation/virtualbox
-app-emulation/vmips
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
@@ -246,7 +245,6 @@ media-plugins/vapoursynth-flash3kyuu_deband
 media-plugins/vapoursynth-fmtconv
 media-plugins/vapoursynth-mvtools
 media-plugins/vapoursynth-nnedi3
-media-sound/audacity
 media-sound/autoplay
 media-sound/flacon
 media-sound/id3v2
@@ -289,7 +287,6 @@ net-analyzer/vnstat
 net-analyzer/wireshark
 net-dns/bind-tools
 net-dns/unbound
-net-im/bitlbee
 net-im/skype
 net-irc/weechat
 net-libs/glib-networking
@@ -355,7 +352,6 @@ sys-fs/xfsdump
 sys-fs/xfsprogs
 sys-kernel/dracut
 sys-kernel/genkernel-next
-sys-kernel/gentoo-sources
 sys-kernel/hardened-sources
 sys-kernel/linux-firmware
 sys-libs/libfaketime

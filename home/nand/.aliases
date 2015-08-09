@@ -36,6 +36,7 @@ remedia() {
 
     echo 'Mounted...'
     sudo rc-service mpd start && nohup autoplay info >/dev/null 2>&1
+    sudo renice -10 $(pgrep pulseaudio)
 }
 
 # grep should always be case insensitive
