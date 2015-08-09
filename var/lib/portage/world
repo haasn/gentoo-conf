@@ -241,10 +241,7 @@ media-libs/openexr
 media-libs/quvi
 media-libs/rubberband
 media-plugins/tap-plugins
-media-plugins/vapoursynth-flash3kyuu_deband
-media-plugins/vapoursynth-fmtconv
 media-plugins/vapoursynth-mvtools
-media-plugins/vapoursynth-nnedi3
 media-sound/autoplay
 media-sound/flacon
 media-sound/id3v2

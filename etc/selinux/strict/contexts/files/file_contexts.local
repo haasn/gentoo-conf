@@ -21,3 +21,4 @@
 /home/nand/.password-store(/.*)?    staff_u:object_r:gpg_secret_t
 /y/media    system_u:object_r:user_home_dir_t
 /home/nand/.rtorrent.rc    system_u:object_r:rtorrent_home_t
+/y/media/torrents(/.*)?    staff_u:object_r:xdg_downloads_home_t
