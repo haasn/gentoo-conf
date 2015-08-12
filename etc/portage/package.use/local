@@ -512,7 +512,7 @@ games-board/cockatrice server
 
 # Not sure which version I want, to be honest
 x11-drivers/nvidia-drivers gtk3
-x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
+#x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
 
 # SELinux/hardened stuff
 sec-policy/* doc -unconfined
