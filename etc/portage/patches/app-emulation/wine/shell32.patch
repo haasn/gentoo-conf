@@ -1,0 +1,21 @@
+commit a4edbacde58916526287b0b6c8154b5926bb0eae
+Author: Johannes Dewender <wine@JonnyJD.net>
+Date:   Tue May 20 21:32:50 2014 +0200
+
+    Revert "shell32: Use CREATE_NEW_CONSOLE when SEE_MASK_NOCONSOLE is omitted."
+    
+    This reverts commit 2005be6dc92c0943ede01525cecad88f8e83c9c7.
+
+diff --git a/dlls/shell32/shlexec.c b/dlls/shell32/shlexec.c
+index a6bc5c8..41c147d 100644
+--- a/dlls/shell32/shlexec.c
++++ b/dlls/shell32/shlexec.c
+@@ -338,7 +338,7 @@ static UINT_PTR SHELL_ExecuteW(const WCHAR *lpCmd, WCHAR *env, BOOL shWait,
+     startup.dwFlags = STARTF_USESHOWWINDOW;
+     startup.wShowWindow = psei->nShow;
+     dwCreationFlags = CREATE_UNICODE_ENVIRONMENT;
+-    if (!(psei->fMask & SEE_MASK_NO_CONSOLE))
++    if (psei->fMask & SEE_MASK_NO_CONSOLE)
+         dwCreationFlags |= CREATE_NEW_CONSOLE;
+     if (CreateProcessW(NULL, (LPWSTR)lpCmd, NULL, NULL, FALSE, dwCreationFlags, env,
+                        lpDirectory, &startup, &info))

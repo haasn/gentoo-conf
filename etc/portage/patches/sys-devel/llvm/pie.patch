@@ -1,0 +1,81 @@
+diff --git a/tools/clang/lib/Driver/ToolChains.cpp b/tools/clang/lib/Driver/ToolChains.cpp
+index 02154dc..4179752 100644
+--- a/tools/clang/lib/Driver/ToolChains.cpp
++++ b/tools/clang/lib/Driver/ToolChains.cpp
+@@ -2801,6 +2801,7 @@ enum Distro {
+   DebianSqueeze,
+   DebianWheezy,
+   DebianJessie,
++  Gentoo,
+   Exherbo,
+   RHEL4,
+   RHEL5,
+@@ -2938,6 +2939,10 @@ static bool IsOpenSUSE(enum Distro Distro) {
+   return Distro == OpenSUSE;
+ }
+ 
++static bool IsGentoo(enum Distro Distro) {
++  return Distro == Gentoo;
++}
++
+ static bool IsDebian(enum Distro Distro) {
+   return Distro >= DebianLenny && Distro <= DebianStretch;
+ }
+@@ -2973,7 +2978,8 @@ static Distro DetectDistro(llvm::Triple::ArchType Arch) {
+           .Case("utopic", UbuntuUtopic)
+           .Case("vivid", UbuntuVivid)
+           .Default(UnknownDistro);
+-    return Version;
++    if (Version != UnknownDistro)
++      return Version;
+   }
+ 
+   File = llvm::MemoryBuffer::getFile("/etc/redhat-release");
+@@ -3014,6 +3020,9 @@ static Distro DetectDistro(llvm::Triple::ArchType Arch) {
+   if (llvm::sys::fs::exists("/etc/SuSE-release"))
+     return OpenSUSE;
+ 
++  if (llvm::sys::fs::exists("/etc/gentoo-release"))
++    return Gentoo;
++
+   if (llvm::sys::fs::exists("/etc/exherbo-release"))
+     return Exherbo;
+ 
+@@ -3185,6 +3194,13 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
+     ExtraOpts.push_back("relro");
+   }
+ 
++  if (IsGentoo(Distro)) {
++    ExtraOpts.push_back("-z");
++    ExtraOpts.push_back("relro");
++    ExtraOpts.push_back("-z");
++    ExtraOpts.push_back("now");
++  }
++
+   if (Arch == llvm::Triple::arm || Arch == llvm::Triple::thumb)
+     ExtraOpts.push_back("-X");
+ 
+@@ -3642,7 +3658,7 @@ void Linux::AddClangCXXStdlibIncludeArgs(const ArgList &DriverArgs,
+ }
+ 
+ bool Linux::isPIEDefault() const {
+-  return getSanitizerArgs().requiresPIE();
++  return true;
+ }
+ 
+ /// DragonFly - DragonFly tool chain which can call as(1) and ld(1) directly.
+diff --git a/tools/clang/lib/Driver/ToolChains.h b/tools/clang/lib/Driver/ToolChains.h
+index 0b7073f..03fe3d3 100644
+--- a/tools/clang/lib/Driver/ToolChains.h
++++ b/tools/clang/lib/Driver/ToolChains.h
+@@ -680,6 +680,10 @@ public:
+                                llvm::opt::ArgStringList &CC1Args) const override;
+   bool isPIEDefault() const override;
+ 
++  unsigned int GetDefaultStackProtectorLevel(bool KernelOrKext) const override {
++      return 3;
++  }
++
+   std::string Linker;
+   std::vector<std::string> ExtraOpts;
+ 

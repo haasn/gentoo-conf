@@ -5,7 +5,7 @@ Config { font = "xft:Terminus-10,DejaVu Sans Mono:pixelsize=16,Kochi Gothic:pixe
        , commands = [ Run Cpu ["-L","5","-H","50","--normal","#85c600","--high","#E03C52"] 10
                     , Run Memory ["-t","Mem: <usedratio>%"] 10
                     , Run Date "%Y %b %d (%a) %H:%M %Z" "date" 10
-                    , Run Network "eth0" ["-t", "Down: <fc=#7FC5C6><rx></fc> kB/s | Up: <fc=#ffa600><tx></fc> kB/s"] 10
+                    , Run Network "eth0" ["-t", "Down: <fc=#7FC5C6><rx></fc> kb/s | Up: <fc=#ffa600><tx></fc> kb/s"] 10
                     , Run MPD ["-t", "<state>: <artist> - <title> (<album>)"] 10
                     , Run Mail [(" nanovps:", "~/.imap/nanovps/INBOX")] "nanovps"
                     , Run Mail [(" uulm:", "~/.imap/uulm/INBOX")] "uulm"

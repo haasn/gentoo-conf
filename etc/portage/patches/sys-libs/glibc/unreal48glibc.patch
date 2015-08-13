@@ -1,0 +1,11 @@
+--- sysdeps/generic/ldsodefs.h	2014-09-07 10:09:09.000000000 +0200
++++ sysdeps/generic/ldsodefs.h	2015-06-22 22:18:19.855225739 +0200
+@@ -389,7 +389,7 @@
+ #define TLS_SLOTINFO_SURPLUS (62)
+ 
+ /* Number of additional slots in the dtv allocated.  */
+-#define DTV_SURPLUS	(14)
++#define DTV_SURPLUS	(32)
+ 
+   /* Initial dtv of the main thread, not allocated with normal malloc.  */
+   EXTERN void *_dl_initial_dtv;

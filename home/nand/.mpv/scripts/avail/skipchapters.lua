@@ -10,14 +10,13 @@ function check_chapter(_, chapter)
     if not chapter then
         return
     end
-    local title = mp.get_property("chapter-list/"..chapter.."/title")
     for _, p in pairs(opt.patterns) do
-        if string.match(title, p) then
-            print("Skipping chapter:", title)
+        if string.match(chapter, p) then
+            print("Skipping chapter:", chapter)
             mp.command("no-osd add chapter 1")
             return
         end
     end
 end
 
-mp.observe_property("chapter", "string", check_chapter)
+mp.observe_property("chapter-metadata/by-key/title", "string", check_chapter)

@@ -1,0 +1,55 @@
+diff --git a/src/Plugins/Monitors/Net.hs b/src/Plugins/Monitors/Net.hs
+index 5954a77..da507a9 100644
+--- a/src/Plugins/Monitors/Net.hs
++++ b/src/Plugins/Monitors/Net.hs
+@@ -58,10 +58,10 @@ data UnitPerSec = Bs | KBs | MBs | GBs deriving (Eq,Enum,Ord)
+ data NetValue = NetValue Float UnitPerSec deriving (Eq,Show)
+ 
+ instance Show UnitPerSec where
+-    show Bs  = "B/s"
+-    show KBs = "KB/s"
+-    show MBs = "MB/s"
+-    show GBs = "GB/s"
++    show Bs  = "b/s"
++    show KBs = "kb/s"
++    show MBs = "Mb/s"
++    show GBs = "Gb/s"
+ 
+ data NetDev = NA
+             | NI String
+@@ -109,7 +109,7 @@ readNetDev (d:x:y:_) = do
+   up <- isUp d
+   return (if up then ND d (r x) (r y) else NI d)
+     where r s | s == "" = 0
+-              | otherwise = read s
++              | otherwise = 8 * read s
+ 
+ readNetDev _ = return NA
+ 
+@@ -137,8 +137,8 @@ formatNet mipat d = do
+     s <- getConfigValue useSuffix
+     dd <- getConfigValue decDigits
+     let str True v = showDigits dd d' ++ show u
+-            where (NetValue d' u) = byteNetVal v
+-        str False v = showDigits dd $ v / 1024
++            where (NetValue d' u) = bitNetVal v
++        str False v = showDigits dd $ v / 1000
+     b <- showLogBar 0.9 d
+     vb <- showLogVBar 0.9 d
+     ipat <- showLogIconPattern mipat 0.9 d
+@@ -204,9 +204,9 @@ startDynNet a r cb = do
+             return (nref, d)
+   runM a netConfig (runNets refs) r cb
+ 
+-byteNetVal :: Float -> NetValue
+-byteNetVal v
+-    | v < 1024**1 = NetValue v Bs
+-    | v < 1024**2 = NetValue (v/1024**1) KBs
+-    | v < 1024**3 = NetValue (v/1024**2) MBs
+-    | otherwise   = NetValue (v/1024**3) GBs
++bitNetVal :: Float -> NetValue
++bitNetVal v
++    | v < 1000**1 = NetValue v Bs
++    | v < 1000**2 = NetValue (v/1000**1) KBs
++    | v < 1000**3 = NetValue (v/1000**2) MBs
++    | otherwise   = NetValue (v/1000**3) GBs

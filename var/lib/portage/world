@@ -370,7 +370,6 @@ x11-base/xorg-x11
 x11-misc/dmenu
 x11-misc/gbdfed
 x11-misc/i3lock
-x11-misc/slock
 x11-misc/sselp
 x11-misc/swarp
 x11-misc/unclutter
