@@ -542,3 +542,7 @@ dev-libs/libwiimote force tilt
 # required by app-forensics/rkhunter-1.4.2::gentoo
 # required by rkhunter (argument)
 >=sys-process/lsof-4.88-r1 rpc
+# required by dev-lang/rust-1.1.0::rust[system-llvm]
+# required by dev-rust/cargo-0.3.0::rust
+# required by cargo (argument)
+>=sys-devel/llvm-3.6.2 multitarget

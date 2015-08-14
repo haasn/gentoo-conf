@@ -169,6 +169,7 @@ dev-python/python-dateutil
 dev-qt/qt5ct
 dev-ruby/rack-test
 dev-ruby/rspec
+dev-rust/cargo
 dev-tex/biblatex
 dev-tex/latex-beamer
 dev-tex/pgf
