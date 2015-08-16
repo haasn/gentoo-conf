@@ -1,0 +1,25 @@
+
+module skype_dontaudit 1.0;
+
+require {
+	type skype_t;
+	type user_tmp_t;
+	type xdg_data_home_t;
+	type user_home_t;
+	type sysctl_kernel_t;
+        type sysfs_t;
+	class file { read open };
+	class lnk_file { read open };
+	class dir { getattr search };
+}
+
+#============= skype_t ==============
+dontaudit skype_t sysctl_kernel_t:dir search;
+allow skype_t sysfs_t:file { read open };
+allow skype_t sysfs_t:lnk_file { read open };
+
+#!!!! This avc can be allowed using the boolean 'skype_manage_user_content'
+dontaudit skype_t user_home_t:dir search;
+dontaudit skype_t user_home_t:file read;
+dontaudit skype_t user_tmp_t:dir getattr;
+dontaudit skype_t xdg_data_home_t:dir search;

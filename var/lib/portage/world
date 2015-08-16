@@ -183,6 +183,8 @@ dev-util/apitrace
 dev-util/astyle
 dev-util/ccache
 dev-util/cppunit
+dev-util/radare2
+dev-util/scanmem
 dev-util/strace
 dev-util/threadscope
 dev-util/valgrind

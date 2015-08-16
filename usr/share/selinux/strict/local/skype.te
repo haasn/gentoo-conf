@@ -1,0 +1,137 @@
+policy_module(skype, 0.0.3)
+
+############################
+# 
+# Declarations
+#
+
+## <desc>
+## <p>
+##   Be able to manage user files (needed to support sending and receiving files).
+##   Without this boolean set, only files marked as skype_home_t can be used for
+##   sending and receiving.
+## </p>
+## </desc>
+gen_tunable(skype_manage_user_content, false)
+
+type skype_t;
+type skype_exec_t;
+application_domain(skype_t, skype_exec_t)
+
+type skype_home_t;
+userdom_user_home_dir_filetrans(skype_t, skype_home_t, dir)
+userdom_user_home_content(skype_home_t)
+
+type skype_tmp_t;
+files_tmp_file(skype_tmp_t)
+ubac_constrained(skype_tmp_t)
+
+type skype_tmpfs_t;
+files_tmpfs_file(skype_tmpfs_t)
+ubac_constrained(skype_tmpfs_t)
+
+############################
+#
+# Policy
+#
+
+allow skype_t self:process { getsched setsched execmem signal };
+allow skype_t self:fifo_file rw_fifo_file_perms;
+allow skype_t self:unix_stream_socket create_socket_perms;
+allow skype_t self:sem create_sem_perms;
+allow skype_t self:tcp_socket create_stream_socket_perms;
+
+allow skype_t skype_exec_t:file execmod;
+
+# Allow skype to work with its ~/.skype location
+manage_dirs_pattern(skype_t, skype_home_t, skype_home_t)
+manage_files_pattern(skype_t, skype_home_t, skype_home_t)
+manage_lnk_files_pattern(skype_t, skype_home_t, skype_home_t)
+
+# Needed for supporting X11 & shared memory
+manage_files_pattern(skype_t, skype_tmpfs_t, skype_tmpfs_t)
+manage_lnk_files_pattern(skype_t, skype_tmpfs_t, skype_tmpfs_t)
+manage_fifo_files_pattern(skype_t, skype_tmpfs_t, skype_tmpfs_t)
+manage_sock_files_pattern(skype_t, skype_tmpfs_t, skype_tmpfs_t)
+fs_tmpfs_filetrans(skype_t, skype_tmpfs_t, { file lnk_file sock_file fifo_file })
+
+manage_dirs_pattern(skype_t, skype_tmp_t, skype_tmp_t)
+manage_files_pattern(skype_t, skype_tmp_t, skype_tmp_t)
+manage_sock_files_pattern(skype_t, skype_tmp_t, skype_tmp_t)
+files_tmp_filetrans(skype_t, skype_tmp_t, { dir file sock_file })
+
+kernel_dontaudit_search_sysctl(skype_t)
+kernel_dontaudit_read_kernel_sysctls(skype_t)
+kernel_read_network_state(skype_t)
+kernel_read_system_state(skype_t)
+
+corecmd_exec_bin(skype_t)
+corecmd_exec_shell(skype_t)
+
+can_exec(skype_t, skype_exec_t)
+
+corenet_all_recvfrom_netlabel(skype_t)
+corenet_all_recvfrom_unlabeled(skype_t)
+corenet_sendrecv_http_client_packets(skype_t)
+corenet_tcp_bind_generic_node(skype_t)
+corenet_tcp_bind_generic_port(skype_t)
+corenet_tcp_connect_all_unreserved_ports(skype_t)
+corenet_tcp_connect_generic_port(skype_t)
+corenet_tcp_connect_http_port(skype_t)
+corenet_tcp_sendrecv_http_port(skype_t)
+corenet_udp_bind_generic_node(skype_t)
+corenet_udp_bind_generic_port(skype_t)
+
+dev_dontaudit_search_sysfs(skype_t)
+dev_dontaudit_read_sysfs(skype_t)
+dev_read_sound(skype_t)
+dev_read_video_dev(skype_t)
+dev_write_sound(skype_t)
+dev_write_video_dev(skype_t)
+
+domain_dontaudit_use_interactive_fds(skype_t)
+
+files_read_etc_files(skype_t)
+files_read_usr_files(skype_t)
+
+fs_dontaudit_getattr_tmpfs(skype_t)
+fs_dontaudit_getattr_xattr_fs(skype_t)
+
+auth_use_nsswitch(skype_t)
+
+miscfiles_dontaudit_setattr_fonts_dirs(skype_t)
+miscfiles_read_generic_certs(skype_t)
+miscfiles_read_localization(skype_t)
+
+userdom_dontaudit_use_user_ttys(skype_t)
+userdom_use_user_ptys(skype_t)
+
+xserver_user_x_domain_template(skype, skype_t, skype_tmpfs_t)
+
+tunable_policy(`skype_manage_user_content',`
+	userdom_manage_user_home_content_dirs(skype_t)
+	userdom_manage_user_home_content_files(skype_t)
+')
+
+#optional_policy(`
+#	pulseaudio_client_domain(skype_t, skype_tmpfs_t)
+#')
+
+optional_policy(`
+	dbus_system_bus_client(skype_t)
+	dbus_all_session_bus_client(skype_t)
+')
+
+optional_policy(`
+	xdg_manage_config_home(skype_t)
+')
+
+optional_policy(`
+	mozilla_dontaudit_manage_user_home_files(skype_t)
+')
+
+ifdef(`use_alsa',`
+	optional_policy(`
+		alsa_domain(skype_t, skype_tmpfs_t)
+	')
+')

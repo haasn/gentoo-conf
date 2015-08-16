@@ -43,11 +43,10 @@ remedia() {
 alias grep='grep -i --color=auto'
 
 # some more ls aliases
-alias ll='ls -l --si'
-alias la='ls -A'
-alias l='ls -CF'
+alias l='ls'
+alias ll='ls -lZ --si'
+alias la='ll -A'
 alias lt='ll -rt'
-alias lz='ll -Z'
 
 alias df='df --total -H'
 alias du='du --si'
@@ -148,6 +147,7 @@ alias setsebool='sudo setsebool'
 alias setenforce='sudo setenforce'
 alias rlpkg='sudo rlpkg'
 alias restorecon='sudo restorecon'
+alias chcon='sudo chcon'
 
 alias esync='emerge --ask=n --sync'
 alias epull='layman -S && hackport update && esync && eix-update'

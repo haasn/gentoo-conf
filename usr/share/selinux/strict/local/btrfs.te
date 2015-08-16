@@ -1,0 +1,21 @@
+# btrfs send/receive support
+policy_module(btrfs, 0.1)
+
+gen_require(`
+    type sysadm_t;
+    role sysadm_r;
+')
+
+type btrfs_t;
+type btrfs_exec_t;
+init_system_domain(btrfs_t, btrfs_exec_t)
+role system_r types btrfs_t;
+
+# For local administration
+domtrans_pattern(sysadm_t, btrfs_exec_t, btrfs_t)
+role sysadm_r types btrfs_t;
+
+optional_policy(`
+	# for btrfs backup cron jobs
+	cron_system_entry(btrfs_t, btrfs_exec_t)
+')
