@@ -64,7 +64,8 @@ myLayout = s (navi (GridRatio 1)) ||| navi (GridRatio 2) ||| Full
         s = id -- spacing 32
 
 extraKeys =
-  [ ((0, xK_Print), spawn "scrot -e 'convert $f -red-primary 0.6881,0.3068 -green-primary 0.2214,0.7160 -blue-primary 0.1468,0.061 -white-point 0.312874,0.329226 +gamma 0.45454545 $f; optipng $f; mv $f ~/scrot/'")
+  [ --((0, xK_Print), spawn "scrot -e 'convert $f -red-primary 0.6881,0.3068 -green-primary 0.2214,0.7160 -blue-primary 0.1468,0.061 -white-point 0.312874,0.329226 +gamma 0.45454545 $f; optipng $f; mv $f ~/scrot/'")
+    ((0, xK_Print), spawn "import -depth 8 -window root /mem/screengrab.png")
 
   , ((mod4Mask, xK_h), sendMessage $ Go L)
   , ((mod4Mask, xK_j), sendMessage $ Go D)
