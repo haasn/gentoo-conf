@@ -13,5 +13,5 @@ net-dns/nsd mmap ratelimit
 # Completely unnecessary “accidental” backdoor
 dev-libs/openssl -tls-heartbeat
 
-# Run this as a service
+# Run these more like services
 net-irc/znc daemon

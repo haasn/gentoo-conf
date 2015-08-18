@@ -2,6 +2,7 @@ app-admin/logrotate
 app-admin/sudo
 app-admin/syslog-ng
 app-arch/lz4
+app-crypt/gnupg
 app-editors/nano
 app-editors/vim
 app-misc/colordiff
@@ -27,6 +28,7 @@ net-misc/ndisc6
 net-misc/ntp
 net-misc/openvpn
 net-misc/radvd
+net-p2p/rtorrent
 sec-policy/selinux-backup
 sec-policy/selinux-nsd
 sys-apps/pciutils

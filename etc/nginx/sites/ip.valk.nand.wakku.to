@@ -28,7 +28,7 @@ server {
     listen [::]:443 ipv6only=on ssl spdy;
 
     location / {
-        add_header Content-Type "text/plain";
+        default_type text/plain;
         echo $remote_addr;
     }
 }

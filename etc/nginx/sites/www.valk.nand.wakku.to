@@ -9,14 +9,14 @@ server {
         try_files $uri /index.html;
     }
 
-    location = /echo {
-        add_header Content-Type "text/plain";
-        echo_duplicate 1 $echo_client_request_headers;
-        echo "\r";
-
-        echo_read_request_body;
-        echo_request_body;
-    }
+## Disabled as it segfaults nginx
+#    location = /echo {
+#        default_type text/plain;
+#        echo $echo_client_request_headers;
+#        echo "\r";
+#        echo_read_request_body;
+#        echo_request_body;
+#    }
 }
 
 # Redirect HTTP traffic to HTTPS
