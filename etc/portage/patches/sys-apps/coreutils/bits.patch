@@ -1,6 +1,6 @@
 diff -ru a/coreutils-8.24/lib/human.c b/coreutils-8.24/lib/human.c
---- a/coreutils-8.24/lib/human.c	2015-06-16 07:00:37.000000000 +0200
-+++ b/coreutils-8.24/lib/human.c	2015-08-13 04:38:32.432034227 +0200
+--- a/coreutils-8.24/lib/human.c	2015-08-17 21:39:45.331579508 +0200
++++ b/coreutils-8.24/lib/human.c	2015-08-17 21:41:12.302581022 +0200
 @@ -153,6 +153,7 @@
  human_readable (uintmax_t n, char *buf, int opts,
                  uintmax_t from_block_size, uintmax_t to_block_size)
@@ -9,11 +9,12 @@ diff -ru a/coreutils-8.24/lib/human.c b/coreutils-8.24/lib/human.c
    int inexact_style =
      opts & (human_round_to_nearest | human_floor | human_ceiling);
    unsigned int base = opts & human_base_1024 ? 1024 : 1000;
-@@ -382,6 +383,7 @@
+@@ -378,7 +379,7 @@
+         {
+           if ((opts & human_base_1024) && exponent)
+             *psuffix++ = 'i';
+-          *psuffix++ = 'B';
++          *psuffix++ = 'b';
          }
      }
  
-+  *psuffix++ = 'b'; // bits
-   *psuffix = '\0';
- 
-   return p;

@@ -3,7 +3,7 @@ media-libs/libass -harfbuzz
 net-im/bitlbee -skype
 sys-apps/portage -pypy2_0
 x11-drivers/nvidia-drivers -X -tools
-x11-base/xorg-drivers -video_cards_nvidia
+*/* -video_cards_nvidia
 
 # This is just a security precaution, but I want the performance
 dev-libs/libpcre -jit

@@ -14,8 +14,8 @@ vec4 sample(sampler2D tex, vec2 pos, vec2 tex_size)
 {
     // Compute a random angle and distance
     float dist = rand(pos + vec2(random)) * range;
+    float dir  = rand(pos.yx - vec2(random)) * 6.2831853;
     vec2 pt = dist / image_size;
-    float dir = rand(pos.yx - vec2(random)) * 6.2831853;
     vec2 o = vec2(cos(dir), sin(dir));
 
     // Sample at quarter-turn intervals around the source pixel

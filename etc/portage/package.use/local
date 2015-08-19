@@ -116,7 +116,7 @@ sys-block/gparted -dmraid -hfs # requires udev
 ############################
 
 # FFmpeg stuff
-*/ffmpeg X ass aacplus network alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec libsoxr
+*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec libsoxr
 media-video/ffmpeg -hardcoded-tables # build failure
 #*/ffmpeg -abi_x86_32
 
@@ -248,6 +248,9 @@ kde-apps/* -handbook
 app-text/poppler qt4 # for okular
 app-crypt/pinentry qt4 -gtk
 
+# Needed for qapitrace
+dev-util/apitrace qt4
+
 kde-apps/kmix pulseaudio
 
 #################
@@ -297,6 +300,9 @@ www-client/palemoon -official-branding alsa
 #######################
 #### Miscellaneous ####
 #######################
+
+# cronie on its own doesn't seem to be very smart
+#sys-process/cronie anacron
 
 # For work
 app-emulation/lxc doc examples

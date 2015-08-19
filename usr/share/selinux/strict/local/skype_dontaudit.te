@@ -8,13 +8,15 @@ require {
 	type user_home_t;
 	type sysctl_kernel_t;
         type sysfs_t;
-	class file { read open };
+	class file { getattr read open };
 	class lnk_file { read open };
-	class dir { getattr search };
+	class dir { getattr read search };
 }
 
 #============= skype_t ==============
 dontaudit skype_t sysctl_kernel_t:dir search;
+dontaudit skype_t sysfs_t:dir { getattr search read };
+dontaudit skype_t sysfs_t:file { getattr };
 allow skype_t sysfs_t:file { read open };
 allow skype_t sysfs_t:lnk_file { read open };
 

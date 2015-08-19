@@ -25,7 +25,6 @@ app-editors/vim
 app-emulation/lxc
 app-emulation/qemu
 app-emulation/qtemu
-app-emulation/virtualbox
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
@@ -204,6 +203,7 @@ kde-apps/gwenview
 kde-apps/kdialog
 kde-apps/kmix
 kde-apps/knotify
+kde-apps/kolourpaint
 kde-apps/okular
 lxde-base/lxappearance
 mail-client/nail
@@ -310,7 +310,6 @@ net-misc/vconfig
 net-misc/whois
 net-misc/youtube-dl
 net-misc/zsync
-net-nntp/sabnzbd
 net-p2p/rtorrent
 sci-electronics/kicad
 sci-libs/fftw
