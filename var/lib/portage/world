@@ -350,7 +350,7 @@ sys-fs/sshfs-fuse
 sys-fs/xfsdump
 sys-fs/xfsprogs
 sys-kernel/dracut
-sys-kernel/genkernel-next
+sys-kernel/genkernel
 sys-kernel/hardened-sources
 sys-kernel/linux-firmware
 sys-libs/libfaketime
