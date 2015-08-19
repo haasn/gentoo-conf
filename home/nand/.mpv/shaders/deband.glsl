@@ -21,7 +21,7 @@
 // (Optional) Add some extra noise to the image. This significantly helps cover
 // up remaining banding and blocking artifacts, at comparatively little visual
 // quality. Higher = more grain. Setting it to 0 disables the effect.
-#define GRAIN 24
+#define GRAIN 48
 
 // Note: If performance is too slow, try eg. RANGE=16 ITERATIONS=2. In general,
 // an increase in the number of ITERATIONS should roughly correspond to a
