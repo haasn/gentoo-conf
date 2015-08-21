@@ -140,7 +140,6 @@ dev-haskell/text-icu
 dev-haskell/traceutils
 dev-haskell/transformers-compat
 dev-haskell/tuple
-dev-haskell/vty
 dev-haskell/wcwidth
 dev-haskell/x11-xft
 dev-haskell/xformat
@@ -294,7 +293,6 @@ net-misc/dhcpcd
 net-misc/httptunnel
 net-misc/iodine
 net-misc/iperf
-net-misc/libreswan
 net-misc/ntp
 net-misc/openvpn
 net-misc/proxychains

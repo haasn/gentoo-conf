@@ -86,6 +86,8 @@ style www.haskellforall.com .cap-top { display: none !important; }
 style hub.darcs.net .added { border-color: #85c600 !important; } .removed { border-color: #E03C52 !important; }
 style boards.4chan.org .quote { color: #789922 !important; } div.center { display: none !important; }
 style s.0x0.st .search_categories { text-transform: none !important; }
+style lainchan.org .quote { color: #789922 !important; }
+style 8ch.net .quote { color: #789922 !important; }
 style -name=notoolbar chrome://* #nav-bar { height: 32px !important; margin-top: -32px !important; }
 
 " vim: set ft=pentadactyl:
