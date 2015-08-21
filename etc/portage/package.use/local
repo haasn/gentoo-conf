@@ -97,6 +97,9 @@
 # Stuff actually uses this
 */* xattr
 
+# CMS and stuff
+*/* littlecms lcms color-management
+
 # Multilib support
 */* abi_x86_32
 

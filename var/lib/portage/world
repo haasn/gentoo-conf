@@ -22,9 +22,6 @@ app-crypt/aesutil
 app-editors/bvi
 app-editors/nano
 app-editors/vim
-app-emulation/lxc
-app-emulation/qemu
-app-emulation/qtemu
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
@@ -149,7 +146,6 @@ dev-haskell/x11-xft
 dev-haskell/xformat
 dev-haskell/zenc
 dev-lang/ghc
-dev-lang/go
 dev-lang/j
 dev-lang/lua
 dev-lang/mercury
@@ -180,7 +176,6 @@ dev-texlive/texlive-xetex
 dev-util/android-tools
 dev-util/apitrace
 dev-util/astyle
-dev-util/ccache
 dev-util/cppunit
 dev-util/radare2
 dev-util/scanmem
@@ -201,7 +196,6 @@ games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
 kde-apps/gwenview
 kde-apps/kdialog
-kde-apps/kmix
 kde-apps/knotify
 kde-apps/kolourpaint
 kde-apps/okular
@@ -321,6 +315,7 @@ sys-apps/dstat
 sys-apps/evrouter
 sys-apps/gsmartcontrol
 sys-apps/hdparm
+sys-apps/inxi
 sys-apps/iproute2
 sys-apps/irqbalance
 sys-apps/kexec-tools
@@ -349,7 +344,6 @@ sys-fs/squashfs-tools
 sys-fs/sshfs-fuse
 sys-fs/xfsdump
 sys-fs/xfsprogs
-sys-kernel/dracut
 sys-kernel/genkernel
 sys-kernel/hardened-sources
 sys-kernel/linux-firmware
