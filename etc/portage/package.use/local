@@ -12,7 +12,7 @@
 */* perl python ruby guile -ocaml lua
 
 # Proxy and encryption support
-*/* socks socks5 ssl crypt -gnutls sasl gpg polarssl
+*/* socks socks5 ssl crypt -gnutls sasl gpg polarssl otr
 
 # Support as many media formats as possible
 */* flac theora vorbis ffmpeg mp3 mpeg ogg png jpeg jpeg2k tiff svg jbig wavpack tta
@@ -284,6 +284,10 @@ www-client/seamonkey -chatzilla custom-cflags custom-optimization -roaming
 # Apparently nothing good
 #www-client/firefox system-libvpx
 #media-libs/libvpx postproc
+
+# Cut down on build times and enable security patches
+www-client/firefox system-icu
+www-client/firefox -system-cairo # this corrupts on depth 30
 
 # I don't want to see their ugly non-free logo
 www-client/firefox bindist

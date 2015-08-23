@@ -1,0 +1,14 @@
+diff --git a/dom/encoding/FallbackEncoding.cpp b/dom/encoding/FallbackEncoding.cpp
+index bda6a21..8ac0dcf 100644
+--- a/dom/encoding/FallbackEncoding.cpp
++++ b/dom/encoding/FallbackEncoding.cpp
+@@ -55,8 +55,7 @@ FallbackEncoding::Get(nsACString& aFallback)
+   // Don't let the user break things by setting the override to unreasonable
+   // values via about:config
+   if (!EncodingUtils::FindEncodingForLabel(override, mFallback) ||
+-      !EncodingUtils::IsAsciiCompatible(mFallback) ||
+-      mFallback.EqualsLiteral("UTF-8")) {
++      !EncodingUtils::IsAsciiCompatible(mFallback)) {
+     mFallback.Truncate();
+   }
+ 
