@@ -77,6 +77,11 @@ extraKeys =
     , ((mod4Mask .|. controlMask , xK_j), sendMessage $ BSP.ShrinkFrom U)
     , ((mod4Mask .|. controlMask , xK_h), sendMessage $ BSP.ShrinkFrom R)
 
+    , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_h), sendMessage $ BSP.MoveSplit L)
+    , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_j), sendMessage $ BSP.MoveSplit D)
+    , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_k), sendMessage $ BSP.MoveSplit U)
+    , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_l), sendMessage $ BSP.MoveSplit R)
+
     , ((mod4Mask                , xK_space), sendMessage BSP.Rotate)
     , ((mod4Mask .|. shiftMask  , xK_space), sendMessage BSP.Swap)
     , ((mod4Mask .|. controlMask, xK_space), sendMessage NextLayout)
