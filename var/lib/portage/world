@@ -233,6 +233,7 @@ media-libs/ladspa-cmt
 media-libs/libcaca
 media-libs/libptp2
 media-libs/opencolorio
+media-libs/opencv
 media-libs/openexr
 media-libs/quvi
 media-libs/rubberband
@@ -264,7 +265,6 @@ media-video/mpv
 media-video/nvidia-settings
 media-video/x264-encoder
 net-analyzer/arpoison
-net-analyzer/bwm-ng
 net-analyzer/ettercap
 net-analyzer/iftop
 net-analyzer/ipband

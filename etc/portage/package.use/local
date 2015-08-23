@@ -104,7 +104,7 @@
 */* abi_x86_32
 
 # Miscellaneous
-*/* lzma ncurses fontconfig xft opencl openexr opengl unicode cjk -acl -startup-notification
+*/* lzma ncurses fontconfig xft cuda opencl openexr opengl unicode cjk -acl -startup-notification
 
 # Needed for ruby
 */* ruby_targets_ruby21 ruby_targets_ruby22
@@ -520,7 +520,7 @@ net-im/tox -nacl
 games-board/cockatrice server
 
 # Not sure which version I want, to be honest
-x11-drivers/nvidia-drivers gtk3
+x11-drivers/nvidia-drivers gtk3 uvm # for CUDA
 #x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
 
 # SELinux/hardened stuff

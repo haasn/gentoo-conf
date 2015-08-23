@@ -230,6 +230,7 @@ pulseaudio_signull(pulseaudio_client)
 # TODO: ~/.cache
 # userdom_manage_user_home_content_files(pulseaudio_client)
 
+userdom_list_user_tmp(pulseaudio_client)
 userdom_read_user_tmpfs_files(pulseaudio_client)
 # userdom_delete_user_tmpfs_files(pulseaudio_client)
 

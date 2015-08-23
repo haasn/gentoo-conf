@@ -1,33 +1,25 @@
-import Control.Monad (void)
-
+-- Base imports
 import XMonad
+import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
-import XMonad.Hooks.ManageHelpers
 import XMonad.Util.Run (spawnPipe)
-import XMonad.Util.EZConfig (additionalKeys)
-import XMonad.Util.WorkspaceCompare
-import XMonad.Actions.CycleWS
-import XMonad.Actions.NoBorders
-import XMonad.Layout.NoBorders
-import XMonad.Layout.Grid
+import System.IO (hPutStrLn)
+
+-- Needed for workspace cycling and switching
+import XMonad.Actions.CycleWS (findWorkspace, WSType(..))
+import XMonad.Util.WorkspaceCompare (getSortByIndex)
+import XMonad.StackSet (shift, greedyView)
+
+-- Layouts and navigation
 import XMonad.Layout.WindowNavigation
-import XMonad.Layout.Spacing
+import XMonad.Layout.NoBorders
+import qualified XMonad.Layout.BinarySpacePartition as BSP
 
-import XMonad.Hooks.EwmhDesktops
-
-import qualified XMonad.StackSet as W
-
-import System.IO
-import System.Posix.Files (touchFile)
-
-import Data.Maybe (fromJust, maybeToList)
-import qualified Data.Map as M (toList)
-import Data.Ord (comparing)
-import qualified Data.List as L
-
-import Control.Monad.Error.Class (MonadError)
+-- Misc and utility
+import Control.Monad (void)
 import qualified Network.MPD as MPD
 import qualified Network.MPD.Commands.Extensions as MPD
 
@@ -59,78 +51,82 @@ main = do
 
     } `additionalKeys` extraKeys
 
-myLayout = s (navi (GridRatio 1)) ||| navi (GridRatio 2) ||| Full
-  where navi = configurableNavigation noNavigateBorders
-        s = id -- spacing 32
+myLayout = configurableNavigation noNavigateBorders BSP.emptyBSP ||| Full
 
 extraKeys =
-  [ --((0, xK_Print), spawn "scrot -e 'convert $f -red-primary 0.6881,0.3068 -green-primary 0.2214,0.7160 -blue-primary 0.1468,0.061 -white-point 0.312874,0.329226 +gamma 0.45454545 $f; optipng $f; mv $f ~/scrot/'")
-    ((0, xK_Print), spawn "import -depth 8 -window root /mem/screengrab.png")
+    [ ((0, xK_Print), spawn "import -depth 8 -window root /mem/screengrab.png")
 
-  , ((mod4Mask, xK_h), sendMessage $ Go L)
-  , ((mod4Mask, xK_j), sendMessage $ Go D)
-  , ((mod4Mask, xK_k), sendMessage $ Go U)
-  , ((mod4Mask, xK_l), sendMessage $ Go R)
+    -- General movement stuff
+    , ((mod4Mask, xK_h), sendMessage $ Go L)
+    , ((mod4Mask, xK_j), sendMessage $ Go D)
+    , ((mod4Mask, xK_k), sendMessage $ Go U)
+    , ((mod4Mask, xK_l), sendMessage $ Go R)
 
-  , ((mod4Mask .|. shiftMask, xK_h), sendMessage $ Swap L)
-  , ((mod4Mask .|. shiftMask, xK_j), sendMessage $ Swap D)
-  , ((mod4Mask .|. shiftMask, xK_k), sendMessage $ Swap U)
-  , ((mod4Mask .|. shiftMask, xK_l), sendMessage $ Swap R)
+    , ((mod4Mask .|. shiftMask, xK_h), sendMessage $ Swap L)
+    , ((mod4Mask .|. shiftMask, xK_j), sendMessage $ Swap D)
+    , ((mod4Mask .|. shiftMask, xK_k), sendMessage $ Swap U)
+    , ((mod4Mask .|. shiftMask, xK_l), sendMessage $ Swap R)
 
---  , ((mod4Mask .|. shiftMask, xK_h), sendMessage Shrink)
---  , ((mod4Mask .|. shiftMask, xK_l), sendMessage Expand)
+    , ((mod4Mask .|. mod1Mask, xK_h), sendMessage $ BSP.ExpandTowards L)
+    , ((mod4Mask .|. mod1Mask, xK_j), sendMessage $ BSP.ExpandTowards D)
+    , ((mod4Mask .|. mod1Mask, xK_k), sendMessage $ BSP.ExpandTowards U)
+    , ((mod4Mask .|. mod1Mask, xK_l), sendMessage $ BSP.ExpandTowards R)
 
-{-
-  , ((mod4Mask, xK_Up), windows moveUp)
-  , ((mod4Mask, xK_Down), windows moveDown)
-  , ((mod4Mask, xK_Left), windows W.focusMaster)
-  , ((mod4Mask, xK_Right), windows moveRight)
--}
+    , ((mod4Mask .|. controlMask , xK_l), sendMessage $ BSP.ShrinkFrom L)
+    , ((mod4Mask .|. controlMask , xK_k), sendMessage $ BSP.ShrinkFrom D)
+    , ((mod4Mask .|. controlMask , xK_j), sendMessage $ BSP.ShrinkFrom U)
+    , ((mod4Mask .|. controlMask , xK_h), sendMessage $ BSP.ShrinkFrom R)
 
-  , ((mod4Mask, xK_Tab), nextWS')
-  , ((mod4Mask .|. shiftMask, xK_Tab), prevWS')
+    , ((mod4Mask                , xK_space), sendMessage BSP.Rotate)
+    , ((mod4Mask .|. shiftMask  , xK_space), sendMessage BSP.Swap)
+    , ((mod4Mask .|. controlMask, xK_space), sendMessage NextLayout)
 
-    -- never terminate X please
-  , ((mod4Mask .|. shiftMask, xK_q), return ())
+    , ((mod4Mask, xK_Tab), nextWS')
+    , ((mod4Mask .|. shiftMask, xK_Tab), prevWS')
 
-  , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#0e1112')")
+    -- Never terminate X please
+    , ((mod4Mask .|. shiftMask, xK_q), return ())
 
-    -- lock the screen when not in use
-  , ((mod4Mask, xK_s), spawn "i3lock -c 000000")
+    , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#0e1112')")
 
-    -- reset the mouse cursor
-  , ((mod4Mask, xK_Escape), spawn "swarp 0 0")
+    -- Lock the screen when not in use
+    , ((mod4Mask, xK_s), spawn "i3lock -c 000000")
 
-  , ((controlMask .|. mod1Mask, xK_Home),      io . void $ MPD.withMPD MPD.toggle)
-  , ((controlMask .|. mod1Mask, xK_Insert),    io . void $ MPD.withMPD (MPD.play Nothing))
-  , ((controlMask .|. mod1Mask, xK_End),       io . void $ MPD.withMPD MPD.stop)
-  , ((controlMask .|. mod1Mask, xK_Page_Down), io . void $ MPD.withMPD MPD.next)
-  , ((controlMask .|. mod1Mask, xK_Page_Up),   io . void $ MPD.withMPD MPD.previous)
-  ]
-  -- Switch workspaces using symbols
-  ++ [ ((mod4Mask .|. m, k), windows $ f i)
-     | (i, k) <- zip (workspaceNames 9)
-       [ xK_exclam, xK_at, xK_numbersign, xK_dollar, xK_percent, xK_asciicircum
-       , xK_ampersand, xK_asterisk, xK_bracketleft ]
-     , (m, f) <- [(0, W.greedyView), (shiftMask, W.shift)]
-     ]
+    -- Reset the mouse cursor
+    , ((mod4Mask, xK_Escape), spawn "swarp 0 0")
 
-friendlyNames = [
-        (1, "term"),
-        (2, "editor"),
-        (3, "irc"),
-
-        (7, "skype"),
-        (8, "torrent"),
-        (9, "web")
+    , ((controlMask .|. mod1Mask, xK_Home),      io . void $ MPD.withMPD MPD.toggle)
+    , ((controlMask .|. mod1Mask, xK_Insert),    io . void $ MPD.withMPD (MPD.play Nothing))
+    , ((controlMask .|. mod1Mask, xK_End),       io . void $ MPD.withMPD MPD.stop)
+    , ((controlMask .|. mod1Mask, xK_Page_Down), io . void $ MPD.withMPD MPD.next)
+    , ((controlMask .|. mod1Mask, xK_Page_Up),   io . void $ MPD.withMPD MPD.previous)
     ]
 
-workspaceNames n = map elem [1..n]
-  where
-    elem x = show x ++ (concatMap (':':) . maybeToList $ lookup x friendlyNames)
+    -- Switch workspaces using symbols
+    ++ [ ((mod4Mask .|. m, k), windows $ f i)
+       | (i, k) <- zip (workspaceNames 9)
+         [ xK_exclam, xK_at, xK_numbersign, xK_dollar, xK_percent, xK_asciicircum
+         , xK_ampersand, xK_asterisk, xK_bracketleft ]
+       , (m, f) <- [(0, greedyView), (shiftMask, shift)]
+       ]
+
+workspaceNames n = [ case lookup x friendlyNames of
+                       Nothing -> show x
+                       Just n  -> show x ++ ":" ++ n
+                   | x <- [1..n] ]
+
+friendlyNames =
+    [ (1, "term")
+    , (2, "editor")
+    , (3, "irc")
+
+    , (7, "skype")
+    , (8, "torrent")
+    , (9, "web")
+    ]
 
 -- Float exceptions
-manageFloats = composeAll $ fullF : [ title =? x `to` doFloat | x <- floatTitles ]
+manageFloats = composeAll [ title =? x `to` doFloat | x <- floatTitles ]
     where to = (-->)
 
 floatTitles =
@@ -139,41 +135,11 @@ floatTitles =
   , "Audiosurf", "Audiosurf 2", "Heroes of the Storm", "scaler_test"
   ]
 
--- Programs that should start in fullscreen mode. Normally EWMH handles this
--- properly, but eg. mpv does something weird on initial startup so we have to
--- do it manually. (Update: turns out mpv got fixed upstream)
-fullTitles = [  ]
-
-fullF = fmap (\t -> any (`L.isPrefixOf` t) fullTitles) title --> doFullFloat
-
--- Cycle focus inside the current stack
-moveUp = W.modify' moveUp'
-moveUp' s@(W.Stack _ [] _)          = s -- master is unchanged
-moveUp' s@(W.Stack _ [_] _)         = s -- last before master is unchanged
-moveUp' (W.Stack f (u:us) ds)       = W.Stack u us (f:ds) -- rest is moved
-
-moveDown = W.modify' moveDown'
-moveDown' s@(W.Stack _ [] _)        = s -- master is unchanged
-moveDown' s@(W.Stack _ _ [])        = s -- bottom is unchanged
-moveDown' (W.Stack f us (d:ds))     = W.Stack d (f:us) ds -- rest is moved
-
-moveRight = W.modify' moveRight'
-moveRight' (W.Stack m [] (d:ds))    = W.Stack d [m] ds -- master, move focus to top
-moveRight' s@(W.Stack _ _ _)        = s -- only one window or not master
-
-switchWorkspace' d = wsBy' d >>= windows . W.greedyView
+switchWorkspace' d = wsBy' d >>= windows . greedyView
 wsBy' = findWorkspace getSortByIndex Next HiddenNonEmptyWS
 
 nextWS' = switchWorkspace' 1
 prevWS' = switchWorkspace' (-1)
-
-{-
-data AllFloat = AllFloat
-  deriving (Read, Show)
-
-instance SetsAmbiguous AllFloat where
-  hiddens _ ws _ _ = map fst . M.toList $ W.floating ws
--}
 
 -- Fullscreen fixes. For some reason ewmh doesn't advertise _NET_WM_STATE_FULLSCREEN
 fullscreenFix :: XConfig a -> XConfig a
@@ -196,5 +162,3 @@ setSupportedWithFullscreen = withDisplay $ \dpy -> do
                        ,"_NET_WM_STRUT"
                        ]
   io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
-
-  --setWMName "xmonad"

@@ -1,0 +1,11 @@
+
+module openvpn_log 1.0;
+
+require {
+	type openvpn_t;
+	type openvpn_var_log_t;
+	class file write;
+}
+
+#============= openvpn_t ==============
+allow openvpn_t openvpn_var_log_t:file write;
