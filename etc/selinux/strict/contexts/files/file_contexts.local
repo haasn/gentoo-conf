@@ -23,3 +23,5 @@
 /home/nand/.rtorrent.rc    system_u:object_r:rtorrent_home_t
 /y/media/torrents(/.*)?    staff_u:object_r:xdg_downloads_home_t
 /etc/cron.(daily|monthly)/btrfs-snapshot    system_u:object_r:btrfs_exec_t
+/y/media/incoming(/.*)?    staff_u:object_r:mpd_data_t
+/y/media/music(/.*)?    system_u:object_r:mpd_user_data_t

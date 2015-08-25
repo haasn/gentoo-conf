@@ -119,7 +119,7 @@ sys-block/gparted -dmraid -hfs # requires udev
 ############################
 
 # FFmpeg stuff
-*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec libsoxr
+*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec libsoxr modplug
 media-video/ffmpeg -hardcoded-tables # build failure
 #*/ffmpeg -abi_x86_32
 
@@ -188,7 +188,7 @@ media-video/x264-encoder 10bit -mp4
 
 # Slim down mpv a bit
 media-video/mpv -a52 -dv dvd dvdnav gif jpeg -live -mng png -quicktime -rar -sdl -shm -speex -xv vdpau
-media-video/mplayer -a52 -dv -dvd -dvdnav gif jpeg -live -mng png -quicktime -rar -sdl -shm -speex -xv -cdio -quvi pulseaudio
+media-video/mpv -luajit # incompatible with PaX
 
 # Extra font candy for libass
 media-libs/libass harfbuzz
