@@ -1,0 +1,121 @@
+#!/bin/sh
+
+# Copyright 2008 Urs Wolfer <uwolfer @ kde.org>
+# Copyright 2012, 2013 Bruno George Moraes <brunogm0 @ gmail.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of
+# the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+#
+# Thin wrapper script around optipng, advdef and pngout.
+# It filters the output and shows a summary at the end of the optimization run.
+# Tested with:
+# * OptiPNG 0.7.1 http://optipng.sourceforge.net/
+# * advdef (AdvanceCOMP) 1.15 http://advancemame.sourceforge.net/comp-readme.html
+# * PNGOUT http://www.jonof.id.au/kenutils (Note: no-cost download; non-Free software)
+
+# ${foo:-bar} syntax sets foo=bar if not already set
+optipng_tool=$(command -v optipng)
+optipng_tool=${optipng_tool:-/bin/true}
+
+advancecomp_tool=$(command -v advdef)
+advancecomp_tool=${advancecomp_tool:-/bin/true}
+
+pngout_tool=$(command -v pngout)
+pngout_tool=${pngout_tool:-/bin/true}
+
+zopfli_tool=$(command -v zopflipng)
+zopfli_tool=${zopfli_tool:-/bin/true}
+
+thread_count=$(grep -c ^processor /proc/cpuinfo)
+thread_count=${thread_count:-4}
+
+if test "$1" = "-h" -o "$1" = "--help"; then
+    echo "Usage: optimizegraphics [FILE]";
+    echo "If [FILE] is not defined, it optimizes all files (PNG,MNG,SVGZ) recursively starting at the current working directory.";
+    echo "To achieve the best optimization please use all supported tools (optipng,advdef,pngout).";
+    exit;
+fi
+
+if [ ${optipng_tool} = "/bin/true" ]; then
+    echo "Please install optipng to increase PNG compression.";
+fi
+if [ ${pngout_tool} = "/bin/true" ];  then
+    echo "Please install pngout to increase PNG compression.";
+fi
+if [ ${advancecomp_tool} = "/bin/true" ]; then
+    echo "Please install advancecomp to optimize PNG, MNG and SVGZ.";
+fi
+if [ ${zopfli_tool} = "/bin/true" ]; then
+    echo "Please install zopflipng to optimize PNG, MNG and SVGZ.";
+fi
+
+if [ $# -ne 0 ]; then # file is defined
+    if [ ! -e "$1" ]; then
+        echo "File $1 doesn't exist!"
+        exit 1
+    fi
+
+    ${optipng_tool} -preserve -o6 "$1";
+    ${advancecomp_tool} -z -4 "$1";
+    ${pngout_tool} -ks "$1";
+    ${zopfli_tool} -my --lossy_transparent "$1" "$1";
+
+    exit $?
+
+else # do it recursively
+    echo "Recursive parallel optimization using detected tools.";
+    STARTSIZE=`du -sb | awk '{ print $1 }'`;
+
+    # OptiPNG pass
+    if [ "${optipng_tool}" != "/bin/true" ] ; then
+        find . -name "*.png" -print0 | \
+            xargs -t0r -n 1 -P $thread_count \
+                "${optipng_tool}" -quiet -preserve -o6
+    else
+        echo "Skipping OptiPNG optimizations for PNG file type"
+    fi
+
+    # AdvanceCOMP pass
+    if [ "${advancecomp_tool}" != "/bin/true" ] ; then
+        find . \( -name "*.svgz" -o -name '*.mng' -o -name '*.png' \) -print0 | \
+            xargs -t0r -n 1 -P $thread_count \
+                "${advancecomp_tool}" -q -z -4
+    else
+        echo "Skipping AdvanceCOMP optimizations for SVGZ, MNG, PNG file types"
+    fi
+
+    # PNGout pass
+    if [ "${pngout_tool}" != "/bin/true" ] ; then
+        find . -name "*.png" -print0 | \
+            xargs -t0r -n 1 -P $thread_count \
+                "${pngout_tool}" -q -ks
+    else
+        echo "Skipping PNGout optimizations for PNG file type"
+    fi
+
+    # Zoplfi pass
+    if [ "${zopfli_tool}" != "/bin/true" ] ; then
+        find . -name "*.png" -exec \
+            "${zopfli_tool}" -my --lossy_transparent {} {} \;
+    else
+        echo "Skipping Zopfli optimizations for PNG file type"
+    fi
+
+    ENDSIZE=`du -sb | awk '{ print $1 }'`;
+
+    REDUCEDSIZE=$(( $STARTSIZE - $ENDSIZE ));
+    REDUCEDPER=$(( 100 * $REDUCEDSIZE / $STARTSIZE ));
+
+    echo "optimizegraphics: Losslessly optimized PNG, MNG, and SVGZ files.";
+    echo "Went from $STARTSIZE to $ENDSIZE bytes"
+    echo "Reduced " $REDUCEDPER" % disk space:" $REDUCEDSIZE" Bytes, " \
+        $(( $REDUCEDSIZE / 1024 )) "KiB, " $(( $REDUCEDSIZE / 1024 / 1024 )) "MiB";
+fi

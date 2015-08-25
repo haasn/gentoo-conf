@@ -3,6 +3,7 @@ app-admin/hddtemp
 app-admin/pass
 app-admin/pwgen
 app-admin/sudo
+app-arch/advancecomp
 app-arch/deb2targz
 app-arch/lz4
 app-arch/lzop
@@ -11,6 +12,7 @@ app-arch/paq8l
 app-arch/rpm2targz
 app-arch/unp
 app-arch/unrar
+app-arch/zopfli
 app-arch/zpaq
 app-benchmarks/bonnie++
 app-benchmarks/httperf

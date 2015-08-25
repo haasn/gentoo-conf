@@ -3616,7 +3616,7 @@ user_pref("geo.enabled", false);
 user_pref("geo.wifi.logging.enabled", false);
 user_pref("geo.wifi.uri", "");
 user_pref("gfx.blacklist.suggested-driver-version", "<Anything with EXT_texture_from_pixmap support>");
-user_pref("gfx.color_management.display_profile", "/home/nand/icc/alt.icc");
+user_pref("gfx.color_management.display_profile", "/usr/share/color/icc/local/alt.icc");
 user_pref("gfx.color_management.enablev4", true);
 user_pref("gfx.color_management.mode", 1);
 user_pref("gfx.color_management.rendering_intent", 1);
