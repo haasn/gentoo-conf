@@ -34,6 +34,9 @@ pngout_tool=${pngout_tool:-/bin/true}
 zopfli_tool=$(command -v zopflipng)
 zopfli_tool=${zopfli_tool:-/bin/true}
 
+zopflisingle_tool=$(command -v zopflisingle)
+zopflisingle_tool=${zopflisingle_tool:-/bin/true}
+
 thread_count=$(grep -c ^processor /proc/cpuinfo)
 thread_count=${thread_count:-4}
 
@@ -54,7 +57,10 @@ if [ ${advancecomp_tool} = "/bin/true" ]; then
     echo "Please install advancecomp to optimize PNG, MNG and SVGZ.";
 fi
 if [ ${zopfli_tool} = "/bin/true" ]; then
-    echo "Please install zopflipng to optimize PNG, MNG and SVGZ.";
+    echo "Please install zopflipng to increase PNG compression.";
+fi
+if [ ${zopflisingle_tool} = "/bin/true" ]; then
+    echo "Please install zopflisingle to recursively optimize PNG.";
 fi
 
 if [ $# -ne 0 ]; then # file is defined
@@ -101,12 +107,13 @@ else # do it recursively
         echo "Skipping PNGout optimizations for PNG file type"
     fi
 
-    # Zoplfi pass
-    if [ "${zopfli_tool}" != "/bin/true" ] ; then
-        find . -name "*.png" -exec \
-            "${zopfli_tool}" -my --lossy_transparent {} {} \;
+    # Zopflisingle pass
+    if [ "${zopflisingle_tool}" != "/bin/true" ] ; then
+        find . -name "*.png" -print0 | \
+            xargs -t0r -n 1 -P $thread_count \
+                "${zopflisingle_tool}"
     else
-        echo "Skipping Zopfli optimizations for PNG file type"
+        echo "Skipping Zopflisingle optimizations for PNG file type"
     fi
 
     ENDSIZE=`du -sb | awk '{ print $1 }'`;
