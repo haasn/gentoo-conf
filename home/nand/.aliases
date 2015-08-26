@@ -420,12 +420,3 @@ seshowdef() {
 sepathdecode() {
 	python -c "import base64; print(base64.b16decode(\"${1}\"));";
 }
-
-# PNG optimization
-opt() {
-    optipng -preserve -o6 "$1"
-    advdef -z -4 "$1"
-    #pngout -ks "$1"
-    zopflipng -my --lossy_transparent "$1" "$1";
-
-}

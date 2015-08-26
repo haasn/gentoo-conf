@@ -70,7 +70,7 @@ if [ $# -ne 0 ]; then # file is defined
     fi
 
     ${optipng_tool} -preserve -o6 "$1";
-    ${advancecomp_tool} -z -4 "$1";
+    ${advancecomp_tool} -z -3 "$1";
     ${pngout_tool} -ks "$1";
     ${zopfli_tool} -my --lossy_transparent "$1" "$1";
 
@@ -93,7 +93,7 @@ else # do it recursively
     if [ "${advancecomp_tool}" != "/bin/true" ] ; then
         find . \( -name "*.svgz" -o -name '*.mng' -o -name '*.png' \) -print0 | \
             xargs -t0r -n 1 -P $thread_count \
-                "${advancecomp_tool}" -q -z -4
+                "${advancecomp_tool}" -q -z -3
     else
         echo "Skipping AdvanceCOMP optimizations for SVGZ, MNG, PNG file types"
     fi
