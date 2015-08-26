@@ -14,4 +14,15 @@ server {
         disable_symlinks on;
         try_files /$2 =404;
     }
+
+    location /☃ {
+        default_type text/html;
+        lua_http10_buffering off;
+        lua_check_client_abort on;
+        content_by_lua '
+            while ngx.say("<a href=/☃>☃</a>") == 1 do
+                ngx.flush()
+                ngx.sleep(0.1)
+            end';
+    }
 }
