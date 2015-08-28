@@ -8,7 +8,7 @@ MAILTO=nand
 HOME=/
 
 # Run fstrim twice a day
-#15     2,14   *      *       *                 /sbin/fstrim /
+15     2,14   *      *       *                 /sbin/fstrim /
 
 # check scripts in cron.hourly, cron.daily, cron.weekly and cron.monthly
 # if anacron is not present

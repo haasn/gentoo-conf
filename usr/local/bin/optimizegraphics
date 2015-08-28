@@ -72,7 +72,7 @@ if [ $# -ne 0 ]; then # file is defined
     ${optipng_tool} -preserve -o6 "$1";
     ${advancecomp_tool} -z -3 "$1";
     ${pngout_tool} -ks "$1";
-    ${zopfli_tool} -my --lossy_transparent "$1" "$1";
+    ${zopfli_tool} -y --lossy_transparent "$1" "$1";
 
     exit $?
 

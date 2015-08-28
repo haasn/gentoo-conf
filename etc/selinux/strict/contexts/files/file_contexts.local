@@ -25,3 +25,4 @@
 /etc/cron.(daily|monthly)/btrfs-snapshot    system_u:object_r:btrfs_exec_t
 /y/media/incoming(/.*)?    staff_u:object_r:mpd_data_t
 /y/media/music(/.*)?    system_u:object_r:mpd_user_data_t
+/y/misc/distfiles/hg-src(/.*)?    system_u:object_r:portage_srcrepo_t

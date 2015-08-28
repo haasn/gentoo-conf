@@ -115,9 +115,9 @@ extraKeys =
        , (m, f) <- [(0, greedyView), (shiftMask, shift)]
        ]
 
-workspaceNames n = [ case lookup x friendlyNames of
-                       Nothing -> show x
-                       Just n  -> show x ++ ":" ++ n
+workspaceNames n = [ show x ++ ":" ++ case lookup x friendlyNames of
+                       Nothing -> "──"
+                       Just n  -> n
                    | x <- [1..n] ]
 
 friendlyNames =

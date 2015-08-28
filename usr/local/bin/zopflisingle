@@ -1,2 +1,2 @@
 #!/bin/sh
-zopflipng -my --lossy_transparent "$1" "$1" >/dev/null
+zopflipng -y --lossy_transparent "$1" "$1" >/dev/null

@@ -21,6 +21,7 @@ app-benchmarks/phoronix-test-suite
 app-benchmarks/sysbench
 app-cdr/cuetools
 app-crypt/aesutil
+app-crypt/dieharder
 app-editors/bvi
 app-editors/nano
 app-editors/vim
@@ -189,7 +190,6 @@ dev-vcs/darcs
 dev-vcs/mercurial
 games-action/extreme-tuxracer
 games-action/supertuxkart
-games-board/cockatrice
 games-emulation/desmume
 games-emulation/visualboyadvance
 games-fps/ut2004
@@ -216,6 +216,7 @@ media-gfx/argyllcms
 media-gfx/dcraw
 media-gfx/dispcalgui
 media-gfx/feh
+media-gfx/gifsicle
 media-gfx/gimp
 media-gfx/gphoto2
 media-gfx/imagemagick
@@ -239,6 +240,7 @@ media-libs/opencv
 media-libs/openexr
 media-libs/quvi
 media-libs/rubberband
+media-libs/x265
 media-plugins/tap-plugins
 media-plugins/vapoursynth-mvtools
 media-sound/autoplay
@@ -305,7 +307,6 @@ net-misc/whois
 net-misc/youtube-dl
 net-misc/zsync
 net-p2p/rtorrent
-sci-electronics/kicad
 sci-libs/fftw
 sci-libs/libqalculate
 sci-mathematics/msieve

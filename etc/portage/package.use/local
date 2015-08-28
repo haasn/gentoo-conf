@@ -119,7 +119,7 @@ sys-block/gparted -dmraid -hfs # requires udev
 ############################
 
 # FFmpeg stuff
-*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp -x265 vpx openssl -gnutls vdpau dcadec libsoxr modplug
+*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx openssl -gnutls vdpau dcadec libsoxr modplug
 media-video/ffmpeg -hardcoded-tables # build failure
 #*/ffmpeg -abi_x86_32
 
