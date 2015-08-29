@@ -350,6 +350,7 @@ sys-kernel/hardened-sources
 sys-kernel/linux-firmware
 sys-libs/libfaketime
 sys-power/apcupsd
+sys-power/powertop
 sys-process/htop
 sys-process/iotop
 sys-process/lsof
