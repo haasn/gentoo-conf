@@ -1,8 +1,11 @@
+app-admin/firejail
 app-admin/haskell-updater
 app-admin/hddtemp
+app-admin/logrotate
 app-admin/pass
 app-admin/pwgen
 app-admin/sudo
+app-admin/syslog-ng
 app-arch/advancecomp
 app-arch/deb2targz
 app-arch/lz4

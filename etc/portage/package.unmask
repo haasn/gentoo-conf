@@ -52,6 +52,7 @@ x11-libs/libvdpau-va-gl::x11
 
 # Booboo
 media-sound/oss::booboo
+app-admin/firejail::booboo
 
 # Emery
 dev-libs/libuv::emery

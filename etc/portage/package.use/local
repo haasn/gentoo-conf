@@ -535,6 +535,9 @@ sys-devel/gcc fortran
 app-emulation/docker lxc
 x11-base/xorg-server xnest xephyr kdrive
 
+# To generate diagrams
+net-analyzer/vnstat gd
+
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify
 media-libs/libsamplerate sndfile
