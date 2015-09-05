@@ -19,7 +19,7 @@ GRUB_TIMEOUT=2
 #GRUB_TIMEOUT_STYLE=menu
 
 # Append parameters to the linux kernel command line
-#GRUB_CMDLINE_LINUX=""
+GRUB_CMDLINE_LINUX="dobtrfs"
 #
 # Examples:
 #
@@ -30,7 +30,7 @@ GRUB_TIMEOUT=2
 # GRUB_CMDLINE_LINUX="init=/usr/lib/systemd/systemd"
 
 # Append parameters to the linux kernel command line for non-recovery entries
-GRUB_CMDLINE_LINUX_DEFAULT="dobtrfs"
+#GRUB_CMDLINE_LINUX_DEFAULT=
 
 # Uncomment to disable graphical terminal (grub-pc only)
 #GRUB_TERMINAL=console

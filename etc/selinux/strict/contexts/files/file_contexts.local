@@ -27,3 +27,4 @@
 /y/media/music(/.*)?    system_u:object_r:mpd_user_data_t
 /y/misc/distfiles/hg-src(/.*)?    system_u:object_r:portage_srcrepo_t
 /sbin/btrfs    system_u:object_r:btrfs_exec_t
+/var/lib/mpd/log    system_u:object_r:mpd_log_t

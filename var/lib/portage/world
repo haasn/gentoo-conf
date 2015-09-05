@@ -358,6 +358,7 @@ sys-process/htop
 sys-process/iotop
 sys-process/lsof
 sys-process/parallel
+sys-process/runit
 virtual/cron
 virtual/latex-base
 www-client/firefox

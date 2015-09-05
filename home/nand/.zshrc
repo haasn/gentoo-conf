@@ -48,7 +48,7 @@ setopt promptsubst
 autoload -U colors && colors
 
 # hash the hostname
-local col=0 rcol=82 ROLE="${${${:-$(id -Z)}#*:}%:*}"
+local col=0 rcol=82 ROLE="${${${${:-$(id -Z 2>/dev/null)}#*:}%:*}:-none}"
 sumcharvals "$USER@$HOST" $terminfo[colors] col
 [[ $ROLE == 'sysadm_r' ]] && rcol=red
 

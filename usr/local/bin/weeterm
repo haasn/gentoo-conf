@@ -1,2 +1,2 @@
-urxvtc -keysym.Escape ÿ -e dtach -A /tmp/weechat -Ez weechat-curses
-#konsole --profile Weechat
+#!/bin/sh
+exec urxvtc -keysym.Escape ÿ -e dtach -A /tmp/weechat -Ez weechat-curses
