@@ -19,6 +19,7 @@ dev-haskell/temporary
 dev-lang/ghc
 dev-util/strace
 dev-vcs/git
+media-sound/teamspeak-server-bin
 net-analyzer/netcat6
 net-dns/bind-tools
 net-dns/nsd

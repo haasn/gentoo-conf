@@ -1,0 +1,13 @@
+/etc/teamspeak3-server(/.*)?                    gen_context(system_u:object_r:ts3_server_conf_t,s0)
+/opt/teamspeak3-server                          gen_context(system_u:object_r:ts3_server_db_t,s0)
+/opt/teamspeak3-server/.*                       gen_context(system_u:object_r:ts3_server_conf_t,s0)
+/opt/teamspeak3-server/.*\.so                   gen_context(system_u:object_r:lib_t,s0)
+/opt/teamspeak3-server/ts3server.sqlitedb(-journal)?    gen_context(system_u:object_r:ts3_server_db_t,s0)
+
+/opt/teamspeak3-server/files(/.*)?              gen_context(system_u:object_r:ts3_server_user_files_t,s0)
+
+/opt/teamspeak3-server/sbin                     gen_context(system_u:object_r:bin_t,s0)
+/opt/teamspeak3-server/sbin/ts3server-bin   --  gen_context(system_u:object_r:ts3_server_exec_t,s0)
+
+/var/run/teamspeak3-server(/.*)?                gen_context(system_u:object_r:ts3_server_var_run_t,s0)
+/var/log/teamspeak3-server(/.*)?                gen_context(system_u:object_r:ts3_server_var_log_t,s0)

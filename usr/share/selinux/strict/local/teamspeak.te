@@ -1,0 +1,92 @@
+# Teamspeak 3 (server only)
+policy_module(teamspeak, 1.0)
+
+gen_require(`
+    attribute port_type;
+    attribute defined_port_type;
+    attribute packet_type;
+    attribute server_packet_type;
+    attribute unreserved_port_type;
+')
+
+## <desc>
+## <p>
+## Allow users to upload files via the TeamSpeak 3 file browser.
+## </p>
+## </desc>
+gen_tunable(allow_ts3_server_user_files, false)
+
+# Types needed for daemonizing it
+type ts3_server_t;
+type ts3_server_exec_t;
+init_daemon_domain(ts3_server_t, ts3_server_exec_t)
+
+# Type for its config/db files
+type ts3_server_conf_t;
+files_type(ts3_server_conf_t)
+list_dirs_pattern(ts3_server_t, ts3_server_conf_t, ts3_server_conf_t)
+manage_dirs_pattern(ts3_server_t, ts3_server_conf_t, ts3_server_conf_t)
+read_files_pattern(ts3_server_t, ts3_server_conf_t, ts3_server_conf_t)
+
+# User file uploads
+type ts3_server_db_t;
+files_type(ts3_server_db_t)
+
+tunable_policy(`allow_ts3_server_user_files',`
+    manage_files_pattern(ts3_server_t, ts3_server_db_t, ts3_server_db_t)
+    manage_dirs_pattern(ts3_server_t, ts3_server_db_t, ts3_server_db_t)
+')
+
+# For uploading user files
+type ts3_server_user_files_t;
+files_type(ts3_server_user_files_t)
+manage_files_pattern(ts3_server_t, ts3_server_user_files_t, ts3_server_user_files_t)
+manage_dirs_pattern(ts3_server_t, ts3_server_user_files_t, ts3_server_user_files_t)
+
+# Needed to listen
+allow ts3_server_t self:tcp_socket create_stream_socket_perms;
+
+corenet_tcp_bind_generic_node(ts3_server_t)
+corenet_udp_bind_generic_node(ts3_server_t)
+corenet_tcp_sendrecv_generic_node(ts3_server_t)
+corenet_udp_sendrecv_generic_node(ts3_server_t)
+
+type ts3_port_t, port_type, defined_port_type;
+type ts3_server_packet_t, packet_type, server_packet_type;
+typeattribute ts3_port_t unreserved_port_type;
+
+allow ts3_server_t self:udp_socket create_socket_perms;
+allow ts3_server_t ts3_port_t:tcp_socket name_bind;
+allow ts3_server_t ts3_port_t:udp_socket name_bind;
+allow ts3_server_t ts3_server_packet_t:packet { send recv };
+
+sysnet_read_config(ts3_server_t)
+
+# pid file
+type ts3_server_var_run_t;
+files_pid_file(ts3_server_var_run_t)
+manage_dirs_pattern(ts3_server_t, ts3_server_var_run_t, ts3_server_var_run_t)
+manage_files_pattern(ts3_server_t, ts3_server_var_run_t, ts3_server_var_run_t)
+files_pid_filetrans(ts3_server_t, ts3_server_var_run_t, file)
+
+# log file
+type ts3_server_var_log_t;
+logging_log_file(ts3_server_var_log_t)
+manage_dirs_pattern(ts3_server_t, ts3_server_var_log_t, ts3_server_var_log_t)
+write_files_pattern(ts3_server_t, ts3_server_var_log_t, ts3_server_var_log_t)
+create_files_pattern(ts3_server_t, ts3_server_var_log_t, ts3_server_var_log_t)
+setattr_files_pattern(ts3_server_t, ts3_server_var_log_t, ts3_server_var_log_t)
+logging_log_filetrans(ts3_server_t, ts3_server_var_log_t, { file dir })
+
+# tmpfs crap
+fs_getattr_tmpfs(ts3_server_t)
+fs_search_tmpfs(ts3_server_t)
+type ts3_server_tmpfs_t;
+files_tmpfs_file(ts3_server_tmpfs_t)
+
+manage_files_pattern(ts3_server_t, ts3_server_tmpfs_t, ts3_server_tmpfs_t)
+fs_tmpfs_filetrans(ts3_server_t, ts3_server_tmpfs_t, file)
+
+# Misc stuff
+miscfiles_read_localization(ts3_server_t)
+allow ts3_server_t self:fifo_file rw_fifo_file_perms;

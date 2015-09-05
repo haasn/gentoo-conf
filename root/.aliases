@@ -2,7 +2,7 @@
 alias grep='grep -i --color=auto'
 
 # some more ls aliases
-alias ll='ls -l --si'
+alias ll='ls -l --si -Z'
 alias la='ls -A'
 alias l='ls -CF'
 alias lt='ll -rt'

@@ -8,3 +8,4 @@ console_login=0
 nginx_enable_homedirs=1
 nginx_can_network_connect=1
 rtorrent_use_dht=1
+allow_ts3_server_user_files=1

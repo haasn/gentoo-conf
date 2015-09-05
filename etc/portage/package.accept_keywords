@@ -17,6 +17,7 @@ net-dns/nsd
 sys-kernel/dracut
 app-misc/openca-ocspd
 dev-libs/libpki
+media-sound/teamspeak-server-bin
 
 # Keeping this up-to-date
 dev-lang/ghc
