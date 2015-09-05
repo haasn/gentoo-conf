@@ -530,6 +530,7 @@ x11-drivers/nvidia-drivers gtk3 uvm # for CUDA
 # SELinux/hardened stuff
 sec-policy/* doc -unconfined
 sys-devel/gcc fortran
+sys-apps/openrc audit
 
 # For Skype
 app-emulation/docker lxc

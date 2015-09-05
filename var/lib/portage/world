@@ -327,6 +327,7 @@ sys-apps/lsb-release
 sys-apps/man-db
 sys-apps/memtest86+
 sys-apps/portage
+sys-apps/s6
 sys-apps/smartmontools
 sys-apps/usbutils
 sys-block/fio
