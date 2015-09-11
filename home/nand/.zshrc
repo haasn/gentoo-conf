@@ -98,6 +98,7 @@ export DARCS_DO_COLOR_LINES=1
 export GCC_COLORS=1
 export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 export KDE_FORK_SLAVES=1
+#export MOZ_USE_OMTC=1
 
 # Mask o-r by default
 umask 026
