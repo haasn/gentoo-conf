@@ -28,6 +28,9 @@ app-crypt/dieharder
 app-editors/bvi
 app-editors/nano
 app-editors/vim
+app-emulation/qemu
+app-emulation/qtemu
+app-emulation/vmware-player
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter

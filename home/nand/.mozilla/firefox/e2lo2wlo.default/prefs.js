@@ -3725,6 +3725,7 @@ user_pref("security.ssl3.rsa_des_ede3_sha", false);
 user_pref("security.ssl3.rsa_rc4_128_md5", false);
 user_pref("security.ssl3.rsa_rc4_128_sha", false);
 user_pref("security.tls.insecure_fallback_hosts.use_static_list", false);
+user_pref("security.tls.unrestricted_rc4_fallback", false);
 user_pref("security.warn_entering_weak", false);
 user_pref("security.warn_entering_weak.show_once", false);
 user_pref("security.warn_viewing_mixed", false);

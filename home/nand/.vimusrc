@@ -27,10 +27,10 @@ map <C-Y>       :scroll-up<CR>
 map <C-E>       :scroll-down<CR>
 map <C-U>       :scroll-half-page-up<CR>
 map <C-B>       :scroll-page-up<CR>
-map <PageUp>    :scroll-page-up<CR>
+map <PageUp>    :scroll-half-page-up<CR>
 map <C-D>       :scroll-half-page-down<CR>
 map <C-F>       :scroll-page-down<CR>
-map <PageDown>  :scroll-page-down<CR>
+map <PageDown>  :scroll-half-page-down<CR>
 
 # tab navigation
 map q           :close<CR>

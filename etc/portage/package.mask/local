@@ -63,3 +63,6 @@ dev-haskell/linear::local_overlay
 
 # Weird unstable crap
 >=media-libs/opencolorio-1.0.9
+
+# Build failure
+=sec-policy/selinux-virt-9999

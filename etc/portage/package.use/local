@@ -156,6 +156,9 @@ media-sound/teamspeak-client-bin pulseaudio
 games-emulation/higan pulseaudio
 media-libs/libsdl sound
 
+# Might be able to run d3
+app-emulation/vmware-tools vmware_guest_windows
+
 # Needed for some stupid reason by teamspeak3-client-bin
 dev-qt/qtgui xinerama -dbus
 dev-qt/qtgui:5 -accessibility
@@ -563,3 +566,12 @@ dev-libs/libwiimote force tilt
 # required by dev-rust/cargo-0.3.0::rust
 # required by cargo (argument)
 >=sys-devel/llvm-3.6.2 multitarget
+# required by app-emulation/qemu-2.4.0::gentoo[-qemu_softmmu_targets_lm32,-qemu_softmmu_targets_mips,-qemu_softmmu_targets_alpha,-qemu_softmmu_targets_mips64,-qemu_softmmu_targets_s390x,-qemu_softmmu_targets_xtensaeb,-qemu_softmmu_targets_mipsel,opengl,-qemu_softmmu_targets_cris,-qemu_softmmu_targets_moxie,-qemu_softmmu_targets_m68k,-qemu_softmmu_targets_xtensa,-qemu_softmmu_targets_or32,-qemu_softmmu_targets_ppcemb,-qemu_softmmu_targets_microblaze,-qemu_softmmu_targets_arm,-qemu_softmmu_targets_sh4eb,-qemu_softmmu_targets_unicore32,-qemu_softmmu_targets_i386,-qemu_softmmu_targets_mips64el,-qemu_softmmu_targets_ppc64,-qemu_softmmu_targets_sparc,-qemu_softmmu_targets_ppc,qemu_softmmu_targets_x86_64,-qemu_softmmu_targets_microblazeel,-qemu_softmmu_targets_sparc64,-qemu_softmmu_targets_aarch64,-static-softmmu,-qemu_softmmu_targets_sh4]
+# required by qemu (argument)
+>=media-libs/mesa-11.0.0_rc2 gles2
+# required by gnome-base/gnome-keyring-3.16.0-r1::gentoo
+# required by gnome-base/libgnome-keyring-3.12.0::gentoo
+# required by x11-libs/libgksu-2.0.12-r2::gentoo
+# required by app-emulation/vmware-player-7.1.2.2780323::gentoo
+# required by app-emulation/vmware-modules-304.2::gentoo
+>=app-crypt/pinentry-0.9.5 gnome-keyring
