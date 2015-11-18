@@ -119,7 +119,7 @@ sys-block/gparted -dmraid -hfs # requires udev
 ############################
 
 # FFmpeg stuff
-*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx openssl -gnutls vdpau dcadec libsoxr modplug
+*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx openssl -gnutls vdpau dcadec libsoxr modplug librtmp celt bluray
 media-video/ffmpeg -hardcoded-tables # build failure
 #*/ffmpeg -abi_x86_32
 
@@ -160,8 +160,9 @@ media-libs/libsdl sound
 app-emulation/vmware-tools vmware_guest_windows
 
 # Needed for some stupid reason by teamspeak3-client-bin
-dev-qt/qtgui xinerama -dbus
-dev-qt/qtgui:5 -accessibility
+#dev-qt/qtgui xinerama -dbus
+#dev-qt/qtgui:5 -accessibility
+dev-qt/qtgui:5 accessibility dbus
 
 # Uh oh, xmonad thinks I have one really big monitor otherwise
 dev-haskell/x11 xinerama
@@ -252,7 +253,7 @@ kde-base/* -handbook
 kde-apps/* -handbook
 
 app-text/poppler qt4 # for okular
-app-crypt/pinentry qt4 -gtk
+app-crypt/pinentry qt4 -qt5 -gtk
 
 # Needed for qapitrace
 dev-util/apitrace qt4
@@ -376,6 +377,9 @@ sci-mathematics/agda-stdlib -profile
 x11-libs/libdrm libkms
 media-libs/mesa gbm opencl
 x11-drivers/xf86-video-ati glamor udev
+
+# Tries pulling in ATI drivers?!
+sys-apps/hwloc -opencl
 
 # Experimental Haskell editor
 app-editors/yi vty -gtk
@@ -529,6 +533,9 @@ games-board/cockatrice server
 # Not sure which version I want, to be honest
 x11-drivers/nvidia-drivers gtk3 uvm # for CUDA
 #x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
+media-video/nvidia-settings -gtk3
+
+#x11-drivers/nvidia-drivers -kms # build failure
 
 # SELinux/hardened stuff
 sec-policy/* doc -unconfined
@@ -575,3 +582,8 @@ dev-libs/libwiimote force tilt
 # required by app-emulation/vmware-player-7.1.2.2780323::gentoo
 # required by app-emulation/vmware-modules-304.2::gentoo
 >=app-crypt/pinentry-0.9.5 gnome-keyring
+# required by kde-base/kdelibs-4.14.13-r1::gentoo[crypt]
+# required by kde-apps/kdialog-15.08.0::gentoo
+# required by @selected
+# required by @world (argument)
+>=app-crypt/qca-2.1.1 qt4

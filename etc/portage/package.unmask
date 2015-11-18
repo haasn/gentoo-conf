@@ -67,6 +67,7 @@ sys-apps/ksplice::ixit
 dev-lang/rust::rust
 dev-rust/*::rust
 app-vim/rust-mode::rust
+dev-util/cargo::rust
 
 # Rebutia
 net-misc/trickle::rebutia
@@ -104,6 +105,9 @@ dev-qt/qt5ct::mva
 
 # Palemoon
 www-client/palemoon::palemoon
+
+# Pentoo
+app-crypt/cryptohaze-combined::pentoo
 
 ## Hardened
 

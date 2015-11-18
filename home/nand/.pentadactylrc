@@ -1,4 +1,4 @@
-"hg7218
+"hg7226
 
 loadplugins '\.(js|penta)$'
 group user
@@ -75,8 +75,8 @@ map -count -modes=n,v D -builtin <count>:tabopen<Space>d<Space>
 map -count -modes=I,m <C-c> <C-[>
 map -count -modes=b,o <C-c> <Esc>
 set cdpath=''
-set defsearch=s
-set guioptions=CsT
+set defsearch=d
+set guioptions=Cs
 set hintkeys=abcdefghijklmnoprstuvwxyz
 set showtabline=never
 set yankshort=www.youtube.com,youtube.com,bugzilla.mozilla.org

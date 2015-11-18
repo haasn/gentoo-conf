@@ -30,7 +30,7 @@ nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=125'
 
 # Automatically update the mail cache on new emails
 #while inotifywait -e CREATE ./new/; do notmuch new & done &
-#mailsync
+mailsync
 
 # Attempt to start the autoplay script
 # autoplay info >/dev/null &

@@ -43,9 +43,10 @@ sys-apps/man
 */*::kde
 */*::mva
 */*::palemoon
+*/*::pentoo
 
 # Incompatible with PaX
-=x11-drivers/nvidia-drivers-355.06
+#=x11-drivers/nvidia-drivers-355.06
 
 # No longer needed
 #x11-misc/xmobar::local_overlay

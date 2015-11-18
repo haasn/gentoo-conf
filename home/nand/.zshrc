@@ -89,6 +89,13 @@ bindkey '^[m' copy-earlier-word
 autoload -Uz url-quote-magic
 zle -N self-insert url-quote-magic
 
+if [[ $TERM == dumb ]]; then
+    unset zle_bracketed_paste
+else
+    autoload -Uz bracketed-paste-magic
+    zle -N bracketed-paste bracketed-paste-magic
+fi
+
 # Less greedy word boundaries
 WORDCHARS=${WORDCHARS/\/}
 

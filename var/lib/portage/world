@@ -23,14 +23,14 @@ app-benchmarks/iozone
 app-benchmarks/phoronix-test-suite
 app-benchmarks/sysbench
 app-cdr/cuetools
-app-crypt/aesutil
 app-crypt/dieharder
+app-crypt/johntheripper
 app-editors/bvi
+app-editors/hexedit
 app-editors/nano
 app-editors/vim
 app-emulation/qemu
 app-emulation/qtemu
-app-emulation/vmware-player
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
@@ -162,7 +162,6 @@ dev-lang/perl
 dev-lang/python
 dev-lang/swi-prolog
 dev-lang/tk
-dev-lang/vala
 dev-perl/Archive-Zip
 dev-perl/Text-CharWidth
 dev-php/ZendFramework
@@ -172,7 +171,6 @@ dev-python/python-dateutil
 dev-qt/qt5ct
 dev-ruby/rack-test
 dev-ruby/rspec
-dev-rust/cargo
 dev-tex/biblatex
 dev-tex/latex-beamer
 dev-tex/pgf
@@ -184,6 +182,7 @@ dev-texlive/texlive-xetex
 dev-util/android-tools
 dev-util/apitrace
 dev-util/astyle
+dev-util/cargo
 dev-util/cppunit
 dev-util/radare2
 dev-util/scanmem
