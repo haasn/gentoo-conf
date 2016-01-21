@@ -1,3 +1,4 @@
+app-admin/augeas
 app-admin/logrotate
 app-admin/sudo
 app-admin/syslog-ng
@@ -17,6 +18,8 @@ app-shells/zsh
 app-shells/zsh-completions
 dev-haskell/temporary
 dev-lang/ghc
+dev-python/virtualenv
+dev-util/dialog
 dev-util/strace
 dev-vcs/git
 media-sound/teamspeak-server-bin

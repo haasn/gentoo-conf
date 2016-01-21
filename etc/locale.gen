@@ -1,10 +1,15 @@
-# /etc/locale.gen: list all of the locales you want to have on your system
+# /etc/locale.gen: list all of the locales you want to have on your system.
+# See the locale.gen(5) man page for more details.
 #
 # The format of each line:
-# <locale> <charmap>
+# <locale name> <charset>
 #
-# Where <locale> is a locale located in /usr/share/i18n/locales/ and
-# where <charmap> is a charmap located in /usr/share/i18n/charmaps/.
+# Where <locale name> starts with a name as found in /usr/share/i18n/locales/.
+# It must be unique in the file as it is used as the key to locale variables.
+# For non-default encodings, the <charset> is typically appended.
+#
+# Where <charset> is a charset located in /usr/share/i18n/charmaps/ (sans any
+# suffix like ".gz").
 #
 # All blank lines and lines starting with # are ignored.
 #
