@@ -289,9 +289,11 @@ net-analyzer/vnstat
 net-analyzer/wireshark
 net-dns/bind-tools
 net-dns/unbound
+net-im/pidgin
 net-im/skype
 net-irc/weechat
 net-libs/glib-networking
+net-libs/zeromq
 net-mail/isync
 net-mail/mswatch
 net-mail/notmuch
@@ -318,6 +320,7 @@ sci-mathematics/msieve
 sec-policy/selinux-backup
 sec-policy/selinux-mplayer
 sys-apps/dstat
+sys-apps/ethtool
 sys-apps/evrouter
 sys-apps/gsmartcontrol
 sys-apps/hdparm

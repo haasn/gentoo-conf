@@ -132,3 +132,7 @@ let if' a b c = if a then b else c
 
 -- Utility
 let unhex s = [chr d | [(d,"")] <- map readHex . f $ filter isHexDigit s] where f (x:y:xs) = [x,y]:f xs; f xs = map pure xs
+
+-- Combinatorics
+let binom n m = fromIntegral $ product [n-m+1..n] `div` product [1..m]
+let p `divides` q = q `rem` p == 0

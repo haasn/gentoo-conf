@@ -12,7 +12,9 @@
 GRUB_DISTRIBUTOR="Gentoo"
 
 # Default menu entry
-#GRUB_DEFAULT=0
+GRUB_DEFAULT=0
+#GRUB_DEFAULT=saved
+#GRUB_SAVEDEFAULT=true
 
 # Boot the default entry this many seconds after the menu is displayed
 GRUB_TIMEOUT=2

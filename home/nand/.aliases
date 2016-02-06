@@ -29,10 +29,10 @@ remedia() {
     for id in ${(k)devices}; do
         pass Disks/yggdrasil/${id##*/} | sudo cryptsetup open /dev/disk/by-$id $devices[$id]
     done
+    sudo setenforce 1
 
     sudo btrfs device scan /dev/mapper/$^devices
     sudo mount -o noatime /dev/mapper/${${devices}[1]} /y || return 1
-    sudo setenforce 1
 
     echo 'Mounted...'
     sudo rc-service mpd start && nohup autoplay info >/dev/null 2>&1
