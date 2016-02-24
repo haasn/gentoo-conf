@@ -1,8 +1,8 @@
 # SSL/TLS and SASL support
 */* ssl sasl
 
-# IPv6 support where possible
-*/* ipv6
+# IPv6 and HTTP/2 support where possible
+*/* ipv6 http2
 
 # No idea what this is useful for, but disable it anyway (shrug)
 net-misc/openvpn -modules
