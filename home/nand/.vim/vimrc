@@ -25,7 +25,14 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 
+" code folding
+set foldmethod=syntax
+set foldnestmax=1
+set foldlevel=0
+
 set cc=81
+set foldcolumn=1
+set numberwidth=1
 
 set completeopt=menu,menuone,longest,preview
 
@@ -45,6 +52,9 @@ highlight SpellRare ctermfg=none ctermbg=none
 highlight SpellLocal ctermfg=3 ctermbg=none
 highlight mailURL ctermfg=2
 highlight mailEmail ctermfg=5
+highlight Folded ctermfg=7  ctermbg=80
+highlight FoldColumn ctermfg=82 ctermbg=16
+highlight LineNr ctermfg=81
 
 " match extra whitespace
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen

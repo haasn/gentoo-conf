@@ -8,6 +8,8 @@ URxvt.scrollTtyOutput:      false
 URxvt.scrollWithBuffer:     true
 URxvt.scrollTtyKeypress:    true
 
+URxvt.fading: 10
+
 ! perl extensions
 URxvt.perl-ext: default,url-select,clipboard
 

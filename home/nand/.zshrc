@@ -15,8 +15,8 @@ compinit
 
 # History settings
 HISTFILE=~/.histfile
-HISTSIZE=1000000
-SAVEHIST=1000000
+HISTSIZE=10000000
+SAVEHIST=10000000
 setopt incappendhistory sharehistory
 
 # Miscellaneous

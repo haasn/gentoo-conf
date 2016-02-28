@@ -1,4 +1,3 @@
-app-admin/firejail
 app-admin/haskell-updater
 app-admin/hddtemp
 app-admin/logrotate
@@ -19,18 +18,16 @@ app-arch/zopfli
 app-arch/zpaq
 app-benchmarks/bonnie++
 app-benchmarks/httperf
-app-benchmarks/iozone
-app-benchmarks/phoronix-test-suite
 app-benchmarks/sysbench
 app-cdr/cuetools
 app-crypt/dieharder
-app-crypt/johntheripper
 app-editors/bvi
 app-editors/hexedit
 app-editors/nano
 app-editors/vim
 app-emulation/qemu
 app-emulation/qtemu
+app-emulation/virt-manager
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
@@ -160,7 +157,6 @@ dev-lang/mercury
 dev-lang/mono
 dev-lang/perl
 dev-lang/python
-dev-lang/swi-prolog
 dev-lang/tk
 dev-perl/Archive-Zip
 dev-perl/Text-CharWidth
@@ -168,7 +164,6 @@ dev-php/ZendFramework
 dev-python/eyeD3
 dev-python/mako
 dev-python/python-dateutil
-dev-qt/qt5ct
 dev-ruby/rack-test
 dev-ruby/rspec
 dev-tex/biblatex
@@ -182,7 +177,6 @@ dev-texlive/texlive-xetex
 dev-util/android-tools
 dev-util/apitrace
 dev-util/astyle
-dev-util/cargo
 dev-util/cppunit
 dev-util/radare2
 dev-util/scanmem
@@ -190,6 +184,7 @@ dev-util/strace
 dev-util/threadscope
 dev-util/valgrind
 dev-vcs/bzr
+dev-vcs/bzr-fastimport
 dev-vcs/cvs
 dev-vcs/darcs
 dev-vcs/mercurial
@@ -200,12 +195,14 @@ games-emulation/visualboyadvance
 games-fps/ut2004
 games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
-kde-apps/gwenview
+kde-apps/kcmshell
 kde-apps/kdialog
+kde-apps/kmail
 kde-apps/knotify
 kde-apps/kolourpaint
 kde-apps/okular
 lxde-base/lxappearance
+mail-client/alot
 mail-client/nail
 mail-mta/msmtp
 media-fonts/dejavu
@@ -215,6 +212,7 @@ media-fonts/opendesktop-fonts
 media-fonts/stix-fonts
 media-fonts/symbola
 media-fonts/terminus-font
+media-fonts/ubuntu-font-family
 media-fonts/unifont
 media-fonts/unifraktur
 media-gfx/argyllcms
@@ -222,7 +220,6 @@ media-gfx/dcraw
 media-gfx/dispcalgui
 media-gfx/feh
 media-gfx/gifsicle
-media-gfx/gimp
 media-gfx/gphoto2
 media-gfx/imagemagick
 media-gfx/jpeg2ps
@@ -247,7 +244,6 @@ media-libs/quvi
 media-libs/rubberband
 media-libs/x265
 media-plugins/tap-plugins
-media-plugins/vapoursynth-mvtools
 media-sound/autoplay
 media-sound/flacon
 media-sound/id3v2
@@ -255,8 +251,6 @@ media-sound/mac
 media-sound/mp3gain
 media-sound/mpc
 media-sound/mpd
-media-sound/mumble
-media-sound/ncmpcpp
 media-sound/opus-tools
 media-sound/pavucontrol
 media-sound/pulseaudio
@@ -271,7 +265,6 @@ media-sound/vorbisgain
 media-video/mediainfo
 media-video/mkvtoolnix
 media-video/mpv
-media-video/nvidia-settings
 media-video/x264-encoder
 net-analyzer/arpoison
 net-analyzer/ettercap
@@ -289,10 +282,12 @@ net-analyzer/vnstat
 net-analyzer/wireshark
 net-dns/bind-tools
 net-dns/unbound
+net-im/bitlbee
 net-im/pidgin
 net-im/skype
 net-irc/weechat
 net-libs/glib-networking
+net-libs/libtorrent
 net-libs/zeromq
 net-mail/isync
 net-mail/mswatch
@@ -303,10 +298,10 @@ net-misc/corkscrew
 net-misc/dhcpcd
 net-misc/httptunnel
 net-misc/iodine
-net-misc/iperf
 net-misc/ntp
 net-misc/openvpn
 net-misc/proxychains
+net-misc/remmina
 net-misc/socat
 net-misc/trickle
 net-misc/vconfig
@@ -335,13 +330,11 @@ sys-apps/portage
 sys-apps/s6
 sys-apps/smartmontools
 sys-apps/usbutils
-sys-block/fio
 sys-block/gparted
 sys-boot/grub
 sys-boot/os-prober
 sys-boot/unetbootin
 sys-devel/clang
-sys-devel/distcc
 sys-devel/gdb
 sys-fs/cryptsetup
 sys-fs/duperemove
@@ -357,13 +350,13 @@ sys-fs/xfsprogs
 sys-kernel/genkernel
 sys-kernel/hardened-sources
 sys-kernel/linux-firmware
+sys-libs/freeipmi
 sys-libs/libfaketime
 sys-power/apcupsd
 sys-power/powertop
 sys-process/htop
 sys-process/iotop
 sys-process/lsof
-sys-process/parallel
 sys-process/runit
 virtual/cron
 virtual/latex-base
@@ -394,5 +387,7 @@ x11-misc/yeganesh
 x11-terms/qterminal
 x11-terms/rxvt-unicode
 x11-themes/gtk-engines-murrine
+x11-themes/gtk-engines-ubuntulooks
+x11-themes/ubuntu-wallpapers
 x11-wm/xmonad
 x11-wm/xmonad-contrib

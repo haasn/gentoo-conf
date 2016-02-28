@@ -71,7 +71,7 @@ alias gview='urxvt -e vim'
 alias svim='sudo vim'
 
 # new mail client and stuff
-alias m='notmuch new >/dev/null && ~/dev/bower/bower'
+alias m='~/dev/bower/bower'
 
 # restore secondary monitor after fullscreen botches it
 alias fixmon='xrandr --output DP-0 --mode 4096x2160 --primary --output HDMI-0 --mode 1920x1200 --rotate left --pos 4096x120'

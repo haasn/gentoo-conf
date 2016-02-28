@@ -19,6 +19,7 @@ import XMonad.Layout.NoBorders
 import qualified XMonad.Layout.BinarySpacePartition as BSP
 
 -- Misc and utility
+import Control.Concurrent (forkIO)
 import Control.Monad (void)
 import qualified Network.MPD as MPD
 import qualified Network.MPD.Commands.Extensions as MPD
@@ -100,11 +101,11 @@ extraKeys =
     -- Reset the mouse cursor
     , ((mod4Mask, xK_Escape), spawn "swarp 0 0")
 
-    , ((controlMask .|. mod1Mask, xK_Home),      io . void $ MPD.withMPD MPD.toggle)
-    , ((controlMask .|. mod1Mask, xK_Insert),    io . void $ MPD.withMPD (MPD.play Nothing))
-    , ((controlMask .|. mod1Mask, xK_End),       io . void $ MPD.withMPD MPD.stop)
-    , ((controlMask .|. mod1Mask, xK_Page_Down), io . void $ MPD.withMPD MPD.next)
-    , ((controlMask .|. mod1Mask, xK_Page_Up),   io . void $ MPD.withMPD MPD.previous)
+    , ((controlMask .|. mod1Mask, xK_Home),      io' $ MPD.withMPD MPD.toggle)
+    , ((controlMask .|. mod1Mask, xK_Insert),    io' $ MPD.withMPD (MPD.play Nothing))
+    , ((controlMask .|. mod1Mask, xK_End),       io' $ MPD.withMPD MPD.stop)
+    , ((controlMask .|. mod1Mask, xK_Page_Down), io' $ MPD.withMPD MPD.next)
+    , ((controlMask .|. mod1Mask, xK_Page_Up),   io' $ MPD.withMPD MPD.previous)
     ]
 
     -- Switch workspaces using symbols
@@ -167,3 +168,6 @@ setSupportedWithFullscreen = withDisplay $ \dpy -> do
                        ,"_NET_WM_STRUT"
                        ]
   io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
+
+io' :: MonadIO m => IO a -> m ()
+io' = io . void
