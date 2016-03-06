@@ -534,7 +534,8 @@ games-board/cockatrice server
 
 # Not sure which version I want, to be honest
 x11-drivers/nvidia-drivers gtk3 uvm # for CUDA
-x11-drivers/nvidia-drivers -kms # fails building
+x11-drivers/nvidia-drivers kms
+=x11-drivers/nvidia-drivers-361.28-r2 -pax_kernel # I use my own patch
 #x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
 media-video/nvidia-settings -gtk3
 

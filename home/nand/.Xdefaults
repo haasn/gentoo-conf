@@ -76,8 +76,8 @@ Xcursor.size: 16
 ! raspberry
 *color13: #be4773
 
-! light blue gray
-*color14: #76b2b3
+! slightly darker version of normal text
+*color14: #ccb9a4
 
 ! gray
 *color15: #eeeeee

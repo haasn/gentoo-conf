@@ -36,6 +36,7 @@ nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=125'
 # autoplay info >/dev/null &
 
 # Daemonize urxvt
+export RXVT_SOCKET="$HOME/.urxvt/urxvtd$DISPLAY"
 urxvtd -q -o -f
 
 # Hide mouse cursor when not in use

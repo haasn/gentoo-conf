@@ -6,3 +6,5 @@
 	default = current
 [color]
 	ui = auto
+[core]
+	excludesfile = ~/.gitignore

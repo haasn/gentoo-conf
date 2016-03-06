@@ -7,10 +7,7 @@ Config { font = "xft:Terminus-10,DejaVu Sans Mono:pixelsize=16,Kochi Gothic:pixe
                     , Run Date "%Y %b %d (%a) %H:%M %Z" "date" 10
                     , Run Network "eth0" ["-t", "Down: <fc=#7FC5C6><rx></fc> kb/s | Up: <fc=#ffa600><tx></fc> kb/s"] 10
                     , Run MPD ["-t", "<state>: <artist> - <title> (<album>)"] 10
-                    , Run Mail [(" nanovps:", "~/.imap/nanovps/INBOX")] "nanovps"
-                    , Run Mail [(" uulm:", "~/.imap/uulm/INBOX")] "uulm"
-                    , Run Mail [("gmail:", "~/.imap/gmail/[Google Mail]/.All Mail")] "gmail"
                     , Run StdinReader
                     ]
-       , template = "%StdinReader% }{ <fc=#ffa600>%gmail%</fc><fc=#e51688>%nanovps%</fc><fc=#5cdede>%uulm%</fc> <fc=#85c600>%mpd%</fc> | %eth0% | %cpu% | <fc=#85919b>%memory%</fc>   <fc=#DACCBB>%date%</fc>"
+       , template = "%StdinReader% }{ <fc=#85c600>%mpd%</fc> | %eth0% | %cpu% | <fc=#85919b>%memory%</fc>   <fc=#DACCBB>%date%</fc>"
        }

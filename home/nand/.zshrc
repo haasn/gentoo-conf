@@ -110,3 +110,6 @@ export XZ_OPT="-T 0" # multithreading
 
 # Mask o-r by default
 umask 026
+
+# Teach us something!
+fortune vimtips

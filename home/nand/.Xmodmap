@@ -59,7 +59,7 @@ keycode  72 = F6 F6 F2 F2 F10 F10 F10 F10 F10 F10
 keycode  73 = F7 F7 F3 F3 F7 F7 XF86Switch_VT_7
 keycode  74 = F8 F8 F4 F4 F8 F8 XF86Switch_VT_8
 keycode  75 = EuroSign cent F9 F9 F9 F9 XF86Switch_VT_9
-keycode  76 = yen F10 F10 F10 F10 F10 XF86Switch_VT_10
+keycode  76 = yen U200F F10 F10 F10 F10 XF86Switch_VT_10
 
 keycode  94 = backslash bar U2227 U2228
 keycode  95 = sterling U222B F11 U1F4F7 F11 F11 XF86Switch_VT_11

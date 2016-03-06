@@ -2,6 +2,16 @@
 noremap j gj
 noremap k gk
 
+" easier buffer navigation
+map <Esc>h <C-w>h
+map <Esc>j <C-w>j
+map <Esc>k <C-w>k
+map <Esc>l <C-w>l
+map <Esc>H <C-w>H
+map <Esc>J <C-w>J
+map <Esc>K <C-w>K
+map <Esc>L <C-w>L
+
 " fix bold colors
 set term=rxvt-unicode
 
@@ -20,6 +30,7 @@ set nojoinspaces
 set scrolloff=3
 set timeoutlen=0
 set modeline
+set autochdir
 
 set expandtab
 set shiftwidth=4
@@ -30,8 +41,18 @@ set foldmethod=syntax
 set foldnestmax=1
 set foldlevel=0
 
+" ctags
+noremap <C-d> <C-]>
+set tags=tags;
+"let g:easytags_auto_highlight = 0
+"let g:easytags_dynamic_files = 2
+"let g:easytags_always_enabled = 1
+"let g:easytags_async = 1
+
 set cc=81
 set foldcolumn=1
+set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
+set number
 set numberwidth=1
 
 set completeopt=menu,menuone,longest,preview
@@ -54,7 +75,14 @@ highlight mailURL ctermfg=2
 highlight mailEmail ctermfg=5
 highlight Folded ctermfg=7  ctermbg=80
 highlight FoldColumn ctermfg=82 ctermbg=16
-highlight LineNr ctermfg=81
+highlight LineNr ctermfg=81 ctermbg=16
+highlight link Member Normal
+highlight link EnumeratorName EnumerationName
+highlight link EnumerationName Type
+highlight EnumerationValue ctermfg=41
+highlight DefinedName ctermfg=70
+highlight StatusLineNC cterm=none ctermfg=14 ctermbg=80
+highlight StatusLine cterm=bold ctermfg=15 ctermbg=80
 
 " match extra whitespace
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen

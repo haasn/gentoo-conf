@@ -67,6 +67,7 @@ app-text/zathura
 app-text/zathura-meta
 app-vim/nerdtree
 app-vim/pathogen
+app-vim/taglist
 app-vim/vim-spell-en
 dev-haskell/acid-state
 dev-haskell/acme-realworld
@@ -197,7 +198,6 @@ games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
 kde-apps/kcmshell
 kde-apps/kdialog
-kde-apps/kmail
 kde-apps/knotify
 kde-apps/kolourpaint
 kde-apps/okular
@@ -223,6 +223,7 @@ media-gfx/gifsicle
 media-gfx/gphoto2
 media-gfx/imagemagick
 media-gfx/jpeg2ps
+media-gfx/mypaint
 media-gfx/openexr_viewers
 media-gfx/optipng
 media-gfx/pdf2svg
