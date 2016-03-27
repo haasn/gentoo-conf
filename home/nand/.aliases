@@ -1,6 +1,3 @@
-# initialize tc queue control
-alias sfb='sudo tc qdisc add dev eth0 root handle 1: sfb'
-
 # For SELinux compatibility
 alias sudo='sudo -r sysadm_r -t sysadm_t'
 
@@ -66,6 +63,7 @@ alias sxiv='sxiv -Zf'
 alias srm='sudo rm'
 
 # prefer floating vim over gvim
+alias vim='nvim'
 alias gvim='urxvt -e vim'
 alias gview='urxvt -e vim'
 alias svim='sudo vim'
@@ -98,8 +96,7 @@ alias mp3scan='find -L . -name \*.mp3 -printf %h\\n | sort -u | while read -r d;
 alias wgetpaste='wgetpaste -X'
 alias hpaste='wgetpaste -l Haskell'
 
-# simpler filenames
-alias youtube-dl='youtube-dl --id --continue --no-part'
+alias youtube-dl='youtube-dl --continue --no-part'
 
 # automatically resume and stuff
 alias wget='wget -c -4 --timeout 10'
@@ -173,7 +170,6 @@ alias pm-restart='sudo pm-restart'
 
 # quick ssh access to VPS
 alias vps='ssh nanovps -l root'
-alias uni='ssh bhd48@zeus.rz.uni-ulm.de'
 
 # Run password-store with the primary selection as default
 alias pass='PASSWORD_STORE_X_SELECTION=primary pass'
@@ -228,11 +224,11 @@ short() {
     curl -sF "shorten=$1" https://0x0.st | tee /dev/stderr | xclip -selection primary
 }
 
-mailsync() {
-  nohup mswatch -c ~/.mswatch-nanovps &>/dev/null &
-  nohup mswatch -c ~/.mswatch-uulm    &>/dev/null &
-  #nohup mswatch -c ~/.mswatch-gmail   &>/dev/null &
-}
+#mailsync() {
+#  nohup mswatch -c ~/.mswatch-nanovps &>/dev/null &
+#  nohup mswatch -c ~/.mswatch-uulm    &>/dev/null &
+#  #nohup mswatch -c ~/.mswatch-gmail   &>/dev/null &
+#}
 
 # Set up PTT redirection
 alias evrouter='sudo evrouter /dev/input/event6 -c ~/.evrouterrc'
@@ -303,6 +299,17 @@ alias ghci-head='PATH="~/ghc-head/bin:$PATH" ghci'
 
 itag() {
   convert "$1" -red-primary 0.6840601009708855,0.3119694708478362 -green-primary 0.22333984238229163,0.7057291701944445 -blue-primary 0.15094969492452817,0.06273543650543859e -white-point 0.3127393778898385,0.32854077651486446 +gamma 0.45454545 "$1"
+}
+
+# Run my Ubuntu 15.10 VM
+
+startvm() {
+    sudo sh -c 'pgrep qemu || qemu-system-x86_64 -enable-kvm -cpu host -m 4096 -net nic -net bridge,br=br0 -drive file=/y/media/vms/ubuntu15.10-boot.qcow2,if=virtio -drive file=/dev/disk/by-uuid/5c5c3071-ab12-477d-8a25-de3dde26c973,cache=none,if=virtio,format=raw -boot c -vga qxl -spice port=5900,addr=127.0.0.1,disable-ticketing &' &>/dev/null \
+    && remote-viewer spice://127.0.0.1:5900 &>/dev/null &!
+}
+
+stopvm() {
+    sudo killall qemu-system_x86_64
 }
 
 # Compute a simple string hash

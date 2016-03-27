@@ -182,6 +182,13 @@ sys-apps/ksplice **
 net-im/tox **
 net-im/toxic **
 
+# Virgl support
+#app-emulation/libvirt **
+#dev-python/libvirt-python **
+#app-emulation/virt-manager **
+#app-emulation/qemu **
+#media-libs/virglrenderer **
+
 # Probably better performance
 #media-libs/mesa **
 #11-drivers/xf86-video-ati **

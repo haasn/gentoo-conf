@@ -27,6 +27,7 @@ argyll-dispwin -I -d1 ~/icc/alt.icc &
 
 # Fix the GPU speed
 nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=125'
+nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=1'
 
 # Automatically update the mail cache on new emails
 #while inotifywait -e CREATE ./new/; do notmuch new & done &
@@ -40,8 +41,12 @@ export RXVT_SOCKET="$HOME/.urxvt/urxvtd$DISPLAY"
 urxvtd -q -o -f
 
 # Hide mouse cursor when not in use
-unclutter -noevents -idle 2 -jitter 1 -root >/dev/null 2>&1 &
+unclutter -noevents -idle 2 -jitter 1 -root &>/dev/null &
 swarp 0 0 &
+
+# Start polling for mail
+mswatch -c ~/.mswatch-nanovps &>/dev/null &
+mswatch -c ~/.mswatch-uulm    &>/dev/null &
 
 # Start gpg-agent
 eval $(gpg-agent --daemon)

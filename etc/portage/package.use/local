@@ -184,7 +184,7 @@ media-video/mkvtoolnix -wxwidgets
 media-libs/libao pulseaudio
 
 # Don't need its viewing facilities
-media-gfx/imagemagick X hdri lqr q32 raw webp
+media-gfx/imagemagick X hdri lqr q32 raw webp fftw
 
 # Hi10P support, essential
 media-libs/x264 10bit
@@ -313,6 +313,9 @@ www-client/palemoon -official-branding alsa
 #### Miscellaneous ####
 #######################
 
+# Vim stuff
+app-editors/vim cscope vim-pager
+
 # cronie on its own doesn't seem to be very smart
 #sys-process/cronie anacron
 
@@ -327,7 +330,7 @@ dev-lang/php curl gd pcntl zip
 sci-libs/hdf5 -threads
 
 # Slimmer KVM/qemu
-app-emulation/qemu -curl -jpeg -png -python -vnc pulseaudio spice usbredir
+app-emulation/qemu -curl -jpeg -png -python -vnc pulseaudio spice usbredir virgl
 app-emulation/spice client
 net-misc/spice-gtk usbredir gtk3
 
@@ -534,7 +537,7 @@ games-board/cockatrice server
 
 # Not sure which version I want, to be honest
 x11-drivers/nvidia-drivers gtk3 uvm # for CUDA
-x11-drivers/nvidia-drivers kms
+x11-drivers/nvidia-drivers -kms
 =x11-drivers/nvidia-drivers-361.28-r2 -pax_kernel # I use my own patch
 #x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
 media-video/nvidia-settings -gtk3
@@ -568,6 +571,8 @@ app-office/libreoffice -vba -webdav -nsplugin
 app-arch/p7zip -wxwidgets
 dev-libs/libwiimote force tilt
 media-libs/libcaca imlib -abi_x86_32 -cxx
+dev-util/ltrace unwind
+
 # required by app-misc/anki-2.0.29
 # required by anki (argument)
 >=dev-python/PyQt4-4.11.2-r1 webkit

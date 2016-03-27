@@ -21,13 +21,16 @@ app-benchmarks/httperf
 app-benchmarks/sysbench
 app-cdr/cuetools
 app-crypt/dieharder
+app-crypt/johntheripper
 app-editors/bvi
 app-editors/hexedit
 app-editors/nano
+app-editors/neovim
 app-editors/vim
 app-emulation/qemu
 app-emulation/qtemu
 app-emulation/virt-manager
+app-emulation/virt-viewer
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
@@ -36,6 +39,7 @@ app-misc/bgrep
 app-misc/cmatrix
 app-misc/colordiff
 app-misc/dtach
+app-misc/fdupes
 app-misc/screenfetch
 app-misc/tmux
 app-office/calligra
@@ -179,6 +183,8 @@ dev-util/android-tools
 dev-util/apitrace
 dev-util/astyle
 dev-util/cppunit
+dev-util/ltrace
+dev-util/perf
 dev-util/radare2
 dev-util/scanmem
 dev-util/strace
@@ -191,11 +197,13 @@ dev-vcs/darcs
 dev-vcs/mercurial
 games-action/extreme-tuxracer
 games-action/supertuxkart
+games-board/qgo
 games-emulation/desmume
 games-emulation/visualboyadvance
 games-fps/ut2004
 games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
+gnome-extra/yad
 kde-apps/kcmshell
 kde-apps/kdialog
 kde-apps/knotify
@@ -220,6 +228,7 @@ media-gfx/dcraw
 media-gfx/dispcalgui
 media-gfx/feh
 media-gfx/gifsicle
+media-gfx/gnome-screenshot
 media-gfx/gphoto2
 media-gfx/imagemagick
 media-gfx/jpeg2ps
@@ -297,6 +306,7 @@ net-mail/offlineimap
 net-misc/bridge-utils
 net-misc/corkscrew
 net-misc/dhcpcd
+net-misc/ethercard-diag
 net-misc/httptunnel
 net-misc/iodine
 net-misc/ntp
@@ -345,7 +355,7 @@ sys-fs/ncdu
 sys-fs/ntfs3g
 sys-fs/simple-mtpfs
 sys-fs/squashfs-tools
-sys-fs/sshfs-fuse
+sys-fs/sshfs
 sys-fs/xfsdump
 sys-fs/xfsprogs
 sys-kernel/genkernel
@@ -358,6 +368,7 @@ sys-power/powertop
 sys-process/htop
 sys-process/iotop
 sys-process/lsof
+sys-process/parallel
 sys-process/runit
 virtual/cron
 virtual/latex-base

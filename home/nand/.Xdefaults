@@ -15,7 +15,7 @@ URxvt.perl-ext: default,url-select,clipboard
 
 ! for yankable URLs
 
-URxvt.keysym.M-y: perl:url-select:select_next
+URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.url-select.launcher: /usr/bin/firefox -new-tab
 URxvt.url-select.button: -
 URxvt.matcher.pattern: (?:https?://|ftp://|news://|mailto:|file://|\\bwww\\.)[\\w\\-\\@;\\/?:&=%\\$.+!*\\x27,~#\\x{2603}]*(\\([\\w\\-\\@;\\/?:&=%\\$.+!*\\x27,~#]*\\)|[\\w\\-\\@;\\/?:&=%\\$+*~])+
@@ -26,7 +26,7 @@ URxvt.keysym.4-c: perl:clipboard:copy
 URxvt.keysym.4-v: perl:clipboard:paste
 
 ! ???
-Xcursor.size: 16
+! Xcursor.size: 16
 
 !photons
 
@@ -76,8 +76,8 @@ Xcursor.size: 16
 ! raspberry
 *color13: #be4773
 
-! slightly darker version of normal text
-*color14: #ccb9a4
+! light blue gray
+*color14: #76b2b3
 
 ! gray
 *color15: #eeeeee

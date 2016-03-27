@@ -48,6 +48,9 @@ x11-drivers/xf86-video-ati:x11
 x11-libs/glamor:x11
 x11-libs/libvdpau-va-gl::x11
 
+# Deter
+gnome-extra/yad::deter
+
 # Emery
 dev-libs/libuv::emery
 net-p2p/cjdns::emery

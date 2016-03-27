@@ -21,6 +21,7 @@ import qualified XMonad.Layout.BinarySpacePartition as BSP
 -- Misc and utility
 import Control.Concurrent (forkIO)
 import Control.Monad (void)
+import Data.List (isInfixOf)
 import qualified Network.MPD as MPD
 import qualified Network.MPD.Commands.Extensions as MPD
 
@@ -132,13 +133,14 @@ friendlyNames =
     ]
 
 -- Float exceptions
-manageFloats = composeAll [ title =? x `to` doFloat | x <- floatTitles ]
-    where to = (-->)
+manageFloats = composeAll [ fmap (x `isInfixOf`) title --> doFloat
+                          | x <- floatTitles ]
 
 floatTitles =
   [ "Firefox Preferences", "About Firefox", "Resize Canvas"
   , "Downloads", "Software Update", "World of Warcraft", "Limbo"
   , "Audiosurf", "Audiosurf 2", "Heroes of the Storm", "scaler_test"
+  , "Convert Script", "Remote Viewer"
   ]
 
 switchWorkspace' d = wsBy' d >>= windows . greedyView
