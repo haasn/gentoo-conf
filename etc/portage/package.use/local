@@ -130,30 +130,30 @@ media-video/ffmpeg -hardcoded-tables # build failure
 #x11-libs/gtk+ -abi_x86_32
 
 # Alternatives to dmix?
-media-plugins/alsa-plugins pulseaudio -jack
+media-plugins/alsa-plugins -pulseaudio -jack speex -libsamplerate
 media-sound/pulseaudio alsa -X -gtk libsamplerate
 media-sound/jack-audio-connection-kit alsa
-media-video/ffmpeg -jack pulseaudio
-media-libs/openal pulseaudio
-net-im/skype pulseaudio
+media-video/ffmpeg -jack -pulseaudio
+media-libs/openal alsa -pulseaudio
+net-im/skype -pulseaudio
 
 # Needed for equalizing, apparently
 #media-sound/pulseaudio dbus
 #dev-python/PyQt4 dbus
 
 # Ensure they actually output sound
-media-video/mpv alsa pulseaudio oss
-media-sound/mpd alsa pulseaudio oss
-media-sound/mumble pulseaudio
+media-video/mpv alsa -pulseaudio oss
+media-sound/mpd alsa -pulseaudio oss
+media-sound/mumble -pulseaudio
 media-sound/audacity alsa
 games-emulation/dolphin-emu alsa
 media-libs/libmikmod alsa
-media-libs/libsdl pulseaudio -alsa
-app-emulation/wine pulseaudio -jack alsa -realtime
+media-libs/libsdl -pulseaudio alsa
+app-emulation/wine -pulseaudio -jack alsa -realtime
 app-emulation/emul-linux-x86-soundlibs alsa
-app-emulation/virtualbox pulseaudio qt4
-media-sound/teamspeak-client-bin pulseaudio
-games-emulation/higan pulseaudio
+app-emulation/virtualbox -pulseaudio qt4
+media-sound/teamspeak-client-bin -pulseaudio
+games-emulation/higan -pulseaudio
 media-libs/libsdl sound
 
 # Might be able to run d3
@@ -181,7 +181,7 @@ media-video/mkvtoolnix -wxwidgets
 #media-libs/portaudio alsa
 
 # Needed for squishyball
-media-libs/libao pulseaudio
+media-libs/libao alsa -pulseaudio
 
 # Don't need its viewing facilities
 media-gfx/imagemagick X hdri lqr q32 raw webp fftw
@@ -258,7 +258,7 @@ app-crypt/pinentry qt4 -qt5 -gtk
 # Needed for qapitrace
 dev-util/apitrace qt4
 
-kde-apps/kmix pulseaudio
+kde-apps/kmix -pulseaudio
 
 #################
 #### Firefox ####
@@ -274,7 +274,7 @@ www-client/firefox gtk3
 
 # Fuck proprietary codecs
 www-client/firefox -pulseaudio -gstreamer # actually, fuck audio output even harder
-media-plugins/gst-plugins-meta -a52 -aac -cdda -dts -dvd -flac ffmpeg mp3 mpeg -ogg -theora -vorbis -wavpack -x264 -xvid pulseaudio
+media-plugins/gst-plugins-meta -a52 -aac -cdda -dts -dvd -flac ffmpeg mp3 mpeg -ogg -theora -vorbis -wavpack -x264 -xvid -pulseaudio alsa
 
 # gcc's -O3 is clang's -Ofast, not -O3
 www-client/firefox custom-cflags custom-optimization
@@ -330,7 +330,7 @@ dev-lang/php curl gd pcntl zip
 sci-libs/hdf5 -threads
 
 # Slimmer KVM/qemu
-app-emulation/qemu -curl -jpeg -png -python -vnc pulseaudio spice usbredir virgl
+app-emulation/qemu -curl -jpeg -png -python -vnc -pulseaudio spice usbredir virgl
 app-emulation/spice client
 net-misc/spice-gtk usbredir gtk3
 
@@ -537,8 +537,9 @@ games-board/cockatrice server
 
 # Not sure which version I want, to be honest
 x11-drivers/nvidia-drivers gtk3 uvm # for CUDA
-x11-drivers/nvidia-drivers -kms
+x11-drivers/nvidia-drivers kms
 =x11-drivers/nvidia-drivers-361.28-r2 -pax_kernel # I use my own patch
+=x11-drivers/nvidia-drivers-364.12-r1 -pax_kernel # I use my own patch
 #x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
 media-video/nvidia-settings -gtk3
 
