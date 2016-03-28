@@ -65,14 +65,14 @@ map v           :visual<CR>
 map <ESC>       :novisual<CR>
 # Colors
 
-color tab green black
-color main default black
-color ruler white black
-color songstatus cyan black
-color playstatus blue black
+color tab green default
+color main default default
+color ruler white default
+color songstatus cyan default
+color playstatus blue default
 color error white red
-color input default black
-color suggestions yellow black
+color input default default
+color suggestions yellow default
 
 # Fix keybindings
 

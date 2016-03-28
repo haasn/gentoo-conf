@@ -43,7 +43,7 @@ main = do
 
         terminal            = "urxvtc",
 
-        normalBorderColor   = "#0e1112",
+        normalBorderColor   = "#070B0C",
         focusedBorderColor  = "#85919b",
 
         focusFollowsMouse   = False,
@@ -94,7 +94,7 @@ extraKeys =
     -- Never terminate X please
     , ((mod4Mask .|. shiftMask, xK_q), return ())
 
-    , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#0e1112')")
+    , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#080C0D')")
 
     -- Lock the screen when not in use
     , ((mod4Mask, xK_s), spawn "i3lock -c 000000")

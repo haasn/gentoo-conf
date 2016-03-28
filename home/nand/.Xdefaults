@@ -32,13 +32,13 @@ URxvt.keysym.4-v: perl:clipboard:paste
 
 ! slightly beige white
 *foreground: #DDCCBB
-*background: #0e1112
+*background: #080C0D
 
 ! black
-*color0: #0e1112
+*color0: #080C0D
 
 ! red
-*color1: #E03C52
+*color1: #e0374f
 
 ! green
 *color2: #85c600
@@ -50,34 +50,34 @@ URxvt.keysym.4-v: perl:clipboard:paste
 *color4: #0099bc
 
 ! pink
-*color5: #E51688
+*color5: #e50c88
 
 ! light blue gray
-*color6: #7FC5C6
+*color6: #7fc5c6
 
 ! light gray
 *color7: #cccccc
 
 ! very dark gray
-*color8: #2e3537
+*color8: #283032
 
 ! orange
-*color9: #ff5d4a
+*color9: #ff5b47
 
 ! light green
-*color10: #b3ff1d
+*color10: #b3ff14
 
 ! orange/yellow
-*color11: #ffaa0f
+*color11: #ffaa04
 
 ! light blue
-*color12: #5cdede
+*color12: #5adede
 
 ! raspberry
-*color13: #be4773
+*color13: #be4372
 
 ! light blue gray
-*color14: #76b2b3
+*color14: #75b2b3
 
 ! gray
 *color15: #eeeeee

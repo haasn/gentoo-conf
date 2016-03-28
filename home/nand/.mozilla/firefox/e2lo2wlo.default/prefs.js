@@ -39,7 +39,7 @@ user_pref("browser.cache.memory.max_entry_size", 512000);
 user_pref("browser.cache.offline.capacity", 0);
 user_pref("browser.cache.offline.enable", false);
 user_pref("browser.customizemode.tip0.shown", true);
-user_pref("browser.display.background_color", "#070909");
+user_pref("browser.display.background_color", "#080C0D");
 user_pref("browser.display.document_color_use", 2);
 user_pref("browser.display.foreground_color", "#ddccbb");
 user_pref("browser.display.use_document_fonts", 0);
