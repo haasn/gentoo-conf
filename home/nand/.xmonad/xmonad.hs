@@ -24,6 +24,7 @@ import Control.Monad (void)
 import Data.List (isInfixOf)
 import qualified Network.MPD as MPD
 import qualified Network.MPD.Commands.Extensions as MPD
+import System.Exit
 
 main = do
     xmproc <- spawnPipe "xmobar"
@@ -91,8 +92,9 @@ extraKeys =
     , ((mod4Mask, xK_Tab), nextWS')
     , ((mod4Mask .|. shiftMask, xK_Tab), prevWS')
 
-    -- Never terminate X please
+    -- Make it harder to kill X
     , ((mod4Mask .|. shiftMask, xK_q), return ())
+    , ((mod1Mask .|. mod4Mask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
 
     , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#080C0D')")
 

@@ -152,7 +152,7 @@ media-libs/libsdl -pulseaudio alsa
 app-emulation/wine -pulseaudio -jack alsa -realtime
 app-emulation/emul-linux-x86-soundlibs alsa
 app-emulation/virtualbox -pulseaudio qt4
-media-sound/teamspeak-client-bin -pulseaudio
+media-sound/teamspeak-client-bin alsa -pulseaudio
 games-emulation/higan -pulseaudio
 media-libs/libsdl sound
 
@@ -251,6 +251,8 @@ kde-apps/libkexiv2 -xmp
 kde-apps/okular -crypt
 kde-base/* -handbook
 kde-apps/* -handbook
+dev-libs/libdbusmenu-qt qt4
+media-libs/openimageio -gif
 
 app-text/poppler qt4 # for okular
 app-crypt/pinentry qt4 -qt5 -gtk
@@ -380,7 +382,10 @@ sci-mathematics/agda-stdlib -profile
 # Required for newer mesa
 x11-libs/libdrm libkms
 media-libs/mesa gbm opencl
-x11-drivers/xf86-video-ati glamor udev
+#x11-drivers/xf86-video-ati glamor udev
+
+# Because Gtk+ is a fucking piece of shit and GNOME/Red Hat are morons
+x11-libs/libfm -automount
 
 # Tries pulling in ATI drivers?!
 sys-apps/hwloc -opencl
@@ -389,10 +394,10 @@ sys-apps/hwloc -opencl
 app-editors/yi vty -gtk
 
 # Better looking tilde in terminus
-#media-fonts/terminus-font centered-tilde # default in 4.38
+media-fonts/terminus-font ceneterd-tilde distinct-l
 
 # rxvt stuff
-x11-terms/rxvt-unicode -mousewheel -startup-notification -unicode3 -wcwidth fading-colors vanilla
+x11-terms/rxvt-unicode -mousewheel -startup-notification -unicode3 -wcwidth fading-colors vanilla 256-color
 
 # Allows only one GUI
 net-analyzer/wireshark -gtk2 -gtk3 qt5 # qt is really slow, but gtk fails building..
@@ -540,6 +545,7 @@ x11-drivers/nvidia-drivers gtk3 uvm # for CUDA
 x11-drivers/nvidia-drivers kms
 =x11-drivers/nvidia-drivers-361.28-r2 -pax_kernel # I use my own patch
 =x11-drivers/nvidia-drivers-364.12-r1 -pax_kernel # I use my own patch
+=x11-drivers/nvidia-drivers-364.15 -pax_kernel # I use my own patch
 #x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
 media-video/nvidia-settings -gtk3
 

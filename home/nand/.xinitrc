@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Fix keyboard repeat rate
-xset r rate 300 40
+xset r rate 200 50
 
 # Set pointer speed
 xset m 1 0

@@ -143,7 +143,6 @@ dev-haskell/scotty
 dev-haskell/simple-reflect
 dev-haskell/singletons
 dev-haskell/splines
-dev-haskell/streams
 dev-haskell/tardis
 dev-haskell/test-framework-quickcheck2
 dev-haskell/test-framework-th
@@ -163,6 +162,7 @@ dev-lang/mono
 dev-lang/perl
 dev-lang/python
 dev-lang/tk
+dev-libs/check
 dev-perl/Archive-Zip
 dev-perl/Text-CharWidth
 dev-php/ZendFramework
@@ -194,13 +194,13 @@ dev-vcs/bzr
 dev-vcs/bzr-fastimport
 dev-vcs/cvs
 dev-vcs/darcs
+dev-vcs/git-annex
 dev-vcs/mercurial
 games-action/extreme-tuxracer
 games-action/supertuxkart
 games-board/qgo
 games-emulation/desmume
 games-emulation/visualboyadvance
-games-fps/ut2004
 games-misc/cowsay
 games-misc/fortune-mod-hitchhiker
 gnome-extra/yad
@@ -239,14 +239,15 @@ media-gfx/pdf2svg
 media-gfx/pqiv
 media-gfx/pstoedit
 media-gfx/scrot
-media-gfx/swftools
 media-gfx/sxiv
+media-libs/assimp
 media-libs/exiftool
 media-libs/flac
 media-libs/icc-profiles-openicc
 media-libs/ladspa-cmt
 media-libs/libcaca
 media-libs/libptp2
+media-libs/libsdl2
 media-libs/opencolorio
 media-libs/opencv
 media-libs/openexr
@@ -262,10 +263,8 @@ media-sound/mp3gain
 media-sound/mpc
 media-sound/mpd
 media-sound/opus-tools
-media-sound/pavucontrol
 media-sound/shntool
 media-sound/sox
-media-sound/spek
 media-sound/squishyball
 media-sound/teamspeak-client-bin
 media-sound/vimus
@@ -292,7 +291,6 @@ net-analyzer/wireshark
 net-dns/bind-tools
 net-dns/unbound
 net-im/bitlbee
-net-im/pidgin
 net-im/skype
 net-irc/weechat
 net-libs/glib-networking
@@ -321,6 +319,7 @@ net-misc/zsync
 net-p2p/rtorrent
 sci-libs/fftw
 sci-libs/libqalculate
+sci-mathematics/ent
 sci-mathematics/msieve
 sec-policy/selinux-backup
 sec-policy/selinux-mplayer
@@ -382,6 +381,7 @@ x11-base/xorg-x11
 x11-misc/dmenu
 x11-misc/gbdfed
 x11-misc/i3lock
+x11-misc/pcmanfm
 x11-misc/sselp
 x11-misc/swarp
 x11-misc/unclutter

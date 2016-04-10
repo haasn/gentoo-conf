@@ -1,0 +1,12 @@
+diff -u -r Argyll_V1.8.3.old/spectro/dispwin.c Argyll_V1.8.3/spectro/dispwin.c
+--- Argyll_V1.8.3.old/spectro/dispwin.c	2016-03-27 20:37:01.408827322 +0200
++++ Argyll_V1.8.3/spectro/dispwin.c	2016-03-27 20:37:21.476663326 +0200
+@@ -4822,7 +4822,7 @@
+ 		// Hmm. Should we explicitly get the root window visual,
+ 		// since our test window inherits it from root ?
+ 		myvisual = DefaultVisual(p->mydisplay, p->myscreen);
+-		p->pdepth = myvisual->bits_per_rgb;
++		p->pdepth = 10;
+ 		p->edepth = 16;
+ 
+ 		if (nowin == 0) {			/* Create a window */
