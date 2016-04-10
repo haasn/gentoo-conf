@@ -56,6 +56,7 @@ alias htop='htop -s PERCENT_MEM'
 
 # start in fullscreen mode
 alias sxiv='sxiv -Zf'
+alias mvi='mpv --profile=image' # mission accomplished \o/
 
 # quicker root delete
 alias srm='sudo rm'
