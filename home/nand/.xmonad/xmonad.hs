@@ -139,11 +139,11 @@ manageFloats = composeAll [ fmap (x `isInfixOf`) title --> doFloat
                           | x <- floatTitles ]
 
 floatTitles =
-  [ "Firefox Preferences", "About Firefox", "Resize Canvas"
-  , "Downloads", "Software Update", "World of Warcraft", "Limbo"
-  , "Audiosurf", "Audiosurf 2", "Heroes of the Storm", "scaler_test"
-  , "Convert Script", "Remote Viewer"
-  ]
+    [ "Firefox Preferences", "About Firefox", "Resize Canvas"
+    , "Downloads", "Software Update", "World of Warcraft", "Limbo"
+    , "Audiosurf", "Audiosurf 2", "Heroes of the Storm", "scaler_test"
+    , "Convert Script", "Remote Viewer", "mvi - "
+    ]
 
 switchWorkspace' d = wsBy' d >>= windows . greedyView
 wsBy' = findWorkspace getSortByIndex Next HiddenNonEmptyWS
@@ -157,21 +157,21 @@ fullscreenFix c = c { startupHook = startupHook c <+> setSupportedWithFullscreen
 
 setSupportedWithFullscreen :: X ()
 setSupportedWithFullscreen = withDisplay $ \dpy -> do
-  r <- asks theRoot
-  a <- getAtom "_NET_SUPPORTED"
-  c <- getAtom "ATOM"
-  supp <- mapM getAtom ["_NET_WM_STATE_HIDDEN"
-                       ,"_NET_WM_STATE_FULLSCREEN"
-                       ,"_NET_NUMBER_OF_DESKTOPS"
-                       ,"_NET_CLIENT_LIST"
-                       ,"_NET_CLIENT_LIST_STACKING"
-                       ,"_NET_CURRENT_DESKTOP"
-                       ,"_NET_DESKTOP_NAMES"
-                       ,"_NET_ACTIVE_WINDOW"
-                       ,"_NET_WM_DESKTOP"
-                       ,"_NET_WM_STRUT"
-                       ]
-  io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
+    r <- asks theRoot
+    a <- getAtom "_NET_SUPPORTED"
+    c <- getAtom "ATOM"
+    supp <- mapM getAtom ["_NET_WM_STATE_HIDDEN"
+                         ,"_NET_WM_STATE_FULLSCREEN"
+                         ,"_NET_NUMBER_OF_DESKTOPS"
+                         ,"_NET_CLIENT_LIST"
+                         ,"_NET_CLIENT_LIST_STACKING"
+                         ,"_NET_CURRENT_DESKTOP"
+                         ,"_NET_DESKTOP_NAMES"
+                         ,"_NET_ACTIVE_WINDOW"
+                         ,"_NET_WM_DESKTOP"
+                         ,"_NET_WM_STRUT"
+                         ]
+    io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
 
 io' :: MonadIO m => IO a -> m ()
 io' = io . void
