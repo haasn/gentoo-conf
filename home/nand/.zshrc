@@ -107,7 +107,6 @@ export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 export KDE_FORK_SLAVES=1
 #export MOZ_USE_OMTC=1
 export XZ_OPT="-T 0" # multithreading
-export XDG_DESKTOP_DIR="/dev/null/" # I assume red hat is to blame for this
 
 # Mask o-r by default
 umask 026

@@ -1,5 +1,5 @@
---- a/kdelibs-4.14.10/kdeui/kernel/kapplication.cpp	2015-06-26 05:14:18.000000000 +0200
-+++ b/kdelibs-4.14.10/kdeui/kernel/kapplication.cpp	2015-08-07 17:02:22.895630076 +0200
+--- a/kdeui/kernel/kapplication.cpp	2015-06-26 05:14:18.000000000 +0200
++++ b/kdeui/kernel/kapplication.cpp	2015-08-07 17:02:22.895630076 +0200
 @@ -512,12 +512,6 @@
    extern void qDBusBindToApplication();
    qDBusBindToApplication();

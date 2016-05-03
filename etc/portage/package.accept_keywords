@@ -48,8 +48,8 @@ sec-policy/* **
 #### Media applications ####
 ############################
 
-# Krita 2.9.x
-#app-office/calligra **
+# Krita 3.x
+media-gfx/krita **
 
 # Needed for live streams
 media-video/rtmpdump **

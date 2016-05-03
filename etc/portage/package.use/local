@@ -113,6 +113,9 @@
 sys-block/gparted btrfs dmraid fat jfs ntfs
 sys-block/gparted -dmraid -hfs # requires udev
 
+# For playing around
+sys-fs/zfs-kmod -rootfs
+sys-fs/zfs -rootfs
 
 ############################
 #### Media applications ####
@@ -240,6 +243,7 @@ x11-libs/wxGTK gnome
 
 # Stuff
 net-misc/tor scrypt tor-hardening
+app-forensics/stegdetect -X
 
 # Needed for IPredator
 net-misc/openvpn passwordsave
@@ -247,10 +251,12 @@ net-misc/openvpn passwordsave
 # Okay, let's try this...
 media-libs/phonon -pulseaudio -gstreamer -vlc qt5 qt4
 app-office/calligra -handbook -kdepim fftw gsl vc kde
+media-gfx/krita -handbook fftw vc
 kde-apps/libkexiv2 -xmp
 kde-apps/okular -crypt
-kde-base/* -handbook
-kde-apps/* -handbook
+kde-base/* -handbook -kwallet
+kde-apps/* -handbook -kwallet
+kde-frameworks/* -handbook -kwallet
 dev-libs/libdbusmenu-qt qt4
 media-libs/openimageio -gif
 
@@ -394,7 +400,7 @@ sys-apps/hwloc -opencl
 app-editors/yi vty -gtk
 
 # Better looking tilde in terminus
-media-fonts/terminus-font ceneterd-tilde distinct-l
+media-fonts/terminus-font ceneterd-tilde distinct-l ru-dv du-g ru-i
 
 # rxvt stuff
 x11-terms/rxvt-unicode -mousewheel -startup-notification -unicode3 -wcwidth fading-colors vanilla 256-color
@@ -491,7 +497,6 @@ sys-kernel/*-sources symlink
 
 # Additional codecs for mpd
 media-sound/mpd alsa inotify cue libsamplerate musepack mpg123 wavpack -wildmidi mikmod opus ffmpeg
-media-sound/audacity id3tag midi libsamplerate sbsms soundtouch vamp
 media-libs/sdl-mixer mikmod vorbis mod
 
 # Build issue with media-libs/faad2-2.7-r2
@@ -499,6 +504,7 @@ media-sound/mpd -aac
 
 # Build failure
 media-sound/audacity -ffmpeg
+media-sound/audacity -id3tag -midi -libsamplerate -sbsms -soundtouch -vamp -flac
 
 # Incompatible with clang
 sci-libs/fftw -openmp
@@ -543,10 +549,8 @@ games-board/cockatrice server
 # Not sure which version I want, to be honest
 x11-drivers/nvidia-drivers gtk3 uvm # for CUDA
 x11-drivers/nvidia-drivers kms
-=x11-drivers/nvidia-drivers-361.28-r2 -pax_kernel # I use my own patch
-=x11-drivers/nvidia-drivers-364.12-r1 -pax_kernel # I use my own patch
-=x11-drivers/nvidia-drivers-364.15 -pax_kernel # I use my own patch
 #x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
+x11-drivers/nvidia-drivers -pax_kernel # I use my own patch
 media-video/nvidia-settings -gtk3
 
 #x11-drivers/nvidia-drivers -kms # build failure
@@ -642,3 +646,9 @@ dev-util/ltrace unwind
 # required by mail-client/alot-0.3.7-r1::gentoo
 # required by alot (argument)
 >=sys-apps/file-5.25 -python
+# required by app-editors/neovim-0.1.4::gentoo
+# required by dev-python/neovim-python-client-0.1.7::gentoo
+>=dev-lua/lpeg-1.0.0-r1 luajit
+# required by app-editors/neovim-0.1.4::gentoo
+# required by dev-python/neovim-python-client-0.1.7::gentoo
+>=dev-lua/mpack-1.0.2 luajit

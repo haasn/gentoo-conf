@@ -33,6 +33,7 @@ app-emulation/virt-manager
 app-emulation/virt-viewer
 app-emulation/wine
 app-emulation/winetricks
+app-forensics/afl
 app-forensics/rkhunter
 app-misc/anki
 app-misc/bgrep
@@ -41,6 +42,7 @@ app-misc/colordiff
 app-misc/dtach
 app-misc/fdupes
 app-misc/screenfetch
+app-misc/sl
 app-misc/tmux
 app-office/calligra
 app-office/dia
@@ -309,7 +311,6 @@ net-misc/iodine
 net-misc/ntp
 net-misc/openvpn
 net-misc/proxychains
-net-misc/remmina
 net-misc/socat
 net-misc/trickle
 net-misc/vconfig
@@ -343,6 +344,7 @@ sys-block/gparted
 sys-boot/grub
 sys-boot/os-prober
 sys-boot/unetbootin
+sys-boot/winusb
 sys-devel/clang
 sys-devel/gdb
 sys-fs/cryptsetup

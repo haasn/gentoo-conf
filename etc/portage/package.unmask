@@ -96,6 +96,8 @@ dev-lang/mono::dotnet
 
 # KDE
 kde-apps/konsole::kde
+app-office/calligra::kde
+media-gfx/krita::kde
 
 # Mva
 dev-qt/qt5ct::mva
@@ -105,6 +107,7 @@ www-client/palemoon::palemoon
 
 # Pentoo
 app-crypt/cryptohaze-combined::pentoo
+app-forensics/stegdetect::pentoo
 
 ## Hardened
 

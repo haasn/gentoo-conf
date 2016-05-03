@@ -17,9 +17,12 @@ noremap <M-L> <C-w>L
 noremap <Leader>s <C-w>s
 noremap <Leader>n :nohls<CR>:HierClear<CR>
 noremap <Leader>b :make<CR>
+noremap <Leader>r :checktime<CR>
 
 noremap Cn :cn<CR>
 noremap Cp :cp<CR>
+
+autocmd VimResized * wincmd =
 
 " fix bold colors
 if !has('nvim')
@@ -40,7 +43,7 @@ set nojoinspaces
 set scrolloff=3
 set timeoutlen=500
 set modeline
-" set autochdir
+set autochdir
 
 set expandtab
 set shiftwidth=4
