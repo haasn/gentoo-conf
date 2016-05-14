@@ -26,7 +26,7 @@ argyll-dispwin -I -d1 ~/icc/alt.icc &
 #aticonfig --pplib-cmd "set fanspeed 0 18"
 
 # Fix the GPU speed
-nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=125'
+nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=100'
 nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=1'
 
 # Automatically update the mail cache on new emails

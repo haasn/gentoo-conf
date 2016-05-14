@@ -75,6 +75,7 @@ media-video/ffmpeg **
 media-video/mpv **
 media-video/mplayer **
 media-libs/libass **
+net-misc/youtube-dl **
 # media-libs/harfbuzz **
 
 # Because we already pull in unstable x264lib

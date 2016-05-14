@@ -156,6 +156,7 @@ dev-haskell/wcwidth
 dev-haskell/x11-xft
 dev-haskell/xformat
 dev-haskell/zenc
+dev-lang/R
 dev-lang/ghc
 dev-lang/j
 dev-lang/lua
@@ -256,6 +257,7 @@ media-libs/openexr
 media-libs/quvi
 media-libs/rubberband
 media-libs/x265
+media-plugins/alsa-plugins
 media-plugins/tap-plugins
 media-sound/autoplay
 media-sound/flacon
@@ -336,9 +338,11 @@ sys-apps/kexec-tools
 sys-apps/lsb-release
 sys-apps/man-db
 sys-apps/memtest86+
+sys-apps/mlocate
 sys-apps/portage
 sys-apps/s6
 sys-apps/smartmontools
+sys-apps/sysvinit
 sys-apps/usbutils
 sys-block/gparted
 sys-boot/grub

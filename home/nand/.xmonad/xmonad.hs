@@ -27,7 +27,7 @@ import qualified Network.MPD.Commands.Extensions as MPD
 import System.Exit
 
 main = do
-    xmproc <- spawnPipe "xmobar"
+    xmproc <- spawnPipe "exec xmobar"
     xmonad $ withUrgencyHook (NoUrgencyHook)
            $ fullscreenFix
            $ def {
@@ -96,13 +96,13 @@ extraKeys =
     , ((mod4Mask .|. shiftMask, xK_q), return ())
     , ((mod1Mask .|. mod4Mask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
 
-    , ((mod4Mask, xK_r), spawn "$(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#080C0D')")
+    , ((mod4Mask, xK_r), spawn "exec $(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#080C0D')")
 
     -- Lock the screen when not in use
-    , ((mod4Mask, xK_s), spawn "i3lock -c 000000")
+    , ((mod4Mask, xK_s), spawn "exec i3lock -c 000000")
 
     -- Reset the mouse cursor
-    , ((mod4Mask, xK_Escape), spawn "swarp 0 0")
+    , ((mod4Mask, xK_Escape), spawn "exec swarp 0 0")
 
     , ((controlMask .|. mod1Mask, xK_Home),      io' $ MPD.withMPD MPD.toggle)
     , ((controlMask .|. mod1Mask, xK_Insert),    io' $ MPD.withMPD (MPD.play Nothing))

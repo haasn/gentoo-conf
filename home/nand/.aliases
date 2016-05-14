@@ -289,6 +289,7 @@ alias blame='git blame'
 alias format-patch='git format-patch'
 alias remote='git remote'
 alias stash='git stash'
+alias submodule='git submodule'
 
 # Newer GHCi
 
@@ -297,7 +298,17 @@ alias ghci-head='PATH="~/ghc-head/bin:$PATH" ghci'
 # Tag an image file with my monitor's colorspace
 
 itag() {
-  convert "$1" -red-primary 0.6840601009708855,0.3119694708478362 -green-primary 0.22333984238229163,0.7057291701944445 -blue-primary 0.15094969492452817,0.06273543650543859e -white-point 0.3127393778898385,0.32854077651486446 +gamma 0.45454545 "$1"
+  convert "$1" -profile ~/icc/main-matrix.icc "$1"
+}
+
+iscrot() {
+  import -depth 8 "$1" && itag "$1" && optipng "$1"
+}
+
+iup() {
+  local tmpfile=$(mktemp scrot.XXXXXXXXX.png)
+  iscrot "$tmpfile" && up "$tmpfile"
+  rm -f "$tmpfile"
 }
 
 # Run my Ubuntu 15.10 VM
