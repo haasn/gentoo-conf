@@ -1,0 +1,20 @@
+
+module firefox_compositor 1.0;
+
+require {
+	type xserver_misc_device_t;
+	type sysfs_t;
+	type mozilla_t;
+        type mozilla_tmp_t;
+	class dir { getattr open read create };
+	class file { getattr open read execute };
+        class lnk_file { getattr open read };
+	class chr_file { getattr open read write ioctl };
+}
+
+#============= mozilla_t ==============
+allow mozilla_t sysfs_t:dir { open read getattr };
+allow mozilla_t sysfs_t:file { open read getattr };
+allow mozilla_t sysfs_t:lnk_file { open read getattr };
+allow mozilla_t mozilla_tmp_t:file { execute };
+#allow mozilla_t xserver_misc_device_t:chr_file { open read write getattr };

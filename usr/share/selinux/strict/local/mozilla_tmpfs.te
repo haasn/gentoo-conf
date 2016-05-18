@@ -1,0 +1,12 @@
+policy_module(mozilla_tmpfs, 1.0.0)
+
+require{
+    type mozilla_t;
+    type user_tmpfs_t;
+}
+
+gen_tunable(mozilla_read_user_tmpfs, false)
+
+tunable_policy(`mozilla_read_user_tmpfs',`
+        manage_files_pattern(mozilla_t, user_tmpfs_t, user_tmpfs_t)
+')

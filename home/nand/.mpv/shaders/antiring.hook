@@ -1,0 +1,20 @@
+//!HOOK POSTKERNEL
+//!BIND PREKERNEL
+//!BIND HOOKED
+vec4 hook() {
+    vec2 fcoord = fract(PREKERNEL_pos * PREKERNEL_size - vec2(0.5));
+    vec2 base = PREKERNEL_pos - fcoord * PREKERNEL_pt;
+
+    // Get center four pixels
+    vec4 c1 = PREKERNEL_tex(base + vec2(0,0) * PREKERNEL_pt);
+    vec4 c2 = PREKERNEL_tex(base + vec2(0,1) * PREKERNEL_pt);
+    vec4 c3 = PREKERNEL_tex(base + vec2(1,0) * PREKERNEL_pt);
+    vec4 c4 = PREKERNEL_tex(base + vec2(1,1) * PREKERNEL_pt);
+
+    vec4 lo = min(min(c1, c2), min(c3, c4));
+    vec4 hi = max(max(c1, c2), max(c3, c4));
+
+    vec4 color = HOOKED_texOff(0);
+
+    return clamp(color, lo, hi);
+}

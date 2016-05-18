@@ -17,7 +17,7 @@ noremap <M-L> <C-w>L
 noremap <Leader>s <C-w>s
 noremap <Leader>n :nohls<CR>:HierClear<CR>
 noremap <Leader>b :make<CR>
-noremap <Leader>r :checktime<CR><Plug>(FastFoldUpdate)
+noremap <Leader>r :checktime<CR>zuz
 noremap <Leader>u :UndotreeToggle<CR>
 
 noremap Cn :cn<CR>
@@ -56,7 +56,14 @@ set softtabstop=4
 set foldmethod=syntax
 set foldnestmax=1
 set foldlevel=0
-let g:fastfold_fold_command_suffixes = []
+set foldcolumn=1
+set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
+let g:fastfold_fold_command_suffixes = ['x','X','a','A','o','O','c','C','r','R','m','M','i','n','N']
+set sessionoptions-=folds
+
+" au BufWritePost * normal zx
+" au InsertEnter * let w:last_fdm=&foldmethod | setlocal foldmethod=manual
+" au InsertLeave * let &l:foldmethod=w:last_fdm
 
 " ctags
 noremap <C-d> <C-]>
@@ -75,8 +82,6 @@ let g:undotree_SetFocusWhenToggle=1
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 set cc=81
-set foldcolumn=1
-set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
 set number
 set numberwidth=1
 set mouse=

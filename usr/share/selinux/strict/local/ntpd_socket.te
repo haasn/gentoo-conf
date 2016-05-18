@@ -1,0 +1,10 @@
+
+module ntpd_socket 1.0;
+
+require {
+	type ntpd_t;
+	class socket create;
+}
+
+#============= ntpd_t ==============
+allow ntpd_t self:socket create;

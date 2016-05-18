@@ -58,7 +58,8 @@ media-video/rtmpdump **
 media-sound/mpd ** # unstable HEAD
 
 # Color management, very important!!
-media-gfx/dispcalgui
+# move media-gfx/dispcalgui media-gfx/displaycal
+media-gfx/displaycal
 
 # No stable versions
 media-gfx/sxiv

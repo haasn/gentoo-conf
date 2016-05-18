@@ -1,0 +1,13 @@
+
+module mpd_sem 1.0;
+
+require {
+	type mpd_t;
+	class sem { write unix_read unix_write associate read destroy create getattr };
+	class shm { write unix_read unix_write associate read destroy create getattr };
+}
+
+#============= mpd_t ==============
+
+allow mpd_t self:sem { write unix_read getattr unix_write associate read destroy create };
+allow mpd_t self:shm { write unix_read getattr unix_write associate read destroy create };

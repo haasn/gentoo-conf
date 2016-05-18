@@ -228,7 +228,7 @@ media-fonts/unifont
 media-fonts/unifraktur
 media-gfx/argyllcms
 media-gfx/dcraw
-media-gfx/dispcalgui
+media-gfx/displaycal
 media-gfx/feh
 media-gfx/gifsicle
 media-gfx/gnome-screenshot
@@ -369,6 +369,7 @@ sys-libs/freeipmi
 sys-libs/libfaketime
 sys-power/apcupsd
 sys-power/powertop
+sys-process/glances
 sys-process/htop
 sys-process/iotop
 sys-process/lsof

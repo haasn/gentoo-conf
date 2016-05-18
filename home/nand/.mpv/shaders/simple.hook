@@ -1,0 +1,18 @@
+//!HOOK LUMA
+//!BIND HOOKED
+//!WIDTH HOOKED.w 10 /
+//!HEIGHT HOOKED.h 10 /
+//!SAVE LUMASMALL
+
+vec4 hook()
+{
+    return LUMA_texOff(0);
+}
+
+//!HOOK MAIN
+//!BIND LUMASMALL
+
+vec4 hook()
+{
+    return vec4(LUMASMALL_texOff(0).rrr, 1);
+}

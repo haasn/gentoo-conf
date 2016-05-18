@@ -453,7 +453,7 @@ app-text/texlive linguas_de
 mail-mta/exim -X maildir
 
 # Required for autoplay
-dev-lang/python:2.7 sqlite
+dev-lang/python sqlite
 
 # Use the saved configuration file
 x11-terms/st savedconfig

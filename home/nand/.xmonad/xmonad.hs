@@ -14,8 +14,10 @@ import XMonad.Util.WorkspaceCompare (getSortByIndex)
 import XMonad.StackSet (shift, greedyView)
 
 -- Layouts and navigation
+import XMonad.Layout.LayoutModifier (ModifiedLayout)
 import XMonad.Layout.WindowNavigation
 import XMonad.Layout.NoBorders
+import XMonad.Layout.HintedGrid
 import qualified XMonad.Layout.BinarySpacePartition as BSP
 
 -- Misc and utility
@@ -54,7 +56,9 @@ main = do
 
     } `additionalKeys` extraKeys
 
-myLayout = configurableNavigation noNavigateBorders BSP.emptyBSP ||| Full
+myLayout = nav BSP.emptyBSP ||| Full
+    where nav :: LayoutClass l a => l a -> ModifiedLayout WindowNavigation l a
+          nav = configurableNavigation noNavigateBorders
 
 extraKeys =
     [ ((0, xK_Print), spawn "import -depth 8 -window root /mem/screengrab.png")
