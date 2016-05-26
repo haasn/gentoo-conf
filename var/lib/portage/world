@@ -21,7 +21,6 @@ app-benchmarks/httperf
 app-benchmarks/sysbench
 app-cdr/cuetools
 app-crypt/dieharder
-app-crypt/johntheripper
 app-editors/bvi
 app-editors/hexedit
 app-editors/nano
@@ -107,6 +106,7 @@ dev-haskell/ghc-man-completion
 dev-haskell/glfw-b
 dev-haskell/groupoids
 dev-haskell/haddock
+dev-haskell/harpy
 dev-haskell/haxml
 dev-haskell/hinotify
 dev-haskell/hlint
@@ -227,7 +227,6 @@ media-fonts/ubuntu-font-family
 media-fonts/unifont
 media-fonts/unifraktur
 media-gfx/argyllcms
-media-gfx/dcraw
 media-gfx/displaycal
 media-gfx/feh
 media-gfx/gifsicle
@@ -235,7 +234,6 @@ media-gfx/gnome-screenshot
 media-gfx/gphoto2
 media-gfx/imagemagick
 media-gfx/jpeg2ps
-media-gfx/mypaint
 media-gfx/openexr_viewers
 media-gfx/optipng
 media-gfx/pdf2svg
@@ -259,6 +257,7 @@ media-libs/rubberband
 media-libs/x265
 media-plugins/alsa-plugins
 media-plugins/tap-plugins
+media-sound/audacity
 media-sound/autoplay
 media-sound/flacon
 media-sound/id3v2
@@ -365,7 +364,6 @@ sys-fs/xfsprogs
 sys-kernel/genkernel
 sys-kernel/hardened-sources
 sys-kernel/linux-firmware
-sys-libs/freeipmi
 sys-libs/libfaketime
 sys-power/apcupsd
 sys-power/powertop

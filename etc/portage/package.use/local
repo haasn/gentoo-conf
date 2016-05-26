@@ -152,7 +152,7 @@ media-sound/audacity alsa
 games-emulation/dolphin-emu alsa
 media-libs/libmikmod alsa
 media-libs/libsdl -pulseaudio alsa
-app-emulation/wine -pulseaudio -jack alsa -realtime
+app-emulation/wine -pulseaudio -jack alsa -realtime staging
 app-emulation/emul-linux-x86-soundlibs alsa
 app-emulation/virtualbox -pulseaudio qt4
 media-sound/teamspeak-client-bin alsa -pulseaudio
@@ -503,7 +503,7 @@ media-libs/sdl-mixer mikmod vorbis mod
 media-sound/mpd -aac
 
 # Build failure
-media-sound/audacity -ffmpeg
+media-sound/audacity -ffmpeg -mp3 -vorbis
 media-sound/audacity -id3tag -midi -libsamplerate -sbsms -soundtouch -vamp -flac
 
 # Incompatible with clang
@@ -527,6 +527,7 @@ net-libs/polarssl programs
 
 # Why is this even enabled by default?
 dev-libs/openssl -tls-heartbeat
+dev-libs/openssl -sslv2 -sslv3
 
 # Needed for libreswan
 dev-libs/nss utils
@@ -552,6 +553,9 @@ x11-drivers/nvidia-drivers kms
 #x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
 x11-drivers/nvidia-drivers -pax_kernel # I use my own patch
 media-video/nvidia-settings -gtk3
+
+# fails
+app-crypt/johntheripper -cuda pcap rexgen wow mpi kerberos
 
 #x11-drivers/nvidia-drivers -kms # build failure
 

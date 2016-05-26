@@ -108,6 +108,7 @@ www-client/palemoon::palemoon
 # Pentoo
 app-crypt/cryptohaze-combined::pentoo
 app-forensics/stegdetect::pentoo
+app-crypt/johntheripper::pentoo
 
 ## Hardened
 

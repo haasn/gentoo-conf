@@ -147,7 +147,7 @@ alias chcon='sudo chcon'
 
 alias esync='emerge --ask=n --sync'
 alias epull='layman -S && hackport update && esync && eix-update'
-alias eworld='emerge --update --newuse --deep @world --exclude portage'
+alias eworld='emerge --update --newuse --deep --ignore-built-slot-operator-deps=n @world'
 alias deworld='emerge --ask=n --deselect'
 alias esmart='sudo smart-live-rebuild -E'
 alias eupdate='epull && eworld && haskell-updater && esmart'
