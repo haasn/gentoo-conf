@@ -1,3 +1,5 @@
+// Example of a comment at the beginning
+
 //!HOOK LUMA
 //!BIND HOOKED
 //!WIDTH HOOKED.w 10 /

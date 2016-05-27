@@ -402,6 +402,7 @@ x11-misc/xsnow
 x11-misc/yeganesh
 x11-terms/qterminal
 x11-terms/rxvt-unicode
+x11-terms/st
 x11-themes/gtk-engines-murrine
 x11-themes/gtk-engines-ubuntulooks
 x11-themes/ubuntu-wallpapers
