@@ -293,6 +293,7 @@ net-analyzer/vnstat
 net-analyzer/wireshark
 net-dns/bind-tools
 net-dns/unbound
+net-firewall/firehol
 net-im/bitlbee
 net-im/skype
 net-irc/weechat
