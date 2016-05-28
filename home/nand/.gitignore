@@ -1,0 +1,10 @@
+.tags
+tags
+*.taghl
+*.swo
+*.swp
+*.patch
+__pycache__
+.lvimrc
+.gdb_history
+Session.vim

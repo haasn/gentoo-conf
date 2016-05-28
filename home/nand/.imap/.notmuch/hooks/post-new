@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Local delivery
+notmuch tag +system -- tag:new and from:root@nand.wakku.to
+notmuch tag +rkhunter -- tag:new and tag:system and subject:rkhunter
+notmuch tag +smartd -- tag:new and tag:system and subject:SMART
+
+# Spam
+notmuch tag -new +spam -- tag:new and from:news@nvidia.com
+notmuch tag -new +deleted -- tag:new and to:linuxpool.informatik@uni-ulm.de and from:gitlab@gitlab.informatik.uni-ulm.de
+
+# Uni-related tags
+notmuch tag +icinga   -- tag:new and from:icinga@devel02.informatik.uni-ulm.de
+notmuch tag +calm     -- tag:new and '(from:calm@lists.uni-ulm.de or to:calm@lists.uni-ulm.de)'
+
+# Googlegroups tags
+notmuch tag +diagrams -new -- tag:new and to:diagrams-discuss@googlegroups.com
+
+# GitHub tags
+for project in mpv bower sxiv; do
+    notmuch tag +${project} -- tag:new and to:${project}@noreply.github.com
+done
+
+# Other tags
+notmuch tag +rss -- tag:new and to:rss@nand.wakku.to
+
+# Clean up
+notmuch tag +unread -new -- tag:new
