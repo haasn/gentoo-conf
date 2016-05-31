@@ -32,6 +32,7 @@ remedia() {
 
     echo 'Mounted...'
     sudo rc-service mpd start && nohup autoplay info >/dev/null 2>&1
+    autoplay info
 }
 
 # grep should always be case insensitive
