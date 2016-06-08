@@ -27,7 +27,7 @@ argyll-dispwin -I -d1 ~/icc/alt.icc &
 
 # Fix the GPU speed
 nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=100'
-nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=0'
+nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=1'
 
 # Automatically update the mail cache on new emails
 #while inotifywait -e CREATE ./new/; do notmuch new & done &

@@ -660,3 +660,12 @@ dev-util/ltrace unwind
 # required by @selected
 # required by @world (argument)
 >=dev-lang/python-3.5.1-r2 sqlite
+# required by net-mail/notmuch-0.22-r1::gentoo[crypt]
+# required by @selected
+# required by @world (argument)
+>=dev-libs/gmime-2.6.20-r3 smime
+# required by gnome-extra/libgsf-1.14.36::gentoo[gtk]
+# required by app-office/calligra-2.9.11::gentoo[gsf]
+# required by @selected
+# required by @world (argument)
+>=media-gfx/graphicsmagick-1.3.24 imagemagick
