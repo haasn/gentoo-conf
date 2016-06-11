@@ -71,3 +71,6 @@ dev-haskell/linear::local_overlay
 
 # Build failure
 =sec-policy/selinux-virt-9999
+
+# Dependency conflict that portage is too dumb to solve
+=media-gfx/imagemagick-6.9.4.7

@@ -6,6 +6,7 @@
 */*::gentoo-haskell
 
 # Allow all of vapoursynth at ver 9999
+media-libs/ffmpegsource **
 */*::vapoursynth **
 
 # Allow all of dev-haskell/

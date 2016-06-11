@@ -5,6 +5,7 @@
 //!WIDTH HOOKED.w 10 /
 //!HEIGHT HOOKED.h 10 /
 //!SAVE LUMASMALL
+//!WHEN LUMA.w 500 >
 
 vec4 hook()
 {

@@ -19,6 +19,7 @@ import XMonad.Layout.WindowNavigation
 import XMonad.Layout.NoBorders
 import XMonad.Layout.HintedGrid
 import qualified XMonad.Layout.BinarySpacePartition as BSP
+import qualified XMonad.StackSet as W
 
 -- Misc and utility
 import Control.Concurrent (forkIO)
@@ -79,10 +80,10 @@ extraKeys =
     , ((mod4Mask .|. mod1Mask, xK_k), sendMessage $ BSP.ExpandTowards U)
     , ((mod4Mask .|. mod1Mask, xK_l), sendMessage $ BSP.ExpandTowards R)
 
-    , ((mod4Mask .|. controlMask , xK_l), sendMessage $ BSP.ShrinkFrom L)
-    , ((mod4Mask .|. controlMask , xK_k), sendMessage $ BSP.ShrinkFrom D)
-    , ((mod4Mask .|. controlMask , xK_j), sendMessage $ BSP.ShrinkFrom U)
     , ((mod4Mask .|. controlMask , xK_h), sendMessage $ BSP.ShrinkFrom R)
+    , ((mod4Mask .|. controlMask , xK_j), sendMessage $ BSP.ShrinkFrom U)
+    , ((mod4Mask .|. controlMask , xK_k), sendMessage $ BSP.ShrinkFrom D)
+    , ((mod4Mask .|. controlMask , xK_l), sendMessage $ BSP.ShrinkFrom L)
 
     , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_h), sendMessage $ BSP.MoveSplit L)
     , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_j), sendMessage $ BSP.MoveSplit D)
@@ -123,6 +124,13 @@ extraKeys =
        , (m, f) <- [(0, greedyView), (shiftMask, shift)]
        ]
 
+    -- Switch to the right workspace using J
+    {-
+    ++ [ ((mod4Mask .|. m, xK_j), screenWorkspace 1 >>= flip whenJust (windows . f))
+       | (f,m) <- [(W.view, 0), (W.shift, shiftMask)]
+       ]
+    -}
+
 workspaceNames n = [ show x ++ ":" ++ case lookup x friendlyNames of
                        Nothing -> "──"
                        Just n  -> n
@@ -133,7 +141,7 @@ friendlyNames =
     , (2, "editor")
     , (3, "irc")
 
-    , (7, "skype")
+    , (7, "voip")
     , (8, "torrent")
     , (9, "web")
     ]

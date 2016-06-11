@@ -197,7 +197,6 @@ dev-vcs/bzr
 dev-vcs/bzr-fastimport
 dev-vcs/cvs
 dev-vcs/darcs
-dev-vcs/git-annex
 dev-vcs/mercurial
 games-action/extreme-tuxracer
 games-action/supertuxkart
@@ -258,6 +257,8 @@ media-libs/rubberband
 media-libs/x265
 media-plugins/alsa-plugins
 media-plugins/tap-plugins
+media-plugins/vapoursynth-ffmpegsource
+media-plugins/vapoursynth-mvtools
 media-sound/audacity
 media-sound/autoplay
 media-sound/flacon

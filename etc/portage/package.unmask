@@ -1,5 +1,5 @@
 # ffmpeg-9999 is masked?
-=media-video/ffmpeg-9999
+media-video/ffmpeg
 
 # Incompatible with 7.8.1
 =dev-haskell/deepseq-1.3.0.2

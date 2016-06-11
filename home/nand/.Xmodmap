@@ -35,7 +35,7 @@ keycode  45 = k K U00F8 U00D8
 keycode  46 = l L omacron umacron
 keycode  47 = semicolon colon leftdoublequotemark degree
 keycode  48 = apostrophe quotedbl rightdoublequotemark U207A
-keycode  49 = grave asciitilde U2200 U2245
+keycode  49 = asciitilde grave U2200 U2245
 keycode  51 = Greek_pi Greek_PI notsign U2E2E
 keycode  52 = z Z yacute Yacute
 keycode  53 = x X Greek_alpha ediaeresis
@@ -72,4 +72,7 @@ keycode 113 = Left NoSymbol U2190 U21D0
 keycode 116 = Down NoSymbol U2193 U21D3
 
 clear Lock
+clear Control
+add Control = Control_L
 add Mod4 = Super_L
+add Mod4 = Control_R
