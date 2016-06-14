@@ -74,3 +74,7 @@ dev-haskell/linear::local_overlay
 
 # Dependency conflict that portage is too dumb to solve
 =media-gfx/imagemagick-6.9.4.7
+
+# Masking for systemd
+#sys-apps/sysvinit
+#sys-apps/openrc

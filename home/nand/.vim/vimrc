@@ -17,7 +17,7 @@ noremap <M-L> <C-w>L
 noremap <Leader>s <C-w>s
 noremap <Leader>n :nohls<CR>:HierClear<CR>
 noremap <Leader>b :make<CR>
-noremap <Leader>r :checktime<CR>zuz
+noremap <Leader>r :checktime<CR>
 noremap <Leader>u :UndotreeToggle<CR>
 
 noremap Cn :cn<CR>
@@ -58,12 +58,10 @@ set foldnestmax=1
 set foldlevel=0
 set foldcolumn=1
 set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
-let g:fastfold_fold_command_suffixes = ['x','X','a','A','o','O','c','C','r','R','m','M','i','n','N']
 set sessionoptions-=folds
+au BufRead * setlocal foldmethod=syntax
 
-" au BufWritePost * normal zx
-" au InsertEnter * let w:last_fdm=&foldmethod | setlocal foldmethod=manual
-" au InsertLeave * let &l:foldmethod=w:last_fdm
+let g:fastfold_fold_command_suffixes = ['x','X','a','A','o','O','c','C','r','R','m','M','i','n','N']
 
 " ctags
 noremap <C-d> <C-]>
@@ -154,3 +152,24 @@ au BufNewFile,BufRead *.weechatlog setf weechatlog
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.hook setf glsl
 au BufNewFile,BufRead *.vpy setf python
 au BufNewFile,BufRead /tmp/zsh* setf zsh
+
+" more stuff
+function! DeleteInactiveBufs()
+    "From tabpagebuflist() help, get a list of all buffers in all tabs
+    let tablist = []
+    for i in range(tabpagenr('$'))
+        call extend(tablist, tabpagebuflist(i + 1))
+    endfor
+
+    "Below originally inspired by Hara Krishna Dara and Keith Roberts
+    "http://tech.groups.yahoo.com/group/vim/message/56425
+    let nWipeouts = 0
+    for i in range(1, bufnr('$'))
+        if bufexists(i) && !getbufvar(i,"&mod") && index(tablist, i) == -1
+        "bufno exists AND isn't modified AND isn't in the list of buffers open in windows and tabs
+            silent exec 'bwipeout' i
+            let nWipeouts = nWipeouts + 1
+        endif
+    endfor
+    echomsg nWipeouts . ' buffer(s) wiped out'
+endfunction

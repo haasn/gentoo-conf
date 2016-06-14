@@ -79,11 +79,10 @@
 
 # Bloated or unneeded crap
 */* -gstreamer -policykit -consolekit -dbus -udisks -upower
-*/* -udev
+#*/* -udev
 
 # Because OpenRC is just even worse.
-# Well, as soon as it's supported upstream, anyway
-#*/* systemd udev
+*/* systemd udev
 
 # For configuration in stuff like dwm/sxiv/whatever
 */* savedconfig
@@ -404,7 +403,8 @@ app-editors/yi vty -gtk
 media-fonts/terminus-font ceneterd-tilde distinct-l ru-dv du-g ru-i
 
 # rxvt stuff
-x11-terms/rxvt-unicode -mousewheel -startup-notification -unicode3 -wcwidth fading-colors vanilla 256-color
+x11-terms/rxvt-unicode -mousewheel -startup-notification -unicode3 -wcwidth
+x11-terms/rxvt-unicode fading-colors 256-color -buffer-on-clear vanilla
 
 # Allows only one GUI
 net-analyzer/wireshark -gtk2 -gtk3 qt5 # qt is really slow, but gtk fails building..
@@ -561,13 +561,16 @@ app-crypt/johntheripper -cuda pcap rexgen wow mpi kerberos
 #x11-drivers/nvidia-drivers -kms # build failure
 
 # SELinux/hardened stuff
-sec-policy/* doc -unconfined
+sec-policy/* doc unconfined systemd
 sys-devel/gcc fortran
 sys-apps/openrc audit
 
+# systemd
+sys-apps/systemd elfutils -gcrypt -idn -kdbus -lzma -ssl sysv-utils
+
 # For Skype
-app-emulation/docker lxc
-x11-base/xorg-server xnest xephyr kdrive
+#app-emulation/docker lxc
+#x11-base/xorg-server xnest xephyr kdrive
 
 # To generate diagrams
 net-analyzer/vnstat gd

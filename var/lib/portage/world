@@ -326,8 +326,6 @@ sci-libs/fftw
 sci-libs/libqalculate
 sci-mathematics/ent
 sci-mathematics/msieve
-sec-policy/selinux-backup
-sec-policy/selinux-mplayer
 sys-apps/dstat
 sys-apps/ethtool
 sys-apps/evrouter
@@ -344,7 +342,7 @@ sys-apps/mlocate
 sys-apps/portage
 sys-apps/s6
 sys-apps/smartmontools
-sys-apps/sysvinit
+sys-apps/systemd
 sys-apps/usbutils
 sys-block/gparted
 sys-boot/grub
@@ -355,7 +353,6 @@ sys-devel/clang
 sys-devel/gdb
 sys-fs/cryptsetup
 sys-fs/duperemove
-sys-fs/eudev
 sys-fs/inotify-tools
 sys-fs/ncdu
 sys-fs/ntfs3g

@@ -7,9 +7,6 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 MAILTO=nand
 HOME=/
 
-# Run fstrim twice a day
-15     2,14   *      *       *                 /sbin/fstrim -v --all
-
 # check scripts in cron.hourly, cron.daily, cron.weekly and cron.monthly
 # if anacron is not present
 59  *  * * *	root	[ ! -x /etc/cron.hourly/0anacron ] && rm -f /var/spool/cron/lastrun/cron.hourly

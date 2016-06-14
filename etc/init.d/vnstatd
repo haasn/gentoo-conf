@@ -1,7 +1,7 @@
-#!/sbin/runscript
+#!/sbin/openrc-run
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-analyzer/vnstat/files/vnstatd.initd-r1,v 1.1 2015/01/20 16:51:08 jer Exp $
+# $Id$
 
 extra_started_commands="reload"
 
@@ -13,8 +13,8 @@ VNSTATD_PIDFILE="${VNSTATD_PIDFILE:-/run/vnstatd/vnstatd.pid}"
 
 start() {
 	ebegin "Starting vnstatd"
-	#checkpath -q -d -m 755 -o vnstat:vnstat /run/vnstatd
-	#checkpath -q -d -m 755 -o vnstat:vnstat /var/lib/vnstat
+	checkpath -q -d -m 755 -o vnstat:vnstat /run/vnstatd
+	checkpath -q -d -m 755 -o vnstat:vnstat /var/lib/vnstat
 	start-stop-daemon --start --quiet \
 		--pidfile "${VNSTATD_PIDFILE}" \
 		--user vnstat --group vnstat \

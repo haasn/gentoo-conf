@@ -52,8 +52,9 @@ local col=0 rcol=243 ROLE="${${${${:-$(id -Z 2>/dev/null)}#*:}%:*}:-none}"
 sumcharvals "$USER@$HOST" 88 col
 [[ $ROLE == 'sysadm_r' ]] && rcol=red
 
+#"[%B%F{$(88to256 $col)}%n@%m%f:%F{$rcol}$ROLE%f%b]"\
 PS1="[%B%F{yellow}%D{%H:%M}%f%b]"\
-"[%B%F{$(88to256 $col)}%n@%m%f:%F{$rcol}$ROLE%f%b]"\
+"[%B%F{$(88to256 $col)}%n@%m%f%b]"\
 "[%B%F{blue}%~%f%b]"\
 $'$(__git_ps1 "[%%F{212}%s%%f]")'\
 "%(?..[%B%F{red}%?%f%b])"\

@@ -1,5 +1,5 @@
 # For SELinux compatibility
-alias sudo='sudo -r sysadm_r -t sysadm_t'
+#alias sudo='sudo -r sysadm_r -t sysadm_t'
 
 # unmount and remount media partition
 typeset -A devices
@@ -12,7 +12,7 @@ devices=( partuuid/5ae227ae-0bcd-43a4-8565-0ac14fbb6648     ygg1 # HGST 3TB
 
 unmedia() {
     pkill -f /usr/bin/autoplay
-    sudo rc-service mpd stop
+    systemctl --user stop mpd
 
     sudo umount /y || return 1
     for d in $devices; do
@@ -21,17 +21,15 @@ unmedia() {
 }
 
 remedia() {
-    sudo setenforce 0 # Ugly disgusting work-around until I find a better solution
     for id in ${(k)devices}; do
         pass Disks/yggdrasil/${id##*/} | sudo cryptsetup open /dev/disk/by-$id $devices[$id]
     done
-    sudo setenforce 1
 
     sudo btrfs device scan /dev/mapper/$^devices
     sudo mount -o noatime /dev/mapper/${${devices}[1]} /y || return 1
 
     echo 'Mounted...'
-    sudo rc-service mpd start && nohup autoplay info >/dev/null 2>&1
+    systemctl --user start mpd && nohup autoplay info >/dev/null 2>&1
     autoplay info
 }
 
@@ -40,7 +38,7 @@ alias grep='grep -i --color=auto'
 
 # some more ls aliases
 alias l='ls'
-alias ll='ls -lZ --si'
+alias ll='ls -l --si'
 alias la='ll -A'
 alias lt='ll -rt'
 
@@ -122,9 +120,10 @@ alias eclean='sudo eclean'
 alias erebuild='sudo revdep-rebuild'
 alias edepclean='emerge --depclean'
 alias module-rebuild='sudo module-rebuild'
-alias rc-update='sudo rc-update'
-alias rc-config='sudo rc-config'
-alias rc-service='sudo rc-service'
+#alias rc-update='sudo rc-update'
+#alias rc-config='sudo rc-config'
+#alias rc-service='sudo rc-service'
+#alias systemctl='sudo systemctl'
 alias haskell-updater='sudo haskell-updater'
 alias hackport='sudo hackport -p /usr/local/portage'
 alias ghc-pkg='sudo ghc-pkg'

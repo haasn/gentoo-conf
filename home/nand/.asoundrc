@@ -1,0 +1,185 @@
+defaults.pcm.rate_converter "speexrate_medium"
+
+ctl.!default {
+    type hw
+    card "ODACrevB"
+}
+
+pcm.!default {
+    type plug
+    slave.pcm "duplex"
+}
+
+# Stupid hack for TeamSpeak 3 being the worst piece of shit any human being has
+# ever programmed. Actually, I'm not even sure if TeamSpeak 3 is developed by
+# humans. Basically, we have to set the TS3 microphone as the "default" pcm
+# because the client can't just choose any arbitrary ALSA pcm by name, only
+# hardware devices or "default".
+pcm.duplex {
+    type asym
+    playback.pcm "output"
+    capture.pcm  "input"
+}
+
+pcm.output {
+    type dmix
+    ipc_key 1001
+    ipc_key_add_uid yes
+    ipc_perm 0600
+
+    slave {
+        pcm "hw:ODACrevB"
+        rate 48000
+        channels 2
+        format S24_3LE
+
+        period_time 0
+        buffer_time 0
+        period_size 1024
+        buffer_size 4096
+    }
+}
+
+## 2.0 device (hack to drop the extra channel from route21)
+#pcm.multi20 {
+#    type multi
+#    slaves.a { pcm "route21"; channels 3 }
+#    bindings {
+#        0 { slave a; channel 0 }
+#        1 { slave a; channel 1 }
+#    }
+#}
+#
+## 2.0 -> 2.1 expansion device (still pretends to be 3-channel though)
+#pcm.route21 {
+#    type route # needs to run with integer format
+#    slave.pcm "multi21"
+#    ttable {
+#        0.0 1.0 # Front left
+#        1.1 1.0 # Front right
+#
+#        # Subwoofer = (L+R)/2
+#        0.2 0.5
+#        1.2 0.5
+#    }
+#}
+#
+## 2.1 multi-channel device (bring the virtual speaker/sub pair together)
+#pcm.multi21 {
+#    type multi
+#    slaves {
+#        a { pcm "speakers_hpf";  channels 2 } # Front L/R
+#        b { pcm "subwoofer_lpf"; channels 1 } # Subwoofer
+#    }
+#    bindings {
+#        0 { slave a; channel 0 }
+#        1 { slave a; channel 1 }
+#        2 { slave b; channel 0 }
+#    }
+#}
+
+#pcm.speakers_hpf {
+#    type plug # for conversion from integer -> float (LADSPA)
+#    slave.pcm {
+#        type ladspa
+#        slave.pcm "speakers"
+#        path "/usr/lib/ladspa"
+#        plugins [{
+#            label hpf
+#            input {
+#                controls [ 80 ]
+#            }
+#        }]
+#    }
+#}
+#
+#pcm.speakers {
+#    type plug # for conversion from float input -> device format
+#    slave.pcm {
+#        type dmix
+#        ipc_key 1001
+#        ipc_key_add_uid no
+#        ipc_gid audio
+#        ipc_perm 0666
+#
+#        slave {
+#            pcm "hw:ODACrevB"
+#            rate 48000
+#            channels 2
+#            format S24_LE
+#
+#            period_time 0
+#            buffer_time 0
+#            period_size 1024
+#            buffer_size 4096
+#        }
+#    }
+#}
+#
+#pcm.subwoofer_lpf {
+#    type plug # for conversion from integer -> float (LADSPA)
+#    slave.pcm {
+#        type ladspa
+#        slave.pcm "subwoofer"
+#        path "/usr/lib/ladspa"
+#        plugins [{
+#            label lpf
+#            input {
+#                controls [ 80 ]
+#            }
+#        }]
+#    }
+#}
+#
+#pcm.subwoofer {
+#    type plug # for conversion from float Input -> device format
+#    slave.pcm {
+#        type dmix
+#        ipc_key 1002
+#        ipc_key_add_uid no
+#        ipc_gid audio
+#        ipc_perm 0666
+#
+#        slave {
+#            pcm "hw:PCH"
+#            rate 48000
+#            channels 1
+#            format S32_LE
+#
+#            period_time 0
+#            buffer_time 0
+#            period_size 1024
+#            buffer_size 4096
+#        }
+#    }
+#}
+
+pcm.input {
+    type dsnoop
+    ipc_key 1003
+    ipc_key_add_uid yes
+    ipc_perm 0600
+
+    slave {
+        pcm "hw:Loopback,1,0"
+        rate 48000
+        channels 2
+        format S32_LE
+    }
+}
+
+pcm.aloop {
+    type plug
+
+    slave {
+        pcm "hw:Loopback,0,0"
+        rate 48000
+        channels 2
+        format S32_LE
+    }
+}
+
+pcm.mpd {
+    type plug
+    slave.pcm "duplex"
+}
