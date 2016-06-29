@@ -45,8 +45,6 @@ main = do
 
         modMask             = mod4Mask, -- Capslock
 
-        terminal            = "urxvtc",
-
         normalBorderColor   = "#070B0C",
         focusedBorderColor  = "#85919b",
 
@@ -70,36 +68,36 @@ extraKeys =
     , ((mod4Mask, xK_k), sendMessage $ Go U)
     , ((mod4Mask, xK_l), sendMessage $ Go R)
 
-    , ((mod4Mask .|. shiftMask, xK_h), sendMessage $ Swap L)
-    , ((mod4Mask .|. shiftMask, xK_j), sendMessage $ Swap D)
-    , ((mod4Mask .|. shiftMask, xK_k), sendMessage $ Swap U)
-    , ((mod4Mask .|. shiftMask, xK_l), sendMessage $ Swap R)
+    , ((mod4Mask .|. mod1Mask, xK_h), sendMessage $ Swap L)
+    , ((mod4Mask .|. mod1Mask, xK_j), sendMessage $ Swap D)
+    , ((mod4Mask .|. mod1Mask, xK_k), sendMessage $ Swap U)
+    , ((mod4Mask .|. mod1Mask, xK_l), sendMessage $ Swap R)
 
-    , ((mod4Mask .|. mod1Mask, xK_h), sendMessage $ BSP.ExpandTowards L)
-    , ((mod4Mask .|. mod1Mask, xK_j), sendMessage $ BSP.ExpandTowards D)
-    , ((mod4Mask .|. mod1Mask, xK_k), sendMessage $ BSP.ExpandTowards U)
-    , ((mod4Mask .|. mod1Mask, xK_l), sendMessage $ BSP.ExpandTowards R)
+    , ((mod4Mask .|. mod3Mask, xK_h), sendMessage $ BSP.ExpandTowards L)
+    , ((mod4Mask .|. mod3Mask, xK_j), sendMessage $ BSP.ExpandTowards D)
+    , ((mod4Mask .|. mod3Mask, xK_k), sendMessage $ BSP.ExpandTowards U)
+    , ((mod4Mask .|. mod3Mask, xK_l), sendMessage $ BSP.ExpandTowards R)
 
     , ((mod4Mask .|. controlMask , xK_h), sendMessage $ BSP.ShrinkFrom R)
     , ((mod4Mask .|. controlMask , xK_j), sendMessage $ BSP.ShrinkFrom U)
     , ((mod4Mask .|. controlMask , xK_k), sendMessage $ BSP.ShrinkFrom D)
     , ((mod4Mask .|. controlMask , xK_l), sendMessage $ BSP.ShrinkFrom L)
 
-    , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_h), sendMessage $ BSP.MoveSplit L)
-    , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_j), sendMessage $ BSP.MoveSplit D)
-    , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_k), sendMessage $ BSP.MoveSplit U)
-    , ((mod4Mask .|. mod1Mask .|. shiftMask, xK_l), sendMessage $ BSP.MoveSplit R)
+    , ((mod4Mask .|. mod3Mask .|. mod1Mask, xK_h), sendMessage $ BSP.MoveSplit L)
+    , ((mod4Mask .|. mod3Mask .|. mod1Mask, xK_j), sendMessage $ BSP.MoveSplit D)
+    , ((mod4Mask .|. mod3Mask .|. mod1Mask, xK_k), sendMessage $ BSP.MoveSplit U)
+    , ((mod4Mask .|. mod3Mask .|. mod1Mask, xK_l), sendMessage $ BSP.MoveSplit R)
 
     , ((mod4Mask                , xK_space), sendMessage BSP.Rotate)
-    , ((mod4Mask .|. shiftMask  , xK_space), sendMessage BSP.Swap)
+    , ((mod4Mask .|. mod1Mask   , xK_space), sendMessage BSP.Swap)
     , ((mod4Mask .|. controlMask, xK_space), sendMessage NextLayout)
 
     , ((mod4Mask, xK_Tab), nextWS')
-    , ((mod4Mask .|. shiftMask, xK_Tab), prevWS')
+    , ((mod4Mask .|. mod1Mask, xK_Tab), prevWS')
 
     -- Make it harder to kill X
     , ((mod4Mask .|. shiftMask, xK_q), return ())
-    , ((mod1Mask .|. mod4Mask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
+    , ((mod1Mask .|. mod3Mask .|. mod4Mask, xK_q), io (exitWith ExitSuccess))
 
     , ((mod4Mask, xK_r), spawn "exec $(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#080C0D')")
 
@@ -109,27 +107,29 @@ extraKeys =
     -- Reset the mouse cursor
     , ((mod4Mask, xK_Escape), spawn "exec swarp 0 0")
 
-    , ((controlMask .|. mod1Mask, xK_Home),      io' $ MPD.withMPD MPD.toggle)
-    , ((controlMask .|. mod1Mask, xK_Insert),    io' $ MPD.withMPD (MPD.play Nothing))
-    , ((controlMask .|. mod1Mask, xK_End),       io' $ MPD.withMPD MPD.stop)
-    , ((controlMask .|. mod1Mask, xK_Page_Down), io' $ MPD.withMPD MPD.next)
-    , ((controlMask .|. mod1Mask, xK_Page_Up),   io' $ MPD.withMPD MPD.previous)
+    , ((controlMask .|. mod3Mask, xK_Home),      io' $ MPD.withMPD MPD.toggle)
+    , ((controlMask .|. mod3Mask, xK_Insert),    io' $ MPD.withMPD (MPD.play Nothing))
+    , ((controlMask .|. mod3Mask, xK_End),       io' $ MPD.withMPD MPD.stop)
+    , ((controlMask .|. mod3Mask, xK_Page_Down), io' $ MPD.withMPD MPD.next)
+    , ((controlMask .|. mod3Mask, xK_Page_Up),   io' $ MPD.withMPD MPD.previous)
+
+    -- Default keybindings, remapped to mod1Mask instead of shift
+    , ((mod4Mask .|. mod1Mask, xK_Return),  spawn "urxvtc")
+    , ((mod4Mask  .|. mod1Mask, xK_c),      kill)
     ]
+
+    ++ [ ((mod4Mask .|. mod1Mask, m), screenWorkspace n >>=
+                                      flip whenJust (windows . W.shift))
+       | (n,m) <- zip [0..] [xK_w, xK_e]
+       ]
 
     -- Switch workspaces using symbols
     ++ [ ((mod4Mask .|. m, k), windows $ f i)
        | (i, k) <- zip (workspaceNames 9)
          [ xK_exclam, xK_at, xK_numbersign, xK_dollar, xK_percent, xK_asciicircum
          , xK_ampersand, xK_asterisk, xK_bracketleft ]
-       , (m, f) <- [(0, greedyView), (shiftMask, shift)]
+       , (m, f) <- [(0, greedyView), (mod1Mask, shift)]
        ]
-
-    -- Switch to the right workspace using J
-    {-
-    ++ [ ((mod4Mask .|. m, xK_j), screenWorkspace 1 >>= flip whenJust (windows . f))
-       | (f,m) <- [(W.view, 0), (W.shift, shiftMask)]
-       ]
-    -}
 
 workspaceNames n = [ show x ++ ":" ++ case lookup x friendlyNames of
                        Nothing -> "──"

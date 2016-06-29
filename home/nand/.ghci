@@ -23,7 +23,6 @@
 import Control.Applicative
 import Control.Arrow hiding (left, right)
 import Control.Comonad
-import Control.Kleislify
 import Control.Lens
 import Control.Lens.Extras
 import Numeric.Lens
@@ -103,12 +102,12 @@ import qualified Data.Traversable as Trav
 -- import Math.OEIS
 import Control.Monad.Random hiding (split)
 
-import qualified Data.VectorSpace as VS
+-- import qualified Data.VectorSpace as VS
 
 -- Hiding this because of confusing instances
 -- import Data.NumInstances
 
-import Data.LinearMap
+-- import Data.LinearMap
 
 import Data.Fixed
 

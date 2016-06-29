@@ -1,4 +1,4 @@
-"hg7226
+"hg7290
 
 loadplugins '\.(js|penta)$'
 group user
@@ -23,6 +23,7 @@ highlight EditorBlink1 /* Text fields briefly after successfully running the ext
 highlight EditorError /* Text fields briefly after an error has occurred running the external editor */ background: #e03c52 !important;
 highlight Enabled /* Enabled item indicator text */ color: #be4773;
 highlight ErrorMsg /* Error messages */ color: #ffffff   !important; background: #8b0000         !important; font-weight: bold !important;
+highlight Find background: #e50c88 !important; color: white !important;
 highlight FontFixed font-family: monospace !important; font-size: 9pt !important;
 highlight FrameIndicator /* The styling applied to briefly indicate the active frame */ background-color: #e03c52; opacity: 0.5; z-index: 999999; position: fixed; top: 0; bottom: 0; left: 0; right: 0;
 highlight Function /* JavaScript functions */ color: #0099bc;
@@ -72,12 +73,13 @@ map -count -modes=n l -builtin <count>3l
 map -count -modes=n,v q -builtin <count>:tabclose<Return>
 map -modes=n zt -javascript content.document.toggleImageSize()
 map -count -modes=n,v D -builtin <count>:tabopen<Space>d<Space>
-map -count -modes=I,m <C-c> <C-[>
+map -count -modes=m,I <C-c> <C-[>
 map -count -modes=b,o <C-c> <Esc>
 set cdpath=''
 set defsearch=d
 set guioptions=Cs
 set hintkeys=abcdefghijklmnoprstuvwxyz
+set hlfind
 set showtabline=never
 set yankshort=www.youtube.com,youtube.com,bugzilla.mozilla.org
 style mathworld.wolfram.com img.tex, img.numberedequation, img.inlineformula { background-color: white !important; }

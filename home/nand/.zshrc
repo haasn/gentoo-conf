@@ -110,6 +110,10 @@ export KDE_FORK_SLAVES=1
 export XZ_OPT="-T 0" # multithreading
 source /home/nand/.mpdpass
 
+# Stupid fucking, piece of shit, dirty, filthy, disgusting work-around
+#export VDPAU_TRACE=2
+#export VDPAU_TRACE_FILE=/dev/null
+
 # Mask o-r by default
 umask 026
 

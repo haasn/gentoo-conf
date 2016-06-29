@@ -72,6 +72,7 @@ set tags=tags;
 "let g:easytags_async = 1
 
 " undotree
+set undodir=$HOME/.vim/undo
 set undofile
 let g:undotree_WindowLayout=2
 let g:undotree_SetFocusWhenToggle=1

@@ -103,7 +103,8 @@
 */* abi_x86_32
 
 # Miscellaneous
-*/* lzma ncurses fontconfig xft cuda opencl openexr opengl unicode cjk -acl -startup-notification
+*/* lzma ncurses fontconfig xft cuda opencl openexr opengl unicode cjk
+*/* -acl -startup-notification -cdda
 
 # Needed for ruby
 */* ruby_targets_ruby22 ruby_targets_ruby23
@@ -121,9 +122,9 @@ sys-fs/zfs -rootfs
 ############################
 
 # FFmpeg stuff
-*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx openssl -gnutls vdpau dcadec libsoxr modplug librtmp celt bluray
+*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx vdpau dcadec libsoxr modplug librtmp celt bluray
+*/ffmpeg gnutls -openssl # fails on 0x0.st for some reason
 media-video/ffmpeg -hardcoded-tables # build failure
-#*/ffmpeg -abi_x86_32
 
 # Hmm...
 #x11-libs/cairo -abi_x86_32
@@ -278,20 +279,20 @@ kde-apps/kmix -pulseaudio
 # Firefox stable
 www-client/firefox minimal -crashreporter -libnotify -startup-notification -webm -ipc -dbus
 www-client/firefox jit # manually override this for performance
-www-client/firefox gtk3
+www-client/firefox gtk2 -gtk3
 
 # Fuck proprietary codecs
 www-client/firefox -pulseaudio -gstreamer # actually, fuck audio output even harder
-media-plugins/gst-plugins-meta -a52 -aac -cdda -dts -dvd -flac ffmpeg mp3 mpeg -ogg -theora -vorbis -wavpack -x264 -xvid -pulseaudio alsa
+media-plugins/gst-plugins-meta -a52 -aac -dts -dvd -flac ffmpeg mp3 mpeg -ogg -theora -vorbis -wavpack -x264 -xvid -pulseaudio alsa
 
 # gcc's -O3 is clang's -Ofast, not -O3
-www-client/firefox custom-cflags custom-optimization
+#www-client/firefox custom-cflags custom-optimization
 
 # JFIF v2 support
 www-client/firefox system-jpeg
 
 # Possible alternative?
-www-client/seamonkey -chatzilla custom-cflags custom-optimization -roaming
+#www-client/seamonkey -chatzilla custom-cflags custom-optimization -roaming
 
 # Who knows what will happen? Let's find out
 # Apparently nothing good
@@ -314,7 +315,7 @@ www-client/firefox system-sqlite
 dev-db/sqlite secure-delete unlock-notify
 
 # Alternative to firefox?
-www-client/palemoon -official-branding alsa
+#www-client/palemoon -official-branding alsa
 
 
 #######################
@@ -341,6 +342,7 @@ sci-libs/hdf5 -threads
 app-emulation/qemu -curl -jpeg -png -python -vnc -pulseaudio spice usbredir virgl
 app-emulation/spice client
 net-misc/spice-gtk usbredir gtk3
+media-libs/mesa gles2
 
 # Flexible input method
 #app-i18n/fcitx gtk3 qt4
@@ -471,6 +473,9 @@ dev-haskell/lambdabot eval
 # Required for dragonegg
 #sys-devel/gcc lto
 
+# GCC stuff
+#sys-devel/gcc graphite lto
+
 # Avoid triggering a rebuild for now
 dev-lang/ghc doc
 
@@ -557,6 +562,7 @@ media-video/nvidia-settings -gtk3
 
 # fails
 app-crypt/johntheripper -cuda pcap rexgen wow mpi kerberos
+sys-apps/busybox static -selinux
 
 #x11-drivers/nvidia-drivers -kms # build failure
 
@@ -591,3 +597,10 @@ app-arch/p7zip -wxwidgets
 dev-libs/libwiimote force tilt
 media-libs/libcaca imlib -abi_x86_32 -cxx
 dev-util/ltrace unwind
+
+# Required for qtcore
+dev-libs/libpcre pcre16
+# Required for qtwebkit
+dev-qt/qtcore icu
+# Required for rkhunter
+sys-process/lsof rpc

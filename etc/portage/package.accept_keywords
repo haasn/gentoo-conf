@@ -55,7 +55,7 @@ media-gfx/krita **
 # Needed for live streams
 media-video/rtmpdump **
 
-# Hopefully fixes .cue support
+# Needed for bug 584742
 media-sound/mpd ** # unstable HEAD
 
 # Color management, very important!!

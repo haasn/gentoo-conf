@@ -36,9 +36,7 @@ end
 -- Pause the video if it seems to be an image file in disguise
 function check_image(event)
     frames = mp.get_property_number("estimated-frame-count")
-    print("Frames:", frames)
-
-    if (frames and frames <= 1) then
+    if (frames and frames == 1) then
         mp.set_property_bool("pause", true)
     end
 end

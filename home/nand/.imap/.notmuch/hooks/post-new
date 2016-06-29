@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Local delivery
-notmuch tag +system -- tag:new and from:root@nand.wakku.to
+notmuch tag +system -- tag:new and '(from:root or from:root@nand.wakku.to)'
 notmuch tag +rkhunter -- tag:new and tag:system and subject:rkhunter
 notmuch tag +smartd -- tag:new and tag:system and subject:SMART
 

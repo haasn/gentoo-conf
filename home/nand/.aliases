@@ -83,8 +83,8 @@ alias note='cat >> ~/notes'
 # quad core make (ht)
 alias make='make -j9'
 
-# launch weechat inside dtach
-alias weechat='dtach -A /tmp/weechat -Ez weechat-curses'
+# Attach to weechat inside dtach
+alias weechat='dtach -a /tmp/weechat'
 
 # scan for replaygain
 alias replayscan='find -L . -name \*.flac -printf %h\\n | sort -u | while read -r d; do flacgain "$d"/*.flac; done'
@@ -94,23 +94,18 @@ alias mp3scan='find -L . -name \*.mp3 -printf %h\\n | sort -u | while read -r d;
 alias wgetpaste='wgetpaste -X'
 alias hpaste='wgetpaste -l Haskell'
 
-alias youtube-dl='youtube-dl --continue --no-part'
-
 # automatically resume and stuff
 alias wget='wget -c -4 --timeout 10'
-
-# Got camera photos and stuff
-alias photo='sudo gphoto2 --get-all-files --new && sudo chown nand:nand IMG_*.JPG'
+alias youtube-dl='youtube-dl --continue --no-part'
 
 # portage aliases + auto sudo
 alias emerge='sudo emerge'
-alias euse='sudo euse'
-alias eselect='sudo eselect'
+#alias eselect='sudo eselect'
 alias ebuild='sudo ebuild'
-alias equery='sudo equery'
+#alias equery='sudo equery'
 alias eix-update='sudo eix-update'
 alias eix-sync='sudo eix-sync'
-alias eix='sudo eix'
+#alias eix='sudo eix'
 alias layman='sudo layman'
 alias genlop='sudo genlop'
 alias qlop='sudo qlop -H'
@@ -230,7 +225,11 @@ short() {
 #}
 
 # Set up PTT redirection
-alias evrouter='sudo evrouter /dev/input/event6 -c ~/.evrouterrc'
+alias evrouter='sudo evrouter /dev/input/by-id/usb-Kingsis_Peripherals_ZOWIE_Gaming_mouse-event-mouse -c ~/.evrouterrc'
+
+# Firejail aliases
+alias firejail='firejail --quiet'
+alias rtorrent='TERM=rxvt-unicode firejail rtorrent'
 
 # GHCid integration
 

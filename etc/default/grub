@@ -21,7 +21,7 @@ GRUB_TIMEOUT=2
 #GRUB_TIMEOUT_STYLE=menu
 
 # Append parameters to the linux kernel command line
-GRUB_CMDLINE_LINUX="dobtrfs"
+GRUB_CMDLINE_LINUX="dobtrfs initrd=/boot/intel-ucode.img"
 #
 # Examples:
 #

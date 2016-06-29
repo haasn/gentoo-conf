@@ -50,7 +50,7 @@ sys-apps/man
 #=x11-drivers/nvidia-drivers-355.06
 
 # Breaks for some reason
-=app-admin/sudo-1.8.16
+#=app-admin/sudo-1.8.16
 
 # No longer needed
 #x11-misc/xmobar::local_overlay
@@ -64,17 +64,16 @@ dev-haskell/linear::local_overlay
 =x11-misc/xmobar-9999
 =dev-haskell/libmpd-9999
 =dev-haskell/x11-xft-9999
-=media-sound/mpd-9999
+#=media-sound/mpd-9999
 
 # Weird unstable crap
->=media-libs/opencolorio-1.0.9
+#>=media-libs/opencolorio-1.0.9
 
 # Build failure
 =sec-policy/selinux-virt-9999
 
 # Dependency conflict that portage is too dumb to solve
-=media-gfx/imagemagick-6.9.4.7
+#=media-gfx/imagemagick-6.9.4.7
 
-# Masking for systemd
-#sys-apps/sysvinit
-#sys-apps/openrc
+# Completely breaks for some reason I don't even want to bother figuring out
+=x11-libs/gtk+-3.20*

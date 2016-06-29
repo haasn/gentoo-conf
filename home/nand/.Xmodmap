@@ -36,6 +36,7 @@ keycode  46 = l L omacron umacron
 keycode  47 = semicolon colon leftdoublequotemark degree
 keycode  48 = apostrophe quotedbl rightdoublequotemark U207A
 keycode  49 = grave asciitilde U2200 U2245
+keycode  50 = Alt_L Alt_L Alt_L Alt_L
 keycode  51 = Greek_pi Greek_PI notsign U2E2E
 keycode  52 = z Z yacute Yacute
 keycode  53 = x X Greek_alpha ediaeresis
@@ -47,6 +48,8 @@ keycode  58 = m M Greek_mu Greek_epsilon
 keycode  59 = comma less notequal lessthanequal
 keycode  60 = period greater U00B7 greaterthanequal
 keycode  61 = slash question U2205 U2218
+
+keycode  64 = Hyper_L Hyper_L Hyper_L Hyper_L
 
 keycode  65 = space space U200B U00A0
 keycode  66 = Super_L NoSymbol Super_L
@@ -65,14 +68,22 @@ keycode  94 = backslash bar U2227 U2228
 keycode  95 = sterling U222B F11 U1F4F7 F11 F11 XF86Switch_VT_11
 keycode  96 = U2603 U221A Greek_SIGMA U16A6 F12 F12 XF86Switch_VT_12
 
-keycode 108 = Mode_switch Meta_R Mode_switch Meta_R
+keycode 108 = Mode_switch Mode_switch Mode_switch Mode_switch
 keycode 111 = Up NoSymbol U2191 U21D1
 keycode 114 = Right NoSymbol U2192 U21D2
 keycode 113 = Left NoSymbol U2190 U21D0
 keycode 116 = Down NoSymbol U2193 U21D3
 
+keycode 133 = Shift_L Shift_L Shift_L Shift_L
+
+clear Shift
 clear Lock
 clear Control
-add Control = Control_L
-add Mod4 = Super_L
-add Mod4 = Control_R
+clear Mod1
+clear Mod3
+clear Mod4
+add Shift = Shift_L Shift_R
+add Control = Control_L Control_R
+add Mod1 = Alt_L
+add Mod4 = Super_L Super_R
+add Mod3 = Hyper_L
