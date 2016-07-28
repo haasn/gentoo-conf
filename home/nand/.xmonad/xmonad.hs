@@ -61,6 +61,8 @@ myLayout = nav BSP.emptyBSP ||| Full
 
 extraKeys =
     [ ((0, xK_Print), spawn "import -depth 8 -window root /mem/screengrab.png")
+    , ((mod4Mask .|. mod3Mask             , xK_Return),  spawn "newwin")
+    , ((mod4Mask .|. mod3Mask .|. mod1Mask, xK_Return),  spawn "newpriv")
 
     -- General movement stuff
     , ((mod4Mask, xK_h), sendMessage $ Go L)
@@ -99,7 +101,7 @@ extraKeys =
     , ((mod4Mask .|. shiftMask, xK_q), return ())
     , ((mod1Mask .|. mod3Mask .|. mod4Mask, xK_q), io (exitWith ExitSuccess))
 
-    , ((mod4Mask, xK_r), spawn "exec $(yeganesh -x -- -fn 'Terminus-10' -i -nf '#daccbb' -nb '#080C0D')")
+    , ((mod4Mask, xK_r), spawn "exec $(yeganesh -x -- -fn 'Terminus-14' -i -nf '#daccbb' -nb '#080C0D')")
 
     -- Lock the screen when not in use
     , ((mod4Mask, xK_s), spawn "exec i3lock -c 000000")
@@ -115,7 +117,7 @@ extraKeys =
 
     -- Default keybindings, remapped to mod1Mask instead of shift
     , ((mod4Mask .|. mod1Mask, xK_Return),  spawn "urxvtc")
-    , ((mod4Mask  .|. mod1Mask, xK_c),      kill)
+    , ((mod4Mask .|. mod1Mask, xK_c),       kill)
     ]
 
     ++ [ ((mod4Mask .|. mod1Mask, m), screenWorkspace n >>=
@@ -137,13 +139,14 @@ workspaceNames n = [ show x ++ ":" ++ case lookup x friendlyNames of
                    | x <- [1..n] ]
 
 friendlyNames =
-    [ (1, "term")
-    , (2, "editor")
-    , (3, "irc")
+    [ (1, "\xF120")
+    , (2, "\xF121")
+    , (3, "\xF086")
+    , (4, "\xF01D")
 
-    , (7, "voip")
-    , (8, "torrent")
-    , (9, "web")
+    , (7, "\xF130")
+    , (8, "\xF019")
+    , (9, "\xF269")
     ]
 
 -- Float exceptions
@@ -154,7 +157,7 @@ floatTitles =
     [ "Firefox Preferences", "About Firefox", "Resize Canvas"
     , "Downloads", "Software Update", "World of Warcraft", "Limbo"
     , "Audiosurf", "Audiosurf 2", "Heroes of the Storm", "scaler_test"
-    , "Convert Script", "Remote Viewer", "mvi - "
+    , "Convert Script", "Remote Viewer"
     ]
 
 switchWorkspace' d = wsBy' d >>= windows . greedyView

@@ -104,7 +104,7 @@
 
 # Miscellaneous
 */* lzma ncurses fontconfig xft cuda opencl openexr opengl unicode cjk
-*/* -acl -startup-notification -cdda
+*/* acl -startup-notification -cdda
 
 # Needed for ruby
 */* ruby_targets_ruby22 ruby_targets_ruby23
@@ -147,7 +147,7 @@ net-im/skype -pulseaudio
 # Ensure they actually output sound
 media-video/mpv alsa -pulseaudio oss
 media-sound/mpd alsa -pulseaudio oss
-media-sound/mumble -pulseaudio
+media-sound/mumble alsa -pulseaudio
 media-sound/audacity alsa
 games-emulation/dolphin-emu alsa
 media-libs/libmikmod alsa
@@ -211,6 +211,9 @@ dev-haskell/arithmoi -llvm
 # Needed by rust
 #sys-devel/llvm multitarget
 
+# Debugging and stuff
+sys-devel/llvm lldb libedit gold
+
 # Needed for Wii Remote interaction
 games-emulation/dolphin-emu bluetooth
 net-wireless/bluez test-programs
@@ -224,7 +227,10 @@ media-video/mpv osd-chapters vapoursynth
 
 # Vapoursynth stuff
 media-libs/vapoursynth -imagemagick
+
+# I sure love working about gentoo+python being a piece of shit
 media-libs/vapoursynth python_single_target_python3_4
+sys-process/systemd-cron python_single_target_python3_4
 
 # The GUI pulls in too many dependencies
 app-emulation/winetricks -gtk -kde
@@ -405,8 +411,9 @@ app-editors/yi vty -gtk
 media-fonts/terminus-font ceneterd-tilde distinct-l ru-dv du-g ru-i
 
 # rxvt stuff
-x11-terms/rxvt-unicode -mousewheel -startup-notification -unicode3 -wcwidth
+x11-terms/rxvt-unicode -mousewheel -startup-notification unicode3 -wcwidth
 x11-terms/rxvt-unicode fading-colors 256-color -buffer-on-clear vanilla
+x11-terms/rxvt-unicode -alt-font-width
 
 # Allows only one GUI
 net-analyzer/wireshark -gtk2 -gtk3 qt5 # qt is really slow, but gtk fails building..
@@ -445,8 +452,8 @@ app-portage/layman git subversion
 dev-vcs/git tk
 
 # Might be a performance enhancement
-sys-apps/portage -pypy2_0 python3_3 -python2_7 -python3_2
-app-portage/* -pypy2_0 python3_3 -python2_7 -python3_2
+#sys-apps/portage -pypy2_0 python3_3 -python2_7 -python3_2
+#app-portage/* -pypy2_0 python3_3 -python2_7 -python3_2
 
 # Get German correction support without getting it anywhere else
 app-text/aspell linguas_de
@@ -573,6 +580,7 @@ sys-apps/openrc audit
 
 # systemd
 sys-apps/systemd elfutils -gcrypt -idn -kdbus -lzma -ssl sysv-utils
+sys-process/systemd-cron cron-boot
 
 # For Skype
 #app-emulation/docker lxc
@@ -587,6 +595,11 @@ kde-apps/korganizer -kontact
 app-office/akonadi-server qt4 -qt5 mysql -sqlite -postgres
 dev-qt/qtsql mysql
 dev-db/mariadb client-libs
+
+# Monitoring etc.
+sys-apps/lm_sensors sensord
+net-analyzer/icinga2 mail -mysql postgres
+net-analyzer/monitoring-plugins fping postgres ssh
 
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify
@@ -604,3 +617,5 @@ dev-libs/libpcre pcre16
 dev-qt/qtcore icu
 # Required for rkhunter
 sys-process/lsof rpc
+# Required for wine
+net-fs/samba winbind

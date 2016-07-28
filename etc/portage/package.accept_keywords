@@ -50,7 +50,7 @@ sec-policy/* **
 ############################
 
 # Krita 3.x
-media-gfx/krita **
+#media-gfx/krita **
 
 # Needed for live streams
 media-video/rtmpdump **
@@ -184,6 +184,11 @@ sys-apps/ksplice **
 # Up-to-date versions
 net-im/tox **
 net-im/toxic **
+
+# Incompatible with newer kernels
+sys-fs/zfs **
+sys-fs/zfs-kmod **
+sys-kernel/spl **
 
 # Virgl support
 #app-emulation/libvirt **

@@ -70,8 +70,13 @@ alias svim='sudo vim'
 alias m='~/dev/bower/bower'
 
 # restore secondary monitor after fullscreen botches it
-alias fixmon='xrandr --output DP-0 --mode 4096x2160 --primary --output DVI-I-1 --mode 1920x1200 --rotate left --pos 4096x120'
-alias fixcol='argyll-dispwin -I -d2 ~/icc/main.icc; argyll-dispwin -I -d1 ~/icc/alt.icc'
+#alias fixmon='xrandr --output DP-0 --mode 4096x2160 --primary --output DVI-I-1 --mode 1920x1200 --rotate left --pos 4096x120'
+#alias fixmon='xrandr --output DVI-I-1 --mode 1920x1200 --primary'
+alias fixmon='xrandr --output DP-0 --mode 4096x2160 --primary'
+
+#alias fixcol='argyll-dispwin -I -d2 ~/icc/main.icc; argyll-dispwin -I -d1 ~/icc/alt.icc'
+#alias fixcol='argyll-dispwin -I -d1 ~/icc/alt.icc'
+alias fixcol='argyll-dispwin -I -d1 ~/icc/main.icc'
 alias fixpulse='sudo fixpulse'
 
 # fix fanspeed
@@ -126,6 +131,7 @@ alias elogv='sudo elogv'
 alias btrfs='sudo btrfs'
 alias gcc-config='sudo gcc-config'
 alias dmesg='sudo dmesg'
+alias paxctl-ng='sudo paxctl-ng'
 
 # SELinux
 alias ausearch='sudo ausearch'

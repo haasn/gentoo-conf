@@ -1,0 +1,2 @@
+#!/bin/sh
+pgrep firefox >/dev/null && exec /usr/bin/firefox --private-window >/dev/null 2>&1

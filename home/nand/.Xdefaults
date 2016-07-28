@@ -1,5 +1,6 @@
-URxvt.font: xft:Terminus:pixelsize=20,xft:DejaVu Sans Mono:pixelsize=16,xft:unifont,xft:STIX,xft:STIX Math
+URxvt.font: xft:Terminus:pixelsize=20,xft:DejaVu Sans Mono:pixelsize=16,xft:unifont:pixelsize=16,xft:STIX,xft:STIX Math
 
+URxvt.letterSpace:      true
 URxvt.saveLines:        12000
 URxvt.scrollBar:        false
 URxvt.urgentOnBell:     true
@@ -16,7 +17,7 @@ URxvt.perl-ext: default,url-select,clipboard
 ! for yankable URLs
 
 URxvt.keysym.M-u: perl:url-select:select_next
-URxvt.url-select.launcher: /usr/bin/firefox -new-tab
+URxvt.url-select.launcher: newtab
 URxvt.url-select.button: -
 URxvt.matcher.pattern: (?:https?://|ftp://|news://|mailto:|file://|\\bwww\\.)[\\w\\-\\@;\\/?:&=%\\$.+!*\\x27,~#\\x{2603}]*(\\([\\w\\-\\@;\\/?:&=%\\$.+!*\\x27,~#]*\\)|[\\w\\-\\@;\\/?:&=%\\$+*~])+
 
@@ -27,6 +28,7 @@ URxvt.keysym.4-v: perl:clipboard:paste
 
 ! ???
 ! Xcursor.size: 16
+Xft.dpi: 150
 
 !photons
 

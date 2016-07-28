@@ -1,17 +1,21 @@
 #!/bin/sh
 
 # Local delivery
-notmuch tag +system -- tag:new and '(from:root or from:root@nand.wakku.to)'
+notmuch tag +system -- tag:new and '(from:root or from:root@nand.wakku.to or from:root@haasn.xyz or to:root)'
 notmuch tag +rkhunter -- tag:new and tag:system and subject:rkhunter
 notmuch tag +smartd -- tag:new and tag:system and subject:SMART
+
+# Servers
+notmuch tag +tina -- tag:new and '(to: root@tina)'
 
 # Spam
 notmuch tag -new +spam -- tag:new and from:news@nvidia.com
 notmuch tag -new +spam -- tag:new and to:gog@nand.wakku.to
 notmuch tag -new +deleted -- tag:new and to:linuxpool.informatik@uni-ulm.de and from:gitlab@gitlab.informatik.uni-ulm.de
+notmuch tag -new +spam -- tag:new and 'to:trash*@nand.wakku.to'
 
 # Uni-related tags
-notmuch tag +icinga   -- tag:new and from:icinga@devel02.informatik.uni-ulm.de
+notmuch tag +icinga   -- tag:new and '(from:icinga@devel02.informatik.uni-ulm.de or from:nagios@haasn.xyz or to:icinga.*@haasn.xyz)'
 notmuch tag +calm     -- tag:new and '(from:calm@lists.uni-ulm.de or to:calm@lists.uni-ulm.de)'
 
 # Googlegroups tags
@@ -23,7 +27,14 @@ for project in mpv bower sxiv; do
 done
 
 # Other tags
-notmuch tag +rss -- tag:new and to:rss@nand.wakku.to
+notmuch tag +rss -- tag:new and to:rss@haasn.xyz
+notmuch tag +keybase -- tag:new and to:keybase@haasn.xyz
+notmuch tag +btc -- tag:new and '(to:coinbase@haasn.xyz or to:kraken@haasn.xyz)'
+
+# Don't re-tag my own mails
+notmuch tag -new -- from:niklas.haas@uni-ulm.de
+notmuch tag -new -- from:nand@nand.wakku.to
+notmuch tag -new -- from:nand@haasn.xyz
 
 # Clean up
 notmuch tag +unread -new -- tag:new

@@ -21,6 +21,21 @@ pcm.duplex {
     capture.pcm  "input"
 }
 
+pcm.bs2b32 {
+    type ladspa
+    slave.pcm {
+        type plug
+        slave.pcm "output"
+    }
+    path "/usr/lib32/ladspa"
+    playback_plugins [ {
+        label bs2b
+        input {
+            controls [700 6]
+        }
+    } ]
+}
+
 pcm.output {
     type dmix
     ipc_key 1001

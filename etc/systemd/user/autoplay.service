@@ -1,0 +1,12 @@
+[Unit]
+Description=MPD playlist autofiller
+After=mpd.service
+
+[Service]
+Type=forking
+PIDFile=%h/.local/share/autoplay/pid
+ExecStart=/usr/bin/autoplay start
+ExecStop=/usr/bin/autoplay stop
+
+[Install]
+WantedBy=default.target

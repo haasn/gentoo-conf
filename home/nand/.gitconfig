@@ -1,6 +1,6 @@
 [user]
 	name = Niklas Haas
-	email = git@nand.wakku.to
+	email = git@haasn.xyz
 	signingkey = 81B27402
 [push]
 	default = current

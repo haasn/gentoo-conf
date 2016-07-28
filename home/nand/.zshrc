@@ -20,7 +20,7 @@ SAVEHIST=10000000
 setopt incappendhistory sharehistory
 
 # Miscellaneous
-setopt dotglob autocd nomatch notify
+setopt dotglob autocd nomatch notify auto_pushd
 unsetopt beep alwayslastprompt
 bindkey -e
 
@@ -101,7 +101,7 @@ fi
 WORDCHARS=${WORDCHARS/\/}
 
 # Environment vars
-export EDITOR=vim
+export EDITOR=nvim
 export DARCS_DO_COLOR_LINES=1
 export GCC_COLORS=1
 export __GL_SYNC_DISPLAY_DEVICE="DP-0"

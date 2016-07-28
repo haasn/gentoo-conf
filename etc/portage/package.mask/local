@@ -53,7 +53,7 @@ sys-apps/man
 #=app-admin/sudo-1.8.16
 
 # No longer needed
-#x11-misc/xmobar::local_overlay
+x11-misc/xmobar::local_overlay
 #media-video/mpv::local_overlay
 app-admin/pass::local_overlay
 dev-haskell/linear::local_overlay
@@ -61,7 +61,7 @@ dev-haskell/linear::local_overlay
 # Portage can't resolve these slot conflicts, help out a bit
 
 # mpd interop stuff
-=x11-misc/xmobar-9999
+#=x11-misc/xmobar-9999
 =dev-haskell/libmpd-9999
 =dev-haskell/x11-xft-9999
 #=media-sound/mpd-9999
@@ -77,3 +77,11 @@ dev-haskell/linear::local_overlay
 
 # Completely breaks for some reason I don't even want to bother figuring out
 =x11-libs/gtk+-3.20*
+
+# Incompatibility with zfs
+>=sys-fs/udev-init-scripts-28
+
+# Let's not be too bleeding edge
+=sys-fs/zfs-9999
+=sys-fs/zfs-kmod-9999
+=sys-kernel/spl-9999
