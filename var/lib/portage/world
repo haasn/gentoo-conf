@@ -13,7 +13,6 @@ app-crypt/keybase
 app-editors/neovim
 app-editors/vim
 app-emulation/qemu
-app-emulation/virt-viewer
 app-emulation/wine
 app-forensics/afl
 app-forensics/rkhunter
@@ -57,6 +56,7 @@ dev-lang/mercury
 dev-lang/mono
 dev-lang/perl
 dev-lang/python
+dev-qt/qtwebengine
 dev-tex/biblatex
 dev-tex/latex-beamer
 dev-texlive/texlive-fontsextra
@@ -121,6 +121,8 @@ media-video/mediainfo
 media-video/mkvtoolnix
 media-video/mpv
 media-video/x264-encoder
+net-analyzer/arpoison
+net-analyzer/dsniff
 net-analyzer/icinga2
 net-analyzer/netcat6
 net-analyzer/nmap
@@ -137,10 +139,11 @@ net-mail/isync
 net-mail/notmuch
 net-misc/bridge-utils
 net-misc/dhcpcd
+net-misc/ethercard-diag
 net-misc/ntp
 net-misc/openvpn
+net-misc/proxychains
 net-misc/socat
-net-misc/tor
 net-misc/whois
 net-misc/youtube-dl
 net-p2p/rtorrent
@@ -174,6 +177,7 @@ sys-kernel/hardened-sources
 sys-power/apcupsd
 sys-power/cpupower
 sys-power/thermald
+sys-process/at
 sys-process/glances
 sys-process/htop
 sys-process/iotop
@@ -181,11 +185,13 @@ sys-process/lsof
 sys-process/systemd-cron
 virtual/cron
 virtual/latex-base
-www-client/firefox
+www-client/palemoon
+www-client/qutebrowser
 www-client/w3m
 x11-apps/mesa-progs
 x11-base/xorg-x11
 x11-misc/dmenu
+x11-misc/easystroke
 x11-misc/i3lock
 x11-misc/pcmanfm
 x11-misc/swarp

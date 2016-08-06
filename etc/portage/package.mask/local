@@ -75,7 +75,11 @@ dev-haskell/linear::local_overlay
 # Dependency conflict that portage is too dumb to solve
 #=media-gfx/imagemagick-6.9.4.7
 
+# Huh?
+#=dev-python/PyQt5-5.7
+
 # Completely breaks for some reason I don't even want to bother figuring out
+=dev-cpp/gtkmm-3.20*
 =x11-libs/gtk+-3.20*
 
 # Incompatibility with zfs

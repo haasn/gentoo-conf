@@ -1,0 +1,51 @@
+::-webkit-scrollbar {
+    width: 0px;
+    height 0px;
+}
+
+* {
+    font-family: terminus !important;
+}
+
+/* Color overrides */
+
+* {
+    background: #080C0D !important;
+    color:      #DDCCBB !important;
+}
+
+a {
+    color: #FFAA0F !important;
+}
+
+a:visited {
+    color: #FF5D4A !important;
+}
+
+span.qutehint {
+    opacity: 100% !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: #B3FF1D !important;
+    outline: 1px solid rgba(179,255,29,1) !important;
+    padding: 2px !important;
+}
+
+span.qutehint > font {
+    color: #e51688 !important;
+}
+
+/* For github stuff */
+
+.discussion-timeline {
+    width: 80% !important;
+}
+
+.container {
+    width: 90% !important;
+}
+
+/* TeX images */
+
+img.tex, img.numberedequation, img.inlineformula {
+    background-color: white !important;
+}

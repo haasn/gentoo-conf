@@ -32,6 +32,7 @@ notmuch tag +keybase -- tag:new and to:keybase@haasn.xyz
 notmuch tag +btc -- tag:new and '(to:coinbase@haasn.xyz or to:kraken@haasn.xyz)'
 
 # Don't re-tag my own mails
+notmuch tag -new -- tag:new and tag:sent
 notmuch tag -new -- from:niklas.haas@uni-ulm.de
 notmuch tag -new -- from:nand@nand.wakku.to
 notmuch tag -new -- from:nand@haasn.xyz

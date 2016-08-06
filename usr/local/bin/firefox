@@ -1,2 +1,2 @@
 #!/bin/sh
-exec firejail /usr/bin/firefox "$*"
+exec firejail /usr/bin/palemoon "$*"

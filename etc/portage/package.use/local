@@ -2,8 +2,9 @@
 #### Global USE flags ####
 ##########################
 
-# Processor extensions available in Ivy Bridge
-*/* mmx sse sse2 sse3 ssse3 mmxext sse4 sse4_1 sse4_2 avx
+# Processor extensions available in Sandy/Ivy Bridge
+*/* mmx sse sse2 sse3 ssse3 mmxext sse4 sse4_1 sse4_2 avx -avx2
+*/* numa
 
 # Avoid pulling in sound unless I want it
 */* -alsa -pulseaudio -sound -oss -jack
@@ -228,9 +229,9 @@ media-video/mpv osd-chapters vapoursynth
 # Vapoursynth stuff
 media-libs/vapoursynth -imagemagick
 
-# I sure love working about gentoo+python being a piece of shit
-media-libs/vapoursynth python_single_target_python3_4
-sys-process/systemd-cron python_single_target_python3_4
+# Incompatible with python 3.5
+sys-process/systemd-cron python_targets_python3_4 python_single_target_python3_4
+app-text/asciidoc python_single_target_python2_7
 
 # The GUI pulls in too many dependencies
 app-emulation/winetricks -gtk -kde
@@ -283,16 +284,13 @@ kde-apps/kmix -pulseaudio
 #www-client/firefox trunk -webm
 
 # Firefox stable
-www-client/firefox minimal -crashreporter -libnotify -startup-notification -webm -ipc -dbus
-www-client/firefox jit # manually override this for performance
-www-client/firefox gtk2 -gtk3
+www-client/firefox minimal -crashreporter -libnotify -startup-notification -webm -ipc -dbus -hwaccel -skia
+#www-client/firefox jit # manually override this for performance
+#www-client/firefox gtk2 -gtk3
 
 # Fuck proprietary codecs
 www-client/firefox -pulseaudio -gstreamer # actually, fuck audio output even harder
 media-plugins/gst-plugins-meta -a52 -aac -dts -dvd -flac ffmpeg mp3 mpeg -ogg -theora -vorbis -wavpack -x264 -xvid -pulseaudio alsa
-
-# gcc's -O3 is clang's -Ofast, not -O3
-#www-client/firefox custom-cflags custom-optimization
 
 # JFIF v2 support
 www-client/firefox system-jpeg
@@ -321,8 +319,14 @@ www-client/firefox system-sqlite
 dev-db/sqlite secure-delete unlock-notify
 
 # Alternative to firefox?
-#www-client/palemoon -official-branding alsa
-
+www-client/palemoon -official-branding alsa system-libs
+www-client/palemoon gtk2 -gtk3
+# for qutebrowser
+dev-python/PyQt5 webkit webengine webchannel
+dev-qt/qtwebkit printsupport
+dev-qt/qtwebengine -system-ffmpeg # for testing
+dev-qt/qtwebengine widgets
+dev-qt/qtwebchannel qml
 
 #######################
 #### Miscellaneous ####
@@ -610,6 +614,7 @@ app-arch/p7zip -wxwidgets
 dev-libs/libwiimote force tilt
 media-libs/libcaca imlib -abi_x86_32 -cxx
 dev-util/ltrace unwind
+mail-filter/spamassassin -ldap cron
 
 # Required for qtcore
 dev-libs/libpcre pcre16

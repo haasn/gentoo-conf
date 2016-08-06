@@ -7,18 +7,7 @@ ctl.!default {
 
 pcm.!default {
     type plug
-    slave.pcm "duplex"
-}
-
-# Stupid hack for TeamSpeak 3 being the worst piece of shit any human being has
-# ever programmed. Actually, I'm not even sure if TeamSpeak 3 is developed by
-# humans. Basically, we have to set the TS3 microphone as the "default" pcm
-# because the client can't just choose any arbitrary ALSA pcm by name, only
-# hardware devices or "default".
-pcm.duplex {
-    type asym
-    playback.pcm "output"
-    capture.pcm  "input"
+    slave.pcm "output"
 }
 
 pcm.bs2b32 {
@@ -169,7 +158,7 @@ pcm.output {
 #    }
 #}
 
-pcm.input {
+pcm.loopinput {
     type dsnoop
     ipc_key 1003
     ipc_key_add_uid yes
@@ -183,7 +172,7 @@ pcm.input {
     }
 }
 
-pcm.aloop {
+pcm.loopoutput {
     type plug
 
     slave {
@@ -196,5 +185,5 @@ pcm.aloop {
 
 pcm.mpd {
     type plug
-    slave.pcm "duplex"
+    slave.pcm "output"
 }

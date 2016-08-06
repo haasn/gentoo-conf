@@ -41,6 +41,7 @@ urxvtd -q -o -f
 # Hide mouse cursor when not in use
 unclutter -noevents -idle 2 -jitter 1 -root &>/dev/null &
 swarp 0 0 &
+easystroke &
 
 # Start gpg-agent
 eval $(gpg-agent --daemon)

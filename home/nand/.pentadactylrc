@@ -1,23 +1,21 @@
-"hg7290
+"1.0.5-pm
 
 loadplugins '\.(js|penta)$'
 group user
-highlight Addon:not([active]) color: #4f585d !important;
-highlight Addon:nth-child(2n+1) background: rgba(0, 0, 0, .2);
+
 highlight AddonDescription color: #85919b;
 highlight AddonDescrption:not([active]) color: #4f585d;
+highlight Addon:not([active]) color: #4f585d !important;
+highlight Addon:nth-child(2n+1) background: rgba(0, 0, 0, .2);
 highlight Bell /* &dactyl.appName;’s visual bell */ background-color: #ff0000 !important;
 highlight Boolean /* JavaScript booleans */ color: #e03c52;
 highlight Button /* A button widget */ display: inline-block; font-weight: bold; cursor: pointer; color: #ffaa0f; text-decoration: none;
 highlight Button::after content: "]"; color: #4f585d; text-decoration: none !important;
 highlight Button::before content: "["; color: #4f585d; text-decoration: none !important;
-highlight -link=FontFixed CmdLine
 highlight Comment /* JavaScriptor CSS comments */ color: #85919b;
 highlight CompDesc /* The description column of the completion list */ color: #85919b; width: 62%; padding-left: 1em;
-highlight -link=FontFixed CompItem
 highlight CompItem:nth-child(2n+1) background: rgba(0, 0, 0, .2);
 highlight CompItem[selected] /* A selected row of completion list */ color: #b3ff1d; background: #1e2224 !important;
-highlight -link=FontFixed CompTitle color: #85c600; background: #05090a; font-weight: bold;
 highlight CompTitleSep /* The element which separates the completion title from its results */ height: 1px; background: -moz-linear-gradient(60deg, #85c600, #070909);
 highlight Disabled /* Disabled items */ color: #4f585d    !important;
 highlight Download:nth-child(2n+1) background: rgba(0, 0, 0, .2);
@@ -29,11 +27,7 @@ highlight Find background: #e50c88 !important; color: white !important;
 highlight FontFixed font-family: monospace !important; font-size: 14pt !important;
 highlight FrameIndicator /* The styling applied to briefly indicate the active frame */ background-color: #e03c52; opacity: 0.5; z-index: 999999; position: fixed; top: 0; bottom: 0; left: 0; right: 0;
 highlight Function /* JavaScript functions */ color: #0099bc;
-highlight -link=FontCode HelpArg /* A required command argument indicator */ color: #ff5d4a;
-highlight -link=FontCode HelpKey /* A keyboard key specification */ color: #85c600;
 highlight HelpNote /* The indicator for a note */ color: #e03c52; font-weight: bold;
-highlight -link=FontCode HelpType /* An option type */ color: #5cdede !important; margin-right: 2ex;
-highlight -link=FontFixed Hint font: bold 14pt "Terminus", monospace !important; margin: -.2ex; padding: 0 0 0 1px; outline: 1px solid rgba(179, 255, 29, 1); background: rgba(0, 0, 0, .8); color: #b3ff1d; text-transform: uppercase;
 highlight Hint[active] background: #e51688; color: white !important; outline: 1px solid white;
 highlight HintActive /* The hint element of link which will be followed by <k name="CR" link="false"/> */ background-color: #e51688 !important; color: white !important;
 highlight HintElem /* The hintable element */ background-color: /*rgba(179, 255, 29, 0.5)*/ rgba(118, 178, 179, 0.5)  !important; color: #ffffff !important;
@@ -41,6 +35,13 @@ highlight Indicator /* The <em>#</em> and  <em>%</em> in the <ex>:buffers</ex> l
 highlight InfoMsg /* Information messages */ color: #76b2b3   !important; background: #070909       !important;
 highlight Keyword /* A bookmark keyword for a URL */ color: #e03c52;
 highlight LineNr /* The line number of an error */ color: #e51688  !important; background: #070909       !important;
+highlight -link=FontCode HelpArg /* A required command argument indicator */ color: #ff5d4a;
+highlight -link=FontCode HelpKey /* A keyboard key specification */ color: #85c600;
+highlight -link=FontCode HelpType /* An option type */ color: #5cdede !important; margin-right: 2ex;
+highlight -link=FontFixed CmdLine
+highlight -link=FontFixed CompItem
+highlight -link=FontFixed CompTitle color: #85c600; background: #05090a; font-weight: bold;
+highlight -link=FontFixed Hint font: bold 14pt "Terminus", monospace !important; margin: -.2ex; padding: 0 0 0 1px; outline: 1px solid rgba(179, 255, 29, 1); background: rgba(0, 0, 0, .8); color: #b3ff1d; text-transform: uppercase;
 highlight ModeMsg /* The mode indicator */ color: #ddccc0   !important; background: #070909       !important;
 highlight MoreMsg /* The indicator that there is more text to view */ color: #85c600   !important; background: #070909       !important;
 highlight NonText /* The <em>~</em> indicators which mark blank lines in the completion list */ color: #5cdede; background: transparent !important;
@@ -61,22 +62,25 @@ highlight TabNumber /* The number of a browser tab, next to its icon */ font-wei
 highlight Tag /* A bookmark tag for a URL */ color: #0099bc;
 highlight URL /* A URL */ text-decoration: none; color: #85c600; background: inherit;
 highlight URLExtra /* Extra information about a URL */ color: #85919b;
+
+map -count -modes=b,o <C-c> <Esc>
+map -count -modes=I,m <C-c> <C-[>
 map -count -modes=n ` -builtin <count><C-6>
+map -count -modes=n h -builtin <count>3h
+map -count -modes=n j -builtin <count>3j
+map -count -modes=n k -builtin <count>3k
+map -count -modes=n l -builtin <count>3l
 map -count -modes=n,v <C-c> -builtin <count><C-[>
+map -count -modes=n,v cc -builtin <count>:set!<Space>browser.display.use_document_colors!<Return>
 map -count -modes=n,v <C-j> -builtin <count><C-p>
 map -count -modes=n,v <C-k> -builtin <count><C-n>
 map -count -modes=n,v d -builtin <count>:open<Space>d<Space>
-map -count -modes=n h -builtin <count>3h
-map -count -modes=n j -builtin <count>3j
+map -count -modes=n,v D -builtin <count>:tabopen<Space>d<Space>
 map -count -modes=n,v J -builtin <count><C-p>
-map -count -modes=n k -builtin <count>3k
 map -count -modes=n,v K -builtin <count><C-n>
-map -count -modes=n l -builtin <count>3l
 map -count -modes=n,v q -builtin <count>:tabclose<Return>
 map -modes=n zt -javascript content.document.toggleImageSize()
-map -count -modes=n,v D -builtin <count>:tabopen<Space>d<Space>
-map -count -modes=m,I <C-c> <C-[>
-map -count -modes=b,o <C-c> <Esc>
+
 set cdpath=''
 set defsearch=d
 set guioptions=Cs
@@ -84,14 +88,13 @@ set hintkeys=abcdefghijklmnoprstuvwxyz
 set hlfind
 set showtabline=never
 set yankshort=www.youtube.com,youtube.com,bugzilla.mozilla.org
-style mathworld.wolfram.com img.tex, img.numberedequation, img.inlineformula { background-color: white !important; }
-style * * { -moz-transition-delay: 0s !important; -moz-transition-duration: 0s !important; }
-style www.haskellforall.com .cap-top { display: none !important; }
-style hub.darcs.net .added { border-color: #85c600 !important; } .removed { border-color: #E03C52 !important; }
-style boards.4chan.org .quote { color: #789922 !important; } div.center { display: none !important; }
-style s.0x0.st .search_categories { text-transform: none !important; }
-style lainchan.org .quote { color: #789922 !important; }
-style 8ch.net .quote { color: #789922 !important; }
+
+style -name=8chan 8ch.net .quote { color: #789922 !important; }
+style -name=4chan boards.4chan.org .quote { color: #789922 !important; } div.center { display: none !important; }
+style -name=darcshub hub.darcs.net .added { border-color: #85c600 !important; } .removed { border-color: #E03C52 !important; }
+style -name=lainchan lainchan.org .quote { color: #789922 !important; }
+style -name=imgtex mathworld.wolfram.com img.tex, img.numberedequation, img.inlineformula { background-color: white !important; }
+style -name=notransition * * { -moz-transition-delay: 0s !important; -moz-transition-duration: 0s !important; }
 style -name=fixwidth github.com .discussion-timeline { width: 80% !important; } .container { width: 90% !important; }
 style -name=notoolbar chrome://* #nav-bar { height: 32px !important; margin-top: -32px !important; }
 style -name=settingswidth 4chan.org .UIPanel > div { width: 600px !important; margin-left: -300px !important; }

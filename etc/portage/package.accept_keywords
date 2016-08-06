@@ -2,15 +2,9 @@
 #### Haskell ####
 #################
 
-# Allow all of gentoo-haskell
-*/*::gentoo-haskell
-
 # Allow all of vapoursynth at ver 9999
 media-libs/ffmpegsource **
 */*::vapoursynth **
-
-# Allow all of dev-haskell/
-dev-haskell/*
 
 # Rapid development
 #dev-haskell/lens **
@@ -58,19 +52,10 @@ media-video/rtmpdump **
 # Needed for bug 584742
 media-sound/mpd ** # unstable HEAD
 
-# Color management, very important!!
-# move media-gfx/dispcalgui media-gfx/displaycal
-media-gfx/displaycal
-
 # No stable versions
-media-gfx/sxiv
 media-sound/autoplay **
-media-gfx/pinta
-media-sound/flacon
-games-simulation/pmars-sdl
 
 # mpv development and testing, also cms
-media-libs/libaacplus
 media-libs/x264 **
 media-libs/x265 **
 media-video/ffmpeg **
@@ -79,6 +64,9 @@ media-video/mplayer **
 media-libs/libass **
 net-misc/youtube-dl **
 # media-libs/harfbuzz **
+
+# Fast development
+www-client/qutebrowser **
 
 # Because we already pull in unstable x264lib
 media-video/gpac **
@@ -91,13 +79,7 @@ games-fps/xonotic-maps **
 games-util/fteqcc-xonotic **
 dev-libs/d0_blind_id **
 
-# Needed for single window mode
-=media-gfx/gimp-2.7*
-media-libs/babl
-media-libs/gegl
-
 # Fun games
-games-roguelike/dwarf-fortress
 games-emulation/dolphin-emu **
 games-emulation/mupen64plus* **
 
@@ -114,9 +96,6 @@ app-emulation/vmips-cross-bin **
 
 # Pretty much the only J compiler in portage
 dev-lang/j **
-
-# Needed for parallel startup
-sys-apps/openrc
 
 # Google's Go language
 # dev-lang/go **
@@ -135,31 +114,11 @@ net-irc/weechat **
 app-emulation/winetricks **
 #app-emulation/playonlinux **
 
-# No stable version yet
-=dev-db/sqlitebrowser-2.0*
-=app-portage/smart-live-rebuild-1.2*
-net-misc/youtube-dl
-
 # Standalone, shouldn't affect anything else
 app-arch/paq8l **
 
 # Suckless programs
 x11-terms/st **
-x11-misc/sselp
-x11-misc/swarp
-
-# Very fast development cycle, alpha is practically stable
-www-client/firefox
-# =dev-libs/nspr-4.9
-# =dev-libs/nss-3.13.3
-
-# Total commander-like file browser for vim
-app-vim/nerdtree
-
-# Replacement for GCC, experimental
-sys-devel/clang
-sys-devel/llvm
-sys-devel/dragonegg
 
 # C REPL
 sys-devel/c-repl **

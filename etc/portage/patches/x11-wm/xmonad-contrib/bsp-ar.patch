@@ -1,0 +1,54 @@
+diff --git a/XMonad/Layout/BinarySpacePartition.hs b/XMonad/Layout/BinarySpacePartition.hs
+index d6b4457..4869aa9 100644
+--- a/XMonad/Layout/BinarySpacePartition.hs
++++ b/XMonad/Layout/BinarySpacePartition.hs
+@@ -249,11 +249,16 @@ toggleSplits :: Tree Split -> Tree Split
+ toggleSplits (Leaf l) = Leaf l
+ toggleSplits (Node s l r) = Node (oppositeSplit s) (toggleSplits l) (toggleSplits r)
+ 
+-splitCurrent :: Zipper Split -> Maybe (Zipper Split)
+-splitCurrent (Leaf _, []) = Just (Node (Split Vertical 0.5) (Leaf 0) (Leaf 0), [])
+-splitCurrent (Leaf _, crumb:cs) = Just (Node (Split (oppositeAxis . axis . parentVal $ crumb) 0.5) (Leaf 0) (Leaf 0), crumb:cs)
+-splitCurrent (n, []) = Just (Node (Split Vertical 0.5) (Leaf 0) (toggleSplits n), [])
+-splitCurrent (n, crumb:cs) = Just (Node (Split (oppositeAxis . axis . parentVal $ crumb) 0.5) (Leaf 0) (toggleSplits n), crumb:cs)
++splitFromRect :: Rectangle -> Split
++splitFromRect (Rectangle _ _ w h)
++  | w >= h = (Split Vertical 0.5)
++  | otherwise = (Split Horizontal 0.5)
++
++splitCurrent :: Rectangle -> Zipper Split -> Maybe (Zipper Split)
++splitCurrent r (Leaf _, []) = Just (Node (splitFromRect r) (Leaf 0) (Leaf 0), [])
++splitCurrent r (Leaf _, crumb:cs) = Just (Node (splitFromRect r) (Leaf 0) (Leaf 0), crumb:cs)
++splitCurrent r (n, []) = Just (Node (splitFromRect r) (Leaf 0) (toggleSplits n), [])
++splitCurrent r (n, crumb:cs) = Just (Node (splitFromRect r) (Leaf 0) (toggleSplits n), crumb:cs)
+ 
+ removeCurrent :: Zipper a -> Maybe (Zipper a)
+ removeCurrent (Leaf _, LeftCrumb _ r:cs) = Just (r, cs)
+@@ -492,9 +497,15 @@ getNodeRect b r n = fromMaybe (Rectangle 0 0 1 1) (makeZipper b >>= goToNode n >
+ doToNth :: (Zipper Split -> Maybe (Zipper Split)) -> BinarySpacePartition a -> BinarySpacePartition a
+ doToNth f b = b{getTree=getTree $ zipperToBinarySpacePartition $ makeZipper b >>= goToNode (getFocusedNode b) >>= f}
+ 
+-splitNth :: BinarySpacePartition a -> BinarySpacePartition a
+-splitNth (BinarySpacePartition _ _ _ Nothing) = makeBSP (Leaf 0)
+-splitNth b = doToNth splitCurrent b
++splitNth :: Rectangle -> BinarySpacePartition a -> BinarySpacePartition a
++splitNth _ (BinarySpacePartition _ _ _ Nothing) = makeBSP (Leaf 0)
++splitNth r b =
++  let rects = rectangles b r
++      NodeRef idx _ _  = getFocusedNode b
++      focusedRect = if idx >= 0 && idx <= (length rects)
++                    then rects !! idx
++                    else r
++  in doToNth (splitCurrent focusedRect) b
+ 
+ removeNth :: BinarySpacePartition a -> BinarySpacePartition a
+ removeNth (BinarySpacePartition _ _ _ Nothing) = emptyBSP
+@@ -651,7 +662,7 @@ instance LayoutClass BinarySpacePartition Window where
+       l = length ws
+       layout bsp
+         | l == sz = bsp
+-        | l > sz = layout $ splitNth bsp
++        | l > sz = layout $ splitNth r bsp
+         | otherwise = layout $ removeNth bsp
+         where sz = size bsp
+ 
