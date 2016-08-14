@@ -163,3 +163,4 @@ sys-kernel/spl **
 
 ########################################
 #### Other accept flags (auto unmask)...
+x11-misc/rofi **

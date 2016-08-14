@@ -5,6 +5,9 @@ notmuch tag +system -- tag:new and '(from:root or from:root@nand.wakku.to or fro
 notmuch tag +rkhunter -- tag:new and tag:system and subject:rkhunter
 notmuch tag +smartd -- tag:new and tag:system and subject:SMART
 
+# Important stuff
+notmuch tag +important -- tag:new and '(to:wichtig@* or to:urgent@* or to:important@*)'
+
 # Servers
 notmuch tag +tina -- tag:new and '(to: root@tina)'
 
@@ -22,7 +25,7 @@ notmuch tag +calm     -- tag:new and '(from:calm@lists.uni-ulm.de or to:calm@lis
 notmuch tag +diagrams -new -- tag:new and to:diagrams-discuss@googlegroups.com
 
 # GitHub tags
-for project in mpv bower sxiv; do
+for project in mpv bower sxiv qutebrowser; do
     notmuch tag +${project} -- tag:new and to:${project}@noreply.github.com
 done
 

@@ -4,11 +4,12 @@ import os, sys
 import json
 from pathlib import Path
 from socket import *
-from subprocess import run
+from subprocess import call, run
 
 targets = {
     'newwin': 'window',
-    'newtab': 'tab'
+    'newtab': 'tab',
+    'newbgtab': 'tab-bg'
 }
 
 p = Path("/run/user/{}/qutebrowser".format(os.getuid()))
@@ -19,13 +20,15 @@ args = {
     "args" : sys.argv[1:]
 }
 
-ipc = next(p.glob("ipc-*"), None)
-
-if ipc:
+for ipc in p.glob("ipc-*"):
+    if call(['lsof', str(ipc)]) != 0:
+        continue
     sock = socket(AF_UNIX, SOCK_STREAM)
     sock.connect(str(ipc))
     sock.send(json.dumps(args).encode("utf-8"))
     sock.send(b"\n")
     sock.close()
-else:
-    run(["qutebrowser"] + sys.argv[1:])
+    sys.exit(0)
+
+# No valid IPC object found
+run(["qutebrowser"] + sys.argv[1:])

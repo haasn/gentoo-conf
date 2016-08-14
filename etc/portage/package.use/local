@@ -312,7 +312,6 @@ www-client/firefox bindist
 
 # Profile guided optizimiation
 #www-client/firefox pgo
-#x11-base/xorg-server xvfb
 
 # Required for USE=system-sqlite
 www-client/firefox system-sqlite
@@ -321,12 +320,14 @@ dev-db/sqlite secure-delete unlock-notify
 # Alternative to firefox?
 www-client/palemoon -official-branding alsa system-libs
 www-client/palemoon gtk2 -gtk3
+
 # for qutebrowser
-dev-python/PyQt5 webkit webengine webchannel
+dev-python/PyQt5 webkit webengine webchannel testlib
 dev-qt/qtwebkit printsupport
 dev-qt/qtwebengine -system-ffmpeg # for testing
 dev-qt/qtwebengine widgets
 dev-qt/qtwebchannel qml
+x11-base/xorg-server xvfb
 
 #######################
 #### Miscellaneous ####
@@ -615,6 +616,8 @@ dev-libs/libwiimote force tilt
 media-libs/libcaca imlib -abi_x86_32 -cxx
 dev-util/ltrace unwind
 mail-filter/spamassassin -ldap cron
+x11-misc/rofi windowmode
+sys-boot/grub multislot
 
 # Required for qtcore
 dev-libs/libpcre pcre16

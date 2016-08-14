@@ -19,6 +19,7 @@ app-forensics/rkhunter
 app-misc/colordiff
 app-misc/dtach
 app-misc/screenfetch
+app-misc/task
 app-misc/tmux
 app-portage/eix
 app-portage/gentoolkit
@@ -56,6 +57,11 @@ dev-lang/mercury
 dev-lang/mono
 dev-lang/perl
 dev-lang/python
+dev-python/flake8
+dev-python/pylint
+dev-python/pytest-cov
+dev-python/tox
+dev-python/vulture
 dev-qt/qtwebengine
 dev-tex/biblatex
 dev-tex/latex-beamer
@@ -65,6 +71,8 @@ dev-texlive/texlive-langeuropean
 dev-texlive/texlive-langgerman
 dev-texlive/texlive-xetex
 dev-util/apitrace
+dev-util/cloc
+dev-util/debugedit
 dev-util/ltrace
 dev-util/perf
 dev-util/strace
@@ -189,11 +197,14 @@ www-client/palemoon
 www-client/qutebrowser
 www-client/w3m
 x11-apps/mesa-progs
+x11-apps/xvfb-run
 x11-base/xorg-x11
 x11-misc/dmenu
 x11-misc/easystroke
 x11-misc/i3lock
 x11-misc/pcmanfm
+x11-misc/qt5ct
+x11-misc/rofi
 x11-misc/swarp
 x11-misc/unclutter
 x11-misc/urxvt-perls

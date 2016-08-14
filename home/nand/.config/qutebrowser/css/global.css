@@ -1,6 +1,6 @@
 ::-webkit-scrollbar {
     width: 0px;
-    height 0px;
+    height: 0px;
 }
 
 * {
@@ -40,12 +40,25 @@ span.qutehint > font {
     width: 80% !important;
 }
 
-.container {
+.new-discussion-timeline, .experiment-repo-nav {
     width: 90% !important;
+}
+
+/* For 4chan */
+
+div#quickReply textarea {
+    width: 450px !important;
+    height: 500px !important;
 }
 
 /* TeX images */
 
-img.tex, img.numberedequation, img.inlineformula {
-    background-color: white !important;
+img.tex, img.numberedequation, img.inlineformula, span.math {
+    background-color: #bbb !important;
+    padding: 1px !important;
+}
+
+span.math * {
+    background: none !important;
+    border-color: black !important;
 }

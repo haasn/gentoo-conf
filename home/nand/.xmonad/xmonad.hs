@@ -51,7 +51,7 @@ main = do
         focusFollowsMouse   = False,
         clickJustFocuses    = False,
 
-        workspaces = workspaceNames 9
+        workspaces = workspaceNames 10
 
     } `additionalKeys` extraKeys
 
@@ -94,6 +94,9 @@ extraKeys =
     , ((mod4Mask .|. mod1Mask   , xK_space), sendMessage BSP.Swap)
     , ((mod4Mask .|. controlMask, xK_space), sendMessage NextLayout)
 
+    -- Fullscreen
+    , ((mod4Mask, xK_f), sendMessage NextLayout)
+
     , ((mod4Mask, xK_Tab), nextWS')
     , ((mod4Mask .|. mod1Mask, xK_Tab), prevWS')
 
@@ -101,13 +104,13 @@ extraKeys =
     , ((mod4Mask .|. shiftMask, xK_q), return ())
     , ((mod1Mask .|. mod3Mask .|. mod4Mask, xK_q), io (exitWith ExitSuccess))
 
-    , ((mod4Mask, xK_r), spawn "exec $(yeganesh -x -- -fn 'Terminus-14' -i -nf '#daccbb' -nb '#080C0D')")
+    , ((mod4Mask, xK_r), spawn "exec /usr/bin/rofi -show run")
 
     -- Lock the screen when not in use
-    , ((mod4Mask, xK_s), spawn "exec i3lock -c 000000")
+    , ((mod4Mask, xK_s), spawn "exec /usr/bin/i3lock -c 000000")
 
     -- Reset the mouse cursor
-    , ((mod4Mask, xK_Escape), spawn "exec swarp 0 0")
+    , ((mod4Mask, xK_Escape), spawn "exec /usr/bin/swarp 0 0")
 
     , ((controlMask .|. mod3Mask, xK_Home),      io' $ MPD.withMPD MPD.toggle)
     , ((controlMask .|. mod3Mask, xK_Insert),    io' $ MPD.withMPD (MPD.play Nothing))
@@ -116,7 +119,7 @@ extraKeys =
     , ((controlMask .|. mod3Mask, xK_Page_Up),   io' $ MPD.withMPD MPD.previous)
 
     -- Default keybindings, remapped to mod1Mask instead of shift
-    , ((mod4Mask .|. mod1Mask, xK_Return),  spawn "urxvtc")
+    , ((mod4Mask .|. mod1Mask, xK_Return),  spawn "/usr/bin/urxvtc")
     , ((mod4Mask .|. mod1Mask, xK_c),       kill)
     ]
 
@@ -127,9 +130,9 @@ extraKeys =
 
     -- Switch workspaces using symbols
     ++ [ ((mod4Mask .|. m, k), windows $ f i)
-       | (i, k) <- zip (workspaceNames 9)
+       | (i, k) <- zip (workspaceNames 10)
          [ xK_exclam, xK_at, xK_numbersign, xK_dollar, xK_percent, xK_asciicircum
-         , xK_ampersand, xK_asterisk, xK_bracketleft ]
+         , xK_ampersand, xK_asterisk, xK_bracketleft, xK_bracketright ]
        , (m, f) <- [(0, greedyView), (mod1Mask, shift)]
        ]
 
@@ -147,6 +150,7 @@ friendlyNames =
     , (7, "\xF130")
     , (8, "\xF019")
     , (9, "\xF269")
+    , (10, "X")
     ]
 
 -- Float exceptions

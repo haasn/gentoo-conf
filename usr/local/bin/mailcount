@@ -1,6 +1,6 @@
 #!/bin/sh
 while true; do
-    COUNT=$(/usr/bin/notmuch count 'tag:unread and (to:wichtig@nand.wakku.to or to:urgent@nand.wakku.to)')
+    COUNT=$(/usr/bin/notmuch count 'tag:unread and tag:important')
     if [ $COUNT -gt 0 ]; then
         env printf "\uF003 ${COUNT}\n"
     else

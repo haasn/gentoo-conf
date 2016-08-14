@@ -110,3 +110,4 @@ signal = NOT ~noise OR ~unread
 noise = tag:calm OR tag:system OR tag:rss
 unread = tag:unread AND NOT tag:rss
 rss = tag:rss AND tag:unread
+github = tag:mpv OR tag:bower OR tag:sxiv OR tag:qutebrowser

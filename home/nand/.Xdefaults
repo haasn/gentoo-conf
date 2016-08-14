@@ -1,3 +1,5 @@
+! URxvt stuff
+
 URxvt.font: xft:Terminus:pixelsize=20,xft:DejaVu Sans Mono:pixelsize=16,xft:unifont:pixelsize=16,xft:STIX,xft:STIX Math
 
 URxvt.letterSpace:      true
@@ -30,7 +32,19 @@ URxvt.keysym.4-v: perl:clipboard:paste
 ! Xcursor.size: 16
 Xft.dpi: 150
 
-!photons
+! rofi stuff
+
+rofi.lines: 20
+rofi.width: 30
+rofi.columns: 3
+rofi.font: terminus 16
+rofi.bw: 2
+rofi.color-window: #0e1112,#75b2b3,#75b2b3
+rofi.color-normal: #0e1112,#ddccbb,#0B0E0E,#323232,#ddccbb
+rofi.hide-scrollbar: true
+rofi.terminal: urxvtc
+
+! photons color theme
 
 ! slightly beige white
 *foreground: #DDCCBB

@@ -58,7 +58,7 @@ PS1="[%B%F{yellow}%D{%H:%M}%f%b]"\
 "[%B%F{blue}%~%f%b]"\
 $'$(__git_ps1 "[%%F{212}%s%%f]")'\
 "%(?..[%B%F{red}%?%f%b])"\
-$'\n%(?.%F{green}.%F{red})λ%f '
+$'\n%(?.%F{green}.%F{red})λ%f%{\a%} '
 
 PS2="... "
 
