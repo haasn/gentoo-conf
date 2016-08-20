@@ -1,0 +1,64 @@
+From 3d2de815cc73cb7def78bb33088bde42135dfe58 Mon Sep 17 00:00:00 2001
+From: Allan Sandfeld Jensen <allan.jensen@theqtcompany.com>
+Date: Wed, 17 Aug 2016 16:18:43 +0200
+Subject: [PATCH] Add fallback to ensure WebEngineContext::destroy() is called
+
+Add a static destructor method to destroy the context, assert destroy()
+has been called before ~WebEngineContext() and make sure we don't create
+a new WebEngineContext() during shut down.
+
+Task-number: QTBUG-54769
+Change-Id: I2b1d189f9ebd8da2dc9f322f9bb307a5aa0c6a2f
+---
+ src/core/web_engine_context.cpp | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/src/core/web_engine_context.cpp b/src/core/web_engine_context.cpp
+index 98fba08..05d92f7 100644
+--- a/src/core/web_engine_context.cpp
++++ b/src/core/web_engine_context.cpp
+@@ -101,15 +101,24 @@ QT_END_NAMESPACE
+ 
+ namespace {
+ 
++// In case this file is unloaded before the QApplication is destroyed,
++// try to call destroyContext here.
++void destroyContext();
++Q_DESTRUCTOR_FUNCTION0(destroyContext);
++
+ scoped_refptr<QtWebEngineCore::WebEngineContext> sContext;
++static bool s_destroyed = false;
+ 
+ void destroyContext()
+ {
++    if (!sContext)
++        return;
+     // Destroy WebEngineContext before its static pointer is zeroed and destructor called.
+     // Before destroying MessageLoop via destroying BrowserMainRunner destructor
+     // WebEngineContext's pointer is used.
+     sContext->destroy();
+     sContext = 0;
++    s_destroyed = true;
+ }
+ 
+ bool usingANGLE()
+@@ -188,10 +197,16 @@ void WebEngineContext::destroy()
+ 
+ WebEngineContext::~WebEngineContext()
+ {
++    // WebEngineContext::destroy() must be called before we are deleted
++    Q_ASSERT(!m_globalQObject);
++    Q_ASSERT(!m_devtools);
++    Q_ASSERT(!m_browserRunner);
+ }
+ 
+ scoped_refptr<WebEngineContext> WebEngineContext::current()
+ {
++    if (s_destroyed)
++        return nullptr;
+     if (!sContext.get()) {
+         sContext = new WebEngineContext();
+         // Make sure that we ramp down Chromium before QApplication destroys its X connection, etc.
+-- 
+2.7.4
+

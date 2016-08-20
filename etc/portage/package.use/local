@@ -123,7 +123,8 @@ sys-fs/zfs -rootfs
 ############################
 
 # FFmpeg stuff
-*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx vdpau dcadec libsoxr modplug librtmp celt bluray
+*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx vdpau
+*/ffmpeg dcadec libsoxr modplug librtmp celt bluray zimg -pic
 */ffmpeg gnutls -openssl # fails on 0x0.st for some reason
 media-video/ffmpeg -hardcoded-tables # build failure
 
@@ -189,6 +190,7 @@ media-libs/libao alsa -pulseaudio
 
 # Don't need its viewing facilities
 media-gfx/imagemagick X hdri lqr q32 raw webp fftw
+media-gfx/imagemagick -opencl
 
 # Hi10P support, essential
 media-libs/x264 10bit

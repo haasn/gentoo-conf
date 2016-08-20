@@ -1,0 +1,636 @@
+From 1e5e2886c46829dcd5ae662b0da9f142ce2b6b80 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@intel.com>
+Date: Thu, 28 Apr 2016 15:00:58 -0700
+Subject: [PATCH 1/3] Merge the QDBusMetaType's custom information to
+ QDBusConnectionManager
+
+This allows us to get rid of two Q_GLOBAL_STATIC in QtDBus, which means
+fewer opportunities for screwing up the order of destruction. And since
+QDBusConnectionManager now ensures that the types are initialized, we
+don't need to re-initialize them everywhere.
+
+The Q_GLOBAL_STATIC for QDBusConnectionManager ensures the proper
+thread-safe locking, so we don't need to lock for every type that we're
+trying to register. This should make things faster.
+
+But as a side-effect, trying to register a D-Bus metatype will cause the
+QDBusConnectionManager thread to start too.
+
+Change-Id: Ifea6e497f11a461db432ffff1449a4e535234485
+---
+ src/dbus/qdbusconnection.cpp        |   1 +
+ src/dbus/qdbusconnectionmanager_p.h |   3 +-
+ src/dbus/qdbusintegrator.cpp        |   1 -
+ src/dbus/qdbusmetatype.cpp          | 187 +++++++++++++++++++-----------------
+ src/dbus/qdbusmetatype_p.h          |  29 +++++-
+ src/dbus/qdbusmisc.cpp              |   3 +-
+ 6 files changed, 129 insertions(+), 95 deletions(-)
+
+diff --git a/src/dbus/qdbusconnection.cpp b/src/dbus/qdbusconnection.cpp
+index bd25d8a..95ae077 100644
+--- a/src/dbus/qdbusconnection.cpp
++++ b/src/dbus/qdbusconnection.cpp
+@@ -208,6 +208,7 @@ void QDBusConnectionManager::run()
+         }
+     }
+     connectionHash.clear();
++    customTypes.clear();
+ 
+     // allow deletion from any thread without warning
+     moveToThread(Q_NULLPTR);
+diff --git a/src/dbus/qdbusconnectionmanager_p.h b/src/dbus/qdbusconnectionmanager_p.h
+index 5e85f86..f29e56d 100644
+--- a/src/dbus/qdbusconnectionmanager_p.h
++++ b/src/dbus/qdbusconnectionmanager_p.h
+@@ -54,13 +54,14 @@
+ #define QDBUSCONNECTIONMANAGER_P_H
+ 
+ #include "qdbusconnection_p.h"
++#include "qdbusmetatype_p.h"
+ #include "private/qthread_p.h"
+ 
+ #ifndef QT_NO_DBUS
+ 
+ QT_BEGIN_NAMESPACE
+ 
+-class QDBusConnectionManager : public QDaemonThread
++class QDBusConnectionManager : public QDaemonThread, public QDBusMetaTypeId
+ {
+     Q_OBJECT
+     struct ConnectionRequestData;
+diff --git a/src/dbus/qdbusintegrator.cpp b/src/dbus/qdbusintegrator.cpp
+index 54418c2..e21baed 100644
+--- a/src/dbus/qdbusintegrator.cpp
++++ b/src/dbus/qdbusintegrator.cpp
+@@ -1024,7 +1024,6 @@ QDBusConnectionPrivate::QDBusConnectionPrivate(QObject *p)
+         qdbusThreadDebug = qdbusDefaultThreadDebug;
+ #endif
+ 
+-    QDBusMetaTypeId::init();
+     connect(this, &QDBusConnectionPrivate::dispatchStatusChanged,
+             this, &QDBusConnectionPrivate::doDispatch, Qt::QueuedConnection);
+     connect(this, &QDBusConnectionPrivate::spyHooksFinished,
+diff --git a/src/dbus/qdbusmetatype.cpp b/src/dbus/qdbusmetatype.cpp
+index 59a71ad..2fc29a4 100644
+--- a/src/dbus/qdbusmetatype.cpp
++++ b/src/dbus/qdbusmetatype.cpp
+@@ -1,7 +1,8 @@
+ /****************************************************************************
+ **
+ ** Copyright (C) 2016 The Qt Company Ltd.
+-** Contact: https://www.qt.io/licensing/
++** Copyright (C) 2016 Intel Corporation.
++** Contact: http://www.qt.io/licensing/
+ **
+ ** This file is part of the QtDBus module of the Qt Toolkit.
+ **
+@@ -39,19 +40,15 @@
+ 
+ #include "qdbusmetatype.h"
+ #include "qdbusmetatype_p.h"
+-
+-#include <string.h>
+ #include "qdbus_symbols_p.h"
+ 
+-#include <qbytearray.h>
+-#include <qglobal.h>
+-#include <qreadwritelock.h>
+-#include <qvector.h>
++#include <string.h>
+ 
+ #include "qdbusargument_p.h"
+ #include "qdbusutil_p.h"
+ #include "qdbusunixfiledescriptor.h"
+ #ifndef QT_BOOTSTRAPPED
++#include "qdbusconnectionmanager_p.h"
+ #include "qdbusmessage.h"
+ #endif
+ 
+@@ -64,82 +61,72 @@
+ 
+ QT_BEGIN_NAMESPACE
+ 
+-class QDBusCustomTypeInfo
+-{
+-public:
+-    QDBusCustomTypeInfo() : signature(), marshall(0), demarshall(0)
+-    { }
+-
+-    // Suggestion:
+-    // change 'signature' to char* and make QDBusCustomTypeInfo a Movable type
+-    QByteArray signature;
+-    QDBusMetaType::MarshallFunction marshall;
+-    QDBusMetaType::DemarshallFunction demarshall;
+-};
++static void registerMarshallOperatorsNoLock(QVector<QDBusCustomTypeInfo> &ct, int id,
++                                            QDBusMetaType::MarshallFunction mf,
++                                            QDBusMetaType::DemarshallFunction df);
+ 
+ template<typename T>
+-inline static void registerHelper(T * = 0)
++inline static void registerHelper(QVector<QDBusCustomTypeInfo> &ct)
+ {
+     void (*mf)(QDBusArgument &, const T *) = qDBusMarshallHelper<T>;
+     void (*df)(const QDBusArgument &, T *) = qDBusDemarshallHelper<T>;
+-    QDBusMetaType::registerMarshallOperators(qMetaTypeId<T>(),
++    registerMarshallOperatorsNoLock(ct, qMetaTypeId<T>(),
+         reinterpret_cast<QDBusMetaType::MarshallFunction>(mf),
+         reinterpret_cast<QDBusMetaType::DemarshallFunction>(df));
+ }
+ 
+-void QDBusMetaTypeId::init()
++QDBusMetaTypeId *QDBusMetaTypeId::instance()
+ {
+-    static QBasicAtomicInt initialized = Q_BASIC_ATOMIC_INITIALIZER(false);
+-
+-    // reentrancy is not a problem since everything else is locked on their own
+-    // set the guard variable at the end
+-    if (!initialized.load()) {
+-        // register our types with Qt Core (calling qMetaTypeId<T>() does this implicitly)
+-        (void)message();
+-        (void)argument();
+-        (void)variant();
+-        (void)objectpath();
+-        (void)signature();
+-        (void)error();
+-        (void)unixfd();
++#ifdef QT_BOOTSTRAPPED
++    static QDBusMetaTypeId self;
++    return &self;
++#else
++    return QDBusConnectionManager::instance();
++#endif
++}
++
++QDBusMetaTypeId::QDBusMetaTypeId()
++{
++    // register our types with Qt Core (calling qMetaTypeId<T>() does this implicitly)
++    (void)message();
++    (void)argument();
++    (void)variant();
++    (void)objectpath();
++    (void)signature();
++    (void)error();
++    (void)unixfd();
+ 
+ #ifndef QDBUS_NO_SPECIALTYPES
+-        // and register Qt Core's with us
+-        registerHelper<QDate>();
+-        registerHelper<QTime>();
+-        registerHelper<QDateTime>();
+-        registerHelper<QRect>();
+-        registerHelper<QRectF>();
+-        registerHelper<QSize>();
+-        registerHelper<QSizeF>();
+-        registerHelper<QPoint>();
+-        registerHelper<QPointF>();
+-        registerHelper<QLine>();
+-        registerHelper<QLineF>();
+-        registerHelper<QVariantList>();
+-        registerHelper<QVariantMap>();
+-        registerHelper<QVariantHash>();
+-
+-        qDBusRegisterMetaType<QList<bool> >();
+-        qDBusRegisterMetaType<QList<short> >();
+-        qDBusRegisterMetaType<QList<ushort> >();
+-        qDBusRegisterMetaType<QList<int> >();
+-        qDBusRegisterMetaType<QList<uint> >();
+-        qDBusRegisterMetaType<QList<qlonglong> >();
+-        qDBusRegisterMetaType<QList<qulonglong> >();
+-        qDBusRegisterMetaType<QList<double> >();
+-        qDBusRegisterMetaType<QList<QDBusObjectPath> >();
+-        qDBusRegisterMetaType<QList<QDBusSignature> >();
+-        qDBusRegisterMetaType<QList<QDBusUnixFileDescriptor> >();
++    // and register Qt Core's with us
++    registerHelper<QDate>(customTypes);
++    registerHelper<QTime>(customTypes);
++    registerHelper<QDateTime>(customTypes);
++    registerHelper<QRect>(customTypes);
++    registerHelper<QRectF>(customTypes);
++    registerHelper<QSize>(customTypes);
++    registerHelper<QSizeF>(customTypes);
++    registerHelper<QPoint>(customTypes);
++    registerHelper<QPointF>(customTypes);
++    registerHelper<QLine>(customTypes);
++    registerHelper<QLineF>(customTypes);
++    registerHelper<QVariantList>(customTypes);
++    registerHelper<QVariantMap>(customTypes);
++    registerHelper<QVariantHash>(customTypes);
++
++    registerHelper<QList<bool> >(customTypes);
++    registerHelper<QList<short> >(customTypes);
++    registerHelper<QList<ushort> >(customTypes);
++    registerHelper<QList<int> >(customTypes);
++    registerHelper<QList<uint> >(customTypes);
++    registerHelper<QList<qlonglong> >(customTypes);
++    registerHelper<QList<qulonglong> >(customTypes);
++    registerHelper<QList<double> >(customTypes);
++    registerHelper<QList<QDBusObjectPath> >(customTypes);
++    registerHelper<QList<QDBusSignature> >(customTypes);
++    registerHelper<QList<QDBusUnixFileDescriptor> >(customTypes);
+ #endif
+-
+-        initialized.store(true);
+-    }
+ }
+ 
+-Q_GLOBAL_STATIC(QVector<QDBusCustomTypeInfo>, customTypes)
+-Q_GLOBAL_STATIC(QReadWriteLock, customTypesLock)
+-
+ /*!
+     \class QDBusMetaType
+     \inmodule QtDBus
+@@ -217,14 +204,22 @@ void QDBusMetaType::registerMarshallOperators(int id, MarshallFunction mf,
+                                               DemarshallFunction df)
+ {
+     QByteArray var;
+-    QVector<QDBusCustomTypeInfo> *ct = customTypes();
+-    if (id < 0 || !mf || !df || !ct)
++    QDBusMetaTypeId *mgr = QDBusMetaTypeId::instance();
++    if (id < 0 || !mf || !df || !mgr)
+         return;                 // error!
+ 
+-    QWriteLocker locker(customTypesLock());
+-    if (id >= ct->size())
+-        ct->resize(id + 1);
+-    QDBusCustomTypeInfo &info = (*ct)[id];
++    QWriteLocker locker(&mgr->customTypesLock);
++    QVector<QDBusCustomTypeInfo> &ct = mgr->customTypes;
++    registerMarshallOperatorsNoLock(ct, id, mf, df);
++}
++
++static void registerMarshallOperatorsNoLock(QVector<QDBusCustomTypeInfo> &ct, int id,
++                                            QDBusMetaType::MarshallFunction mf,
++                                            QDBusMetaType::DemarshallFunction df)
++{
++    if (id >= ct.size())
++        ct.resize(id + 1);
++    QDBusCustomTypeInfo &info = ct[id];
+     info.marshall = mf;
+     info.demarshall = df;
+ }
+@@ -241,12 +236,16 @@ bool QDBusMetaType::marshall(QDBusArgument &arg, int id, const void *data)
+ 
+     MarshallFunction mf;
+     {
+-        QReadLocker locker(customTypesLock());
+-        QVector<QDBusCustomTypeInfo> *ct = customTypes();
+-        if (id >= ct->size())
++        const QDBusMetaTypeId *mgr = QDBusMetaTypeId::instance();
++        if (!mgr)
++            return false;       // shutting down
++
++        QReadLocker locker(&mgr->customTypesLock);
++        const QVector<QDBusCustomTypeInfo> &ct = mgr->customTypes;
++        if (id >= ct.size())
+             return false;       // non-existent
+ 
+-        const QDBusCustomTypeInfo &info = (*ct).at(id);
++        const QDBusCustomTypeInfo &info = ct.at(id);
+         if (!info.marshall) {
+             mf = 0;             // make gcc happy
+             return false;
+@@ -270,12 +269,16 @@ bool QDBusMetaType::demarshall(const QDBusArgument &arg, int id, void *data)
+ 
+     DemarshallFunction df;
+     {
+-        QReadLocker locker(customTypesLock());
+-        QVector<QDBusCustomTypeInfo> *ct = customTypes();
+-        if (id >= ct->size())
++        const QDBusMetaTypeId *mgr = QDBusMetaTypeId::instance();
++        if (!mgr)
++            return false;       // shutting down
++
++        QReadLocker locker(&mgr->customTypesLock);
++        const QVector<QDBusCustomTypeInfo> &ct = mgr->customTypes;
++        if (id >= ct.size())
+             return false;       // non-existent
+ 
+-        const QDBusCustomTypeInfo &info = (*ct).at(id);
++        const QDBusCustomTypeInfo &info = ct.at(id);
+         if (!info.demarshall) {
+             df = 0;             // make gcc happy
+             return false;
+@@ -434,7 +437,11 @@ const char *QDBusMetaType::typeToSignature(int type)
+             DBUS_TYPE_BYTE_AS_STRING; // ay
+     }
+ 
+-    QDBusMetaTypeId::init();
++    // try the database
++    QDBusMetaTypeId *mgr = QDBusMetaTypeId::instance();
++    if (!mgr)
++        return Q_NULLPTR;       // shutting down
++
+     if (type == QDBusMetaTypeId::variant())
+         return DBUS_TYPE_VARIANT_AS_STRING;
+     else if (type == QDBusMetaTypeId::objectpath())
+@@ -444,14 +451,13 @@ const char *QDBusMetaType::typeToSignature(int type)
+     else if (type == QDBusMetaTypeId::unixfd())
+         return DBUS_TYPE_UNIX_FD_AS_STRING;
+ 
+-    // try the database
+-    QVector<QDBusCustomTypeInfo> *ct = customTypes();
+     {
+-        QReadLocker locker(customTypesLock());
+-        if (type >= ct->size())
++        QReadLocker locker(&mgr->customTypesLock);
++        const QVector<QDBusCustomTypeInfo> &ct = mgr->customTypes;
++        if (type >= ct.size())
+             return 0;           // type not registered with us
+ 
+-        const QDBusCustomTypeInfo &info = (*ct).at(type);
++        const QDBusCustomTypeInfo &info = ct.at(type);
+ 
+         if (!info.signature.isNull())
+             return info.signature;
+@@ -468,8 +474,9 @@ const char *QDBusMetaType::typeToSignature(int type)
+         QByteArray signature = QDBusArgumentPrivate::createSignature(type);
+ 
+         // re-acquire lock
+-        QWriteLocker locker(customTypesLock());
+-        info = &(*ct)[type];
++        QWriteLocker locker(&mgr->customTypesLock);
++        QVector<QDBusCustomTypeInfo> &ct = mgr->customTypes;
++        info = &ct[type];
+         info->signature = signature;
+     }
+     return info->signature;
+diff --git a/src/dbus/qdbusmetatype_p.h b/src/dbus/qdbusmetatype_p.h
+index 3bfe187..fde6119 100644
+--- a/src/dbus/qdbusmetatype_p.h
++++ b/src/dbus/qdbusmetatype_p.h
+@@ -1,7 +1,8 @@
+ /****************************************************************************
+ **
+ ** Copyright (C) 2016 The Qt Company Ltd.
+-** Contact: https://www.qt.io/licensing/
++** Copyright (C) 2016 Intel Corporation.
++** Contact: http://www.qt.io/licensing/
+ **
+ ** This file is part of the QtDBus module of the Qt Toolkit.
+ **
+@@ -59,10 +60,27 @@
+ #include <qdbuserror.h>
+ #include <qdbusunixfiledescriptor.h>
+ 
++#include <qbytearray.h>
++#include <qreadwritelock.h>
++#include <qvector.h>
++
+ #ifndef QT_NO_DBUS
+ 
+ QT_BEGIN_NAMESPACE
+ 
++class QDBusCustomTypeInfo
++{
++public:
++    QDBusCustomTypeInfo() : signature(), marshall(0), demarshall(0)
++    { }
++
++    // Suggestion:
++    // change 'signature' to char* and make QDBusCustomTypeInfo a Movable type
++    QByteArray signature;
++    QDBusMetaType::MarshallFunction marshall;
++    QDBusMetaType::DemarshallFunction demarshall;
++};
++
+ struct QDBusMetaTypeId
+ {
+     static int message();         // QDBusMessage
+@@ -73,7 +91,14 @@ struct QDBusMetaTypeId
+     static int error();           // QDBusError
+     static int unixfd();          // QDBusUnixFileDescriptor
+ 
+-    static void init();
++    static void init() { instance(); }
++    static QDBusMetaTypeId *instance();
++
++    mutable QReadWriteLock customTypesLock;
++    QVector<QDBusCustomTypeInfo> customTypes;
++
++protected:
++    QDBusMetaTypeId();
+ };
+ 
+ inline int QDBusMetaTypeId::message()
+diff --git a/src/dbus/qdbusmisc.cpp b/src/dbus/qdbusmisc.cpp
+index 930c3bd..01436da 100644
+--- a/src/dbus/qdbusmisc.cpp
++++ b/src/dbus/qdbusmisc.cpp
+@@ -144,8 +144,9 @@ int qDBusParametersForMethod(const QMetaMethod &mm, QVector<int> &metaTypes, QSt
+ 
+ int qDBusParametersForMethod(const QList<QByteArray> &parameterTypes, QVector<int>& metaTypes, QString &errorMsg)
+ {
+-    QDBusMetaTypeId::init();
+     metaTypes.clear();
++    if (!QDBusMetaTypeId::instance())
++        return -1;
+ 
+     metaTypes.append(0);        // return type
+     int inputCount = 0;
+-- 
+2.9.0
+
+
+From f248a89be723aea3684b0348a718b93faec8910a Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@intel.com>
+Date: Thu, 12 Nov 2015 10:14:51 -0800
+Subject: [PATCH 2/3] Stop unloading plugins in QPluginLoader and
+ QFactoryLoader
+
+QPluginLoader hasn't unloaded in its destructor since Qt 5.0, but we
+missed the equivalent code in QFactoryLoader (which bypasses
+QPluginLoader). Besides, QPluginLoader::unload() was still doing
+unloading, which it won't anymore.
+
+Not unloading plugins is Qt's policy, as decided during the 5.0
+development process and reaffirmed now in 5.6. This is due to static
+data in plugins leaking out and remaining in use past the unloading of
+the plugin, causing crashes.
+
+This does not affect QLibrary and QLibrary::unload(). Those are meant
+for non-Qt loadable modules, so unloading them may be safe.
+
+Task-number: QTBUG-49061
+Discussed-on: http://lists.qt-project.org/pipermail/development/2015-November/023681.html
+Change-Id: I461e9fc7199748faa187ffff1416070f138df8db
+Reviewed-by: Simon Hausmann <simon.hausmann@theqtcompany.com>
+Reviewed-by: Lars Knoll <lars.knoll@theqtcompany.com>
+---
+ src/corelib/plugin/qfactoryloader.cpp | 6 ++++--
+ src/corelib/plugin/qpluginloader.cpp  | 5 +++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/src/corelib/plugin/qfactoryloader.cpp b/src/corelib/plugin/qfactoryloader.cpp
+index 6cd02e3..13f7b89 100644
+--- a/src/corelib/plugin/qfactoryloader.cpp
++++ b/src/corelib/plugin/qfactoryloader.cpp
+@@ -187,10 +187,12 @@ void QFactoryLoader::update()
+                     ++keyUsageCount;
+                 }
+             }
+-            if (keyUsageCount || keys.isEmpty())
++            if (keyUsageCount || keys.isEmpty()) {
++                library->setLoadHints(QLibrary::PreventUnloadHint); // once loaded, don't unload
+                 d->libraryList += library;
+-            else
++            } else {
+                 library->release();
++            }
+         }
+     }
+ #else
+diff --git a/src/corelib/plugin/qpluginloader.cpp b/src/corelib/plugin/qpluginloader.cpp
+index 62067c7..4752f69 100644
+--- a/src/corelib/plugin/qpluginloader.cpp
++++ b/src/corelib/plugin/qpluginloader.cpp
+@@ -154,6 +154,7 @@ QPluginLoader::QPluginLoader(const QString &fileName, QObject *parent)
+     : QObject(parent), d(0), did_load(false)
+ {
+     setFileName(fileName);
++    setLoadHints(QLibrary::PreventUnloadHint);
+ }
+ 
+ /*!
+@@ -348,7 +349,7 @@ static QString locatePlugin(const QString& fileName)
+ void QPluginLoader::setFileName(const QString &fileName)
+ {
+ #if defined(QT_SHARED)
+-    QLibrary::LoadHints lh;
++    QLibrary::LoadHints lh = QLibrary::PreventUnloadHint;
+     if (d) {
+         lh = d->loadHints();
+         d->release();
+@@ -394,7 +395,7 @@ QString QPluginLoader::errorString() const
+     \brief Give the load() function some hints on how it should behave.
+ 
+     You can give hints on how the symbols in the plugin are
+-    resolved. By default, none of the hints are set.
++    resolved. By default since Qt 5.7, QLibrary::PreventUnloadHint is set.
+ 
+     See the documentation of QLibrary::loadHints for a complete
+     description of how this property works.
+-- 
+2.9.0
+
+
+From 62bf6e05b74c849dee103cf8276483e1c4dea736 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@intel.com>
+Date: Tue, 31 May 2016 17:33:03 -0300
+Subject: [PATCH 3/3] Fix some QtDBus crashes during application destruction
+
+It's possible that some code executes after QDBusConnectionManager is
+destroyed and still tries to access QtDBus. Protect against such
+crashes.
+
+Change-Id: I87e17314d8b24ae983b1fffd1453c13fbd3cf48e
+---
+ src/dbus/qdbusconnection.cpp | 12 ++++++++----
+ src/dbus/qdbusintegrator.cpp |  3 +++
+ src/dbus/qdbusserver.cpp     | 12 ++++++++++--
+ 3 files changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/src/dbus/qdbusconnection.cpp b/src/dbus/qdbusconnection.cpp
+index 95ae077..802b1ae 100644
+--- a/src/dbus/qdbusconnection.cpp
++++ b/src/dbus/qdbusconnection.cpp
+@@ -444,7 +444,7 @@ void QDBusConnectionManager::createServer(const QString &address, void *server)
+ */
+ QDBusConnection::QDBusConnection(const QString &name)
+ {
+-    if (name.isEmpty()) {
++    if (name.isEmpty() || _q_manager.isDestroyed()) {
+         d = 0;
+     } else {
+         QMutexLocker locker(&_q_manager()->mutex);
+@@ -509,7 +509,7 @@ QDBusConnection &QDBusConnection::operator=(const QDBusConnection &other)
+ */
+ QDBusConnection QDBusConnection::connectToBus(BusType type, const QString &name)
+ {
+-    if (!qdbus_loadLibDBus()) {
++    if (_q_manager.isDestroyed() || !qdbus_loadLibDBus()) {
+         QDBusConnectionPrivate *d = 0;
+         return QDBusConnection(d);
+     }
+@@ -523,7 +523,7 @@ QDBusConnection QDBusConnection::connectToBus(BusType type, const QString &name)
+ QDBusConnection QDBusConnection::connectToBus(const QString &address,
+                                               const QString &name)
+ {
+-    if (!qdbus_loadLibDBus()) {
++    if (_q_manager.isDestroyed() || !qdbus_loadLibDBus()) {
+         QDBusConnectionPrivate *d = 0;
+         return QDBusConnection(d);
+     }
+@@ -538,7 +538,7 @@ QDBusConnection QDBusConnection::connectToBus(const QString &address,
+ QDBusConnection QDBusConnection::connectToPeer(const QString &address,
+                                                const QString &name)
+ {
+-    if (!qdbus_loadLibDBus()) {
++    if (_q_manager.isDestroyed() || !qdbus_loadLibDBus()) {
+         QDBusConnectionPrivate *d = 0;
+         return QDBusConnection(d);
+     }
+@@ -1193,6 +1193,8 @@ bool QDBusConnection::unregisterService(const QString &serviceName)
+ */
+ QDBusConnection QDBusConnection::sessionBus()
+ {
++    if (_q_manager.isDestroyed())
++        return QDBusConnection(Q_NULLPTR);
+     return QDBusConnection(_q_manager()->busConnection(SessionBus));
+ }
+ 
+@@ -1205,6 +1207,8 @@ QDBusConnection QDBusConnection::sessionBus()
+ */
+ QDBusConnection QDBusConnection::systemBus()
+ {
++    if (_q_manager.isDestroyed())
++        return QDBusConnection(Q_NULLPTR);
+     return QDBusConnection(_q_manager()->busConnection(SystemBus));
+ }
+ 
+diff --git a/src/dbus/qdbusintegrator.cpp b/src/dbus/qdbusintegrator.cpp
+index e21baed..3d855b2 100644
+--- a/src/dbus/qdbusintegrator.cpp
++++ b/src/dbus/qdbusintegrator.cpp
+@@ -299,6 +299,9 @@ static void qDBusNewConnection(DBusServer *server, DBusConnection *connection, v
+     Q_ASSERT(connection);
+     Q_ASSERT(data);
+ 
++    if (!QDBusConnectionManager::instance())
++        return;
++
+     // keep the connection alive
+     q_dbus_connection_ref(connection);
+     QDBusConnectionPrivate *serverConnection = static_cast<QDBusConnectionPrivate *>(data);
+diff --git a/src/dbus/qdbusserver.cpp b/src/dbus/qdbusserver.cpp
+index a242ad9..fcdcb06 100644
+--- a/src/dbus/qdbusserver.cpp
++++ b/src/dbus/qdbusserver.cpp
+@@ -68,7 +68,11 @@ QDBusServer::QDBusServer(const QString &address, QObject *parent)
+     if (!qdbus_loadLibDBus())
+         return;
+ 
+-    emit QDBusConnectionManager::instance()->serverRequested(address, this);
++    QDBusConnectionManager *instance = QDBusConnectionManager::instance();
++    if (!instance)
++        return;
++
++    emit instance->serverRequested(address, this);
+     QObject::connect(d, SIGNAL(newServerConnection(QDBusConnectionPrivate*)),
+                      this, SLOT(_q_newConnection(QDBusConnectionPrivate*)), Qt::QueuedConnection);
+ }
+@@ -93,7 +97,11 @@ QDBusServer::QDBusServer(QObject *parent)
+         return;
+     }
+ 
+-    emit QDBusConnectionManager::instance()->serverRequested(address, this);
++    QDBusConnectionManager *instance = QDBusConnectionManager::instance();
++    if (!instance)
++        return;
++
++    emit instance->serverRequested(address, this);
+     QObject::connect(d, SIGNAL(newServerConnection(QDBusConnectionPrivate*)),
+                      this, SLOT(_q_newConnection(QDBusConnectionPrivate*)), Qt::QueuedConnection);
+ }
+-- 
+2.9.0

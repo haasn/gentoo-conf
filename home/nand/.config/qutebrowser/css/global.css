@@ -1,4 +1,4 @@
-::-webkit-scrollbar {
+html > ::-webkit-scrollbar {
     width: 0px;
     height: 0px;
 }
@@ -14,11 +14,11 @@
     color:      #DDCCBB !important;
 }
 
-a {
+a[href], a[href] * {
     color: #FFAA0F !important;
 }
 
-a:visited {
+a:visited, a:visited * {
     color: #FF5D4A !important;
 }
 
@@ -51,6 +51,10 @@ div#quickReply textarea {
     height: 500px !important;
 }
 
+span.quote {
+    color: #789922 !important;
+}
+
 /* TeX images */
 
 img.tex, img.numberedequation, img.inlineformula, span.math {
@@ -61,4 +65,10 @@ img.tex, img.numberedequation, img.inlineformula, span.math {
 span.math * {
     background: none !important;
     border-color: black !important;
+}
+
+/* Ad element hiding */
+
+div#_Ltg { /* google search results */
+    display: none !important
 }

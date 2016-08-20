@@ -12,6 +12,7 @@ app-office/ganttproject-bin::sunrise
 dev-libs/libwiimote::sunrise
 sys-apps/evrouter::sunrise
 www-plugins/okularplugin::sunrise
+app-admin/cpu-g::sunrise
 
 # Powerman
 dev-lang/go::powerman

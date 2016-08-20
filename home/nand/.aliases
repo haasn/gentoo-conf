@@ -86,7 +86,7 @@ alias fanspeed='aticonfig --pplib-cmd "set fanspeed 0 18"'
 alias note='cat >> ~/notes'
 
 # quad core make (ht)
-alias make='make -j9'
+alias make='make -j33'
 
 # Attach to weechat inside dtach
 alias weechat='dtach -a /tmp/weechat'

@@ -14,7 +14,7 @@ xset +fp /usr/share/fonts/terminus/
 
 # Load the correct resolution
 #xrandr --output DP-0 --mode 4096x2160 --primary --output DVI-I-1 --mode 1920x1200 --rotate left --pos 4096x120
-xrandr --output DP-0 --mode 4096x2160 --primary
+xrandr --output DP-0 --mode 4096x2160 --primary --output HDMI-0 --off
 #xrandr --output DVI-I-1 --mode 1920x1200 --primary
 
 # Load the correct keyboard map

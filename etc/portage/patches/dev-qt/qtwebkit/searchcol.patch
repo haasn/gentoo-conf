@@ -1,0 +1,18 @@
+diff -ru qtwebkit-opensource-src-5.6.1-orig/Source/WebCore/rendering/RenderTheme.cpp qtwebkit-opensource-src-5.6.1/Source/WebCore/rendering/RenderTheme.cpp
+--- qtwebkit-opensource-src-5.6.1-orig/Source/WebCore/rendering/RenderTheme.cpp	2016-08-07 19:09:48.572084696 +0200
++++ qtwebkit-opensource-src-5.6.1/Source/WebCore/rendering/RenderTheme.cpp	2016-08-07 19:14:54.702698970 +0200
+@@ -1208,12 +1208,12 @@
+ 
+ Color RenderTheme::platformActiveTextSearchHighlightColor() const
+ {
+-    return Color(255, 150, 50); // Orange.
++    return Color(76, 128, 249); // Blue.
+ }
+ 
+ Color RenderTheme::platformInactiveTextSearchHighlightColor() const
+ {
+-    return Color(255, 255, 0); // Yellow.
++    return Color(229, 12, 136); // Pink.
+ }
+ 
+ #if ENABLE(TOUCH_EVENTS)

@@ -59,7 +59,9 @@ dev-lang/perl
 dev-lang/python
 dev-python/flake8
 dev-python/pylint
+dev-python/pympler
 dev-python/pytest-cov
+dev-python/pytest-xdist
 dev-python/tox
 dev-python/vulture
 dev-qt/qtwebengine
@@ -81,6 +83,7 @@ dev-util/valgrind
 games-misc/cowsay
 games-misc/fortune-mod
 gnome-extra/yad
+kde-apps/kcachegrind
 kde-apps/kolourpaint
 kde-apps/okular
 mail-mta/msmtp
@@ -125,6 +128,7 @@ media-sound/opus-tools
 media-sound/teamspeak-client-bin
 media-sound/vimus
 media-sound/vorbisgain
+media-video/ffmpeg
 media-video/mediainfo
 media-video/mkvtoolnix
 media-video/mpv
@@ -155,13 +159,17 @@ net-misc/socat
 net-misc/whois
 net-misc/youtube-dl
 net-p2p/rtorrent
+sys-apps/dmidecode
 sys-apps/evrouter
 sys-apps/firejail
 sys-apps/hdparm
 sys-apps/inxi
+sys-apps/ipmitool
+sys-apps/irqbalance
 sys-apps/iucode_tool
 sys-apps/lm_sensors
 sys-apps/man-db
+sys-apps/memtest86+
 sys-apps/moreutils
 sys-apps/portage
 sys-apps/smartmontools
@@ -181,9 +189,11 @@ sys-fs/ntfs3g
 sys-fs/sshfs
 sys-fs/udiskie
 sys-kernel/genkernel-next
+sys-kernel/gentoo-sources
 sys-kernel/hardened-sources
 sys-power/apcupsd
 sys-power/cpupower
+sys-power/powertop
 sys-power/thermald
 sys-process/at
 sys-process/glances
@@ -212,7 +222,6 @@ x11-misc/vdpauinfo
 x11-misc/xclip
 x11-misc/xkeycaps
 x11-misc/xmobar
-x11-misc/yeganesh
 x11-terms/rxvt-unicode
 x11-themes/gtk-theme-switch
 x11-wm/xmonad
