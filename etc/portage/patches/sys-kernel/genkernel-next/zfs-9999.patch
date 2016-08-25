@@ -1,0 +1,48 @@
+From 6b5eb0fe52a49b1aa050f4b9f2e46b03f5c2940c Mon Sep 17 00:00:00 2001
+From: Richard Yao <ryao@gentoo.org>
+Date: Wed, 17 Aug 2016 22:46:35 +0800
+Subject: Include libgcc_s.so.1 with ZFS support
+
+The resumable send/recv work added an indirect dependency on
+libgcc_s.so.1, which libpthread opens via dlopen for _Unwind_Resume().
+If we do not include it, we will see:
+
+libgcc_s.so.1 must be installed for pthread_cancel to work
+
+Lets include it for now. We make an effort to include only 1 version.
+This might not work on all architectures, but for lack of ability to
+test, it will need to do for now. It also will use gcc-config if it is
+avaliable.
+
+This also enables functions in zdb that previously did not work due to
+the same issue.
+
+Original-patch-by: Jason Zaman <perfinion@gentoo.org>
+Signed-off-by: Richard Yao <ryao@gentoo.org>
+---
+ gen_initramfs.sh | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/gen_initramfs.sh b/gen_initramfs.sh
+index 1fd5d2a..ea4a771 100755
+--- a/gen_initramfs.sh
++++ b/gen_initramfs.sh
+@@ -491,7 +491,14 @@ append_zfs(){
+     done
+ 
+     # Copy binaries
+-    copy_binaries "${TEMP}/initramfs-zfs-temp" /sbin/{mount.zfs,zfs,zpool}
++    # Include libgcc_s.so.1 to workaround zfsonlinux/zfs#4749
++    if type gcc-config 2>&1 1>/dev/null; then
++        copy_binaries "${TEMP}/initramfs-zfs-temp" /sbin/{mount.zfs,zdb,zfs,zpool} \
++            "/usr/lib/gcc/$(s=$(gcc-config -c); echo ${s%-*}/${s##*-})/libgcc_s.so.1"
++    else
++        copy_binaries "${TEMP}/initramfs-zfs-temp" /sbin/{mount.zfs,zdb,zfs,zpool} \
++            /usr/lib/gcc/*/*/libgcc_s.so.1
++    fi
+ 
+     cd "${TEMP}/initramfs-zfs-temp/"
+     log_future_cpio_content
+-- 
+cgit v0.12
+
