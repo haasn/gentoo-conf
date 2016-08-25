@@ -18,6 +18,7 @@ app-forensics/afl
 app-forensics/rkhunter
 app-misc/colordiff
 app-misc/dtach
+app-misc/ranger
 app-misc/screenfetch
 app-misc/task
 app-misc/tmux
@@ -188,8 +189,9 @@ sys-fs/duperemove
 sys-fs/ntfs3g
 sys-fs/sshfs
 sys-fs/udiskie
+sys-fs/zfs
+sys-fs/zfs-auto-snapshot
 sys-kernel/genkernel-next
-sys-kernel/gentoo-sources
 sys-kernel/hardened-sources
 sys-power/apcupsd
 sys-power/cpupower
@@ -220,6 +222,7 @@ x11-misc/unclutter
 x11-misc/urxvt-perls
 x11-misc/vdpauinfo
 x11-misc/xclip
+x11-misc/xfe
 x11-misc/xkeycaps
 x11-misc/xmobar
 x11-terms/rxvt-unicode

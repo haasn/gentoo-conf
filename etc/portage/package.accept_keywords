@@ -161,6 +161,10 @@ sys-kernel/spl **
 #11-drivers/xf86-video-ati **
 #11-libs/glamor **
 
+# Needed for ZFS
+sys-boot/grub **
+
 ########################################
 #### Other accept flags (auto unmask)...
 x11-misc/rofi **
+media-sound/mumble **

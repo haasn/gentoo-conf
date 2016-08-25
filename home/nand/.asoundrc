@@ -10,6 +10,21 @@ pcm.!default {
     slave.pcm "output"
 }
 
+pcm.bs2b {
+    type ladspa
+    slave.pcm {
+        type plug
+        slave.pcm "output"
+    }
+    path "/usr/lib64/ladspa"
+    playback_plugins [ {
+        label bs2b
+        input {
+            controls [700 6]
+        }
+    } ]
+}
+
 pcm.bs2b32 {
     type ladspa
     slave.pcm {

@@ -71,6 +71,7 @@ app-misc/tagsistant::wichtounet
 app-misc/ddccontrol-db::benf
 
 # Vapoursynth
+media-libs/zimg::vapoursynth
 media-libs/vapoursynth::vapoursynth
 media-plugins/vapoursynth-ffmpegsource::vapoursynth
 media-plugins/vapoursynth-flash3kyuu_deband::vapoursynth

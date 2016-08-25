@@ -1,4 +1,4 @@
-From 3d2de815cc73cb7def78bb33088bde42135dfe58 Mon Sep 17 00:00:00 2001
+From a1e5defcc531517833b372c0482e726ea2a47327 Mon Sep 17 00:00:00 2001
 From: Allan Sandfeld Jensen <allan.jensen@theqtcompany.com>
 Date: Wed, 17 Aug 2016 16:18:43 +0200
 Subject: [PATCH] Add fallback to ensure WebEngineContext::destroy() is called
@@ -10,31 +10,22 @@ a new WebEngineContext() during shut down.
 Task-number: QTBUG-54769
 Change-Id: I2b1d189f9ebd8da2dc9f322f9bb307a5aa0c6a2f
 ---
- src/core/web_engine_context.cpp | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ src/core/web_engine_context.cpp | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/src/core/web_engine_context.cpp b/src/core/web_engine_context.cpp
-index 98fba08..05d92f7 100644
+index 329f9c9..c541d57 100644
 --- a/src/core/web_engine_context.cpp
 +++ b/src/core/web_engine_context.cpp
-@@ -101,15 +101,24 @@ QT_END_NAMESPACE
- 
+@@ -102,6 +102,7 @@ QT_END_NAMESPACE
  namespace {
  
-+// In case this file is unloaded before the QApplication is destroyed,
-+// try to call destroyContext here.
-+void destroyContext();
-+Q_DESTRUCTOR_FUNCTION0(destroyContext);
-+
  scoped_refptr<QtWebEngineCore::WebEngineContext> sContext;
 +static bool s_destroyed = false;
  
  void destroyContext()
  {
-+    if (!sContext)
-+        return;
-     // Destroy WebEngineContext before its static pointer is zeroed and destructor called.
-     // Before destroying MessageLoop via destroying BrowserMainRunner destructor
+@@ -110,6 +111,7 @@ void destroyContext()
      // WebEngineContext's pointer is used.
      sContext->destroy();
      sContext = 0;
@@ -42,7 +33,14 @@ index 98fba08..05d92f7 100644
  }
  
  bool usingANGLE()
-@@ -188,10 +197,16 @@ void WebEngineContext::destroy()
+@@ -188,18 +190,29 @@ void WebEngineContext::destroy()
+     // RenderProcessHostImpl should be destroyed before WebEngineContext since
+     // default BrowserContext might be used by the RenderprocessHostImpl's destructor.
+     m_browserRunner.reset(0);
++
++    // Drop the false reference.
++    sContext->Release();
+ }
  
  WebEngineContext::~WebEngineContext()
  {
@@ -59,6 +57,12 @@ index 98fba08..05d92f7 100644
      if (!sContext.get()) {
          sContext = new WebEngineContext();
          // Make sure that we ramp down Chromium before QApplication destroys its X connection, etc.
+         qAddPostRoutine(destroyContext);
++        // Add a false reference so there is no race between unreferencing sContext and a global QApplication.
++        sContext->AddRef();
+     }
+     return sContext;
+ }
 -- 
 2.7.4
 

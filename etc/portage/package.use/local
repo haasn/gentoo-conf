@@ -115,8 +115,8 @@ sys-block/gparted btrfs dmraid fat jfs ntfs
 sys-block/gparted -dmraid -hfs # requires udev
 
 # For playing around
-sys-fs/zfs-kmod -rootfs
-sys-fs/zfs -rootfs
+sys-fs/zfs-kmod rootfs
+sys-fs/zfs rootfs
 
 ############################
 #### Media applications ####
@@ -234,6 +234,8 @@ media-libs/vapoursynth -imagemagick
 # Incompatible with python 3.5
 sys-process/systemd-cron python_targets_python3_4 python_single_target_python3_4
 app-text/asciidoc python_single_target_python2_7
+media-libs/vapoursynth  python_single_target_python3_4  python_targets_python3_4
+media-libs/vapoursynth -python_single_target_python3_5 -python_targets_python3_5
 
 # The GUI pulls in too many dependencies
 app-emulation/winetricks -gtk -kde
@@ -601,12 +603,17 @@ kde-apps/kmail -kontact
 kde-apps/korganizer -kontact
 app-office/akonadi-server qt4 -qt5 mysql -sqlite -postgres
 dev-qt/qtsql mysql
-dev-db/mariadb client-libs
+dev-db/mariadb client-libs -server
 
 # Monitoring etc.
 sys-apps/lm_sensors sensord
 net-analyzer/icinga2 mail -mysql postgres
 net-analyzer/monitoring-plugins fping postgres ssh
+
+# For testing
+www-client/chromium gn -hangouts -proprietary-codecs -widevine
+app-accessibility/speech-dispatcher -python -espeak
+dev-libs/libxml2 icu
 
 # Uncategorized
 x11-misc/xmobar timezone mail mpd inotify
@@ -619,7 +626,7 @@ media-libs/libcaca imlib -abi_x86_32 -cxx
 dev-util/ltrace unwind
 mail-filter/spamassassin -ldap cron
 x11-misc/rofi windowmode
-sys-boot/grub multislot
+sys-boot/grub multislot libzfs
 
 # Required for qtcore
 dev-libs/libpcre pcre16
