@@ -1,6 +1,6 @@
 #!/bin/sh
-ZFS_LIST=$(env LC_ALL=C zfs list -H -t filesystem -s mountpoint \
-    -o mountpoint,xyz.haasn:force-cache)
+ZFS_LIST=$(env LC_ALL=C zfs list -H -t filesystem \
+    -o mountpoint,xyz.haasn:force-cache | shuf)
 
 TARGETS_DATA=$(echo "$ZFS_LIST" | awk -F '\t' \
     'tolower($1) !~ /none/ && tolower($2) ~ /true/ {print $1}')

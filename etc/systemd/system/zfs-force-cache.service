@@ -3,4 +3,4 @@ Description=Force stuff into ARC cache
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/sbin/force-cache
+ExecStart=/usr/local/sbin/zfs-force-cache
