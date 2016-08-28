@@ -51,6 +51,7 @@ autoload -U colors && colors
 local col=0 rcol=243 ROLE="${${${${:-$(id -Z 2>/dev/null)}#*:}%:*}:-none}"
 sumcharvals "$USER@$HOST" 88 col
 [[ $ROLE == 'sysadm_r' ]] && rcol=red
+[[ $USER == 'nand' ]] && col=54
 
 #"[%B%F{$(88to256 $col)}%n@%m%f:%F{$rcol}$ROLE%f%b]"\
 PS1="[%B%F{yellow}%D{%H:%M}%f%b]"\

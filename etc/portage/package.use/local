@@ -598,13 +598,6 @@ sys-process/systemd-cron cron-boot
 # To generate diagrams
 net-analyzer/vnstat gd
 
-# kmail testing
-kde-apps/kmail -kontact
-kde-apps/korganizer -kontact
-app-office/akonadi-server qt4 -qt5 mysql -sqlite -postgres
-dev-qt/qtsql mysql
-dev-db/mariadb client-libs -server
-
 # Monitoring etc.
 sys-apps/lm_sensors sensord
 net-analyzer/icinga2 mail -mysql postgres

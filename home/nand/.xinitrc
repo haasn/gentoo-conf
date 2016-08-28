@@ -43,6 +43,10 @@ unclutter -noevents -idle 2 -jitter 1 -root &>/dev/null &
 swarp 0 0 &
 easystroke &
 
+# Start MPD and autoplay
+systemctl --user start mpd
+autoplay info &
+
 # Start gpg-agent
 eval $(gpg-agent --daemon)
 

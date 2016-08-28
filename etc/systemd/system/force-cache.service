@@ -1,0 +1,6 @@
+[Unit]
+Description=Force stuff into ARC cache
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/force-cache

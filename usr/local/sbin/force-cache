@@ -1,0 +1,21 @@
+#!/bin/sh
+ZFS_LIST=$(env LC_ALL=C zfs list -H -t filesystem -s mountpoint \
+    -o mountpoint,xyz.haasn:force-cache)
+
+TARGETS_DATA=$(echo "$ZFS_LIST" | awk -F '\t' \
+    'tolower($1) !~ /none/ && tolower($2) ~ /true/ {print $1}')
+
+TARGETS_META=$(echo "$ZFS_LIST" | awk -F '\t' \
+    'tolower($1) !~ /none/ && tolower($2) ~ /metadata/ {print $1}')
+
+for t in $TARGETS_DATA
+do
+    echo Forcing ${t} into data cache
+    /bin/tar cf /dev/null --one-file-system "$t" 2>/dev/null
+done
+
+for t in $TARGETS_META
+do
+    echo Forcing ${t} into metadata cache
+    /usr/bin/find "$t" -xdev >/dev/null 2>&1
+done

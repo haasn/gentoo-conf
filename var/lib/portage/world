@@ -137,6 +137,7 @@ media-video/x264-encoder
 net-analyzer/arpoison
 net-analyzer/dsniff
 net-analyzer/icinga2
+net-analyzer/nagios-check_ipmi_sensor
 net-analyzer/netcat6
 net-analyzer/nmap
 net-analyzer/tcpdump
@@ -145,6 +146,7 @@ net-analyzer/vnstat
 net-dns/bind-tools
 net-dns/unbound
 net-firewall/firehol
+net-fs/sshfs
 net-im/skype
 net-irc/weechat
 net-libs/libntlm
@@ -187,12 +189,13 @@ sys-fs/btrfs-progs
 sys-fs/cryptsetup
 sys-fs/duperemove
 sys-fs/ntfs3g
-sys-fs/sshfs
+sys-fs/shake
 sys-fs/udiskie
 sys-fs/zfs
 sys-fs/zfs-auto-snapshot
 sys-kernel/genkernel-next
 sys-kernel/hardened-sources
+sys-libs/freeipmi
 sys-power/apcupsd
 sys-power/cpupower
 sys-power/powertop
