@@ -8,6 +8,7 @@ app-arch/p7zip
 app-arch/unp
 app-arch/unrar
 app-arch/zopfli
+app-benchmarks/iozone
 app-cdr/cuetools
 app-crypt/keybase
 app-editors/neovim
@@ -26,6 +27,7 @@ app-portage/eix
 app-portage/gentoolkit
 app-portage/hackport
 app-portage/layman
+app-portage/mirrorselect
 app-portage/pfl
 app-portage/smart-live-rebuild
 app-shells/dash
@@ -137,6 +139,7 @@ media-video/x264-encoder
 net-analyzer/arpoison
 net-analyzer/dsniff
 net-analyzer/icinga2
+net-analyzer/munin
 net-analyzer/nagios-check_ipmi_sensor
 net-analyzer/netcat6
 net-analyzer/nmap
@@ -162,6 +165,7 @@ net-misc/socat
 net-misc/whois
 net-misc/youtube-dl
 net-p2p/rtorrent
+net-p2p/transmission
 sys-apps/dmidecode
 sys-apps/evrouter
 sys-apps/firejail
@@ -194,7 +198,7 @@ sys-fs/udiskie
 sys-fs/zfs
 sys-fs/zfs-auto-snapshot
 sys-kernel/genkernel-next
-sys-kernel/hardened-sources
+sys-kernel/gentoo-sources
 sys-libs/freeipmi
 sys-power/apcupsd
 sys-power/cpupower

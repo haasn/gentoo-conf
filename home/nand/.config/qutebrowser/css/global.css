@@ -72,3 +72,7 @@ span.math * {
 div#_Ltg { /* google search results */
     display: none !important
 }
+
+div.pyv-afc-ads-container { /* youtube search results */
+    display: none !important
+}

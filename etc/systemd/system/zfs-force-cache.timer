@@ -2,7 +2,7 @@
 Description=Automatically force stuff into ZFS cache on boot and regularly
 
 [Timer]
-OnBootSec=1m
+OnBootSec=5m
 OnUnitActiveSec=60m
 
 [Install]

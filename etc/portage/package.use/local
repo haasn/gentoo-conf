@@ -118,6 +118,9 @@ sys-block/gparted -dmraid -hfs # requires udev
 sys-fs/zfs-kmod rootfs
 sys-fs/zfs rootfs
 
+# No hardened kernel
+*/* -pax_kernel
+
 ############################
 #### Media applications ####
 ############################
@@ -198,7 +201,6 @@ media-video/x264-encoder 10bit -mp4
 
 # Slim down mpv a bit
 media-video/mpv -a52 -dv dvd dvdnav gif jpeg -live -mng png -quicktime -rar -sdl -shm -speex -xv vdpau
-media-video/mpv -luajit # incompatible with PaX
 
 # Extra font candy for libass
 media-libs/libass harfbuzz
@@ -339,6 +341,7 @@ x11-base/xorg-server xvfb
 
 # Vim stuff
 app-editors/vim cscope vim-pager
+app-editors/neovim -jemalloc # fails building
 
 # cronie on its own doesn't seem to be very smart
 #sys-process/cronie anacron
@@ -362,9 +365,9 @@ media-libs/mesa gles2
 # Flexible input method
 #app-i18n/fcitx gtk3 qt4
 
-# Never upload anything
-net-libs/libtorrent noshare
+# Torrent clients are all crap..
 net-p2p/rtorrent color
+net-p2p/transmission -gtk -xfs
 
 # Try fixing bitcoind?
 #dev-libs/boost mpi icu
@@ -620,6 +623,7 @@ dev-util/ltrace unwind
 mail-filter/spamassassin -ldap cron
 x11-misc/rofi windowmode
 sys-boot/grub multislot libzfs
+net-analyzer/munin minimal syslog -java ipmi
 
 # Required for qtcore
 dev-libs/libpcre pcre16

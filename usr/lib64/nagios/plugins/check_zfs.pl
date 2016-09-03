@@ -170,6 +170,11 @@ while(<STAT>) {
 			$dmge=$dmge . "[REPLACING:${sta} (${perc})]:- ";
 			next;
 		}
+		if (/^\slogs/) {
+			next unless $verbose == 3;
+			$dmge=$dmge . "[LOGS]:- ";
+			next;
+		}
 		if (/^\scache/) {
 			next unless $verbose == 3;
 			$dmge=$dmge . "[CACHE]:- ";

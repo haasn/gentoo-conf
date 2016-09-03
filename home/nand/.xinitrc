@@ -29,7 +29,7 @@ argyll-dispwin -I -d1 ~/icc/main.icc &
 
 # Fix the GPU speed
 nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=100'
-nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=1'
+#nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=1'
 
 # Daemonize udiskie
 udiskie -N &>/dev/null &
