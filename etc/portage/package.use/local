@@ -163,6 +163,8 @@ app-emulation/virtualbox -pulseaudio qt4
 media-sound/teamspeak-client-bin alsa -pulseaudio
 games-emulation/higan -pulseaudio
 media-libs/libsdl sound
+games-engines/scummvm alsa
+media-sound/fluidsynth alsa
 
 # Might be able to run d3
 app-emulation/vmware-tools vmware_guest_windows
@@ -572,12 +574,11 @@ net-im/tox -nacl
 # Needs Qt for whatever insane reason, so I run it locally
 games-board/cockatrice server
 
-# Not sure which version I want, to be honest
+# Nvidia driver stuff
 x11-drivers/nvidia-drivers gtk3 uvm # for CUDA
 x11-drivers/nvidia-drivers kms
-#x11-drivers/nvidia-drivers -multilib # 32-bit version needs relocations
 x11-drivers/nvidia-drivers -pax_kernel # I use my own patch
-media-video/nvidia-settings -gtk3
+dev-util/nvidia-cuda-sdk -examples # fails building
 
 # fails
 app-crypt/johntheripper -cuda pcap rexgen wow mpi kerberos
@@ -592,7 +593,7 @@ sys-apps/openrc audit
 
 # systemd
 sys-apps/systemd elfutils -gcrypt -idn -kdbus -lzma -ssl sysv-utils
-sys-process/systemd-cron cron-boot
+sys-process/systemd-cron cron-boot minutely yearly
 
 # For Skype
 #app-emulation/docker lxc
@@ -624,6 +625,7 @@ mail-filter/spamassassin -ldap cron
 x11-misc/rofi windowmode
 sys-boot/grub multislot libzfs
 net-analyzer/munin minimal syslog -java ipmi
+games-engines/scummvm fluidsynth
 
 # Required for qtcore
 dev-libs/libpcre pcre16

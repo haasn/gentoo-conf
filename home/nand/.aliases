@@ -130,7 +130,6 @@ alias ghc-pkg='sudo ghc-pkg'
 alias elogv='sudo elogv'
 alias btrfs='sudo btrfs'
 alias gcc-config='sudo gcc-config'
-alias dmesg='sudo dmesg'
 alias paxctl-ng='sudo paxctl-ng'
 
 # SELinux

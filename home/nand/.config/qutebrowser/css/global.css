@@ -55,6 +55,10 @@ span.quote {
     color: #789922 !important;
 }
 
+div.postContainer > div.post > div.file {
+    width: 800px !important;
+}
+
 /* TeX images */
 
 img.tex, img.numberedequation, img.inlineformula, span.math {

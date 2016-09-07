@@ -79,10 +79,13 @@ dev-util/apitrace
 dev-util/cloc
 dev-util/debugedit
 dev-util/ltrace
+dev-util/nvidia-cuda-sdk
+dev-util/nvidia-cuda-toolkit
 dev-util/perf
 dev-util/strace
 dev-util/threadscope
 dev-util/valgrind
+games-engines/scummvm
 games-misc/cowsay
 games-misc/fortune-mod
 gnome-extra/yad
@@ -128,6 +131,7 @@ media-sound/mpc
 media-sound/mpd
 media-sound/mumble
 media-sound/opus-tools
+media-sound/sox
 media-sound/teamspeak-client-bin
 media-sound/vimus
 media-sound/vorbisgain
@@ -179,6 +183,7 @@ sys-apps/man-db
 sys-apps/memtest86+
 sys-apps/moreutils
 sys-apps/portage
+sys-apps/pv
 sys-apps/smartmontools
 sys-apps/systemd
 sys-apps/usbutils
@@ -229,6 +234,7 @@ x11-misc/unclutter
 x11-misc/urxvt-perls
 x11-misc/vdpauinfo
 x11-misc/xclip
+x11-misc/xdotool
 x11-misc/xfe
 x11-misc/xkeycaps
 x11-misc/xmobar
