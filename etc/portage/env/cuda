@@ -1,0 +1,2 @@
+CFLAGS="${CFLAGS} -I/opt/cuda/include"
+EXTRA_FFMPEG_CONF="--enable-cuda --enable-cuvid --enable-nonfree"
