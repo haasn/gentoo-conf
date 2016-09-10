@@ -37,7 +37,7 @@ Xft.dpi: 150
 rofi.lines: 20
 rofi.width: 30
 rofi.columns: 3
-rofi.font: terminus 16
+rofi.font: terminus 14
 rofi.bw: 2
 rofi.color-window: #0e1112,#75b2b3,#75b2b3
 rofi.color-normal: #0e1112,#ddccbb,#0B0E0E,#323232,#ddccbb

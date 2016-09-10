@@ -1,3 +1,46 @@
+From ebee0f22455e65e615b63fab3376156d74882271 Mon Sep 17 00:00:00 2001
+From: shinchiro <shinchiro@nowhere.com>
+Date: Sun, 27 Dec 2015 16:39:01 +0800
+Subject: [PATCH] Add HEVC intrinsics
+
+All patches come from:
+http://git.1f0.de/gitweb?p=ffmpeg.git;a=summary;js=1
+https://github.com/mpc-hc/FFmpeg.git
+
+Series of patches:
+hevc: port intrinsic SSE2 IDCT from OpenHEVC
+hevc: port intra pred SIMD from OpenHEVC
+x86/hevc: use DECLARE_ALIGNED for on-stack tmp arrays to avoid crashes
+hevc: don't use deprecated YUVJ pixel formats
+x86/hevc: correctly mark intrapred functions as SSE4
+---
+ libavcodec/hevc_ps.c                  |   2 -
+ libavcodec/hevcpred.c                 |   2 +
+ libavcodec/hevcpred.h                 |   1 +
+ libavcodec/x86/Makefile               |   4 +-
+ libavcodec/x86/hevc_idct_intrinsic.c  | 763 ++++++++++++++++++++++++++++
+ libavcodec/x86/hevc_intra_intrinsic.c | 922 ++++++++++++++++++++++++++++++++++
+ libavcodec/x86/hevcdsp.h              |  22 +
+ libavcodec/x86/hevcdsp_init.c         |  50 ++
+ libavcodec/x86/hevcpred.h             |  24 +
+ 9 files changed, 1787 insertions(+), 3 deletions(-)
+ create mode 100644 libavcodec/x86/hevc_idct_intrinsic.c
+ create mode 100644 libavcodec/x86/hevc_intra_intrinsic.c
+ create mode 100644 libavcodec/x86/hevcpred.h
+
+diff --git a/libavcodec/hevc_ps.c b/libavcodec/hevc_ps.c
+index 14f908e..e68cf88 100644
+--- a/libavcodec/hevc_ps.c
++++ b/libavcodec/hevc_ps.c
+@@ -543,8 +543,6 @@ static void decode_vui(GetBitContext *gb, AVCodecContext *avctx,
+         vui->video_format                    = get_bits(gb, 3);
+         vui->video_full_range_flag           = get_bits1(gb);
+         vui->colour_description_present_flag = get_bits1(gb);
+-        if (vui->video_full_range_flag && sps->pix_fmt == AV_PIX_FMT_YUV420P)
+-            sps->pix_fmt = AV_PIX_FMT_YUVJ420P;
+         if (vui->colour_description_present_flag) {
+             vui->colour_primaries        = get_bits(gb, 8);
+             vui->transfer_characteristic = get_bits(gb, 8);
 diff --git a/libavcodec/hevcpred.c b/libavcodec/hevcpred.c
 index 02c1766..bd7ddc9 100644
 --- a/libavcodec/hevcpred.c
@@ -21,23 +64,23 @@ index eb17663..57e233d 100644
  
  #endif /* AVCODEC_HEVCPRED_H */
 diff --git a/libavcodec/x86/Makefile b/libavcodec/x86/Makefile
-index 522b6c2..9070941 100644
+index 0d09fe6..9cbfaeb 100644
 --- a/libavcodec/x86/Makefile
 +++ b/libavcodec/x86/Makefile
-@@ -149,7 +149,9 @@ YASM-OBJS-$(CONFIG_HEVC_DECODER)       += x86/hevc_mc.o                 \
+@@ -145,7 +145,9 @@ YASM-OBJS-$(CONFIG_HEVC_DECODER)       += x86/hevc_mc.o                 \
                                            x86/hevc_idct.o               \
                                            x86/hevc_res_add.o            \
                                            x86/hevc_sao.o                \
 -                                          x86/hevc_sao_10bit.o
 +                                          x86/hevc_sao_10bit.o          \
-+                                          x86/hevc_intra_intrinsic.o    \
-+                                          x86/hevc_idct_intrinsic.o
++                                          x86/hevc_idct_intrinsic.o     \
++                                          x86/hevc_intra_intrinsic.o
  YASM-OBJS-$(CONFIG_JPEG2000_DECODER)   += x86/jpeg2000dsp.o
  YASM-OBJS-$(CONFIG_MLP_DECODER)        += x86/mlpdsp.o
  YASM-OBJS-$(CONFIG_MPEG4_DECODER)      += x86/xvididct.o
 diff --git a/libavcodec/x86/hevc_idct_intrinsic.c b/libavcodec/x86/hevc_idct_intrinsic.c
 new file mode 100644
-index 0000000..7f732d2
+index 0000000..ef970d7
 --- /dev/null
 +++ b/libavcodec/x86/hevc_idct_intrinsic.c
 @@ -0,0 +1,763 @@
@@ -668,7 +711,7 @@ index 0000000..7f732d2
 +}
 +#define TRANSFORM_8x8(D)                                                       \
 +void ff_hevc_transform_8x8_ ## D ## _sse2 (int16_t *coeffs, int col_limit) {    \
-+    int16_t tmp[8*8];                                                          \
++    DECLARE_ALIGNED(16, int16_t, tmp[8*8]);                                    \
 +    int16_t *src    = coeffs;                                                  \
 +    int16_t *p_dst1 = tmp;                                                     \
 +    int16_t *p_dst;                                                            \
@@ -735,8 +778,8 @@ index 0000000..7f732d2
 +#define TR_32(dst, dst_stride, in, sstep)                                      \
 +    {                                                                          \
 +        int i;                                                                 \
-+        int e32[16*16];                                                        \
-+        int o32[16*16];                                                        \
++        DECLARE_ALIGNED(16, int, e32[16*16]);                                  \
++        DECLARE_ALIGNED(16, int, o32[16*16]);                                  \
 +        LOAD16x16_O(e, in, sstep);                                             \
 +        for (i = 0; i < 16; i++) {                                             \
 +            src0 = _mm_setzero_si128();                                        \
@@ -769,8 +812,8 @@ index 0000000..7f732d2
 +    int i, j, k, add;                                                          \
 +    int      shift = 7;                                                        \
 +    int16_t *src   = coeffs;                                                   \
-+    int16_t  tmp[H*H];                                                         \
-+    int16_t  tmp_2[H*H];                                                       \
++    DECLARE_ALIGNED(16, int16_t, tmp[H*H]);                                    \
++    DECLARE_ALIGNED(16, int16_t, tmp_2[H*H]);                                  \
 +    int16_t *p_dst, *p_tra = tmp_2;                                            \
 +    __m128i src0, src1, src2, src3;                                            \
 +    __m128i tmp0, tmp1, tmp2, tmp3, tmp4;                                      \
@@ -806,7 +849,7 @@ index 0000000..7f732d2
 +#endif
 diff --git a/libavcodec/x86/hevc_intra_intrinsic.c b/libavcodec/x86/hevc_intra_intrinsic.c
 new file mode 100644
-index 0000000..40e44d9
+index 0000000..3a8a331
 --- /dev/null
 +++ b/libavcodec/x86/hevc_intra_intrinsic.c
 @@ -0,0 +1,922 @@
@@ -819,7 +862,7 @@ index 0000000..40e44d9
 +
 +#ifdef __GNUC__
 +#pragma GCC push_options
-+#pragma GCC target("sse4.2")
++#pragma GCC target("sse4.1")
 +#endif
 +
 +#if HAVE_SSE2
@@ -828,11 +871,11 @@ index 0000000..40e44d9
 +#if HAVE_SSSE3
 +#include <tmmintrin.h>
 +#endif
-+#if HAVE_SSE42
++#if HAVE_SSE4
 +#include <smmintrin.h>
 +#endif
 +
-+#if HAVE_SSE42
++#if HAVE_SSE4
 +#define _MM_PACKUS_EPI32 _mm_packus_epi32
 +#else
 +static av_always_inline __m128i _MM_PACKUS_EPI32( __m128i a, __m128i b )
@@ -849,7 +892,7 @@ index 0000000..40e44d9
 +////////////////////////////////////////////////////////////////////////////////
 +//
 +////////////////////////////////////////////////////////////////////////////////
-+#if HAVE_SSE42
++#if HAVE_SSE4
 +#define PLANAR_INIT_8()                                                        \
 +    uint8_t *src = (uint8_t*)_src;                                             \
 +    const uint8_t *top = (const uint8_t*)_top;                                 \
@@ -1446,7 +1489,7 @@ index 0000000..40e44d9
 +////////////////////////////////////////////////////////////////////////////////
 +//
 +////////////////////////////////////////////////////////////////////////////////
-+#if HAVE_SSE42
++#if HAVE_SSE4
 +#define ANGULAR_COMPUTE_10(W)                                                  \
 +    for (x = 0; x < W; x += 4) {                                               \
 +        r3 = _mm_set1_epi32((fact << 16) + (32 - fact));                       \
@@ -1764,7 +1807,7 @@ index ad8168f..74184f6 100644
 +
  #endif // AVCODEC_X86_HEVCDSP_H
 diff --git a/libavcodec/x86/hevcdsp_init.c b/libavcodec/x86/hevcdsp_init.c
-index 09eb06d..2e046a7 100644
+index 0de0163..5ca8df1 100644
 --- a/libavcodec/x86/hevcdsp_init.c
 +++ b/libavcodec/x86/hevcdsp_init.c
 @@ -719,6 +719,12 @@ void ff_hevc_dsp_init_x86(HEVCDSPContext *c, const int bit_depth)
@@ -1780,7 +1823,7 @@ index 09eb06d..2e046a7 100644
          }
          if (EXTERNAL_SSSE3(cpu_flags)) {
              if(ARCH_X86_64) {
-@@ -875,6 +881,12 @@ void ff_hevc_dsp_init_x86(HEVCDSPContext *c, const int bit_depth)
+@@ -871,6 +877,12 @@ void ff_hevc_dsp_init_x86(HEVCDSPContext *c, const int bit_depth)
              c->transform_add[1]    = ff_hevc_transform_add8_10_sse2;
              c->transform_add[2]    = ff_hevc_transform_add16_10_sse2;
              c->transform_add[3]    = ff_hevc_transform_add32_10_sse2;
@@ -1793,7 +1836,7 @@ index 09eb06d..2e046a7 100644
          }
          if (EXTERNAL_SSSE3(cpu_flags) && ARCH_X86_64) {
              c->hevc_v_loop_filter_luma = ff_hevc_v_loop_filter_luma_10_ssse3;
-@@ -1075,6 +1087,12 @@ void ff_hevc_dsp_init_x86(HEVCDSPContext *c, const int bit_depth)
+@@ -1069,6 +1081,12 @@ void ff_hevc_dsp_init_x86(HEVCDSPContext *c, const int bit_depth)
              c->idct_dc[1] = ff_hevc_idct8x8_dc_12_sse2;
              c->idct_dc[2] = ff_hevc_idct16x16_dc_12_sse2;
              c->idct_dc[3] = ff_hevc_idct32x32_dc_12_sse2;
@@ -1806,7 +1849,7 @@ index 09eb06d..2e046a7 100644
          }
          if (EXTERNAL_SSSE3(cpu_flags) && ARCH_X86_64) {
              c->hevc_v_loop_filter_luma = ff_hevc_v_loop_filter_luma_12_ssse3;
-@@ -1112,3 +1130,35 @@ void ff_hevc_dsp_init_x86(HEVCDSPContext *c, const int bit_depth)
+@@ -1103,3 +1121,35 @@ void ff_hevc_dsp_init_x86(HEVCDSPContext *c, const int bit_depth)
          }
      }
  }
@@ -1832,12 +1875,12 @@ index 09eb06d..2e046a7 100644
 +    int mm_flags = av_get_cpu_flags();
 +
 +    if (bit_depth == 8) {
-+        if (HAVE_SSE42 && EXTERNAL_SSE42(mm_flags)) {
++        if (EXTERNAL_SSE4(mm_flags)) {
 +            HEVC_PRED(8);
 +        }
 +    }
 +    if (bit_depth == 10) {
-+        if (HAVE_SSE42 && EXTERNAL_SSE42(mm_flags)) {
++        if (EXTERNAL_SSE4(mm_flags)) {
 +            HEVC_PRED(10);
 +        }
 +    }
@@ -1873,3 +1916,6 @@ index 0000000..d26e5bf
 +
 +#endif // AVCODEC_X86_HEVCPRED_H
 \ No newline at end of file
+-- 
+2.6.3
+

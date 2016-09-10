@@ -1,0 +1,3 @@
+#!/bin/sh
+RES=$(cut --complement -d' ' -f1 ~/.qute/history | awk '!x[$0]++' | rofi -columns 1 -i -dmenu)
+[ $? -eq 0 ] && exec newtab "$(echo $RES | cut -d' ' -f1)"

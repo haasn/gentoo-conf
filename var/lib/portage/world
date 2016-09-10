@@ -17,6 +17,7 @@ app-emulation/qemu
 app-emulation/wine
 app-forensics/afl
 app-forensics/rkhunter
+app-misc/adblock2privoxy
 app-misc/colordiff
 app-misc/dtach
 app-misc/ranger
@@ -29,6 +30,7 @@ app-portage/hackport
 app-portage/layman
 app-portage/mirrorselect
 app-portage/pfl
+app-portage/repoman
 app-portage/smart-live-rebuild
 app-shells/dash
 app-shells/gentoo-zsh-completions
@@ -79,8 +81,6 @@ dev-util/apitrace
 dev-util/cloc
 dev-util/debugedit
 dev-util/ltrace
-dev-util/nvidia-cuda-sdk
-dev-util/nvidia-cuda-toolkit
 dev-util/perf
 dev-util/strace
 dev-util/threadscope
@@ -170,6 +170,7 @@ net-misc/whois
 net-misc/youtube-dl
 net-p2p/rtorrent
 net-p2p/transmission
+net-proxy/privoxy
 sys-apps/dmidecode
 sys-apps/evrouter
 sys-apps/firejail

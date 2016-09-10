@@ -104,6 +104,8 @@ extraKeys =
     , ((mod4Mask .|. shiftMask, xK_q), return ())
     , ((mod1Mask .|. mod3Mask .|. mod4Mask, xK_q), io (exitWith ExitSuccess))
 
+    -- Open a new tab (fuzzy search based on history)
+    , ((mod4Mask, xK_t), spawn "exec /usr/local/bin/fuzzytab")
     , ((mod4Mask, xK_r), spawn "exec /usr/bin/rofi -show run")
 
     -- Lock the screen when not in use
