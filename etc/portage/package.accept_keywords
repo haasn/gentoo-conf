@@ -1,170 +1,32 @@
-#################
-#### Haskell ####
-#################
+######################
+#### Live ebuilds ####
+######################
 
-# Allow all of vapoursynth at ver 9999
-media-libs/ffmpegsource **
-*/*::vapoursynth **
-
-# Rapid development
-#dev-haskell/lens **
-# dev-haskell/pipes **
-dev-haskell/zippers **
-dev-haskell/tables **
-
-# Vimus development
-dev-haskell/libmpd **
-media-sound/vimus **
-
-# Fix compile bugs?
-dev-haskell/x11-xft **
-x11-misc/xmobar **
-x11-misc/taffybar **
-x11-wm/xmonad **
-x11-wm/xmonad-contrib **
-
-# Allow agda-9999, hopefully fixes compile error
-sci-mathematics/agda* **
-
-# Test out GHC 7.8.1
-=dev-lang/ghc-7.8.2 **
-=dev-haskell/haddock-2.14.2 **
-
-# Needed for compatibility with GHC 7.6.1
-#dev-haskell/haddock **
-
-# Unkeyworded
-dev-haskell/repa **
-
-# Upstream policy stuff ASAP
-sec-policy/* **
-
-############################
-#### Media applications ####
-############################
-
-# Krita 3.x
-#media-gfx/krita **
-
-# Needed for live streams
-media-video/rtmpdump **
-
-# Needed for bug 584742
-media-sound/mpd ** # unstable HEAD
-
-# No stable versions
-media-sound/autoplay **
-
-# mpv development and testing, also cms
-media-libs/x264 **
-media-libs/x265 **
-media-video/ffmpeg **
-media-video/mpv **
-media-video/mplayer **
-media-libs/libass **
-net-misc/youtube-dl **
-# media-libs/harfbuzz **
-
-# Fast development
-www-client/qutebrowser **
-
-# Because we already pull in unstable x264lib
-media-video/gpac **
-media-video/x264-encoder **
-
-# Git version is the to-go
-games-fps/xonotic **
-games-fps/xonotic-data **
-games-fps/xonotic-maps **
-games-util/fteqcc-xonotic **
-dev-libs/d0_blind_id **
-
-# Fun games
-games-emulation/dolphin-emu **
-games-emulation/mupen64plus* **
-
-
-#######################
-#### Miscellaneous ####
-#######################
-
-*/*::kde
-
-# Apparently unstable
-app-emulation/vmips **
-app-emulation/vmips-cross-bin **
-
-# Pretty much the only J compiler in portage
-dev-lang/j **
-
-# Google's Go language
-# dev-lang/go **
-
-# No time for love
-app-misc/screenfetch **
-
-# Needed for testing new features
-net-irc/weechat **
-
-# Use portage 2.2, needed for @live-rebuild and other niceties
-=sys-apps/portage-2.2* **
-
-# Needed for raw3.patch, avoid rebuilding now.
-#app-emulation/wine **
-app-emulation/winetricks **
-#app-emulation/playonlinux **
-
-# Standalone, shouldn't affect anything else
-app-arch/paq8l **
-
-# Suckless programs
-x11-terms/st **
-
-# C REPL
-sys-devel/c-repl **
-
-# Needed for school work
-app-office/openproj **
-
-# Custom patches in my git fork
-app-admin/pass **
-
-# Older version doesn't work (no sources found)
-sys-apps/ksplice **
-
-# Potentially fix USB-related bug in newer version
-=sys-power/apcupsd-3.14.12 **
-
-# Rust stuff
-#dev-lang/rust **
-#app-vim/rust-mode **
-#dev-rust/cargo **
-
-# Up-to-date versions
-net-im/tox **
-net-im/toxic **
-
-# Incompatible with newer kernels
+# Incompatible with newer kernels, remove ASAP
 sys-fs/zfs **
 sys-fs/zfs-kmod **
 sys-kernel/spl **
-
-# Virgl support
-#app-emulation/libvirt **
-#dev-python/libvirt-python **
-#app-emulation/virt-manager **
-#app-emulation/qemu **
-#media-libs/virglrenderer **
-
-# Probably better performance
-#media-libs/mesa **
-#11-drivers/xf86-video-ati **
-#11-libs/glamor **
-
-# Needed for ZFS
 sys-boot/grub **
 
-########################################
-#### Other accept flags (auto unmask)...
-x11-misc/rofi **
+*/*::vapoursynth **
+app-admin/pass **
+app-misc/screenfetch **
+media-libs/ffmpegsource **
+media-libs/libass **
+media-libs/x264 **
+media-libs/x265 **
+media-sound/autoplay **
+media-sound/mpd ** # bug 584742
 media-sound/mumble **
+media-sound/vimus **
+media-video/ffmpeg **
+media-video/mpv **
+media-video/rtmpdump **
+media-video/x264-encoder **
+net-irc/weechat **
+net-misc/youtube-dl **
+www-client/qutebrowser **
+x11-misc/rofi **
+x11-misc/xmobar **
+x11-wm/xmonad **
+x11-wm/xmonad-contrib **

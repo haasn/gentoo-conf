@@ -65,6 +65,7 @@ dev-lang/python
 dev-python/flake8
 dev-python/pylint
 dev-python/pympler
+dev-python/pyqtgraph
 dev-python/pytest-cov
 dev-python/pytest-xdist
 dev-python/tox
@@ -131,8 +132,9 @@ media-sound/mpc
 media-sound/mpd
 media-sound/mumble
 media-sound/opus-tools
+media-sound/pavucontrol
+media-sound/pulseaudio
 media-sound/sox
-media-sound/teamspeak-client-bin
 media-sound/vimus
 media-sound/vorbisgain
 media-video/ffmpeg
@@ -154,7 +156,6 @@ net-dns/bind-tools
 net-dns/unbound
 net-firewall/firehol
 net-fs/sshfs
-net-im/skype
 net-irc/weechat
 net-libs/libntlm
 net-mail/isync

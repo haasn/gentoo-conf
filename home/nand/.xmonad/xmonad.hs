@@ -92,7 +92,7 @@ extraKeys =
 
     , ((mod4Mask                , xK_space), sendMessage BSP.Rotate)
     , ((mod4Mask .|. mod1Mask   , xK_space), sendMessage BSP.Swap)
-    , ((mod4Mask .|. controlMask, xK_space), sendMessage NextLayout)
+    , ((mod4Mask .|. controlMask, xK_space), sendMessage BSP.Equalize)
 
     -- Fullscreen
     , ((mod4Mask, xK_f), sendMessage NextLayout)
@@ -109,7 +109,7 @@ extraKeys =
     , ((mod4Mask, xK_r), spawn "exec /usr/bin/rofi -show run")
 
     -- Lock the screen when not in use
-    , ((mod4Mask, xK_s), spawn "exec /usr/bin/i3lock -c 000000")
+    , ((mod4Mask, xK_s), spawn "exec /usr/local/bin/lock")
 
     -- Reset the mouse cursor
     , ((mod4Mask, xK_Escape), spawn "exec /usr/bin/swarp 0 0")

@@ -71,6 +71,12 @@ span.math * {
     border-color: black !important;
 }
 
+/* For devtalk.nvidia.com */
+
+div.widget-100 > div.board-topics > div.topic {
+    overflow: hidden !important;
+}
+
 /* Ad element hiding */
 
 div#_Ltg { /* google search results */

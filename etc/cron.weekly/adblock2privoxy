@@ -1,0 +1,2 @@
+#!/bin/sh
+sudo -u privoxy -g privoxy /usr/bin/adblock2privoxy -t /etc/privoxy/ab2p.task

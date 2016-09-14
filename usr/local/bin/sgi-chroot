@@ -1,0 +1,11 @@
+#!/bin/bash
+TAR="$1"
+echo "Mounting..."
+mount -t proc proc "$TAR"/proc
+mount --rbind /sys "$TAR"/sys
+mount --make-rslave "$TAR"/sys
+mount --rbind /dev "$TAR"/dev
+mount --make-rslave "$TAR"/dev
+PATH="$PATH:/bin:/sbin" chroot "$TAR" /bin/bash
+echo "Unmounting..."
+umount -R "$TAR"/{dev,proc,sys}

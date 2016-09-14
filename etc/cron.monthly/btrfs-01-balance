@@ -1,0 +1,8 @@
+#!/bin/sh
+for FS in / /y; do
+    SUBJECT="`hostname`: btrfs balance for ${FS}"
+    MAILTO=nand
+
+    RES=$(/sbin/btrfs balance start -dusage=20 -musage=20 ${FS} 2>&1)
+    [ $? -eq 0 ] || printf "%s\n" "$RES" | mail -s "${SUBJECT}" ${MAILTO}
+done

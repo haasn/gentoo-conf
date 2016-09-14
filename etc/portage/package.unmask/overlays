@@ -1,40 +1,5 @@
 ## Overlay unmasking
 
-# Gamerlay
-games-emulation/mupen64plus*::gamerlay
-
-# Sunrise
-app-arch/paq8l::sunrise
-games-roguelike/dwarf-fortress::sunrise
-media-gfx/pinta::sunrise
-x11-misc/swarp::sunrise
-app-office/ganttproject-bin::sunrise
-dev-libs/libwiimote::sunrise
-sys-apps/evrouter::sunrise
-www-plugins/okularplugin::sunrise
-app-admin/cpu-g::sunrise
-
-# Powerman
-dev-lang/go::powerman
-
-# Maggu2810-overlay
-app-misc/xwiimote::maggu2810-overlay
-x11-drivers/xf86-input-xwiimote::maggu2810-overlay
-app-misc/cwiid::maggu2810-overlay
-
-# Miramir
-app-office/openproj::miramir
-
-# MPD
-media-sound/mpd::mpd
-
-# X11
-<=x11-drivers/ati-drivers-12.4::x11
-media-libs/mesa:x11
-x11-drivers/xf86-video-ati:x11
-x11-libs/glamor:x11
-x11-libs/libvdpau-va-gl::x11
-
 # Deter
 gnome-extra/yad::deter
 
@@ -44,31 +9,15 @@ net-p2p/cjdns::emery
 media-sound/squishyball::emery
 media-fonts/unifraktur::emery
 
-# Ixit
-sys-apps/ksplice::ixit
+# Mva
+dev-qt/qt5ct::mva
 
-# Rust
-dev-lang/rust::rust
-dev-rust/*::rust
-app-vim/rust-mode::rust
-dev-util/cargo::rust
+# Palemoon
+www-client/palemoon::palemoon
 
-# Rebutia
-net-misc/trickle::rebutia
-
-# Mrueg
-net-im/tox-core::mrueg
-net-im/toxic::mrueg
-
-# Farmboy0
-www-client/palemoon::farmboy0
-app-benchmarks/phoronix-test-suite::farmboy0
-
-# Wichtounet
-app-misc/tagsistant::wichtounet
-
-# Benf
-app-misc/ddccontrol-db::benf
+# Sunrise
+x11-misc/swarp::sunrise
+sys-apps/evrouter::sunrise
 
 # Vapoursynth
 media-libs/zimg::vapoursynth
@@ -78,25 +27,3 @@ media-plugins/vapoursynth-flash3kyuu_deband::vapoursynth
 media-plugins/vapoursynth-fmtconv::vapoursynth
 media-plugins/vapoursynth-mvtools::vapoursynth
 media-plugins/vapoursynth-nnedi3::vapoursynth
-
-# Dotnet
-dev-lang/mono::dotnet
-
-# KDE
-kde-apps/konsole::kde
-app-office/calligra::kde
-media-gfx/krita::kde
-
-# Mva
-dev-qt/qt5ct::mva
-
-# Palemoon
-www-client/palemoon::palemoon
-
-# Pentoo
-app-crypt/cryptohaze-combined::pentoo
-app-forensics/stegdetect::pentoo
-app-crypt/johntheripper::pentoo
-
-# Qt
-dev-qt/*::qt

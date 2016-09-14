@@ -1,0 +1,8 @@
+#!/bin/sh
+for FS in / /y; do
+    SUBJECT="`hostname`: btrfs scrub for ${FS}"
+    MAILTO=nand
+
+    RES=$(/sbin/btrfs scrub start -Bd -c3 ${FS} 2>&1)
+    [ $? -eq 0 ] || printf "%s\n" "$RES" | mail -s "${SUBJECT}" ${MAILTO}
+done

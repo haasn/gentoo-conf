@@ -1,0 +1,3 @@
+#!/bin/sh
+POOL=zarathustra
+/sbin/zpool scrub ${POOL}

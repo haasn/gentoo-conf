@@ -13,31 +13,80 @@
 # General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with PulseAudio; if not, write to the Free Software Foundation,
-# Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+# along with PulseAudio; if not, see <http://www.gnu.org/licenses/>.
 
-### Load permanent devices
-load-module module-alsa-sink device=iec958:CARD=ODACrevB
-load-module module-alsa-sink device=front:CARD=Microphone
-load-module module-alsa-source device=iec958:CARD=Microphone
+# This startup script is used only if PulseAudio is started per-user
+# (i.e. not in system mode)
 
-### Automatically load driver modules depending on the hardware available
-#load-module module-detect
-
-### Equalizer
-#load-module module-ladspa-sink channels=2 sink_name=Equalizer master=alsa_output.iec958 plugin=tap_eq label=tap_equalizer control=10,,,,,,,,50,100,200,500,1000,3000,8000,15000
-#load-module module-ladspa-sink channels=2 sink_name=Pregain master=Equalizer plugin=cmt label=amp_mono control=0.22
-
-### Load several protocols
-load-module module-native-protocol-unix
-#load-module module-dbus-protocol
+.fail
 
 ### Automatically restore the volume of streams and devices
-load-module module-stream-restore
 load-module module-device-restore
+load-module module-stream-restore
+load-module module-card-restore
+
+### Automatically augment property information from .desktop files
+### stored in /usr/share/application
+load-module module-augment-properties
+
+### Should be after module-*-restore but before module-*-detect
+load-module module-switch-on-port-available
+
+### Load audio drivers statically
+### (it's probably better to not load these drivers manually, but instead
+### use module-udev-detect -- see below -- for doing this automatically)
+#load-module module-alsa-sink
+#load-module module-alsa-source device=hw:1,0
+#load-module module-null-sink
+#load-module module-pipe-sink
+
+### Automatically load driver modules depending on the hardware available
+.ifexists module-udev-detect.so
+load-module module-udev-detect
+.else
+### Use the static hardware detection module (for systems that lack udev support)
+load-module module-detect
+.endif
+
+### Automatically connect sink and source if JACK server is present
+.ifexists module-jackdbus-detect.so
+.nofail
+load-module module-jackdbus-detect channels=2
+.fail
+.endif
+
+
+### Load several protocols
+.ifexists module-esound-protocol-unix.so
+load-module module-esound-protocol-unix
+.endif
+load-module module-native-protocol-unix
+
+### Network access (may be configured with paprefs, so leave this commented
+### here if you plan to use paprefs)
+#load-module module-esound-protocol-tcp
+#load-module module-native-protocol-tcp
+
+### Load the RTP receiver module (also configured via paprefs, see above)
+#load-module module-rtp-recv
+
+### Load the RTP sender module (also configured via paprefs, see above)
+#load-module module-null-sink sink_name=rtp format=s16be channels=2 rate=44100 sink_properties="device.description='RTP Multicast Sink'"
+#load-module module-rtp-send source=rtp.monitor
+
+### Load additional modules from GConf settings. This can be configured with the paprefs tool.
+### Please keep in mind that the modules configured by paprefs might conflict with manually
+### loaded modules.
+.ifexists module-gconf.so
+.nofail
+load-module module-gconf
+.fail
+.endif
 
 ### Automatically restore the default sink/source when changed by the user
 ### during runtime
+### NOTE: This should be loaded as early as possible so that subsequent modules
+### that look up the default sink/source get the right value
 load-module module-default-device-restore
 
 ### Automatically move streams to the default sink if the sink they are
@@ -45,10 +94,39 @@ load-module module-default-device-restore
 load-module module-rescue-streams
 
 ### Make sure we always have a sink around, even if it is a null sink.
-#load-module module-always-sink
+load-module module-always-sink
+
+### Honour intended role device property
+load-module module-intended-roles
 
 ### Automatically suspend sinks/sources that become idle for too long
-#load-module module-suspend-on-idle
+load-module module-suspend-on-idle
 
-### For KDE KMix integration
-load-module module-device-manager
+### If autoexit on idle is enabled we want to make sure we only quit
+### when no local session needs us anymore.
+.ifexists module-console-kit.so
+load-module module-console-kit
+.endif
+.ifexists module-systemd-login.so
+load-module module-systemd-login
+.endif
+
+### Enable positioned event sounds
+load-module module-position-event-sounds
+
+### Cork music/video streams when a phone stream is active
+load-module module-role-cork
+
+### Modules to allow autoloading of filters (such as echo cancellation)
+### on demand. module-filter-heuristics tries to determine what filters
+### make sense, and module-filter-apply does the heavy-lifting of
+### loading modules and rerouting streams.
+load-module module-filter-heuristics
+load-module module-filter-apply
+
+### Set the default volume for new streams
+load-module module-match table=/etc/pulse/match.table
+
+### Make some devices default
+#set-default-sink output
+#set-default-source input

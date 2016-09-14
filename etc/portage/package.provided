@@ -1,6 +1,2 @@
 # Pretend we have consolekit to appease some PDEPENDS
-sys-auth/consolekit-0.4.6
-
-# Pretend we have dbus to appease some more PDEPENDS
-sys-apps/dbus-1.8.20
-dev-qt/qtdbus-4.8.7
+sys-auth/consolekit-1.1.0-r1
