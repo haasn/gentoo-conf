@@ -25,6 +25,7 @@ media-video/rtmpdump **
 media-video/x264-encoder **
 net-irc/weechat **
 net-misc/youtube-dl **
+=sys-kernel/genkernel-3.5* **
 www-client/qutebrowser **
 x11-misc/rofi **
 x11-misc/xmobar **

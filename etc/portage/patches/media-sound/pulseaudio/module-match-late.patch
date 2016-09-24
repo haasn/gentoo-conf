@@ -1,0 +1,45 @@
+diff --git a/src/modules/module-match.c b/src/modules/module-match.c
+index 559687c..b7f8373 100644
+--- a/src/modules/module-match.c
++++ b/src/modules/module-match.c
+@@ -228,13 +228,23 @@ static pa_hook_result_t sink_input_fixate_hook_callback(pa_core *c, pa_sink_inpu
+             if (r->proplist) {
+                 pa_log_debug("updating proplist of sink input '%s'", n);
+                 pa_proplist_update(si->proplist, r->mode, r->proplist);
+-            } else if (si->volume_writable) {
+-                pa_cvolume cv;
+-                pa_log_debug("changing volume of sink input '%s' to 0x%03x", n, r->volume);
+-                pa_cvolume_set(&cv, si->sample_spec.channels, r->volume);
+-                pa_sink_input_new_data_set_volume(si, &cv);
+-            } else
++                break;
++            }
++
++            // Changing the volume
++            if (!si->volume_writable) {
+                 pa_log_debug("the volume of sink input '%s' is not writable, can't change it", n);
++                break;
++            }
++            if (si->volume_is_set) {
++                pa_log_debug("the volume of sink input '%s' is already set, not changing it", n);
++                break;
++            }
++
++            pa_cvolume cv;
++            pa_log_debug("changing volume of sink input '%s' to 0x%03x", n, r->volume);
++            pa_cvolume_set(&cv, si->sample_spec.channels, r->volume);
++            pa_sink_input_new_data_set_volume(si, &cv);
+         }
+     }
+ 
+@@ -261,8 +271,8 @@ int pa__init(pa_module*m) {
+     if (load_rules(u, pa_modargs_get_value(ma, "table", NULL)) < 0)
+         goto fail;
+ 
+-    /* hook EARLY - 1, to match before stream-restore */
+-    u->sink_input_fixate_hook_slot = pa_hook_connect(&m->core->hooks[PA_CORE_HOOK_SINK_INPUT_FIXATE], PA_HOOK_EARLY - 1, (pa_hook_cb_t) sink_input_fixate_hook_callback, u);
++    /* hook EARLY + 1, to match after stream-restore */
++    u->sink_input_fixate_hook_slot = pa_hook_connect(&m->core->hooks[PA_CORE_HOOK_SINK_INPUT_FIXATE], PA_HOOK_EARLY + 1, (pa_hook_cb_t) sink_input_fixate_hook_callback, u);
+ 
+     pa_modargs_free(ma);
+     return 0;

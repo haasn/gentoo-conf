@@ -1,0 +1,17 @@
+# required by app-editors/neovim-0.1.4::gentoo
+# required by dev-python/neovim-python-client-0.1.9::gentoo
+# required by dev-python/neovim-python-client (argument)
+>=dev-lua/lpeg-1.0.0-r1 luajit
+# required by net-mail/notmuch-0.22-r2::gentoo[crypt]
+# required by net-mail/notmuch (argument)
+>=dev-libs/gmime-2.6.20-r3 smime
+# required by kde-base/kdelibs-4.14.21::gentoo[crypt]
+# required by app-office/calligra-l10n-2.9.11::gentoo
+# required by app-office/calligra-2.9.11::gentoo
+# required by @selected
+# required by @world (argument)
+>=app-crypt/qca-2.1.1-r1 qt4
+# required by app-editors/neovim-0.1.4::gentoo
+# required by dev-python/neovim-python-client-0.1.9::gentoo
+# required by dev-python/neovim-python-client (argument)
+>=dev-lua/mpack-1.0.2 luajit

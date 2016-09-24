@@ -33,6 +33,7 @@ main = do
     xmproc <- spawnPipe "exec xmobar"
     xmonad $ withUrgencyHook (NoUrgencyHook)
            $ fullscreenFix
+           $ ewmh
            $ def {
         manageHook          = manageFloats <+> manageDocks <+> manageHook def,
         layoutHook          = smartBorders $ avoidStruts $ myLayout,

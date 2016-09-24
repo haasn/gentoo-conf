@@ -1,0 +1,11 @@
+post_src_unpack() {
+	if type epatch_user &> /dev/null ; then
+		if [[ -d ${S} ]]; then
+			pushd "${S}" 2>/dev/null
+			epatch_user
+			popd 2>/dev/null
+		else
+			epatch_user
+		fi
+	fi
+}

@@ -121,11 +121,14 @@ media-libs/fmod
 media-libs/icc-profiles-openicc
 media-libs/ladspa-cmt
 media-libs/libsdl2
+media-libs/sdl2-image
+media-libs/vulkan-base
 media-libs/x265
 media-plugins/alsa-plugins
 media-plugins/ladspa-bs2b
 media-plugins/vapoursynth-ffmpegsource
 media-plugins/vapoursynth-mvtools
+media-sound/audacity
 media-sound/autoplay
 media-sound/mp3gain
 media-sound/mpc
@@ -204,7 +207,8 @@ sys-fs/shake
 sys-fs/udiskie
 sys-fs/zfs
 sys-fs/zfs-auto-snapshot
-sys-kernel/genkernel-next
+sys-kernel/dracut
+sys-kernel/genkernel
 sys-kernel/gentoo-sources
 sys-libs/freeipmi
 sys-power/apcupsd

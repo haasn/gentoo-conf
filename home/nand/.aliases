@@ -55,6 +55,7 @@ alias htop='htop -s PERCENT_MEM'
 
 # start in fullscreen mode
 alias sxiv='sxiv -Zf'
+alias mpv='numactl --cpunodebind=1 --membind=1 -- mpv'
 alias mvi='mpv --profile=image' # mission accomplished \o/
 
 # quicker root delete

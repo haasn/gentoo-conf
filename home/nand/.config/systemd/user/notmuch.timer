@@ -1,0 +1,9 @@
+[Unit]
+Description=Automatically update notmuch database
+
+[Timer]
+OnActiveSec=1s
+OnUnitActiveSec=5m
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,7 @@
+[Unit]
+Description=Update notmuch database
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/notmuch new
+TimeoutStartSec=30s
