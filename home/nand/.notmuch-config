@@ -107,7 +107,7 @@ gpg_path=gpg
 [bower:search_alias]
 default = ~d week.. AND ~signal
 signal = NOT ~noise OR ~unread
-noise = tag:calm OR tag:system OR tag:rss
-unread = tag:unread AND NOT tag:rss
+noise = tag:calm OR tag:system OR tag:rss OR tag:rssqueue
+unread = tag:unread AND NOT (tag:rss OR tag:rssqueue)
 rss = tag:rss AND tag:unread
 github = tag:mpv OR tag:bower OR tag:sxiv OR tag:qutebrowser

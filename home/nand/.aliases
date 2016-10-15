@@ -46,6 +46,8 @@ alias df='df --total -H'
 alias du='du --si'
 alias ds='du --total --summarize -- *'
 
+alias numa='numactl -N1 -m1 --'
+
 # allow colors in less and tmux
 alias less='less -R'
 alias tmux='tmux -2'
@@ -55,8 +57,13 @@ alias htop='htop -s PERCENT_MEM'
 
 # start in fullscreen mode
 alias sxiv='sxiv -Zf'
-alias mpv='numactl --cpunodebind=1 --membind=1 -- mpv'
+alias mpv='numa mpv'
+
+# aliases because the profile system sucks
 alias mvi='mpv --profile=image' # mission accomplished \o/
+alias mvb='mpv --profile=booru --playlist=-'
+alias mpa='mpv --profile=audio'
+alias mpn='mpv --profile=normalize'
 
 # quicker root delete
 alias srm='sudo rm'
@@ -443,3 +450,5 @@ seshowdef() {
 sepathdecode() {
 	python -c "import base64; print(base64.b16decode(\"${1}\"));";
 }
+
+alias booru='python3 ~/dev/haskell/hsbooru/crap/booru.py'

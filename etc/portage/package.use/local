@@ -65,6 +65,9 @@ kde-frameworks/* -handbook -kwallet
 app-text/asciidoc python_single_target_python2_7
 media-libs/vapoursynth  python_single_target_python3_4  python_targets_python3_4
 media-libs/vapoursynth -python_single_target_python3_5 -python_targets_python3_5
+net-im/pidgin python_single_target_python3_4 python_targets_python3_4
+net-irc/weechat  python_single_target_python2_7  python_targets_python2_7
+net-irc/weechat -python_single_target_python3_5 -python_targets_python3_5
 sys-process/systemd-cron python_targets_python3_4 python_single_target_python3_4
 
 # Uncategorized
@@ -72,9 +75,11 @@ app-arch/p7zip -wxwidgets
 app-crypt/pinentry qt4 -qt5 -gtk
 app-editors/neovim -jemalloc # build failure
 app-editors/vim cscope vim-pager
+app-emulation/lxc cgmanager # for LXD
 app-emulation/qemu spice usbredir virgl -curl -jpeg -png -python -vnc
 app-emulation/spice client
-app-emulation/wine realtime staging
+app-emulation/wine realtime staging s3tc
+app-eselect/eselect-php fpm
 app-portage/layman git subversion
 app-text/aspell linguas_de
 app-text/poppler qt4
@@ -82,18 +87,20 @@ app-text/texlive linguas_de
 app-text/zathura-meta pdf cb djvu postscript
 dev-db/sqlite secure-delete
 dev-lang/go -hardened # build failure
+dev-lang/php sqlite curl gd fpm
 dev-lang/python sqlite
 dev-libs/gmp static-libs
 dev-libs/libffi static-libs
 dev-libs/libpcre pcre16
 dev-libs/nss utils
 dev-libs/openssl -tls-heartbeat -sslv2 -sslv3
+dev-libs/xapian doc
 dev-python/PyQt5 webkit webengine webchannel testlib
 dev-python/numpy lapack
-dev-qt/qtgui dbus # for qt5ct
+dev-qt/qtgui dbus accessibility # for qt5ct and ts3
 dev-qt/qtwebchannel qml
 dev-qt/qtwebengine widgets
-dev-qt/qtwebkit printsupport
+dev-qt/qtwebkit printsupport webp
 dev-scheme/guile networking
 dev-util/apitrace qt4
 dev-util/ltrace unwind
@@ -126,11 +133,14 @@ media-video/x264-encoder 10bit -mp4
 net-analyzer/icinga2 mail postgres -mysql
 net-analyzer/monitoring-plugins fping postgres ssh
 net-analyzer/munin minimal syslog ipmi -java
+net-analyzer/netdata nfacct
 net-analyzer/nmap ncat nping -gtk -lua
 net-analyzer/vnstat gd
+net-dns/dnsmasq -lua
 net-im/bitlbee otr
 net-libs/polarssl programs
 net-misc/openvpn passwordsave
+net-misc/youtube-dl offensive
 net-p2p/rtorrent color
 net-p2p/transmission -gtk -xfs
 sys-apps/busybox static
@@ -146,6 +156,7 @@ sys-fs/ntfs3g ntfsprogs
 sys-fs/zfs rootfs
 sys-fs/zfs-kmod rootfs
 sys-kernel/*-sources symlink deblob
+sys-libs/libnih dbus # for LXD
 sys-libs/zlib minizip
 sys-process/lsof rpc
 sys-process/systemd-cron cron-boot minutely yearly

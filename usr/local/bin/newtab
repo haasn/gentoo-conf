@@ -8,8 +8,8 @@ from subprocess import call, run
 
 targets = {
     'newwin': 'window',
-    'newtab': 'tab',
-    'newbgtab': 'tab-bg'
+    'newtab': 'tab-silent',
+    'newbgtab': 'tab-bg-silent'
 }
 
 p = Path("/run/user/{}/qutebrowser".format(os.getuid()))

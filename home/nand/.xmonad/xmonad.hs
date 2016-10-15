@@ -33,7 +33,7 @@ main = do
     xmproc <- spawnPipe "exec xmobar"
     xmonad $ withUrgencyHook (NoUrgencyHook)
            $ fullscreenFix
-           $ ewmh
+--         $ ewmh
            $ def {
         manageHook          = manageFloats <+> manageDocks <+> manageHook def,
         layoutHook          = smartBorders $ avoidStruts $ myLayout,
@@ -108,6 +108,8 @@ extraKeys =
     -- Open a new tab (fuzzy search based on history)
     , ((mod4Mask, xK_t), spawn "exec /usr/local/bin/fuzzytab")
     , ((mod4Mask, xK_r), spawn "exec /usr/bin/rofi -show run")
+    , ((mod4Mask, xK_p), spawn "exec /usr/bin/rofi-pass")
+    , ((mod4Mask, xK_u), withFocused $ windows . W.sink)
 
     -- Lock the screen when not in use
     , ((mod4Mask, xK_s), spawn "exec /usr/local/bin/lock")
@@ -163,7 +165,7 @@ manageFloats = composeAll [ fmap (x `isInfixOf`) title --> doFloat
 floatTitles =
     [ "Firefox Preferences", "About Firefox", "Resize Canvas"
     , "Downloads", "Software Update", "World of Warcraft", "Limbo"
-    , "Audiosurf", "Audiosurf 2", "Heroes of the Storm", "scaler_test"
+    , "Audiosurf", "Audiosurf 2", "scaler_test"
     , "Convert Script", "Remote Viewer"
     ]
 

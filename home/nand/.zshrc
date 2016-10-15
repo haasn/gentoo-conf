@@ -102,6 +102,7 @@ fi
 WORDCHARS=${WORDCHARS/\/}
 
 # Environment vars
+export PATH="$PATH:$HOME/bin"
 export EDITOR=nvim
 export DARCS_DO_COLOR_LINES=1
 export GCC_COLORS=1

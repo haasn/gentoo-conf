@@ -4,6 +4,7 @@
 */*::mva
 */*::palemoon
 */*::sunrise
+*/*::tristelune
 */*::vapoursynth
 
 # Completely breaks for some reason I don't even want to bother figuring out
@@ -19,3 +20,6 @@
 
 # Breaks
 =sys-apps/firejail-0.9.42
+
+# Dependency conflicts
+=sys-apps/openrc-0.22*

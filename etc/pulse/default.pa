@@ -115,17 +115,19 @@ load-module module-systemd-login
 load-module module-position-event-sounds
 
 ### Cork music/video streams when a phone stream is active
-load-module module-role-cork
+#load-module module-role-cork
 
 ### Modules to allow autoloading of filters (such as echo cancellation)
 ### on demand. module-filter-heuristics tries to determine what filters
 ### make sense, and module-filter-apply does the heavy-lifting of
 ### loading modules and rerouting streams.
-load-module module-filter-heuristics
-load-module module-filter-apply
+#load-module module-filter-heuristics
+#load-module module-filter-apply
 
 ### Set the default volume for new streams
 load-module module-match table=/etc/pulse/match.table
+
+#load-module module-echo-cancel aec_method=webrtc
 
 ### Make some devices default
 #set-default-sink output

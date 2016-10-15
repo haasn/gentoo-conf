@@ -14,6 +14,10 @@ html > ::-webkit-scrollbar {
     color:      #DDCCBB !important;
 }
 
+img {
+    background: none !important;
+}
+
 a[href], a[href] * {
     color: #FFAA0F !important;
 }
@@ -47,7 +51,7 @@ span.qutehint > font {
 /* For 4chan */
 
 div#quickReply textarea {
-    width: 450px !important;
+    width: 550px !important;
     height: 500px !important;
 }
 
@@ -55,13 +59,32 @@ span.quote {
     color: #789922 !important;
 }
 
+span.sjis, #quickReply .sjis {
+    font-family: 'IPAMonaPGothic','Mona','MS PGothic',monospace !important;
+}
+
+s, s a:not(:hover) {
+    color: #333 !important;
+    background: #333 !important;
+}
+
+s:hover, s:focus, s:hover a, s:hover span {
+    color: white !important;
+    background: black !important;
+}
+
 div.postContainer > div.post > div.file {
     width: 800px !important;
 }
 
+span.nameBlock > span.n-pu {
+    background: url('https://s.4cdn.org/image/minileaf.gif') !important;
+}
+
 /* TeX images */
 
-img.tex, img.numberedequation, img.inlineformula, span.math {
+img.tex, img.numberedequation, img.inlineformula, span.math,
+img.mwe-math-fallback-image-inline {
     background-color: #bbb !important;
     padding: 1px !important;
 }
@@ -75,6 +98,12 @@ span.math * {
 
 div.widget-100 > div.board-topics > div.topic {
     overflow: hidden !important;
+}
+
+/* For wikipedia */
+
+div[style^="position: absolute"] {
+    background: none !important;
 }
 
 /* Ad element hiding */

@@ -19,6 +19,9 @@ www-client/palemoon::palemoon
 x11-misc/swarp::sunrise
 sys-apps/evrouter::sunrise
 
+# Tristelune
+app-admin/rofi-pass::tristelune
+
 # Vapoursynth
 media-libs/zimg::vapoursynth
 media-libs/vapoursynth::vapoursynth
