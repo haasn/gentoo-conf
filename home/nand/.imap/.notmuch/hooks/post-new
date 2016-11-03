@@ -7,6 +7,7 @@ notmuch tag +smartd -- tag:new and tag:system and subject:SMART
 
 # Important stuff
 notmuch tag +important -- tag:new and '(to:wichtig@* or to:urgent@* or to:important@*)'
+notmuch tag +bank      -- tag:new and '(to:sparkasse@haasn.xyz)'
 
 # Servers
 notmuch tag +tina -- tag:new and '(to: root@tina)'
@@ -17,6 +18,11 @@ notmuch tag -new +spam -- tag:new and to:gog@nand.wakku.to
 notmuch tag -new +deleted -- tag:new and to:linuxpool.informatik@uni-ulm.de and from:gitlab@gitlab.informatik.uni-ulm.de
 notmuch tag -new +spam -- tag:new and 'to:trash*@nand.wakku.to'
 notmuch tag -new +spam -- tag:new and 'to:google-summer-of-code-students-list@googlegroups.com'
+
+# Useless netdata alarms
+notmuch tag -new +deleted -- tag:new and 'from:netdata@haasn.xyz' and 'subject:xor*ram in use'
+notmuch tag -new +deleted -- tag:new and 'from:netdata@haasn.xyz' and 'subject:xor*disk utilization'
+notmuch tag -new +deleted -- tag:new and 'from:netdata@localgroup.top' and 'subject:virgo*packet drops'
 
 # Uni-related tags
 notmuch tag +icinga   -- tag:new and '(from:icinga@devel02.informatik.uni-ulm.de or from:nagios@haasn.xyz or to:icinga.*@haasn.xyz)'

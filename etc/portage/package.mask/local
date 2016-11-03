@@ -3,6 +3,7 @@
 */*::emery
 */*::mva
 */*::palemoon
+*/*::qt
 */*::sunrise
 */*::tristelune
 */*::vapoursynth
@@ -11,6 +12,7 @@
 =dev-cpp/gtkmm-3.20*
 =x11-libs/gtk+-3.20*
 =x11-misc/notification-daemon-3.20*
+x11-themes/gnome-themes-standard
 
 # Incompatible with ZFS
 >=sys-fs/udev-init-scripts-28
@@ -19,7 +21,10 @@
 >=media-sound/mumble-1.3
 
 # Breaks
-=sys-apps/firejail-0.9.42
+=sys-apps/firejail-0.9.42*
 
 # Dependency conflicts
 =sys-apps/openrc-0.22*
+
+# Completely breaks with qutebrowser for some reason
+#=dev-qt/qtwebkit-6*

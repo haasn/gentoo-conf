@@ -60,10 +60,13 @@ alias sxiv='sxiv -Zf'
 alias mpv='numa mpv'
 
 # aliases because the profile system sucks
-alias mvi='mpv --profile=image' # mission accomplished \o/
+alias mvi='mpv --profile=image'
 alias mvb='mpv --profile=booru --playlist=-'
 alias mpa='mpv --profile=audio'
 alias mpn='mpv --profile=normalize'
+alias mpan='mpa --profile=normalize'
+alias mpy='mpv --profile=yeti'
+alias mpl='mpv --loop-file'
 
 # quicker root delete
 alias srm='sudo rm'
@@ -451,4 +454,4 @@ sepathdecode() {
 	python -c "import base64; print(base64.b16decode(\"${1}\"));";
 }
 
-alias booru='python3 ~/dev/haskell/hsbooru/crap/booru.py'
+alias booru='python2 ~/dev/haskell/hsbooru/crap/booru.py'

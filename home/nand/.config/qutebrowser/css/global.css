@@ -3,6 +3,16 @@ html > ::-webkit-scrollbar {
     height: 0px;
 }
 
+html > body[style="margin: 0px"] > img[style="-webkit-user-select:none; display:block; margin:auto;"],
+html > body[style="margin: 0px"] > img[style="-webkit-user-select: none; display: block; margin: auto;"] {
+    position: absolute !important;
+    margin: auto !important;
+    top: 0px !important;
+    left: 0px !important;
+    right: 0px !important;
+    bottom: 0px !important;
+}
+
 * {
     font-family: terminus !important;
 }
@@ -49,6 +59,10 @@ span.qutehint > font {
 }
 
 /* For 4chan */
+
+div.adg-rects {
+    display: none !important;
+}
 
 div#quickReply textarea {
     width: 550px !important;

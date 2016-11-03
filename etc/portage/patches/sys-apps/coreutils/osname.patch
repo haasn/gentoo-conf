@@ -1,0 +1,12 @@
+diff -u -r coreutils-8.25.old/m4/host-os.m4 coreutils-8.25/m4/host-os.m4
+--- coreutils-8.25.old/m4/host-os.m4	2016-01-01 14:45:55.000000000 +0100
++++ coreutils-8.25/m4/host-os.m4	2016-10-20 23:09:42.086306013 +0200
+@@ -48,7 +48,7 @@
+        mint*)           os='MiNT';;
+        mingw*)          os='MinGW';;
+        lynxos*)         os='LynxOS';;
+-       linux*)          os='GNU/Linux';;
++       linux*)          os='Linux';;
+        hpux*)           os='HP-UX';;
+        hiux*)           os='HI-UX';;
+        gnu*)            os='GNU';;

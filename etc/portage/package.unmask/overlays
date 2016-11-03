@@ -15,6 +15,10 @@ dev-qt/qt5ct::mva
 # Palemoon
 www-client/palemoon::palemoon
 
+# Qt
+dev-qt/qtwebkit::qt
+dev-qt/qtwebengine::qt
+
 # Sunrise
 x11-misc/swarp::sunrise
 sys-apps/evrouter::sunrise

@@ -40,6 +40,7 @@
 */* -pax_kernel # override hardened profile
 */* xinerama
 */* vdpau -xv
+*/* lm_sensors
 
 ################################
 #### Package-specific flags ####
@@ -53,7 +54,7 @@ dev-lang/ghc profile doc hscolour
 
 # FFmpeg-wide use flags
 */ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx vdpau
-*/ffmpeg dcadec libsoxr modplug librtmp celt bluray zimg -pic
+*/ffmpeg dcadec libsoxr modplug librtmp celt bluray zimg ebur128 -pic
 */ffmpeg gnutls -openssl # fails on 0x0.st for some reason
 
 # KDE-wide use flags
@@ -86,6 +87,7 @@ app-text/poppler qt4
 app-text/texlive linguas_de
 app-text/zathura-meta pdf cb djvu postscript
 dev-db/sqlite secure-delete
+dev-lang/ghc ghcbootstrap # much faster
 dev-lang/go -hardened # build failure
 dev-lang/php sqlite curl gd fpm
 dev-lang/python sqlite
@@ -100,7 +102,7 @@ dev-python/numpy lapack
 dev-qt/qtgui dbus accessibility # for qt5ct and ts3
 dev-qt/qtwebchannel qml
 dev-qt/qtwebengine widgets
-dev-qt/qtwebkit printsupport webp
+dev-qt/qtwebkit printsupport webp -geolocation
 dev-scheme/guile networking
 dev-util/apitrace qt4
 dev-util/ltrace unwind
@@ -143,6 +145,7 @@ net-misc/openvpn passwordsave
 net-misc/youtube-dl offensive
 net-p2p/rtorrent color
 net-p2p/transmission -gtk -xfs
+sci-libs/gsl cblas-external
 sys-apps/busybox static
 sys-apps/lm_sensors sensord
 sys-apps/systemd elfutils sysv-utils -gcrypt -idn -kdbus -lzma -ssl
@@ -170,4 +173,5 @@ x11-misc/rofi windowmode
 x11-misc/xmobar timezone mail mpd inotify
 x11-terms/rxvt-unicode -wcwidth -mousewheel -buffer-on-clear -alt-font-width
 x11-terms/rxvt-unicode vanilla unicode3 256-color fading-colors
+x11-themes/gtk-engines-murrine -themes
 x11-wm/xmonad pass-focus-click

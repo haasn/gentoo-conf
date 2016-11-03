@@ -1,0 +1,186 @@
+From e32b88fc04c49b35c207f777d9a04b141bbe615c Mon Sep 17 00:00:00 2001
+From: Olly Betts <olly@survex.com>
+Date: Tue, 9 Aug 2016 14:51:48 +1200
+Subject: [PATCH] Fix Python3 bindings to work out of the box
+
+The SWIG-generated code to load the compiled module changed recently,
+and was no longer working once we renamed xapian.py to
+xapian/__init__.py.
+
+There's no way to configure SWIG to produce what we need currently, so
+for now we run a "fixup" script over the generated wrapper which
+replaces the complex import code with a single statement which does
+what we want.  It also strips out various unneeded code, mostly to do
+with handling Python 2.x (which we don't need since we have an entirely
+separate set of bindings for that).
+
+Reported by James Aylett in #731.
+
+The way we were importing the bindings to generate the .pyc and .pyo
+files was masking this problem, so rework that as suggested by James.
+---
+ xapian-bindings/python3/Makefile.am            | 17 ++++-
+ xapian-bindings/python3/fixup-swig-py3-wrapper | 97 ++++++++++++++++++++++++++
+ xapian-bindings/python3/run-python-test        |  2 +-
+ 3 files changed, 112 insertions(+), 4 deletions(-)
+ create mode 100644 xapian-bindings/python3/fixup-swig-py3-wrapper
+
+diff --git a/xapian-bindings/python3/Makefile.am b/xapian-bindings/python3/Makefile.am
+index 2301658..bdf6e0e 100644
+--- a/xapian-bindings/python3/Makefile.am
++++ b/xapian-bindings/python3/Makefile.am
+@@ -34,6 +34,7 @@ BUILT_SOURCES = xapian_wrap.cc xapian_wrap.h xapian.py
+ 
+ EXTRA_DIST = python.i util.i extra.i extracomments.i except.i \
+ 	doxy2swig.py \
++	fixup-swig-py3-wrapper \
+ 	generate-python-exceptions \
+ 	run-python-test \
+ 	testsuite.py \
+@@ -74,12 +75,21 @@ xapian/__init__.py: xapian.py
+ 	cp `test -f xapian.py || echo '$(srcdir)/'`xapian.py xapian/__init__.py
+ 
+ # We "import _xapian" first so that if we fail to import the glue library
+-# we don't generate a broken .pyc or .pyo.
++# we don't generate a broken .pyc or .pyo, and we do it with the current
++# directory set to where the module is as Python with -c always searches the
++# current directory first.
++#
++# We then "import xapian" as a separate command, as that's more like how things
++# are once installed - in particular this will fail if the SWIG shadow wrapper
++# doesn't cope with being xapian/__init__.py (currently it needs fixing
++# up, which is done by fixup-swig-py3-wrapper).
+ xapian/__pycache__/__init__.@PYTHON3_CACHE_TAG@.pyc: xapian/__init__.py xapian/_xapian$(PYTHON3_SO)
+-	PYTHONPATH="xapian:$$PYTHONPATH" $(PYTHON3) -c 'import _xapian; import xapian'
++	cd xapian && $(PYTHON3) -c 'import _xapian'
++	$(PYTHON3) -c 'import xapian'
+ 
+ xapian/__pycache__/__init__.@PYTHON3_CACHE_OPT1_EXT@: xapian/__init__.py xapian/_xapian$(PYTHON3_SO)
+-	PYTHONPATH="xapian:$$PYTHONPATH" $(PYTHON3) -O -c 'import _xapian; import xapian'
++	cd xapian && $(PYTHON3) -O -c 'import _xapian'
++	$(PYTHON3) -O -c 'import xapian'
+ 
+ xapian/_xapian$(PYTHON3_SO): _xapian.la
+ 	$(MKDIR_P) xapian
+@@ -133,6 +143,7 @@ $(stamp): except.i doccomments.i
+ 	$(RUN_SWIG) $(SWIG_WERROR) -I. -I'$(srcdir)' $(SWIG_FLAGS) -c++ \
+ 	    -python -threads -shadow -modern -O \
+ 	    -o xapian_wrap.cc '$(srcdir)/'python.i
++	$(PERL) -i fixup-swig-py3-wrapper xapian.py
+ 	$(multitarget_end)
+ 
+ -include xapian_wrap.d
+diff --git a/xapian-bindings/python3/fixup-swig-py3-wrapper b/xapian-bindings/python3/fixup-swig-py3-wrapper
+new file mode 100644
+index 0000000..683d360
+--- /dev/null
++++ b/xapian-bindings/python3/fixup-swig-py3-wrapper
+@@ -0,0 +1,97 @@
++#!/usr/bin/perl
++# Copyright (c) 2016 Olly Betts
++#
++# Permission is hereby granted, free of charge, to any person obtaining a copy
++# of this software and associated documentation files (the "Software"), to
++# deal in the Software without restriction, including without limitation the
++# rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
++# sell copies of the Software, and to permit persons to whom the Software is
++# furnished to do so, subject to the following conditions:
++#
++# The above copyright notice and this permission notice shall be included in
++# all copies or substantial portions of the Software.
++#
++# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++# IN THE SOFTWARE.
++
++use strict;
++use warnings;
++
++undef $/;
++$_ = <>;
++
++my ($pos, $find, $replace);
++
++s/^from sys import version_info(?:.*\n)+? *import __builtin__$/from . import _xapian/m or
++    die "Failed to fix up import code";
++
++s/\b_swig_property\b/property/g or
++    die "Failed to fix up _swig_property";
++
++s/\bnew_instancemethod\(([^(),]+),\s*[^(),]+,\s*[^(),]+\s*\)/_xapian.SWIG_PyInstanceMethod_New($1)/g or
++    die "Failed to fix up new_instancemethod";
++
++/\bnew_instancemethod\b/ and
++    die "Failed to fully fix up new_instancemethod";
++
++$replace = << '__END__';
++def _swig_repr(self):
++    strthis = ""
++    if hasattr(self.this, '__repr__'):
++        strthis = "proxy of " + self.this.__repr__()
++__END__
++s/^def _swig_repr\(self\):.*?\n\n/$replace\n/sm or
++    die "Failed to fix up _swig_repr";
++
++$replace = << '__END__';
++from weakref import proxy as weakref_proxy
++__END__
++s/^try:\n    import weakref.*?\n\n/$replace\n/sm or
++    die "Failed to fix up weakref_proxy";
++
++/\b__builtin__\b/ and
++    die "Failed to fully fix up __builtin__";
++
++s/^def _swig_setattr\(.*?\n\n/\n/sm or
++    die "Failed to fix up _swig_setattr";
++
++$find = << '__END__';
++
++def _swig_setattr_nondynamic(self, class_type, name, value, static=1):
++__END__
++$replace = << '__END__';
++
++def _swig_setattr(self, class_type, name, value):
++__END__
++$pos = index($_, $find);
++$pos >= 0 or die "Failed to fix up _swig_setattr_nondynamic";
++$_ = substr($_, 0, $pos) . $replace . substr($_, $pos + length($find));
++
++$find = << '__END__';
++    if (not static):
++        object.__setattr__(self, name, value)
++    else:
++        raise AttributeError("You cannot add attributes to %s" % self)
++__END__
++$replace = << '__END__';
++    object.__setattr__(self, name, value)
++__END__
++$pos = index($_, $find);
++$pos >= 0 or die "Failed to fix up _swig_setattr_nondynamic part 2";
++$_ = substr($_, 0, $pos) . $replace . substr($_, $pos + length($find));
++
++/\b_swig_setattr_nondynamic\b/ and
++    die "Failed to fully fix up _swig_setattr_nondynamic";
++
++s/^def _swig_setattr_nondynamic_method\(set\):\n.*?\n\n//sm or
++    die "Failed to fix up _swig_setattr_nondynamic_method";
++
++/\b_swig_setattr_nondynamic_method\b/ and
++    die "Failed to fully fix up _swig_setattr_nondynamic_method";
++
++print;
+diff --git a/xapian-bindings/python3/run-python-test b/xapian-bindings/python3/run-python-test
+index f1f36c6..b186ab8 100755
+--- a/xapian-bindings/python3/run-python-test
++++ b/xapian-bindings/python3/run-python-test
+@@ -1,5 +1,5 @@
+ #!/bin/sh
+-PYTHONPATH=".:xapian:$PYTHONPATH"
++PYTHONPATH=".:$PYTHONPATH"
+ export PYTHONPATH
+ PYTHONDONTWRITEBYTECODE=1
+ export PYTHONDONTWRITEBYTECODE
