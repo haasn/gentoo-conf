@@ -36,6 +36,10 @@ a:visited, a:visited * {
     color: #FF5D4A !important;
 }
 
+code, pre {
+    background-color: #111 !important;
+}
+
 span.qutehint {
     opacity: 100% !important;
     background: rgba(0, 0, 0, 0.8) !important;
@@ -93,6 +97,14 @@ div.postContainer > div.post > div.file {
 
 span.nameBlock > span.n-pu {
     background: url('https://s.4cdn.org/image/minileaf.gif') !important;
+}
+
+input#qrFile {
+    width: 60% !important;
+}
+
+body.is_thread > iframe {
+    display: none !important;
 }
 
 /* TeX images */

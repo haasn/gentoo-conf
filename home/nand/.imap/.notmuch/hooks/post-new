@@ -22,7 +22,7 @@ notmuch tag -new +spam -- tag:new and 'to:google-summer-of-code-students-list@go
 # Useless netdata alarms
 notmuch tag -new +deleted -- tag:new and 'from:netdata@haasn.xyz' and 'subject:xor*ram in use'
 notmuch tag -new +deleted -- tag:new and 'from:netdata@haasn.xyz' and 'subject:xor*disk utilization'
-notmuch tag -new +deleted -- tag:new and 'from:netdata@localgroup.top' and 'subject:virgo*packet drops'
+notmuch tag -new +deleted -- tag:new and 'from:netdata@' and 'subject:packet drops'
 
 # Uni-related tags
 notmuch tag +icinga   -- tag:new and '(from:icinga@devel02.informatik.uni-ulm.de or from:nagios@haasn.xyz or to:icinga.*@haasn.xyz)'

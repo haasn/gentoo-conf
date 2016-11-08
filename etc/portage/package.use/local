@@ -49,8 +49,9 @@
 # Haskell-wide use flags
 */*::gentoo-haskell profile doc hscolour
 dev-haskell/* profile doc hscolour
-dev-vcs/darcs profile doc hscolour
 dev-lang/ghc profile doc hscolour
+dev-vcs/darcs profile doc hscolour
+app-text/pandoc profile doc hscolour
 
 # FFmpeg-wide use flags
 */ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx vdpau
@@ -102,7 +103,7 @@ dev-python/numpy lapack
 dev-qt/qtgui dbus accessibility # for qt5ct and ts3
 dev-qt/qtwebchannel qml
 dev-qt/qtwebengine widgets
-dev-qt/qtwebkit printsupport webp -geolocation
+dev-qt/qtwebkit printsupport webp ftpdir jit -geolocation
 dev-scheme/guile networking
 dev-util/apitrace qt4
 dev-util/ltrace unwind

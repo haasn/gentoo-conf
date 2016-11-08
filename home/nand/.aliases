@@ -248,33 +248,8 @@ alias evrouter='sudo evrouter /dev/input/by-id/usb-Kingsis_Peripherals_ZOWIE_Gam
 alias firejail='firejail --quiet'
 alias rtorrent='TERM=rxvt-unicode firejail rtorrent'
 
-# GHCid integration
-
-alias ghcid='echo'
-
 alias :quit='exit'
-# alias :='ghcid :'
-alias :add='ghcid :add'
-alias :show='ghcid :show'
-alias :set='ghcid :set'
-alias :unset='ghcid :unset'
-alias :kill='ghcid :quit'
-alias :start='ghcid start'
-alias :help='ghcid :help'
-alias :load='ghcid :load'
-alias :info='ghcid :info'
-alias :type='ghcid :type'
-alias :kind='ghcid :kind'
-
-# GHCid aliases
-
 alias :q=':quit'
-alias :h=':help'
-#alias :?=':help'
-alias :l=':load'
-alias :i=':info'
-alias :t=':type'
-alias :k=':kind'
 
 # Git aliases
 alias add='git add'

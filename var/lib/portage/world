@@ -1,4 +1,5 @@
 app-admin/haskell-updater
+app-admin/mcelog
 app-admin/pass
 app-admin/pwgen
 app-admin/python-updater
@@ -62,6 +63,7 @@ dev-haskell/cabal-install
 dev-haskell/comonad
 dev-haskell/constraints
 dev-haskell/criterion
+dev-haskell/hakyll
 dev-haskell/lens
 dev-haskell/monadrandom
 dev-haskell/numbers

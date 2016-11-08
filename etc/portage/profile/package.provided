@@ -1,0 +1,5 @@
+# Because freeipmi is retarded
+sys-apps/openrc-0.22
+
+# Because gtk+ is retarded
+x11-themes/gnome-themes-standard-3.20.2-r1

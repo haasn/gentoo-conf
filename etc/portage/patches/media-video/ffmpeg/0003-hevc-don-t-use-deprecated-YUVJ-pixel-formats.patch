@@ -1,0 +1,25 @@
+From 03f23b99094a5400c5f43e020816e4e3c9e1d6dc Mon Sep 17 00:00:00 2001
+From: Hendrik Leppkes <h.leppkes@gmail.com>
+Date: Sat, 17 Jan 2015 10:36:21 +0100
+Subject: [PATCH 3/3] hevc: don't use deprecated YUVJ pixel formats
+
+---
+ libavcodec/hevc_ps.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/libavcodec/hevc_ps.c b/libavcodec/hevc_ps.c
+index d08ba34..58a11f6 100644
+--- a/libavcodec/hevc_ps.c
++++ b/libavcodec/hevc_ps.c
+@@ -559,8 +559,6 @@ static void decode_vui(GetBitContext *gb, AVCodecContext *avctx,
+         vui->video_format                    = get_bits(gb, 3);
+         vui->video_full_range_flag           = get_bits1(gb);
+         vui->colour_description_present_flag = get_bits1(gb);
+-        if (vui->video_full_range_flag && sps->pix_fmt == AV_PIX_FMT_YUV420P)
+-            sps->pix_fmt = AV_PIX_FMT_YUVJ420P;
+         if (vui->colour_description_present_flag) {
+             vui->colour_primaries        = get_bits(gb, 8);
+             vui->transfer_characteristic = get_bits(gb, 8);
+-- 
+2.10.2
+
