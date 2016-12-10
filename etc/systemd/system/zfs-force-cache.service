@@ -3,4 +3,4 @@ Description=Force stuff into ARC cache
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/ionice -c idle /usr/local/sbin/zfs-force-cache
+ExecStart=/usr/local/sbin/zfs-force-cache

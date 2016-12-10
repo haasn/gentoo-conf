@@ -5,11 +5,11 @@
 VPNDIR=${VPNDIR:-/etc/openvpn}
 VPN=${SVCNAME#*.}
 if [ -n "${VPN}" ] && [ ${SVCNAME} != "openvpn" ]; then
-	VPNPID="/var/run/openvpn/${VPN}.pid"
+	VPNPID="/var/run/openvpn.${VPN}.pid"
 else
 	VPNPID="/var/run/openvpn.pid"
 fi
-VPNCONF="${VPNDIR}/${VPN}/openvpn.conf"
+VPNCONF="${VPNDIR}/${VPN}.conf"
 
 depend() {
 	need localmount net

@@ -19,7 +19,7 @@ html > body[style="margin: 0px"] > img[style="-webkit-user-select: none; display
 
 /* Color overrides */
 
-* {
+:not(div[style*="transparent"]) {
     background: #080C0D !important;
     color:      #DDCCBB !important;
 }
@@ -38,6 +38,11 @@ a:visited, a:visited * {
 
 code, pre {
     background-color: #111 !important;
+    border: 1px dashed #555 !important;
+}
+
+pre > code {
+    border: none !important;
 }
 
 span.qutehint {

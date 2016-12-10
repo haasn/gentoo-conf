@@ -148,6 +148,7 @@ net-p2p/rtorrent color
 net-p2p/transmission -gtk -xfs
 sci-libs/gsl cblas-external
 sys-apps/busybox static
+sys-apps/dbus user-session
 sys-apps/lm_sensors sensord
 sys-apps/systemd elfutils sysv-utils -gcrypt -idn -kdbus -lzma -ssl
 sys-apps/util-linux tty-helpers
@@ -159,7 +160,7 @@ sys-devel/llvm lldb libedit gold
 sys-fs/ntfs3g ntfsprogs
 sys-fs/zfs rootfs
 sys-fs/zfs-kmod rootfs
-sys-kernel/*-sources symlink deblob
+sys-kernel/*-sources deblob -symlink
 sys-libs/libnih dbus # for LXD
 sys-libs/zlib minizip
 sys-process/lsof rpc

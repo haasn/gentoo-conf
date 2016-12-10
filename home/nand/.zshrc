@@ -68,6 +68,14 @@ __git_files () {
     _wanted files expl 'local files' _files
 }
 
+# Update prompt before running commands
+function _update-time {
+    zle reset-prompt
+    zle .accept-line
+}
+
+zle -N accept-line _update-time
+
 # Fix special keys
 bindkey "${terminfo[kpp]}" history-beginning-search-backward
 bindkey "${terminfo[knp]}" history-beginning-search-forward
@@ -110,6 +118,7 @@ export __GL_SYNC_DISPLAY_DEVICE="DP-0"
 export KDE_FORK_SLAVES=1
 #export MOZ_USE_OMTC=1
 export XZ_OPT="-T 0" # multithreading
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
 source /home/nand/.mpdpass
 
 # Stupid fucking, piece of shit, dirty, filthy, disgusting work-around

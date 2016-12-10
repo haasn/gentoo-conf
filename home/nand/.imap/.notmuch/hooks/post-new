@@ -19,11 +19,6 @@ notmuch tag -new +deleted -- tag:new and to:linuxpool.informatik@uni-ulm.de and 
 notmuch tag -new +spam -- tag:new and 'to:trash*@nand.wakku.to'
 notmuch tag -new +spam -- tag:new and 'to:google-summer-of-code-students-list@googlegroups.com'
 
-# Useless netdata alarms
-notmuch tag -new +deleted -- tag:new and 'from:netdata@haasn.xyz' and 'subject:xor*ram in use'
-notmuch tag -new +deleted -- tag:new and 'from:netdata@haasn.xyz' and 'subject:xor*disk utilization'
-notmuch tag -new +deleted -- tag:new and 'from:netdata@' and 'subject:packet drops'
-
 # Uni-related tags
 notmuch tag +icinga   -- tag:new and '(from:icinga@devel02.informatik.uni-ulm.de or from:nagios@haasn.xyz or to:icinga.*@haasn.xyz)'
 notmuch tag +calm     -- tag:new and '(from:calm@lists.uni-ulm.de or to:calm@lists.uni-ulm.de)'

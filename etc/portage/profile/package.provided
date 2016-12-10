@@ -1,4 +1,5 @@
 # Because freeipmi is retarded
+sys-apps/sysvinit-2.88-r9
 sys-apps/openrc-0.22
 
 # Because gtk+ is retarded

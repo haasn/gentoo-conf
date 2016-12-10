@@ -4,6 +4,7 @@ app-admin/pass
 app-admin/pwgen
 app-admin/python-updater
 app-admin/rofi-pass
+app-admin/sshguard
 app-admin/sudo
 app-admin/sysstat
 app-arch/advancecomp
@@ -15,6 +16,7 @@ app-arch/zopfli
 app-benchmarks/iozone
 app-cdr/cuetools
 app-cdr/iat
+app-crypt/hashcat
 app-crypt/keybase
 app-editors/mousepad
 app-editors/neovim
@@ -28,9 +30,12 @@ app-forensics/rkhunter
 app-misc/adblock2privoxy
 app-misc/colordiff
 app-misc/dtach
+app-misc/fdupes
+app-misc/fslint
 app-misc/jq
 app-misc/ranger
 app-misc/screenfetch
+app-misc/tails-installer
 app-misc/task
 app-misc/tmux
 app-portage/eix
@@ -47,10 +52,12 @@ app-shells/rust-zshcomp
 app-shells/zsh
 app-shells/zsh-completions
 app-text/dos2unix
+app-text/mupdf
 app-text/sloccount
 app-text/xapian-omega
 app-text/zathura
 app-text/zathura-meta
+app-text/zathura-pdf-mupdf
 app-vim/nerdtree
 app-vim/pathogen
 app-vim/rust-vim
@@ -63,6 +70,7 @@ dev-haskell/cabal-install
 dev-haskell/comonad
 dev-haskell/constraints
 dev-haskell/criterion
+dev-haskell/dependent-map
 dev-haskell/hakyll
 dev-haskell/lens
 dev-haskell/monadrandom
@@ -81,6 +89,7 @@ dev-lang/mono
 dev-lang/perl
 dev-lang/php
 dev-lang/python
+dev-lang/swi-prolog
 dev-libs/xapian-bindings
 dev-python/flake8
 dev-python/flask
@@ -107,6 +116,7 @@ dev-util/cloc
 dev-util/debugedit
 dev-util/ltrace
 dev-util/perf
+dev-util/scanmem
 dev-util/strace
 dev-util/threadscope
 dev-util/valgrind
@@ -141,12 +151,12 @@ media-gfx/krita
 media-gfx/optipng
 media-gfx/pqstego
 media-gfx/sxiv
-media-libs/devil
 media-libs/exiftool
 media-libs/flac
 media-libs/fmod
 media-libs/icc-profiles-openicc
 media-libs/ladspa-cmt
+media-libs/libebur128
 media-libs/libsdl2
 media-libs/libtxc_dxtn
 media-libs/openal
@@ -165,6 +175,7 @@ media-sound/mpd
 media-sound/opus-tools
 media-sound/pavucontrol
 media-sound/pulseaudio
+media-sound/shntool
 media-sound/sox
 media-sound/teamspeak-client-bin
 media-sound/vimus
@@ -197,6 +208,7 @@ net-mail/notmuch
 net-misc/bridge-utils
 net-misc/dhcpcd
 net-misc/ethercard-diag
+net-misc/iperf
 net-misc/mosh
 net-misc/ntp
 net-misc/openvpn
@@ -204,7 +216,10 @@ net-misc/proxychains
 net-misc/socat
 net-misc/whois
 net-misc/youtube-dl
+net-p2p/go-ipfs-bin
+net-p2p/nicotine+
 net-p2p/rtorrent
+net-p2p/soulseek-qt
 net-p2p/transmission
 net-proxy/privoxy
 sci-visualization/grace
@@ -217,6 +232,7 @@ sys-apps/ipmitool
 sys-apps/irqbalance
 sys-apps/iucode_tool
 sys-apps/lm_sensors
+sys-apps/lshw
 sys-apps/man-db
 sys-apps/memtest86+
 sys-apps/moreutils
@@ -232,7 +248,6 @@ sys-boot/os-prober
 sys-devel/clang
 sys-devel/gdb
 sys-firmware/intel-microcode
-sys-fs/btrfs-progs
 sys-fs/cryptsetup
 sys-fs/duperemove
 sys-fs/ntfs3g
@@ -252,6 +267,7 @@ sys-process/glances
 sys-process/htop
 sys-process/iotop
 sys-process/lsof
+sys-process/schedtool
 sys-process/systemd-cron
 virtual/cron
 virtual/latex-base
@@ -259,7 +275,6 @@ www-client/palemoon
 www-client/qutebrowser
 www-client/w3m
 www-plugins/gnash
-www-servers/nginx
 x11-apps/mesa-progs
 x11-base/xorg-x11
 x11-misc/dmenu

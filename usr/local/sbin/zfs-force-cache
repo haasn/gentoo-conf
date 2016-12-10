@@ -1,6 +1,7 @@
 #!/bin/sh
 # Tunables:
 RATE="10M"
+IONICE="/usr/bin/ionice -c idle"
 
 ############################################################################
 ZFS_LIST=$(env LC_ALL=C zfs list -H -t filesystem \
@@ -15,11 +16,11 @@ TARGETS_META=$(echo "$ZFS_LIST" | awk -F '\t' \
 for t in $TARGETS_DATA
 do
     echo Forcing ${t} into data cache
-    /bin/tar cf - --one-file-system "$t" 2>/dev/null | pv -q -L "$RATE" >/dev/null
+    $IONICE /bin/tar cf - --one-file-system "$t" 2>/dev/null | pv -q -L "$RATE" >/dev/null
 done
 
 for t in $TARGETS_META
 do
     echo Forcing ${t} into metadata cache
-    /usr/bin/find "$t" -xdev >/dev/null 2>&1
+    $IONICE /usr/bin/find "$t" -xdev >/dev/null 2>&1
 done

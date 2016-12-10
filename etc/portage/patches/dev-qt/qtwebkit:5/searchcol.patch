@@ -6,13 +6,13 @@ diff -ru qtwebkit-opensource-src-5.6.1-orig/Source/WebCore/rendering/RenderTheme
  Color RenderTheme::platformActiveTextSearchHighlightColor() const
  {
 -    return Color(255, 150, 50); // Orange.
-+    return Color(76, 128, 249); // Blue.
++    return Color(100, 100, 100); // Dark gray.
  }
  
  Color RenderTheme::platformInactiveTextSearchHighlightColor() const
  {
 -    return Color(255, 255, 0); // Yellow.
-+    return Color(229, 12, 136); // Pink.
++    return Color(150, 150, 150); // Gray.
  }
  
  #if ENABLE(TOUCH_EVENTS)

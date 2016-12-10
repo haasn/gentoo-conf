@@ -1,0 +1,2 @@
+default_do='typePass'
+password_length=32

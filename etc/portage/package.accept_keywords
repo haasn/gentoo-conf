@@ -10,6 +10,8 @@ sys-boot/grub **
 
 */*::vapoursynth **
 app-admin/pass **
+app-editors/neovim **
+app-text/zathura-pdf-mupdf **
 app-misc/screenfetch **
 media-libs/ffmpegsource **
 media-libs/libass **

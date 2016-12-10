@@ -97,7 +97,7 @@ alias fanspeed='aticonfig --pplib-cmd "set fanspeed 0 18"'
 alias note='cat >> ~/notes'
 
 # 16 core make (ht)
-alias make='make -j33'
+alias make='make -j32'
 
 # Attach to weechat inside dtach
 alias weechat='dtach -a /tmp/weechat'
@@ -143,6 +143,10 @@ alias btrfs='sudo btrfs'
 alias gcc-config='sudo gcc-config'
 alias dmesg='sudo dmesg'
 alias paxctl-ng='sudo paxctl-ng'
+
+# stuff
+alias sc='systemctl'
+alias jc='journalctl'
 
 # SELinux
 alias ausearch='sudo ausearch'

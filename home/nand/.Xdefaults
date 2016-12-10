@@ -31,6 +31,10 @@ URxvt.keysym.4-v: perl:clipboard:paste
 ! ???
 ! Xcursor.size: 16
 Xft.dpi: 150
+Xft.antialias: 0
+Xft.rgba: none
+Xft.hinting: 1
+Xft.hintstyle: hintfull
 
 ! rofi stuff
 
