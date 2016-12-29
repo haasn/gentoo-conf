@@ -11,12 +11,14 @@ sys-boot/grub **
 */*::vapoursynth **
 app-admin/pass **
 app-editors/neovim **
+app-emulation/wine **
 app-text/zathura-pdf-mupdf **
 app-misc/screenfetch **
 media-libs/ffmpegsource **
 media-libs/libass **
 media-libs/x264 **
 media-libs/x265 **
+media-libs/zimg **
 media-sound/autoplay **
 media-sound/mpd ** # bug 584742
 media-sound/mumble **

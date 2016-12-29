@@ -32,7 +32,7 @@ nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=100'
 #nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=1'
 
 # Daemonize udiskie
-udiskie -N &>/dev/null &
+#udiskie -N &>/dev/null &
 
 # Daemonize urxvt
 export RXVT_SOCKET="$HOME/.urxvt/urxvtd$DISPLAY"

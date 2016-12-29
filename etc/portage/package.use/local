@@ -89,7 +89,6 @@ app-text/texlive linguas_de
 app-text/zathura-meta pdf cb djvu postscript
 dev-db/sqlite secure-delete
 dev-lang/ghc ghcbootstrap # much faster
-dev-lang/go -hardened # build failure
 dev-lang/php sqlite curl gd fpm
 dev-lang/python sqlite
 dev-libs/gmp static-libs
@@ -117,6 +116,7 @@ media-fonts/terminus-font ceneterd-tilde distinct-l ru-dv du-g ru-i
 media-gfx/imagemagick X hdri lqr q32 raw webp fftw -opencl
 media-gfx/krita fftw vc
 media-libs/libass harfbuzz
+media-libs/libcaca imlib
 media-libs/libcanberra -udev # pulls in alsa
 media-libs/libsamplerate sndfile
 media-libs/mesa gbm opencl

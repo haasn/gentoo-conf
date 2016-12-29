@@ -38,7 +38,9 @@ app-misc/screenfetch
 app-misc/tails-installer
 app-misc/task
 app-misc/tmux
+app-pda/libimobiledevice
 app-portage/eix
+app-portage/genlop
 app-portage/gentoolkit
 app-portage/hackport
 app-portage/layman
@@ -120,9 +122,11 @@ dev-util/scanmem
 dev-util/strace
 dev-util/threadscope
 dev-util/valgrind
+games-action/extreme-tuxracer
 games-engines/scummvm
 games-misc/cowsay
 games-misc/fortune-mod
+games-strategy/wesnoth
 gnome-extra/yad
 kde-apps/kcachegrind
 kde-apps/kolourpaint
@@ -165,6 +169,7 @@ media-libs/vulkan-base
 media-libs/x265
 media-plugins/alsa-plugins
 media-plugins/ladspa-bs2b
+media-plugins/swh-plugins
 media-plugins/vapoursynth-ffmpegsource
 media-plugins/vapoursynth-mvtools
 media-sound/audacity
@@ -197,7 +202,6 @@ net-analyzer/tcpdump
 net-analyzer/traceroute
 net-analyzer/vnstat
 net-dns/bind-tools
-net-dns/unbound
 net-firewall/firehol
 net-fs/sshfs
 net-im/pidgin
@@ -295,6 +299,7 @@ x11-misc/xmobar
 x11-misc/xsnow
 x11-misc/xvfb-run
 x11-terms/rxvt-unicode
+x11-terms/st
 x11-themes/gtk-theme-switch
 x11-themes/vertex-theme
 x11-wm/xmonad

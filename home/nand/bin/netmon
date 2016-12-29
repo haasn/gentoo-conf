@@ -1,0 +1,2 @@
+#!/bin/sh
+qutebrowser --temp-basedir --backend webengine "http://${1}:19999"

@@ -24,7 +24,7 @@ html > body[style="margin: 0px"] > img[style="-webkit-user-select: none; display
     color:      #DDCCBB !important;
 }
 
-img {
+img, img.party-hat {
     background: none !important;
 }
 
@@ -110,6 +110,10 @@ input#qrFile {
 
 body.is_thread > iframe {
     display: none !important;
+}
+
+a.quotelink.ql-tracked:after {
+content: " (You)";
 }
 
 /* TeX images */

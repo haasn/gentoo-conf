@@ -47,6 +47,7 @@ alias du='du --si'
 alias ds='du --total --summarize -- *'
 
 alias numa='numactl -N1 -m1 --'
+alias wine='numa wine'
 
 # allow colors in less and tmux
 alias less='less -R'
@@ -98,6 +99,7 @@ alias note='cat >> ~/notes'
 
 # 16 core make (ht)
 alias make='make -j32'
+alias waifu='./waf'
 
 # Attach to weechat inside dtach
 alias weechat='dtach -a /tmp/weechat'
@@ -432,5 +434,3 @@ seshowdef() {
 sepathdecode() {
 	python -c "import base64; print(base64.b16decode(\"${1}\"));";
 }
-
-alias booru='python2 ~/dev/haskell/hsbooru/crap/booru.py'
