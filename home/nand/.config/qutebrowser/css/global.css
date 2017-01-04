@@ -28,6 +28,10 @@ img, img.party-hat {
     background: none !important;
 }
 
+* {
+    image-rendering: pixelated !important;
+}
+
 a[href], a[href] * {
     color: #FFAA0F !important;
 }
@@ -110,10 +114,6 @@ input#qrFile {
 
 body.is_thread > iframe {
     display: none !important;
-}
-
-a.quotelink.ql-tracked:after {
-content: " (You)";
 }
 
 /* TeX images */

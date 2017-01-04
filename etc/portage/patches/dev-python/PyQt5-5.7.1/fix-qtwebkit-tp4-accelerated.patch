@@ -1,0 +1,12 @@
+--- a/sip/QtWebKit/qwebsettings.sip	2017-01-02 13:18:27.549897589 +0100
++++ b/sip/QtWebKit/qwebsettings.sip	2017-01-02 13:18:36.264814176 +0100
+@@ -74,9 +74,6 @@
+ %If (Qt_5_2_0 -)
+         WebAudioEnabled,
+ %End
+-%If (Qt_5_4_0 -)
+-        Accelerated2dCanvasEnabled,
+-%End
+     };
+ 
+     enum WebGraphic

@@ -97,7 +97,7 @@ dev-libs/libpcre pcre16
 dev-libs/nss utils
 dev-libs/openssl -tls-heartbeat -sslv2 -sslv3
 dev-libs/xapian doc
-dev-python/PyQt5 webkit webengine webchannel testlib
+dev-python/PyQt5 declarative webkit webengine webchannel testlib
 dev-python/numpy lapack
 dev-qt/qtgui dbus accessibility # for qt5ct and ts3
 dev-qt/qtwebchannel qml
@@ -119,6 +119,7 @@ media-libs/libass harfbuzz
 media-libs/libcaca imlib
 media-libs/libcanberra -udev # pulls in alsa
 media-libs/libsamplerate sndfile
+media-libs/libvpx svc
 media-libs/mesa gbm opencl
 media-libs/mesa gles2
 media-libs/openimageio -gif
@@ -126,6 +127,7 @@ media-libs/phonon -pulseaudio -gstreamer -vlc qt5 qt4
 media-libs/vapoursynth -imagemagick
 media-libs/x264 10bit
 media-plugins/alsa-plugins pulseaudio
+media-sound/alsa-utils -doc # build failure
 media-sound/mpd alsa inotify cue mpg123 wavpack opus ffmpeg
 media-sound/pulseaudio alsa dbus realtime sox -ssl -gtk
 media-sound/sox -ffmpeg # build failure

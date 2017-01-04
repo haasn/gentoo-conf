@@ -1,0 +1,39 @@
+From 4f959b6b3004ecbd0d34b34f613ce9980ba42b55 Mon Sep 17 00:00:00 2001
+From: Timur Pocheptsov <timur.pocheptsov@qt.io>
+Date: Mon, 28 Nov 2016 16:02:26 +0100
+Subject: [PATCH] ~QHttpNetworkConnectionPrivate - disconnect from socket's
+ signals
+
+We have a 'channel' object connected to a socket with Qt::DirectConnection.
+QHttpNetworkConnectionPrivate in its dtor (note, it's a private object destroyed
+after its 'q' - QHttpNetworkConnection - was destroyed) calls socket->close()
+and this can end up in socket setting an error and emitting (for example, in
+QSslSocket::transmit). The slot (QHttpNetworkConnectionChannel::_q_error) will
+access the now-dead/non-existing connection then. So disconnect the channel
+from the socket early, before closing the socket.
+
+Task-number: QTBUG-54167
+Change-Id: I3ed4ba4b00650c3a39e5c1f33aa786e47bfbbc57
+Reviewed-by: Konstantin Tokarev <annulen@yandex.ru>
+Reviewed-by: Timur Pocheptsov <timur.pocheptsov@qt.io>
+Reviewed-by: Edward Welbourne <edward.welbourne@qt.io>
+Reviewed-by: Marc Mutz <marc.mutz@kdab.com>
+---
+ src/network/access/qhttpnetworkconnection.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/network/access/qhttpnetworkconnection.cpp b/src/network/access/qhttpnetworkconnection.cpp
+index 7f07403a73..1b1ecff21e 100644
+--- a/src/network/access/qhttpnetworkconnection.cpp
++++ b/src/network/access/qhttpnetworkconnection.cpp
+@@ -116,6 +116,7 @@ QHttpNetworkConnectionPrivate::~QHttpNetworkConnectionPrivate()
+ {
+     for (int i = 0; i < channelCount; ++i) {
+         if (channels[i].socket) {
++            QObject::disconnect(channels[i].socket, Q_NULLPTR, &channels[i], Q_NULLPTR);
+             channels[i].socket->close();
+             delete channels[i].socket;
+         }
+-- 
+2.11.0
+

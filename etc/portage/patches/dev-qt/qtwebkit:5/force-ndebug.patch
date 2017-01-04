@@ -1,0 +1,13 @@
+diff -ru qtwebkit-tp4.orig/Source/cmake/OptionsCommon.cmake qtwebkit-tp4/Source/cmake/OptionsCommon.cmake
+--- qtwebkit-tp4.orig/Source/cmake/OptionsCommon.cmake	2016-09-28 23:49:26.000000000 +0200
++++ qtwebkit-tp4/Source/cmake/OptionsCommon.cmake	2017-01-03 00:53:11.786321975 +0100
+@@ -1,6 +1,9 @@
+ add_definitions(-DBUILDING_WITH_CMAKE=1)
+ add_definitions(-DHAVE_CONFIG_H=1)
+ 
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -DNDEBUG")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -g -DNDEBUG")
++
+ # CODE_GENERATOR_PREPROCESSOR_WITH_LINEMARKERS only matters with GCC >= 4.7.0.  Since this
+ # version, -P does not output empty lines, which currently breaks make_names.pl in
+ # WebCore. Investigating whether make_names.pl should be changed instead is left as an exercise to

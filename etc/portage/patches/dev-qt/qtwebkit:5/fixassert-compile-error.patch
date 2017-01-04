@@ -1,0 +1,11 @@
+--- a/Source/WebCore/platform/graphics/texmap/GraphicsLayerTextureMapper.cpp	2017-01-02 12:05:09.246632314 +0100
++++ b/Source/WebCore/platform/graphics/texmap/GraphicsLayerTextureMapper.cpp	2017-01-02 12:05:41.715314158 +0100
+@@ -546,7 +546,7 @@
+         return;
+ 
+ #if PLATFORM(QT) && !defined(QT_NO_DYNAMIC_CAST)
+-    ASSERT(dynamic_cast<TextureMapperTiledBackingStore*>(m_backingStore.get()));
++    //ASSERT(dynamic_cast<TextureMapperTiledBackingStore*>(m_backingStore.get()));
+ #endif
+     TextureMapperTiledBackingStore* backingStore = static_cast<TextureMapperTiledBackingStore*>(m_backingStore.get());
+     backingStore->updateContentsScale(pageScaleFactor() * deviceScaleFactor());

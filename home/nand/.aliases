@@ -149,6 +149,8 @@ alias paxctl-ng='sudo paxctl-ng'
 # stuff
 alias sc='systemctl'
 alias jc='journalctl'
+alias scu='sc --user'
+alias jcu='jc --user'
 
 # SELinux
 alias ausearch='sudo ausearch'

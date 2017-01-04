@@ -150,7 +150,6 @@ media-fonts/unifraktur
 media-gfx/argyllcms
 media-gfx/displaycal
 media-gfx/imagemagick
-media-gfx/inkscape
 media-gfx/krita
 media-gfx/optipng
 media-gfx/pqstego
@@ -224,7 +223,6 @@ net-p2p/go-ipfs-bin
 net-p2p/nicotine+
 net-p2p/rtorrent
 net-p2p/soulseek-qt
-net-p2p/transmission
 net-proxy/privoxy
 sci-visualization/grace
 sys-apps/dmidecode

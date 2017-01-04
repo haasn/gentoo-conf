@@ -31,6 +31,8 @@ net-irc/weechat **
 net-misc/youtube-dl **
 =sys-kernel/genkernel-3.5* **
 www-client/qutebrowser **
+=x11-base/xorg-server-1.19*
+=x11-base/xorg-drivers-1.19*
 x11-misc/rofi **
 x11-misc/xmobar **
 x11-wm/xmonad **

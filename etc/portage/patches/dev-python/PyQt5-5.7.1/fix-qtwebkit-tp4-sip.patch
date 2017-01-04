@@ -1,0 +1,289 @@
+diff -ru a/sip/QtWebKit/qwebdatabase.sip sip/QtWebKit/qwebdatabase.sip
+--- a/sip/QtWebKit/qwebdatabase.sip	2017-01-02 13:01:52.788351704 +0100
++++ b/sip/QtWebKit/qwebdatabase.sip	2017-01-02 13:03:53.711202035 +0100
+@@ -23,7 +23,7 @@
+ class QWebDatabase
+ {
+ %TypeHeaderCode
+-#include <qwebdatabase.h>
++#include <QtWebKit/qwebdatabase.h>
+ %End
+ 
+ public:
+diff -ru a/sip/QtWebKit/qwebelement.sip sip/QtWebKit/qwebelement.sip
+--- a/sip/QtWebKit/qwebelement.sip	2017-01-02 13:01:52.788351704 +0100
++++ b/sip/QtWebKit/qwebelement.sip	2017-01-02 13:03:53.711202035 +0100
+@@ -25,7 +25,7 @@
+ class QWebElement
+ {
+ %TypeHeaderCode
+-#include <qwebelement.h>
++#include <QtWebKit/qwebelement.h>
+ %End
+ 
+ public:
+@@ -108,7 +108,7 @@
+ class QWebElementCollection
+ {
+ %TypeHeaderCode
+-#include <qwebelement.h>
++#include <QtWebKit/qwebelement.h>
+ %End
+ 
+ public:
+diff -ru a/sip/QtWebKit/qwebhistoryinterface.sip sip/QtWebKit/qwebhistoryinterface.sip
+--- a/sip/QtWebKit/qwebhistoryinterface.sip	2017-01-02 13:01:52.788351704 +0100
++++ b/sip/QtWebKit/qwebhistoryinterface.sip	2017-01-02 13:03:53.711202035 +0100
+@@ -23,7 +23,7 @@
+ class QWebHistoryInterface : QObject
+ {
+ %TypeHeaderCode
+-#include <qwebhistoryinterface.h>
++#include <QtWebKit/qwebhistoryinterface.h>
+ %End
+ 
+ public:
+diff -ru a/sip/QtWebKit/qwebhistory.sip sip/QtWebKit/qwebhistory.sip
+--- a/sip/QtWebKit/qwebhistory.sip	2017-01-02 13:01:52.788351704 +0100
++++ b/sip/QtWebKit/qwebhistory.sip	2017-01-02 13:03:53.711202035 +0100
+@@ -23,7 +23,7 @@
+ class QWebHistoryItem
+ {
+ %TypeHeaderCode
+-#include <qwebhistory.h>
++#include <QtWebKit/qwebhistory.h>
+ %End
+ 
+ public:
+@@ -42,7 +42,7 @@
+ class QWebHistory
+ {
+ %TypeHeaderCode
+-#include <qwebhistory.h>
++#include <QtWebKit/qwebhistory.h>
+ %End
+ 
+ public:
+diff -ru a/sip/QtWebKit/qwebkitglobal.sip sip/QtWebKit/qwebkitglobal.sip
+--- a/sip/QtWebKit/qwebkitglobal.sip	2017-01-02 13:01:52.788351704 +0100
++++ b/sip/QtWebKit/qwebkitglobal.sip	2017-01-02 13:03:53.711202035 +0100
+@@ -21,7 +21,7 @@
+ 
+ 
+ %ModuleCode
+-#include <qwebkitglobal.h>
++#include <QtWebKit/qwebkitglobal.h>
+ %End
+ 
+ QString qWebKitVersion();
+diff -ru a/sip/QtWebKit/qwebpluginfactory.sip sip/QtWebKit/qwebpluginfactory.sip
+--- a/sip/QtWebKit/qwebpluginfactory.sip	2017-01-02 13:01:52.788351704 +0100
++++ b/sip/QtWebKit/qwebpluginfactory.sip	2017-01-02 13:03:53.712202025 +0100
+@@ -23,7 +23,7 @@
+ class QWebPluginFactory : QObject
+ {
+ %TypeHeaderCode
+-#include <qwebpluginfactory.h>
++#include <QtWebKit/qwebpluginfactory.h>
+ %End
+ 
+ %ConvertToSubClassCode
+@@ -59,7 +59,7 @@
+     struct MimeType
+     {
+ %TypeHeaderCode
+-#include <qwebpluginfactory.h>
++#include <QtWebKit/qwebpluginfactory.h>
+ %End
+ 
+         QString name;
+@@ -72,7 +72,7 @@
+     struct Plugin
+     {
+ %TypeHeaderCode
+-#include <qwebpluginfactory.h>
++#include <QtWebKit/qwebpluginfactory.h>
+ %End
+ 
+         QString name;
+@@ -93,14 +93,14 @@
+     class ExtensionOption
+     {
+ %TypeHeaderCode
+-#include <qwebpluginfactory.h>
++#include <QtWebKit/qwebpluginfactory.h>
+ %End
+     };
+ 
+     class ExtensionReturn
+     {
+ %TypeHeaderCode
+-#include <qwebpluginfactory.h>
++#include <QtWebKit/qwebpluginfactory.h>
+ %End
+     };
+ 
+diff -ru a/sip/QtWebKit/qwebsecurityorigin.sip sip/QtWebKit/qwebsecurityorigin.sip
+--- a/sip/QtWebKit/qwebsecurityorigin.sip	2017-01-02 13:01:52.788351704 +0100
++++ b/sip/QtWebKit/qwebsecurityorigin.sip	2017-01-02 13:03:53.712202025 +0100
+@@ -23,7 +23,7 @@
+ class QWebSecurityOrigin
+ {
+ %TypeHeaderCode
+-#include <qwebsecurityorigin.h>
++#include <QtWebKit/qwebsecurityorigin.h>
+ %End
+ 
+ public:
+diff -ru a/sip/QtWebKit/qwebsettings.sip sip/QtWebKit/qwebsettings.sip
+--- a/sip/QtWebKit/qwebsettings.sip	2017-01-02 13:01:52.788351704 +0100
++++ b/sip/QtWebKit/qwebsettings.sip	2017-01-02 13:03:53.712202025 +0100
+@@ -23,7 +23,7 @@
+ class QWebSettings
+ {
+ %TypeHeaderCode
+-#include <qwebsettings.h>
++#include <QtWebKit/qwebsettings.h>
+ %End
+ 
+ public:
+diff -ru a/sip/QtWebKitWidgets/qgraphicswebview.sip sip/QtWebKitWidgets/qgraphicswebview.sip
+--- a/sip/QtWebKitWidgets/qgraphicswebview.sip	2016-12-25 18:56:11.000000000 +0100
++++ b/sip/QtWebKitWidgets/qgraphicswebview.sip	2017-01-02 13:28:30.839093383 +0100
+@@ -23,7 +23,7 @@
+ class QGraphicsWebView : QGraphicsWidget
+ {
+ %TypeHeaderCode
+-#include <qgraphicswebview.h>
++#include <QtWebKitWidgets/qgraphicswebview.h>
+ %End
+ 
+ %ConvertToSubClassCode
+@@ -121,7 +121,7 @@
+ 
+ %ModuleHeaderCode
+ // This is needed by the %ConvertSubClassCode.
+-#include <QGraphicsWebView>
++#include <QtWebKitWidgets/qgraphicswebview.h>
+ 
+ // This is needed for Qt v5.0.0.
+ #if defined(B0)
+diff -ru a/sip/QtWebKitWidgets/qwebframe.sip sip/QtWebKitWidgets/qwebframe.sip
+--- a/sip/QtWebKitWidgets/qwebframe.sip	2016-12-25 18:56:11.000000000 +0100
++++ b/sip/QtWebKitWidgets/qwebframe.sip	2017-01-02 13:28:30.839093383 +0100
+@@ -23,7 +23,7 @@
+ class QWebHitTestResult
+ {
+ %TypeHeaderCode
+-#include <qwebframe.h>
++#include <QtWebKitWidgets/qwebframe.h>
+ %End
+ 
+ public:
+@@ -58,7 +58,7 @@
+ class QWebFrame : QObject /NoDefaultCtors/
+ {
+ %TypeHeaderCode
+-#include <qwebframe.h>
++#include <QtWebKitWidgets/qwebframe.h>
+ %End
+ 
+     virtual ~QWebFrame();
+diff -ru a/sip/QtWebKitWidgets/qwebinspector.sip sip/QtWebKitWidgets/qwebinspector.sip
+--- a/sip/QtWebKitWidgets/qwebinspector.sip	2016-12-25 18:56:11.000000000 +0100
++++ b/sip/QtWebKitWidgets/qwebinspector.sip	2017-01-02 13:28:30.840093373 +0100
+@@ -23,7 +23,7 @@
+ class QWebInspector : QWidget
+ {
+ %TypeHeaderCode
+-#include <qwebinspector.h>
++#include <QtWebKitWidgets/qwebinspector.h>
+ %End
+ 
+ public:
+diff -ru a/sip/QtWebKitWidgets/qwebpage.sip sip/QtWebKitWidgets/qwebpage.sip
+--- a/sip/QtWebKitWidgets/qwebpage.sip	2016-12-25 18:56:11.000000000 +0100
++++ b/sip/QtWebKitWidgets/qwebpage.sip	2017-01-02 13:28:30.840093373 +0100
+@@ -23,7 +23,7 @@
+ class QWebPage : QObject
+ {
+ %TypeHeaderCode
+-#include <qwebpage.h>
++#include <QtWebKitWidgets/qwebpage.h>
+ %End
+ 
+ public:
+@@ -208,14 +208,14 @@
+     class ExtensionOption
+     {
+ %TypeHeaderCode
+-#include <qwebpage.h>
++#include <QtWebKitWidgets/qwebpage.h>
+ %End
+     };
+ 
+     class ExtensionReturn
+     {
+ %TypeHeaderCode
+-#include <qwebpage.h>
++#include <QtWebKitWidgets/qwebpage.h>
+ %End
+     };
+ 
+@@ -293,7 +293,7 @@
+     class ChooseMultipleFilesExtensionOption : QWebPage::ExtensionOption
+     {
+ %TypeHeaderCode
+-#include <qwebpage.h>
++#include <QtWebKitWidgets/qwebpage.h>
+ %End
+ 
+     public:
+@@ -304,7 +304,7 @@
+     class ChooseMultipleFilesExtensionReturn : QWebPage::ExtensionReturn
+     {
+ %TypeHeaderCode
+-#include <qwebpage.h>
++#include <QtWebKitWidgets/qwebpage.h>
+ %End
+ 
+     public:
+@@ -332,7 +332,7 @@
+     class ErrorPageExtensionOption : QWebPage::ExtensionOption
+     {
+ %TypeHeaderCode
+-#include <qwebpage.h>
++#include <QtWebKitWidgets/qwebpage.h>
+ %End
+ 
+     public:
+@@ -346,7 +346,7 @@
+     class ErrorPageExtensionReturn : QWebPage::ExtensionReturn
+     {
+ %TypeHeaderCode
+-#include <qwebpage.h>
++#include <QtWebKitWidgets/qwebpage.h>
+ %End
+ 
+     public:
+@@ -375,7 +375,7 @@
+     class ViewportAttributes
+     {
+ %TypeHeaderCode
+-#include <qwebpage.h>
++#include <QtWebKitWidgets/qwebpage.h>
+ %End
+ 
+     public:
+diff -ru a/sip/QtWebKitWidgets/qwebview.sip sip/QtWebKitWidgets/qwebview.sip
+--- a/sip/QtWebKitWidgets/qwebview.sip	2016-12-25 18:56:11.000000000 +0100
++++ b/sip/QtWebKitWidgets/qwebview.sip	2017-01-02 13:28:30.840093373 +0100
+@@ -23,7 +23,7 @@
+ class QWebView : QWidget
+ {
+ %TypeHeaderCode
+-#include <qwebview.h>
++#include <QtWebKitWidgets/qwebview.h>
+ %End
+ 
+ %ConvertToSubClassCode
