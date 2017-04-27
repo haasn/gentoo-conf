@@ -1,10 +1,11 @@
 #!/bin/sh
 
 # Fix keyboard repeat rate
-xset r rate 200 50
+xset r rate 300 40
 
 # Set pointer speed
 xset m 0 0
+xinput set-prop 'Kingsis Peripherals ZOWIE Gaming mouse' 'libinput Accel Profile Enabled' 0, 1
 #xinput --set-ptr-feedback 9 0 120 100
 
 # Try to disable screensavers / monitor blanking
@@ -28,7 +29,7 @@ argyll-dispwin -I -d1 ~/icc/main.icc &
 #aticonfig --pplib-cmd "set fanspeed 0 18"
 
 # Fix the GPU speed
-nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=100'
+#nvidia-settings -a '[gpu:0]/GPUGraphicsClockOffset[3]=100'
 #nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=1'
 
 # Daemonize udiskie
@@ -41,7 +42,7 @@ urxvtd -q -o -f
 # Hide mouse cursor when not in use
 unclutter -noevents -idle 2 -jitter 1 -root &>/dev/null &
 swarp 0 0 &
-easystroke &
+#easystroke &
 
 # Start MPD and autoplay
 systemctl --user start mpd

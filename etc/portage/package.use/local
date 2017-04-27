@@ -33,7 +33,7 @@
 */* abi_x86_32 # multilib support
 */* ncurses
 */* fontconfig xft
-*/* cuda opencl openexr opengl
+*/* opencl openexr opengl
 */* idn icu unicode cjk
 */* -startup-notification -cdda
 */* ruby_targets_ruby22 ruby_targets_ruby23
@@ -54,28 +54,31 @@ dev-vcs/darcs profile doc hscolour
 app-text/pandoc profile doc hscolour
 
 # FFmpeg-wide use flags
-*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx vdpau
+*/ffmpeg X ass aacplus network ssh alsa v4l openssl opus speex webp x265 vpx vdpau
 */ffmpeg dcadec libsoxr modplug librtmp celt bluray zimg ebur128 -pic
-*/ffmpeg gnutls -openssl # fails on 0x0.st for some reason
 
 # KDE-wide use flags
 kde-apps/* -handbook -kwallet
 kde-base/* -handbook -kwallet
 kde-frameworks/* -handbook -kwallet
 
-# Incompatible with python 3.5
-app-text/asciidoc python_single_target_python2_7
-media-libs/vapoursynth  python_single_target_python3_4  python_targets_python3_4
-media-libs/vapoursynth -python_single_target_python3_5 -python_targets_python3_5
-net-im/pidgin python_single_target_python3_4 python_targets_python3_4
+# Gentoo python horseshit
 net-irc/weechat  python_single_target_python2_7  python_targets_python2_7
 net-irc/weechat -python_single_target_python3_5 -python_targets_python3_5
+app-text/asciidoc python_single_target_python2_7
 sys-process/systemd-cron python_targets_python3_4 python_single_target_python3_4
+app-editors/vim -python_targets_python3_4 -python_targets_python3_5
+
+sys-apps/util-linux python_single_target_python3_5
+sys-devel/gdb python_single_target_python3_5
+media-sound/autoplay python_single_target_python3_5
+dev-libs/gobject-introspection python_single_target_python3_5
+kde-frameworks/ki18n python_single_target_python3_5
+media-libs/lensfun python_single_target_python3_5
 
 # Uncategorized
 app-arch/p7zip -wxwidgets
 app-crypt/pinentry qt4 -qt5 -gtk
-app-editors/neovim -jemalloc # build failure
 app-editors/vim cscope vim-pager
 app-emulation/lxc cgmanager # for LXD
 app-emulation/qemu spice usbredir virgl -curl -jpeg -png -python -vnc
@@ -104,7 +107,7 @@ dev-qt/qtwebchannel qml
 dev-qt/qtwebengine widgets
 dev-qt/qtwebkit printsupport webp ftpdir jit -geolocation
 dev-scheme/guile networking
-dev-util/apitrace qt4
+dev-util/apitrace qt4 system-snappy
 dev-util/ltrace unwind
 dev-util/nvidia-cuda-sdk -examples # build failure
 dev-vcs/git tk
@@ -112,6 +115,7 @@ dev-vcs/subversion -dso
 games-engines/scummvm fluidsynth
 kde-apps/libkexiv2 -xmp
 kde-apps/okular -crypt
+kde-frameworks/kdelibs -webkit
 media-fonts/terminus-font ceneterd-tilde distinct-l ru-dv du-g ru-i
 media-gfx/imagemagick X hdri lqr q32 raw webp fftw -opencl
 media-gfx/krita fftw vc
@@ -119,6 +123,7 @@ media-libs/libass harfbuzz
 media-libs/libcaca imlib
 media-libs/libcanberra -udev # pulls in alsa
 media-libs/libsamplerate sndfile
+media-libs/libsdl2 haptic
 media-libs/libvpx svc
 media-libs/mesa gbm opencl
 media-libs/mesa gles2
@@ -128,12 +133,13 @@ media-libs/vapoursynth -imagemagick
 media-libs/x264 10bit
 media-plugins/alsa-plugins pulseaudio
 media-sound/alsa-utils -doc # build failure
+media-sound/audacity alsa ffmpeg id3tag libsamplerate
 media-sound/mpd alsa inotify cue mpg123 wavpack opus ffmpeg
 media-sound/pulseaudio alsa dbus realtime sox -ssl -gtk
 media-sound/sox -ffmpeg # build failure
 media-video/ffmpeg -hardcoded-tables # build failure
 media-video/mkvtoolnix -wxwidgets
-media-video/mpv vapoursynth
+media-video/mpv vapoursynth cuda
 media-video/x264-encoder 10bit -mp4
 net-analyzer/icinga2 mail postgres -mysql
 net-analyzer/monitoring-plugins fping postgres ssh
@@ -144,7 +150,7 @@ net-analyzer/vnstat gd
 net-dns/dnsmasq -lua
 net-im/bitlbee otr
 net-libs/polarssl programs
-net-misc/openvpn passwordsave
+net-vpn/openvpn passwordsave
 net-misc/youtube-dl offensive
 net-p2p/rtorrent color
 net-p2p/transmission -gtk -xfs

@@ -111,3 +111,4 @@ noise = tag:calm OR tag:system OR tag:rss OR tag:rssqueue
 unread = tag:unread AND NOT (tag:rss OR tag:rssqueue)
 rss = tag:rss AND tag:unread
 github = tag:mpv OR tag:bower OR tag:sxiv OR tag:qutebrowser
+H = tag:highlight

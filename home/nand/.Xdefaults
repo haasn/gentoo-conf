@@ -1,6 +1,6 @@
 ! URxvt stuff
 
-URxvt.font: xft:Terminus:pixelsize=14,xft:DejaVu Sans Mono:pixelsize=14,xft:unifont:pixelsize=16,xft:STIX,xft:STIX Math
+URxvt.font: xft:Terminus:pixelsize=14
 
 URxvt.letterSpace:      true
 URxvt.saveLines:        12000

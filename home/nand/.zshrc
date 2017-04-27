@@ -83,6 +83,9 @@ bindkey "${terminfo[khome]}" beginning-of-line
 bindkey "${terminfo[kend]}" end-of-line
 bindkey "${terminfo[kdch1]}" delete-char
 
+bindkey '^[[A' history-beginning-search-backward
+bindkey '^[[B' history-beginning-search-forward
+
 # Make these a bit more like bash
 bindkey "^U" backward-kill-line
 bindkey '^[[Z' reverse-menu-complete

@@ -1,5 +1,8 @@
 ## Overlay unmasking
 
+# Booboo
+games-arcade/taisei::booboo
+
 # Deter
 gnome-extra/yad::deter
 
@@ -13,13 +16,14 @@ media-fonts/unifraktur::emery
 dev-qt/qt5ct::mva
 
 # Palemoon
-www-client/palemoon::palemoon
+<www-client/palemoon-27::palemoon
 
 # Qt
 dev-qt/qtwebkit::qt
-dev-qt/qtwebengine::qt
+=dev-qt/qtwebengine-5.7*::qt
 
 # Sunrise
+app-misc/autokey-gtk::sunrise
 x11-misc/swarp::sunrise
 sys-apps/evrouter::sunrise
 

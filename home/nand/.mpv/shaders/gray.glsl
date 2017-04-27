@@ -1,5 +1,8 @@
-vec4 sample(sampler2D tex, vec2 pos, vec2 tex_size)
+//!HOOK LINEAR
+//!BIND HOOKED
+
+vec4 hook()
 {
-    float luma = dot(texture(tex, pos).rgb, vec3(0.2126, 0.7152, 0.0722));
-    return vec4(luma, luma, luma, 1.0);
+    float luma = dot(HOOKED_texOff(0).rgb, vec3(0.2126, 0.7152, 0.0722));
+    return vec4(vec3(luma), 1.0);
 }

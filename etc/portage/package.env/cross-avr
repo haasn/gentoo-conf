@@ -1,0 +1,4 @@
+cross-avr/binutils cross-avr/binutils.conf
+cross-avr/gcc cross-avr/gcc.conf
+cross-avr/avr-libc cross-avr/avr-libc.conf
+cross-avr/gdb cross-avr/gdb.conf

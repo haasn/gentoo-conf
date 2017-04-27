@@ -1,0 +1,14 @@
+## Build with support for CUDA decoding
+media-video/ffmpeg cuda
+media-video/mpv cuda
+
+## LTO testing
+#media-video/ffmpeg lto
+
+## Fix compile-time hang with USE="jemalloc"
+app-editors/neovim nosandbox
+
+## Miscellaneous
+games-emulation/dolphin dolphin
+media-sound/vimus vimus
+dev-qt/qtwebkit qtwebkit

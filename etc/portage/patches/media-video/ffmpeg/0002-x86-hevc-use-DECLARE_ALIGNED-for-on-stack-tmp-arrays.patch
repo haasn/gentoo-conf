@@ -1,4 +1,4 @@
-From 566220dc96656db1481256a111d1886a84d9cb0c Mon Sep 17 00:00:00 2001
+From 9583936547badd95a8a8c4306b96e069738bfdc1 Mon Sep 17 00:00:00 2001
 From: Hendrik Leppkes <h.leppkes@gmail.com>
 Date: Tue, 16 Sep 2014 22:45:33 +0200
 Subject: [PATCH 2/3] x86/hevc: use DECLARE_ALIGNED for on-stack tmp arrays to
@@ -9,7 +9,7 @@ Subject: [PATCH 2/3] x86/hevc: use DECLARE_ALIGNED for on-stack tmp arrays to
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/libavcodec/x86/hevc_idct_intrinsic.c b/libavcodec/x86/hevc_idct_intrinsic.c
-index 7f732d2..ef970d7 100644
+index 7f732d2a49..ef970d7141 100644
 --- a/libavcodec/x86/hevc_idct_intrinsic.c
 +++ b/libavcodec/x86/hevc_idct_intrinsic.c
 @@ -625,7 +625,7 @@ void ff_hevc_transform_4x4_ ## D ## _sse2 (int16_t *_coeffs, int col_limit) {  \
@@ -44,5 +44,5 @@ index 7f732d2..ef970d7 100644
      __m128i src0, src1, src2, src3;                                            \
      __m128i tmp0, tmp1, tmp2, tmp3, tmp4;                                      \
 -- 
-2.10.2
+2.12.0
 

@@ -18,3 +18,6 @@
 # required by app-text/llpp-22_p20160324::gentoo
 # required by llpp (argument)
 >=dev-ml/lablgl-1.05-r1 glut
+# required by app-misc/anki-2.0.43::gentoo
+# required by anki (argument)
+>=dev-python/PyQt4-4.12 webkit

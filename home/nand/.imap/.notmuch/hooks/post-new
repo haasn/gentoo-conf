@@ -8,6 +8,8 @@ notmuch tag +smartd -- tag:new and tag:system and subject:SMART
 # Important stuff
 notmuch tag +important -- tag:new and '(to:wichtig@* or to:urgent@* or to:important@*)'
 notmuch tag +bank      -- tag:new and '(to:sparkasse@haasn.xyz)'
+notmuch tag +highlight -- tag:new and 'haasn and not (to:haasn or from:haasn)'
+notmuch tag +highlight -- tag:new and 'to:mention@noreply.github.com'
 
 # Servers
 notmuch tag +tina -- tag:new and '(to: root@tina)'
@@ -15,6 +17,7 @@ notmuch tag +tina -- tag:new and '(to: root@tina)'
 # Spam
 notmuch tag -new +spam -- tag:new and from:news@nvidia.com
 notmuch tag -new +spam -- tag:new and to:gog@nand.wakku.to
+notmuch tag -new +spam -- tag:new and to:spectrocoin@nand.wakku.to
 notmuch tag -new +deleted -- tag:new and to:linuxpool.informatik@uni-ulm.de and from:gitlab@gitlab.informatik.uni-ulm.de
 notmuch tag -new +spam -- tag:new and 'to:trash*@nand.wakku.to'
 notmuch tag -new +spam -- tag:new and 'to:google-summer-of-code-students-list@googlegroups.com'
@@ -35,7 +38,7 @@ done
 # Other tags
 notmuch tag +rssqueue -- tag:new and to:rss@haasn.xyz
 notmuch tag +keybase -- tag:new and to:keybase@haasn.xyz
-notmuch tag +btc -- tag:new and '(to:coinbase@haasn.xyz or to:kraken@haasn.xyz)'
+notmuch tag +btc -- tag:new and '(to:coinbase@haasn.xyz or to:kraken@haasn.xyz or to:ecoin@haasn.xyz)'
 
 # Don't re-tag my own mails
 notmuch tag -new -- tag:new and tag:sent

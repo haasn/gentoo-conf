@@ -6,8 +6,8 @@ keycode  14 = percent 5 fivesuperior fivesubscript
 keycode  15 = asciicircum 6 sixsuperior sixsubscript
 keycode  16 = ampersand 7 sevensuperior sevensubscript
 keycode  17 = asterisk 8 Greek_lamda eightsubscript
-keycode  18 = bracketleft 9 leftsinglequotemark ninesubscript
-keycode  19 = bracketright 0 rightsinglequotemark zerosubscript
+keycode  18 = parenleft 9 leftsinglequotemark ninesubscript
+keycode  19 = parenright 0 rightsinglequotemark zerosubscript
 keycode  20 = minus underscore plusminus approxeq
 keycode  21 = equal plus multiply division
 
@@ -21,8 +21,8 @@ keycode  30 = u U uacute Uacute
 keycode  31 = i I iacute Iacute
 keycode  32 = o O oacute Oacute
 keycode  33 = p P odiaeresis Odiaeresis
-keycode  34 = parenleft braceleft guillemotleft U27E8
-keycode  35 = parenright braceright guillemotright U27E9
+keycode  34 = bracketleft braceleft guillemotleft U27E8
+keycode  35 = bracketright braceright guillemotright U27E9
 
 keycode  38 = a A aacute Aacute
 keycode  39 = s S ssharp U1E9E
@@ -36,8 +36,8 @@ keycode  46 = l L omacron umacron
 keycode  47 = semicolon colon leftdoublequotemark degree
 keycode  48 = apostrophe quotedbl rightdoublequotemark U207A
 keycode  49 = grave asciitilde U2200 U2245
-keycode  50 = Alt_L Alt_L Alt_L Alt_L
-keycode  51 = Greek_pi Greek_PI notsign U2E2E
+!keycode  50 = Alt_L Alt_L Alt_L Alt_L
+!keycode  51 = Greek_pi Greek_PI notsign U2E2E
 keycode  52 = z Z yacute Yacute
 keycode  53 = x X Greek_alpha ediaeresis
 keycode  54 = c C U2124 U2102
@@ -49,41 +49,41 @@ keycode  59 = comma less notequal lessthanequal
 keycode  60 = period greater U00B7 greaterthanequal
 keycode  61 = slash question U2205 U2218
 
-keycode  64 = Hyper_L Hyper_L Hyper_L Hyper_L
-
-keycode  65 = space space U200B U00A0
-keycode  66 = Super_L NoSymbol Super_L
-keycode  67 = U2603 U2288 U2282 U2284 F1 F1 XF86Switch_VT_1
-keycode  68 = U2287 U2289 U2283 U2285 F2 F2 XF86Switch_VT_2
-keycode  69 = F3 U222A U2237 U2254 F3 F3 XF86Switch_VT_3
-keycode  70 = U2208 U2209 U2203 U2204 F4 F4 XF86Switch_VT_4
-keycode  71 = F5 F5 F1 F1 F5 F5 XF86Switch_VT_5
-keycode  72 = F6 F6 F2 F2 F10 F10 F10 F10 F10 F10
-keycode  73 = F7 F7 F3 F3 F7 F7 XF86Switch_VT_7
-keycode  74 = F8 F8 F4 F4 F8 F8 XF86Switch_VT_8
-keycode  75 = EuroSign cent F9 F9 F9 F9 XF86Switch_VT_9
-keycode  76 = yen U200F F10 F10 F10 F10 XF86Switch_VT_10
-
-keycode  94 = backslash bar U2227 U2228
-keycode  95 = sterling U222B F11 U1F4F7 F11 F11 XF86Switch_VT_11
-keycode  96 = U2286 U221A Greek_SIGMA U16A6 F12 F12 XF86Switch_VT_12
-
+!keycode  64 = Hyper_L Hyper_L Hyper_L Hyper_L
+!
+!keycode  65 = space space U200B U00A0
+!keycode  66 = Super_L NoSymbol Super_L
+!keycode  67 = U2603 U2288 U2282 U2284 F1 F1 XF86Switch_VT_1
+!keycode  68 = U2287 U2289 U2283 U2285 F2 F2 XF86Switch_VT_2
+!keycode  69 = F3 U222A U2237 U2254 F3 F3 XF86Switch_VT_3
+!keycode  70 = U2208 U2209 U2203 U2204 F4 F4 XF86Switch_VT_4
+!keycode  71 = F5 F5 F1 F1 F5 F5 XF86Switch_VT_5
+!keycode  72 = F6 F6 F2 F2 F10 F10 F10 F10 F10 F10
+!keycode  73 = F7 F7 F3 F3 F7 F7 XF86Switch_VT_7
+!keycode  74 = F8 F8 F4 F4 F8 F8 XF86Switch_VT_8
+!keycode  75 = EuroSign cent F9 F9 F9 F9 XF86Switch_VT_9
+!keycode  76 = yen U200F F10 F10 F10 F10 XF86Switch_VT_10
+!
+!keycode  94 = backslash bar U2227 U2228
+!keycode  95 = sterling U222B F11 U1F4F7 F11 F11 XF86Switch_VT_11
+!keycode  96 = U2286 U221A Greek_SIGMA U16A6 F12 F12 XF86Switch_VT_12
+!
 keycode 108 = Mode_switch Mode_switch Mode_switch Mode_switch
-keycode 111 = Up NoSymbol U2191 U21D1
-keycode 114 = Right NoSymbol U2192 U21D2
-keycode 113 = Left NoSymbol U2190 U21D0
-keycode 116 = Down NoSymbol U2193 U21D3
-
-keycode 133 = Shift_L Shift_L Shift_L Shift_L
-
-clear Shift
-clear Lock
-clear Control
-clear Mod1
-clear Mod3
+!keycode 111 = Up NoSymbol U2191 U21D1
+!keycode 114 = Right NoSymbol U2192 U21D2
+!keycode 113 = Left NoSymbol U2190 U21D0
+!keycode 116 = Down NoSymbol U2193 U21D3
+!
+!keycode 133 = Shift_L Shift_L Shift_L Shift_L
+!
+!clear Shift
+!clear Lock
+!clear Control
+!clear Mod1
+!clear Mod3
+!add Shift = Shift_L Shift_R
+!add Control = Control_L Control_R
+!add Mod1 = Alt_L
 clear Mod4
-add Shift = Shift_L Shift_R
-add Control = Control_L Control_R
-add Mod1 = Alt_L
-add Mod4 = Super_L Super_R
-add Mod3 = Hyper_L
+add Mod4 = Super_L
+add Mod3 = Super_R

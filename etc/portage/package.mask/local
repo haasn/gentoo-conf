@@ -1,4 +1,5 @@
 # Overlay masking
+*/*::booboo
 */*::deter
 */*::emery
 */*::mva
@@ -15,6 +16,7 @@
 >=dev-util/gtk-update-icon-cache-3.20
 >=x11-libs/gtksourceview-3.20
 x11-themes/gnome-themes-standard
+>x11-themes/vertex-theme-20170128-r1
 
 # Incompatible with ZFS
 >=sys-fs/udev-init-scripts-28
@@ -24,9 +26,3 @@ x11-themes/gnome-themes-standard
 >=sys-apps/firejail-0.9.42
 
 # Dependency conflicts that portage is too dumb to solve
-=sys-apps/openrc-0.22*
->=app-text/pandoc-1.18
->=app-text/poppler-0.50
-
-# Completely breaks with qutebrowser for some reason
-#=dev-qt/qtwebkit-6*

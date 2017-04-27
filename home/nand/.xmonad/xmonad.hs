@@ -1,3 +1,5 @@
+{-# LANGUAGE ViewPatterns #-}
+
 -- Base imports
 import XMonad
 import XMonad.Util.EZConfig (additionalKeys)
@@ -25,6 +27,7 @@ import qualified XMonad.StackSet as W
 import Control.Concurrent (forkIO)
 import Control.Monad (void)
 import Data.List (isInfixOf)
+import Data.Maybe (fromMaybe)
 import qualified Network.MPD as MPD
 import qualified Network.MPD.Commands.Extensions as MPD
 import System.Exit
@@ -117,11 +120,12 @@ extraKeys =
     -- Reset the mouse cursor
     , ((mod4Mask, xK_Escape), spawn "exec /usr/bin/swarp 0 0")
 
-    , ((controlMask .|. mod3Mask, xK_Home),      io' $ MPD.withMPD MPD.toggle)
-    , ((controlMask .|. mod3Mask, xK_Insert),    io' $ MPD.withMPD (MPD.play Nothing))
-    , ((controlMask .|. mod3Mask, xK_End),       io' $ MPD.withMPD MPD.stop)
-    , ((controlMask .|. mod3Mask, xK_Page_Down), io' $ MPD.withMPD MPD.next)
-    , ((controlMask .|. mod3Mask, xK_Page_Up),   io' $ MPD.withMPD MPD.previous)
+    , ((0, 0x1008FF14), io' $ MPD.withMPD MPD.stop)
+    , ((0, 0x1008FF15), io' $ MPD.withMPD MPD.toggle)
+    , ((0, 0x1008FF17), io' $ MPD.withMPD MPD.next)
+    , ((0, 0x1008FF16), io' $ MPD.withMPD MPD.previous)
+    , ((0, 0x1008ff3e), addVolume (-5))
+    , ((0, 0x1008ff97), addVolume 5)
 
     -- Default keybindings, remapped to mod1Mask instead of shift
     , ((mod4Mask .|. mod1Mask, xK_Return),  spawn "/usr/bin/urxvtc")
@@ -174,6 +178,12 @@ wsBy' = findWorkspace getSortByIndex Next HiddenNonEmptyWS
 
 nextWS' = switchWorkspace' 1
 prevWS' = switchWorkspace' (-1)
+
+addVolume :: MonadIO m => Int -> m ()
+addVolume d = io' . MPD.withMPD $ do
+    MPD.Status { MPD.stVolume = fromMaybe 70 -> vol } <- MPD.status
+    let vol' = max 0 . min 100 $ vol + d
+    MPD.setVolume vol'
 
 -- Fullscreen fixes. For some reason ewmh doesn't advertise _NET_WM_STATE_FULLSCREEN
 fullscreenFix :: XConfig a -> XConfig a

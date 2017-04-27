@@ -1,1 +1,7 @@
-"" "" any key/276 "XKey/Pause"
+# Map side button to pause for teamspeak push-to-talk
+Window ""
+"Mouse" "" any key/276 "XKey/Pause"
+
+# Map RMB to repeat-macros for d3
+Window "^Diablo III$"
+"Mouse" "" any key/275 "Shell/xdotool click --repeat 600 --delay 10 2 &"

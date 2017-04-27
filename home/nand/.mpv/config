@@ -6,7 +6,7 @@ opengl-pbo=yes # helps with performance
 icc-profile-auto=yes
 icc-cache-dir=/tmp/mpv-icc
 target-brightness=100
-hdr-tone-mapping=linear
+hdr-tone-mapping=hable
 
 # Interpolation
 video-sync=display-resample
@@ -18,7 +18,10 @@ blend-subtitles=yes
 deband-iterations=2
 deband-range=12
 temporal-dither=yes
-hwdec=no # better quality and stability
+
+# NUMA pinning, to avoid latency spikes
+numa-cpubind=0
+numa-membind=0
 
 # TFW fell for the 64 GiB RAM meme
 cache=auto
@@ -42,7 +45,9 @@ volume=70
 volume-max=100
 audio-pitch-correction=no
 audio-normalize-downmix=yes
-audio-device='pulse/alsa_output.usb-Yoyodyne_Consulting_ODAC-revB-01.iec958-stereo'
+audio-device='alsa_output.usb-Yoyodyne_Consulting_ODAC-revB-01.iec958-stereo'
+af-add=@audnorm:!lavfi=[loudnorm=I=-25:TP=-1.5:LRA=1]
+af-add=@dynnorm:!lavfi=[dynaudnorm=f=200:g=5:r=0.1]
 
 # Hide album art
 audio-display=no
@@ -50,11 +55,12 @@ audio-display=no
 # Miscellaneous
 fullscreen=no
 msg-color=yes
-sub-ass-force-style=Kerning=yes,Fontsize=30
-sub-pos=70
+sub-ass-force-style=Kerning=yes,Fontsize=20,Outline=2
+sub-pos=60
 screenshot-directory=/mem
+load-unsafe-playlists=yes
 
-# No stupid mouse interactivity, this is a fucking CLI player
+# torque/progressbar is better
 no-osc
 
 # Default sub lang
@@ -126,9 +132,10 @@ mute=no
 force-window=no
 no-video
 ytdl-format=bestaudio/best
+cache-initial=1
 
 [normalize]
-af=lavfi=[loudnorm=I=-25:TP=-1.5:LRA=1]
+af-toggle=@audnorm
 
 [yeti]
 profile=audio
@@ -199,3 +206,8 @@ screenshot-png-compression=0
 screenshot-png-filter=0
 screenshot-tag-colorspace=yes
 screenshot-high-bit-depth=yes
+
+[4k]
+profile=UHD
+numa-cpubind=-1
+vd-lavc-threads=32

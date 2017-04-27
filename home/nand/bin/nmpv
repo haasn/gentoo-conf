@@ -1,2 +1,0 @@
-#!/bin/sh
-numactl -N1 -m1 -- mpv $@

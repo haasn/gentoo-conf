@@ -3,10 +3,10 @@
 # https://devtalk.nvidia.com/default/topic/940433/power-management-issues-under-364-x-and-367-x-and-maybe-more-/
 
 # Disable nvidia power management
-/usr/bin/nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=1'
+#/usr/bin/nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=1'
 
 # Lock the screen
 /usr/bin/i3lock -c 000000
 
 # Re-enable power management
-/usr/bin/nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=0'
+#/usr/bin/nvidia-settings -a '[gpu:0]/GPUPowerMizerMode=0'

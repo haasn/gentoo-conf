@@ -13,7 +13,7 @@ index d6b4457..4869aa9 100644
 -splitCurrent (n, crumb:cs) = Just (Node (Split (oppositeAxis . axis . parentVal $ crumb) 0.5) (Leaf 0) (toggleSplits n), crumb:cs)
 +splitFromRect :: Rectangle -> Split
 +splitFromRect (Rectangle _ _ w h)
-+  | w >= h = (Split Vertical 0.5)
++  | w * 9 >= h * 16 = (Split Vertical 0.5)
 +  | otherwise = (Split Horizontal 0.5)
 +
 +splitCurrent :: Rectangle -> Zipper Split -> Maybe (Zipper Split)
