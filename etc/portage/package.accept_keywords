@@ -13,6 +13,7 @@ app-admin/pass **
 app-editors/kakoune **
 app-editors/neovim **
 app-emulation/wine **
+app-i18n/fcitx **
 app-text/zathura-pdf-mupdf **
 app-misc/screenfetch **
 dev-haskell/primitive **
@@ -31,6 +32,7 @@ media-video/mpv **
 media-video/rtmpdump **
 media-video/x264-encoder **
 net-irc/weechat **
+net-p2p/transmission **
 net-misc/youtube-dl **
 =sys-kernel/genkernel-3.5* **
 www-client/qutebrowser **

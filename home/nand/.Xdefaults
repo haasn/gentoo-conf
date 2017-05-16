@@ -1,6 +1,6 @@
 ! URxvt stuff
 
-URxvt.font: xft:Terminus:pixelsize=14
+URxvt.font: xft:monospace:pixelsize=14
 
 URxvt.letterSpace:      true
 URxvt.saveLines:        12000
@@ -12,6 +12,8 @@ URxvt.scrollWithBuffer:     true
 URxvt.scrollTtyKeypress:    true
 
 URxvt.fading: 10
+URxvt.inputMethod: scim
+URxvt.preeditType: OverTheSpot
 
 ! perl extensions
 URxvt.perl-ext: default,url-select,clipboard

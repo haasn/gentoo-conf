@@ -22,7 +22,7 @@
 */* acpi # for hibernation
 */* llvm clang
 */* -cups
-*/* -kde -qt4 qt5 qt
+*/* -kde qt5 qt -qt4 -qt3support
 */* -gstreamer -policykit -consolekit -dbus -udisks -upower
 */* systemd udev
 */* savedconfig # dwm/sxiv etc.
@@ -41,6 +41,7 @@
 */* xinerama
 */* vdpau -xv
 */* lm_sensors
+*/* scim -fcitx -ibus
 
 ################################
 #### Package-specific flags ####
@@ -78,16 +79,18 @@ media-libs/lensfun python_single_target_python3_5
 
 # Uncategorized
 app-arch/p7zip -wxwidgets
-app-crypt/pinentry qt4 -qt5 -gtk
+app-crypt/pinentry qt5 -qt4 -gtk
 app-editors/vim cscope vim-pager
 app-emulation/lxc cgmanager # for LXD
 app-emulation/qemu spice usbredir virgl -curl -jpeg -png -python -vnc
 app-emulation/spice client
 app-emulation/wine realtime staging s3tc
 app-eselect/eselect-php fpm
+app-i18n/fcitx -autostart -introspection -table
+#app-i18n/mozc qt4
 app-portage/layman git subversion
 app-text/aspell linguas_de
-app-text/poppler qt4
+#app-text/poppler qt4
 app-text/texlive linguas_de
 app-text/zathura-meta pdf cb djvu postscript
 dev-db/sqlite secure-delete
@@ -107,7 +110,7 @@ dev-qt/qtwebchannel qml
 dev-qt/qtwebengine widgets
 dev-qt/qtwebkit printsupport webp ftpdir jit -geolocation
 dev-scheme/guile networking
-dev-util/apitrace qt4 system-snappy
+dev-util/apitrace qt5 system-snappy
 dev-util/ltrace unwind
 dev-util/nvidia-cuda-sdk -examples # build failure
 dev-vcs/git tk
@@ -128,7 +131,7 @@ media-libs/libvpx svc
 media-libs/mesa gbm opencl
 media-libs/mesa gles2
 media-libs/openimageio -gif
-media-libs/phonon -pulseaudio -gstreamer -vlc qt5 qt4
+media-libs/phonon -pulseaudio -gstreamer -vlc qt5
 media-libs/vapoursynth -imagemagick
 media-libs/x264 10bit
 media-plugins/alsa-plugins pulseaudio
@@ -154,6 +157,7 @@ net-vpn/openvpn passwordsave
 net-misc/youtube-dl offensive
 net-p2p/rtorrent color
 net-p2p/transmission -gtk -xfs
+net-p2p/deluge console gtk -sound
 sci-libs/gsl cblas-external
 sys-apps/busybox static
 sys-apps/dbus user-session

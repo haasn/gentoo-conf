@@ -21,3 +21,6 @@
 # required by app-misc/anki-2.0.43::gentoo
 # required by anki (argument)
 >=dev-python/PyQt4-4.12 webkit
+# required by app-i18n/scim-anthy-1.2.7-r1::gentoo
+# required by scim-anthy (argument)
+>=app-i18n/scim-1.4.17 gtk3

@@ -1,4 +1,5 @@
-Config { font = "xft:Terminus-10,DejaVu Sans Mono-10,Kochi Gothic-10,FontAwesome-8"
+Config { font = "xft:Terminus-10,Liberation Mono-10,Sazanami Gothic-10,FontAwesome-8"
+       , additionalFonts = ["xft:Terminus-10:bold,Liberation Mono-10:bold,Sazanami Gothic-10:bold,FontAwesome-8:bold"]
        , bgColor = "black"
        , fgColor = "grey"
        , position = Static { xpos = 0, ypos = 0, width = 4096, height = 32 }
@@ -6,9 +7,9 @@ Config { font = "xft:Terminus-10,DejaVu Sans Mono-10,Kochi Gothic-10,FontAwesome
                     , Run Memory ["-t","\xF200 <usedratio>%"] 10
                     , Run Date "%Y %b %d (%a) %H:%M %Z" "date" 10
                     , Run Network "enp7s0" ["-t", "<fc=#7FC5C6>\xF063 <rx></fc> <fc=#ffa600>\xF062 <tx></fc>"] 10
-                    , Run MPD ["-t", "<statei> <artist> - <title> (<album>)", "--", "-P","\xF04B", "-S","\xF04D", "-Z","\xF04C"] 10
+                    , Run MPD ["-t", "<statei> <artist> - <fn=1><fc=#b3ff14><title></fc></fn>  (<album>)", "--", "-P","\xF04B", "-S","\xF04D", "-Z","\xF04C"] 10
                     , Run StdinReader
                     , Run CommandReader "/usr/local/bin/mailcount" "notmuch"
                     ]
-       , template = "%StdinReader% }{ <fc=#e50c88>%notmuch%</fc> <fc=#85c600>%mpd%</fc> %enp7s0% %cpu% <fc=#85919b>%memory%</fc>   <fc=#DACCBB>%date%</fc>"
+       , template = "%StdinReader% } <fc=#e50c88>%notmuch%</fc> <fc=#85c600>%mpd%</fc> { %enp7s0% %cpu% <fc=#85919b>%memory%</fc>   <fc=#DACCBB>%date%</fc>"
        }

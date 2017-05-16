@@ -4,4 +4,4 @@ if [ -f ~/.weechat/weechat.upgrade ]; then
     UPGRADE="--upgrade"
 fi
 
-exec urxvtc -xrm 'URxvt.fading: 0' -xrm 'URxvt.meta8: false' -keysym.Escape ÿ -e dtach -A /tmp/weechat -Ez firejail --quiet weechat-curses $UPGRADE
+exec urxvtc -fn 'xft:Terminus:pixelsize=14' -xrm 'URxvt.fading: 0' -xrm 'URxvt.meta8: false' -keysym.Escape ÿ -e dtach -A /tmp/weechat -Ez firejail --quiet weechat-curses $UPGRADE

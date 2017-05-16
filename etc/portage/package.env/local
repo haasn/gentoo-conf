@@ -8,6 +8,9 @@ media-video/mpv cuda
 ## Fix compile-time hang with USE="jemalloc"
 app-editors/neovim nosandbox
 
+## Fix build time error due to trying to download pinyin data
+app-i18n/fcitx networksandbox
+
 ## Miscellaneous
 games-emulation/dolphin dolphin
 media-sound/vimus vimus

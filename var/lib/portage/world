@@ -25,6 +25,7 @@ app-emulation/qemu
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
+app-i18n/scim-anthy
 app-misc/adblock2privoxy
 app-misc/colordiff
 app-misc/dtach
@@ -142,10 +143,12 @@ media-fonts/dejavu
 media-fonts/efont-unicode
 media-fonts/fontawesome
 media-fonts/ipamonafont
-media-fonts/kochi-substitute
+media-fonts/liberation-fonts
 media-fonts/monafont
+media-fonts/noto
 media-fonts/opendesktop-fonts
 media-fonts/powerline-symbols
+media-fonts/sazanami
 media-fonts/stix-fonts
 media-fonts/symbola
 media-fonts/terminus-font
@@ -224,12 +227,15 @@ net-misc/proxychains
 net-misc/socat
 net-misc/whois
 net-misc/youtube-dl
+net-p2p/deluge
 net-p2p/go-ipfs-bin
 net-p2p/nicotine+
 net-p2p/rtorrent
 net-p2p/soulseek-qt
+net-p2p/transmission
 net-proxy/privoxy
 net-vpn/openvpn
+net-vpn/tor
 sci-mathematics/ent
 sci-visualization/gnuplot
 sci-visualization/grace
@@ -289,6 +295,7 @@ www-plugins/gnash
 www-servers/apache
 www-servers/nginx
 x11-apps/mesa-progs
+x11-apps/xfontsel
 x11-base/xorg-x11
 x11-misc/dmenu
 x11-misc/easystroke

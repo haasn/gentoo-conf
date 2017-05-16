@@ -72,7 +72,7 @@ ytdl-raw-options=sub-lang="en,eng,enUS,en-US",write-sub=
 term-playing-msg='Resolution: ${width}x${height}, Framerate: ${container-fps} Hz'
 
 # OSD rice (for file info)
-#osd-font="Source Sans Pro Semibold" # breaks CJK
+#osd-font="Liberation Sans"
 osd-font-size=20
 osd-color="#ffffffff"
 osd-border-color="#ff151515"
@@ -82,7 +82,7 @@ osd-shadow-color="#11000000"
 osd-fractions
 
 # Sub rice (eg. for srt)
-sub-font="Source Sans Pro Semibold"
+sub-font="Liberation Sans"
 sub-font-size=75
 sub-margin-y=50
 sub-color="#FFFFFFFF"

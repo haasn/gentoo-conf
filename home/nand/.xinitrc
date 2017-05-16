@@ -51,5 +51,11 @@ autoplay info &
 # Start gpg-agent
 eval $(gpg-agent --daemon)
 
+# Start SCIM
+export XMODIFIERS=@im=SCIM
+export GTK_IM_MODULE="xim"
+export QT_IM_MODULE="scim"
+scim -d
+
 # Start the window manager
 exec xmonad
