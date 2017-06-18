@@ -1,2 +1,2 @@
-default_do='typePass'
+default_do='autotype'
 password_length=32

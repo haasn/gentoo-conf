@@ -1,8 +1,8 @@
 require 'mp.options'
 local opt = {
     patterns = {
-        "OP","[Oo]pening$",
-        "ED","[Ee]nding$",
+        "OP","[Oo]pening$", "^[Oo]pening:",
+        "ED","[Ee]nding$", "^[Ee]nding:",
         "[Pp]review$",
     },
 }

@@ -33,8 +33,8 @@
 #    autoplay info
 #}
 
-# grep should always be case insensitive
-alias grep='grep -i --color=auto'
+alias grep='grep --color=auto'
+alias igrep='grep -i'
 
 # some more ls aliases
 alias l='ls'
@@ -234,10 +234,14 @@ spr() {
     curl -sF "sprunge=<$src" https://sprunge.us | tee /dev/stderr | xclip -selection primary
 }
 
+#up() {
+#    local src='-;type=text/plain;charset=utf-8;filename=stdin.txt'
+#    [ "$1" ] && src="$1"
+#    curl -sF "file=@$src" https://0x0.st | tee /dev/stderr | xclip -selection primary
+#}
+
 up() {
-    local src='-;type=text/plain;charset=utf-8;filename=stdin.txt'
-    [ "$1" ] && src="$1"
-    curl -sF "file=@$src" https://0x0.st | tee /dev/stderr | xclip -selection primary
+    ~/bin/up "$@" | tee /dev/stderr | xclip
 }
 
 short() {
@@ -437,3 +441,5 @@ seshowdef() {
 sepathdecode() {
 	python -c "import base64; print(base64.b16decode(\"${1}\"));";
 }
+
+alias np='mpc -f "%artist% - %title%  \[%album%\]" current | xclip'

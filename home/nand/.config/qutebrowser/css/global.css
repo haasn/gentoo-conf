@@ -15,12 +15,18 @@ html > body[style="margin: 0px"] > img[style="-webkit-user-select: none; display
 
 * {
     font-family: Terminus, xos4 Terminus !important;
+    text-shadow: none !important;
     -webkit-user-select: text !important;
+    animation-duration: 0 !important;
+}
+
+#footer {
+    display: none !important;
 }
 
 /* Color overrides */
 
-:not(div[style*="transparent"]) {
+:not(*[style*="transparent"], img, pre, code) {
     background: #080C0D !important;
     color:      #DDCCBB !important;
 }
@@ -41,9 +47,16 @@ a:visited, a:visited * {
     color: #FF5D4A !important;
 }
 
-pre {
+pre, code {
+    color: #cba !important;
     background-color: #111 !important;
     border: 1px dashed #555 !important;
+    padding: 1px !important;
+}
+
+pre code {
+    border: none !important;
+    padding: none !important;
 }
 
 div.sourceCode > pre, td.sourceCode > pre {
@@ -93,7 +106,7 @@ span.qutehint > font {
 
 /* For 4chan */
 
-div.adg-rects {
+div.adg-rects, form#delform > div > div > iframe {
     display: none !important;
 }
 

@@ -2,44 +2,28 @@
 #### Live ebuilds ####
 ######################
 
-# Incompatible with newer kernels, remove ASAP
+# Compatibility with newer kernels
 sys-fs/zfs **
 sys-fs/zfs-kmod **
 sys-kernel/spl **
 sys-boot/grub **
 
-*/*::vapoursynth **
+#*/*::vapoursynth **
 app-admin/pass **
-app-editors/kakoune **
 app-editors/neovim **
 app-emulation/wine **
-app-i18n/fcitx **
-app-text/zathura-pdf-mupdf **
-app-misc/screenfetch **
-dev-haskell/primitive **
-games-arcade/taisei **
-media-libs/ffmpegsource **
 media-libs/libass **
-media-libs/x264 **
-media-libs/x265 **
+media-libs/vulkan-loader **
 media-libs/zimg **
 media-sound/autoplay **
-#media-sound/mpd ** # bug 584742
-media-sound/mumble **
 media-sound/vimus **
 media-video/ffmpeg **
 media-video/mpv **
-media-video/rtmpdump **
-media-video/x264-encoder **
 net-irc/weechat **
 net-p2p/transmission **
 net-misc/youtube-dl **
-=sys-kernel/genkernel-3.5* **
 www-client/qutebrowser **
-=x11-base/xorg-server-1.19* **
-=x11-base/xorg-drivers-1.19* **
 x11-misc/rofi **
 x11-misc/xmobar **
-x11-terms/st **
 x11-wm/xmonad **
 x11-wm/xmonad-contrib **

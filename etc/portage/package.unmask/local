@@ -1,4 +1,4 @@
-=media-video/ffmpeg-9999
+=media-video/ffmpeg-9999::gentoo
 sys-kernel/genkernel
 =x11-base/xorg-server-1.19*
 =x11-base/xorg-drivers-1.19*

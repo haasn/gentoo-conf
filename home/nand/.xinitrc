@@ -8,6 +8,9 @@ xset m 0 0
 xinput set-prop 'Kingsis Peripherals ZOWIE Gaming mouse' 'libinput Accel Profile Enabled' 0, 1
 #xinput --set-ptr-feedback 9 0 120 100
 
+# Start up evrouter
+sudo evrouter /dev/input/by-id/usb-Kingsis_Peripherals_ZOWIE_Gaming_mouse-event-mouse -c ~/.evrouterrc &>/dev/null
+
 # Try to disable screensavers / monitor blanking
 setterm -blank 0 -powersave off -powerdown 0
 xset s off

@@ -4,7 +4,7 @@
 import XMonad
 import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.EwmhDesktops (fullscreenEventHook)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 import XMonad.Util.Run (spawnPipe)
@@ -36,7 +36,6 @@ main = do
     xmproc <- spawnPipe "exec xmobar"
     xmonad $ withUrgencyHook (NoUrgencyHook)
            $ fullscreenFix
---         $ ewmh
            $ def {
         manageHook          = manageFloats <+> manageDocks <+> manageHook def,
         layoutHook          = smartBorders $ avoidStruts $ myLayout,
@@ -120,8 +119,8 @@ extraKeys =
     -- Reset the mouse cursor
     , ((mod4Mask, xK_Escape), spawn "exec /usr/bin/swarp 0 0")
 
-    , ((0, 0x1008FF14), io' $ MPD.withMPD MPD.stop)
-    , ((0, 0x1008FF15), io' $ MPD.withMPD MPD.toggle)
+    , ((0, 0x1008FF14), io' $ MPD.withMPD MPD.toggle)
+    , ((0, 0x1008FF15), io' $ MPD.withMPD MPD.stop)
     , ((0, 0x1008FF17), io' $ MPD.withMPD MPD.next)
     , ((0, 0x1008FF16), io' $ MPD.withMPD MPD.previous)
     , ((0, 0x1008ff3e), addVolume (-5))
@@ -185,7 +184,7 @@ addVolume d = io' . MPD.withMPD $ do
     let vol' = max 0 . min 100 $ vol + d
     MPD.setVolume vol'
 
--- Fullscreen fixes. For some reason ewmh doesn't advertise _NET_WM_STATE_FULLSCREEN
+-- Explicitly advertise _NET_WM_STATE_FULLSCREEN
 fullscreenFix :: XConfig a -> XConfig a
 fullscreenFix c = c { startupHook = startupHook c <+> setSupportedWithFullscreen }
 
@@ -194,17 +193,7 @@ setSupportedWithFullscreen = withDisplay $ \dpy -> do
     r <- asks theRoot
     a <- getAtom "_NET_SUPPORTED"
     c <- getAtom "ATOM"
-    supp <- mapM getAtom ["_NET_WM_STATE_HIDDEN"
-                         ,"_NET_WM_STATE_FULLSCREEN"
-                         ,"_NET_NUMBER_OF_DESKTOPS"
-                         ,"_NET_CLIENT_LIST"
-                         ,"_NET_CLIENT_LIST_STACKING"
-                         ,"_NET_CURRENT_DESKTOP"
-                         ,"_NET_DESKTOP_NAMES"
-                         ,"_NET_ACTIVE_WINDOW"
-                         ,"_NET_WM_DESKTOP"
-                         ,"_NET_WM_STRUT"
-                         ]
+    supp <- mapM getAtom ["_NET_WM_STATE_FULLSCREEN"]
     io $ changeProperty32 dpy r a c propModeReplace (fmap fromIntegral supp)
 
 io' :: MonadIO m => IO a -> m ()

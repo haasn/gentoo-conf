@@ -1,29 +1,38 @@
 ## Overlay unmasking
 
 # Booboo
-games-arcade/taisei::booboo
+#games-arcade/taisei::booboo
 
 # Deter
 gnome-extra/yad::deter
 
 # Emery
-dev-libs/libuv::emery
-net-p2p/cjdns::emery
-media-sound/squishyball::emery
-media-fonts/unifraktur::emery
+#net-p2p/cjdns::emery
+#media-sound/squishyball::emery
+#media-fonts/unifraktur::emery
+
+# Gentoo-GPU
+dev-util/glslang::gentoo-gpu
+dev-util/SPIRV-Tools::gentoo-gpu
+media-libs/vulkan-loader::gentoo-gpu
+
+# Libressl
+app-arch/libarchive::libressl
+dev-python/cryptography::libressl
+dev-qt/qtnetwork::libressl
+www-client/lynx::libressl
 
 # Mva
 dev-qt/qt5ct::mva
 
 # Palemoon
-<www-client/palemoon-27::palemoon
+www-client/palemoon::palemoon
 
 # Qt
 dev-qt/qtwebkit::qt
-=dev-qt/qtwebengine-5.7*::qt
+=dev-qt/qtwebengine-5.9*::qt
 
 # Sunrise
-app-misc/autokey-gtk::sunrise
 x11-misc/swarp::sunrise
 sys-apps/evrouter::sunrise
 
@@ -31,10 +40,10 @@ sys-apps/evrouter::sunrise
 app-admin/rofi-pass::tristelune
 
 # Vapoursynth
-media-libs/zimg::vapoursynth
-media-libs/vapoursynth::vapoursynth
-media-plugins/vapoursynth-ffmpegsource::vapoursynth
-media-plugins/vapoursynth-flash3kyuu_deband::vapoursynth
-media-plugins/vapoursynth-fmtconv::vapoursynth
-media-plugins/vapoursynth-mvtools::vapoursynth
-media-plugins/vapoursynth-nnedi3::vapoursynth
+#media-libs/zimg::vapoursynth
+#media-libs/vapoursynth::vapoursynth
+#media-plugins/vapoursynth-ffmpegsource::vapoursynth
+#media-plugins/vapoursynth-flash3kyuu_deband::vapoursynth
+#media-plugins/vapoursynth-fmtconv::vapoursynth
+#media-plugins/vapoursynth-mvtools::vapoursynth
+#media-plugins/vapoursynth-nnedi3::vapoursynth

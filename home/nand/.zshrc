@@ -85,6 +85,7 @@ bindkey "${terminfo[kdch1]}" delete-char
 
 bindkey '^[[A' history-beginning-search-backward
 bindkey '^[[B' history-beginning-search-forward
+bindkey '^T' history-incremental-search-forward
 
 # Make these a bit more like bash
 bindkey "^U" backward-kill-line
@@ -113,8 +114,8 @@ fi
 WORDCHARS=${WORDCHARS/\/}
 
 # Environment vars
-export PATH="$PATH:$HOME/bin"
-export EDITOR=nvim
+export PATH="$PATH:/usr/sbin:/sbin:$HOME/bin"
+export EDITOR=vim
 export DARCS_DO_COLOR_LINES=1
 export GCC_COLORS=1
 export __GL_SYNC_DISPLAY_DEVICE="DP-0"

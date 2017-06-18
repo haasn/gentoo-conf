@@ -5,8 +5,6 @@ opengl-pbo=yes # helps with performance
 # Color management
 icc-profile-auto=yes
 icc-cache-dir=/tmp/mpv-icc
-target-brightness=100
-hdr-tone-mapping=hable
 
 # Interpolation
 video-sync=display-resample
@@ -41,13 +39,15 @@ ytdl-format=(bestvideo[vcodec=vp9.2]/bestvideo[vcodec=vp9][height>=1400]/bestvid
 
 # Sigh, ALSA is even worse than PulseAudio
 ao=pulse
+pulse-buffer=250
+pulse-latency-hacks=yes
 volume=70
 volume-max=100
 audio-pitch-correction=no
 audio-normalize-downmix=yes
 audio-device='alsa_output.usb-Yoyodyne_Consulting_ODAC-revB-01.iec958-stereo'
-af-add=@audnorm:!lavfi=[loudnorm=I=-25:TP=-1.5:LRA=1]
-af-add=@dynnorm:!lavfi=[dynaudnorm=f=200:g=5:r=0.1]
+af-add=@audnorm:!loudnorm=I=-25:TP=-1.5:LRA=1
+af-add=@dynnorm:!dynaudnorm=f=200:g=5:r=0.1
 
 # Hide album art
 audio-display=no
@@ -55,8 +55,6 @@ audio-display=no
 # Miscellaneous
 fullscreen=no
 msg-color=yes
-sub-ass-force-style=Kerning=yes,Fontsize=20,Outline=2
-sub-pos=60
 screenshot-directory=/mem
 load-unsafe-playlists=yes
 
@@ -81,13 +79,17 @@ osd-shadow-offset=1
 osd-shadow-color="#11000000"
 osd-fractions
 
-# Sub rice (eg. for srt)
+# Sub rice
+sub-ass-force-style=Kerning=yes
+sub-ass-override=scale
+sub-scale=0.5
+sub-pos=60
 sub-font="Liberation Sans"
-sub-font-size=75
+sub-font-size=70
 sub-margin-y=50
 sub-color="#FFFFFFFF"
 sub-border-color="#FF151515"
-sub-border-size=3.2
+sub-border-size=6
 sub-shadow-offset=1
 sub-shadow-color="#33000000"
 sub-spacing=0.5
@@ -101,7 +103,6 @@ sub-scale-by-window=no
 profile-desc=cond:get('height',0) >= 2000
 scale=spline36
 cscale=spline36
-fullscreen=yes
 
 [HD]
 profile-desc=cond:get('height',0) < 2000 and get('height',0) >= 700
@@ -156,6 +157,9 @@ ytdl-raw-options=playlist-reverse=
 contrast=9
 brightness=-7
 
+[nobass]
+af-add=bass=gain=-10
+
 [nodir]
 sub-auto=no
 audio-file-auto=no
@@ -209,5 +213,6 @@ screenshot-high-bit-depth=yes
 
 [4k]
 profile=UHD
+fullscreen=yes
 numa-cpubind=-1
 vd-lavc-threads=32

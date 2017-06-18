@@ -42,6 +42,7 @@
 */* vdpau -xv
 */* lm_sensors
 */* scim -fcitx -ibus
+*/* libressl
 
 ################################
 #### Package-specific flags ####
@@ -55,8 +56,8 @@ dev-vcs/darcs profile doc hscolour
 app-text/pandoc profile doc hscolour
 
 # FFmpeg-wide use flags
-*/ffmpeg X ass aacplus network ssh alsa v4l openssl opus speex webp x265 vpx vdpau
-*/ffmpeg dcadec libsoxr modplug librtmp celt bluray zimg ebur128 -pic
+*/ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx vdpau
+*/ffmpeg dcadec libsoxr openssl modplug librtmp celt bluray zimg ebur128 -pic
 
 # KDE-wide use flags
 kde-apps/* -handbook -kwallet
@@ -64,18 +65,14 @@ kde-base/* -handbook -kwallet
 kde-frameworks/* -handbook -kwallet
 
 # Gentoo python horseshit
-net-irc/weechat  python_single_target_python2_7  python_targets_python2_7
-net-irc/weechat -python_single_target_python3_5 -python_targets_python3_5
 app-text/asciidoc python_single_target_python2_7
 sys-process/systemd-cron python_targets_python3_4 python_single_target_python3_4
 app-editors/vim -python_targets_python3_4 -python_targets_python3_5
-
-sys-apps/util-linux python_single_target_python3_5
+app-editors/neovim perl python ruby
+net-analyzer/rrdtool python_single_target_python3_5
 sys-devel/gdb python_single_target_python3_5
 media-sound/autoplay python_single_target_python3_5
 dev-libs/gobject-introspection python_single_target_python3_5
-kde-frameworks/ki18n python_single_target_python3_5
-media-libs/lensfun python_single_target_python3_5
 
 # Uncategorized
 app-arch/p7zip -wxwidgets
@@ -91,15 +88,18 @@ app-i18n/fcitx -autostart -introspection -table
 app-portage/layman git subversion
 app-text/aspell linguas_de
 #app-text/poppler qt4
+app-text/tesseract -opencl osd
 app-text/texlive linguas_de
 app-text/zathura-meta pdf cb djvu postscript
 dev-db/sqlite secure-delete
-dev-lang/ghc ghcbootstrap # much faster
+#dev-lang/ghc ghcbootstrap # much faster
 dev-lang/php sqlite curl gd fpm
 dev-lang/python sqlite
+dev-lang/swi-prolog -ssl -libressl # build failure
 dev-libs/gmp static-libs
 dev-libs/libffi static-libs
 dev-libs/libpcre pcre16
+dev-libs/libpcre2 pcre16
 dev-libs/nss utils
 dev-libs/openssl -tls-heartbeat -sslv2 -sslv3
 dev-libs/xapian doc
@@ -107,7 +107,7 @@ dev-python/PyQt5 declarative webkit webengine webchannel testlib
 dev-python/numpy lapack
 dev-qt/qtgui dbus accessibility # for qt5ct and ts3
 dev-qt/qtwebchannel qml
-dev-qt/qtwebengine widgets
+dev-qt/qtwebengine widgets -pulseaudio -geolocation
 dev-qt/qtwebkit printsupport webp ftpdir jit -geolocation
 dev-scheme/guile networking
 dev-util/apitrace qt5 system-snappy
@@ -130,19 +130,20 @@ media-libs/libsdl2 haptic
 media-libs/libvpx svc
 media-libs/mesa gbm opencl
 media-libs/mesa gles2
-media-libs/openimageio -gif
+media-libs/openimageio -gif -ssl
 media-libs/phonon -pulseaudio -gstreamer -vlc qt5
 media-libs/vapoursynth -imagemagick
+media-libs/vulkan-loader vulkaninfo Xlib wayland
 media-libs/x264 10bit
 media-plugins/alsa-plugins pulseaudio
 media-sound/alsa-utils -doc # build failure
-media-sound/audacity alsa ffmpeg id3tag libsamplerate
+media-sound/audacity alsa ffmpeg id3tag libsamplerate -lv2
 media-sound/mpd alsa inotify cue mpg123 wavpack opus ffmpeg
 media-sound/pulseaudio alsa dbus realtime sox -ssl -gtk
 media-sound/sox -ffmpeg # build failure
 media-video/ffmpeg -hardcoded-tables # build failure
 media-video/mkvtoolnix -wxwidgets
-media-video/mpv vapoursynth cuda
+media-video/mpv cuda
 media-video/x264-encoder 10bit -mp4
 net-analyzer/icinga2 mail postgres -mysql
 net-analyzer/monitoring-plugins fping postgres ssh
@@ -155,6 +156,7 @@ net-im/bitlbee otr
 net-libs/polarssl programs
 net-vpn/openvpn passwordsave
 net-misc/youtube-dl offensive
+net-misc/curl -http2 # build failure in nghttp2
 net-p2p/rtorrent color
 net-p2p/transmission -gtk -xfs
 net-p2p/deluge console gtk -sound
@@ -184,6 +186,7 @@ x11-drivers/nvidia-drivers kms uvm gtk3
 x11-libs/libdrm libkms
 x11-libs/libfm -automount
 x11-misc/rofi windowmode
+x11-misc/qt5ct dbus -systray # build failure
 x11-misc/xmobar timezone mail mpd inotify
 x11-terms/rxvt-unicode -wcwidth -mousewheel -buffer-on-clear -alt-font-width
 x11-terms/rxvt-unicode vanilla unicode3 256-color fading-colors
