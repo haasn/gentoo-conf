@@ -1,3 +1,4 @@
+//!DESC grayscale
 //!HOOK LINEAR
 //!BIND HOOKED
 

@@ -1,6 +1,8 @@
 # Muh placebo
 profile=opengl-hq
 opengl-pbo=yes # helps with performance
+scale=haasnsoft
+cscale=ewa_lanczos
 
 # Color management
 icc-profile-auto=yes
@@ -9,7 +11,7 @@ icc-cache-dir=/tmp/mpv-icc
 # Interpolation
 video-sync=display-resample
 interpolation=yes
-tscale=bicubic
+tscale=oversample
 blend-subtitles=yes
 
 # Misc video settings
@@ -99,24 +101,6 @@ sub-scale-by-window=no
 
 ## Profiles
 
-[UHD]
-profile-desc=cond:get('height',0) >= 2000
-scale=spline36
-cscale=spline36
-
-[HD]
-profile-desc=cond:get('height',0) < 2000 and get('height',0) >= 700
-scale=haasnsoft
-cscale=ewa_lanczos
-
-[SD]
-profile-desc=cond:get('height',0) < 700
-scale=haasnsoft
-cscale=ewa_lanczossoft
-
-[noauto]
-script-opts=no-auto-profiles=true
-
 # I don't want to wait ages for the window to finally show up before I can move my focus around again
 [protocol.http]
 force-window=immediate
@@ -158,7 +142,7 @@ contrast=9
 brightness=-7
 
 [nobass]
-af-add=bass=gain=-10
+af-pre=bass=gain=-10
 
 [nodir]
 sub-auto=no

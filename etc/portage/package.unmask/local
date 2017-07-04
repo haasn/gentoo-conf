@@ -2,3 +2,4 @@
 sys-kernel/genkernel
 =x11-base/xorg-server-1.19*
 =x11-base/xorg-drivers-1.19*
+=net-libs/libtorrent-rasterbar-1.1.3

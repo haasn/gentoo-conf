@@ -64,16 +64,6 @@ kde-apps/* -handbook -kwallet
 kde-base/* -handbook -kwallet
 kde-frameworks/* -handbook -kwallet
 
-# Gentoo python horseshit
-app-text/asciidoc python_single_target_python2_7
-sys-process/systemd-cron python_targets_python3_4 python_single_target_python3_4
-app-editors/vim -python_targets_python3_4 -python_targets_python3_5
-app-editors/neovim perl python ruby
-net-analyzer/rrdtool python_single_target_python3_5
-sys-devel/gdb python_single_target_python3_5
-media-sound/autoplay python_single_target_python3_5
-dev-libs/gobject-introspection python_single_target_python3_5
-
 # Uncategorized
 app-arch/p7zip -wxwidgets
 app-crypt/pinentry qt5 -qt4 -gtk
@@ -138,6 +128,7 @@ media-libs/x264 10bit
 media-plugins/alsa-plugins pulseaudio
 media-sound/alsa-utils -doc # build failure
 media-sound/audacity alsa ffmpeg id3tag libsamplerate -lv2
+media-sound/kid3 acoustid
 media-sound/mpd alsa inotify cue mpg123 wavpack opus ffmpeg
 media-sound/pulseaudio alsa dbus realtime sox -ssl -gtk
 media-sound/sox -ffmpeg # build failure
@@ -181,6 +172,7 @@ sys-process/lsof rpc
 sys-process/systemd-cron cron-boot minutely yearly
 www-client/palemoon gtk2 -gtk3
 www-client/palemoon system-libs -official-branding
+www-client/qutebrowser python_targets_python3_6
 x11-base/xorg-server xvfb
 x11-drivers/nvidia-drivers kms uvm gtk3
 x11-libs/libdrm libkms

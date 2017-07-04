@@ -1,4 +1,4 @@
-From 9583936547badd95a8a8c4306b96e069738bfdc1 Mon Sep 17 00:00:00 2001
+From 8dcd051ef4dc58dddf633e583cbbb758cd43e12d Mon Sep 17 00:00:00 2001
 From: Hendrik Leppkes <h.leppkes@gmail.com>
 Date: Tue, 16 Sep 2014 22:45:33 +0200
 Subject: [PATCH 2/3] x86/hevc: use DECLARE_ALIGNED for on-stack tmp arrays to
@@ -44,5 +44,5 @@ index 7f732d2a49..ef970d7141 100644
      __m128i src0, src1, src2, src3;                                            \
      __m128i tmp0, tmp1, tmp2, tmp3, tmp4;                                      \
 -- 
-2.12.0
+2.13.1
 

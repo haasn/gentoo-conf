@@ -18,9 +18,11 @@ media-libs/vulkan-loader::gentoo-gpu
 
 # Libressl
 app-arch/libarchive::libressl
+dev-libs/boost::libressl
 dev-python/cryptography::libressl
 dev-qt/qtnetwork::libressl
 www-client/lynx::libressl
+net-libs/nodejs::libressl
 
 # Mva
 dev-qt/qt5ct::mva

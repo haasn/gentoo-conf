@@ -20,7 +20,6 @@ app-crypt/keybase
 app-editors/mousepad
 app-editors/neovim
 app-editors/vim
-app-emulation/playonlinux
 app-emulation/qemu
 app-emulation/wine
 app-emulation/winetricks
@@ -31,7 +30,6 @@ app-misc/colordiff
 app-misc/dtach
 app-misc/evtest
 app-misc/fdupes
-app-misc/fslint
 app-misc/jq
 app-misc/ranger
 app-misc/screenfetch
@@ -42,7 +40,6 @@ app-portage/genlop
 app-portage/gentoolkit
 app-portage/hackport
 app-portage/layman
-app-portage/pfl
 app-portage/repoman
 app-portage/smart-live-rebuild
 app-shells/dash
@@ -94,7 +91,6 @@ dev-lang/lua
 dev-lang/mercury
 dev-lang/mono
 dev-lang/perl
-dev-lang/php
 dev-lang/python
 dev-lang/swi-prolog
 dev-libs/xapian-bindings
@@ -108,7 +104,6 @@ dev-python/pyqtgraph
 dev-python/pytest-cov
 dev-python/pytest-xdist
 dev-python/tox
-dev-python/vulture
 dev-qt/qtimageformats
 dev-qt/qtwebengine
 dev-tex/biber
@@ -118,7 +113,6 @@ dev-texlive/texlive-fontsextra
 dev-texlive/texlive-langenglish
 dev-texlive/texlive-langgerman
 dev-texlive/texlive-xetex
-dev-util/apitrace
 dev-util/cloc
 dev-util/debugedit
 dev-util/ltrace
@@ -221,7 +215,6 @@ net-libs/libntlm
 net-mail/isync
 net-mail/notmuch
 net-misc/bridge-utils
-net-misc/dhcpcd
 net-misc/ethercard-diag
 net-misc/hsbooru
 net-misc/iperf
@@ -234,6 +227,7 @@ net-misc/whois
 net-misc/youtube-dl
 net-p2p/go-ipfs-bin
 net-p2p/nicotine+
+net-p2p/qbittorrent
 net-p2p/soulseek-qt
 net-p2p/transmission
 net-proxy/privoxy
@@ -260,7 +254,6 @@ sys-apps/pv
 sys-apps/ripgrep
 sys-apps/smartmontools
 sys-apps/systemd
-sys-apps/usbutils
 sys-block/fio
 sys-block/parted
 sys-boot/grub
