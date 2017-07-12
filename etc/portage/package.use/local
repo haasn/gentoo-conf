@@ -134,7 +134,7 @@ media-sound/pulseaudio alsa dbus realtime sox -ssl -gtk
 media-sound/sox -ffmpeg # build failure
 media-video/ffmpeg -hardcoded-tables # build failure
 media-video/mkvtoolnix -wxwidgets
-media-video/mpv cuda
+media-video/mpv cuda rubberband libmpv archive
 media-video/x264-encoder 10bit -mp4
 net-analyzer/icinga2 mail postgres -mysql
 net-analyzer/monitoring-plugins fping postgres ssh

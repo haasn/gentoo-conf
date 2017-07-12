@@ -12,7 +12,7 @@ icc-cache-dir=/tmp/mpv-icc
 video-sync=display-resample
 interpolation=yes
 tscale=oversample
-blend-subtitles=yes
+#blend-subtitles=yes
 
 # Misc video settings
 deband-iterations=2
@@ -150,7 +150,6 @@ audio-file-auto=no
 
 # Image files (e.g. for using mpv as a pseudo image viewer)
 [image]
-profile=noauto
 profile=nodir
 mute=yes
 scale=ewa_lanczossharp
@@ -196,7 +195,6 @@ screenshot-tag-colorspace=yes
 screenshot-high-bit-depth=yes
 
 [4k]
-profile=UHD
 fullscreen=yes
 numa-cpubind=-1
 vd-lavc-threads=32

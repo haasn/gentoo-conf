@@ -168,7 +168,7 @@ manageFloats = composeAll [ fmap (x `isInfixOf`) title --> doFloat
 floatTitles =
     [ "Firefox Preferences", "About Firefox", "Resize Canvas"
     , "Downloads", "Software Update", "World of Warcraft", "Limbo"
-    , "Audiosurf", "Audiosurf 2", "scaler_test"
+    , "Audiosurf", "Audiosurf 2", "scaler_test", "mpv_test"
     , "Convert Script", "Remote Viewer"
     ]
 

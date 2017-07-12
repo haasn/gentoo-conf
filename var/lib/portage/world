@@ -20,6 +20,7 @@ app-crypt/keybase
 app-editors/mousepad
 app-editors/neovim
 app-editors/vim
+app-emulation/lxd
 app-emulation/qemu
 app-emulation/wine
 app-emulation/winetricks
@@ -75,10 +76,13 @@ dev-haskell/comonad
 dev-haskell/constraints
 dev-haskell/criterion
 dev-haskell/dependent-map
+dev-haskell/gpipe
+dev-haskell/gpipe-glfw
 dev-haskell/hakyll
 dev-haskell/lens
 dev-haskell/monadrandom
 dev-haskell/numbers
+dev-haskell/opengl
 dev-haskell/primes
 dev-haskell/random-shuffle
 dev-haskell/safecopy
@@ -87,6 +91,7 @@ dev-haskell/split
 dev-haskell/sqlite-simple
 dev-haskell/xapian-haskell
 dev-lang/ghc
+dev-lang/idris
 dev-lang/lua
 dev-lang/mercury
 dev-lang/mono
@@ -205,7 +210,6 @@ net-analyzer/netdata
 net-analyzer/nmap
 net-analyzer/tcpdump
 net-analyzer/traceroute
-net-analyzer/vnstat
 net-dns/bind-tools
 net-firewall/firehol
 net-fs/sshfs
@@ -218,6 +222,7 @@ net-misc/bridge-utils
 net-misc/ethercard-diag
 net-misc/hsbooru
 net-misc/iperf
+net-misc/megatools
 net-misc/mosh
 net-misc/ntp
 net-misc/proxychains
