@@ -1,12 +1,13 @@
 # Muh placebo
 profile=opengl-hq
-opengl-pbo=yes # helps with performance
+vd-lavc-dr=yes
+opengl-pbo=yes
 scale=haasnsoft
+scale-clamp=0.5
 cscale=ewa_lanczos
-
-# Color management
 icc-profile-auto=yes
 icc-cache-dir=/tmp/mpv-icc
+opengl-shader=~~/shaders/ravu-r4.hook
 
 # Interpolation
 video-sync=display-resample
@@ -18,10 +19,6 @@ tscale=oversample
 deband-iterations=2
 deband-range=12
 temporal-dither=yes
-
-# NUMA pinning, to avoid latency spikes
-numa-cpubind=0
-numa-membind=0
 
 # TFW fell for the 64 GiB RAM meme
 cache=auto
@@ -43,7 +40,7 @@ ytdl-format=(bestvideo[vcodec=vp9.2]/bestvideo[vcodec=vp9][height>=1400]/bestvid
 ao=pulse
 pulse-buffer=250
 pulse-latency-hacks=yes
-volume=70
+volume=50
 volume-max=100
 audio-pitch-correction=no
 audio-normalize-downmix=yes
@@ -120,11 +117,13 @@ ytdl-format=bestaudio/best
 cache-initial=1
 
 [normalize]
+volume=70
 af-toggle=@audnorm
 
 [yeti]
 profile=audio
 profile=normalize
+pause=no
 volume=100
 audio-device='pulse/alsa_output.usb-Blue_Microphones_Yeti_Stereo_Microphone_REV8-00.analog-stereo'
 
@@ -195,6 +194,6 @@ screenshot-tag-colorspace=yes
 screenshot-high-bit-depth=yes
 
 [4k]
+profile=normalize
 fullscreen=yes
-numa-cpubind=-1
 vd-lavc-threads=32

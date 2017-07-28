@@ -1,3 +1,3 @@
 #!/bin/sh
-RES=$(tac ~/.qute/history | cut --complement -d' ' -f1 | awk '!x[$0]++' | grep . | rofi -columns 1 -i -dmenu)
-[ $? -eq 0 ] && exec newtab "$(echo $RES | cut -d' ' -f1)"
+RES=$(sqlite3 ~/.qute/history.sqlite 'SELECT url, title FROM CompletionHistory ORDER BY last_atime DESC' | rofi -columns 1 -i -dmenu)
+[ $? -eq 0 ] && exec newtab "$(echo $RES | cut -d'|' -f1)"

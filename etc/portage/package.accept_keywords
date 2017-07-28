@@ -12,6 +12,7 @@ sys-boot/grub **
 app-admin/pass **
 app-editors/neovim **
 app-emulation/wine **
+media-libs/libaom **
 media-libs/libass **
 media-libs/vulkan-loader **
 media-libs/zimg **

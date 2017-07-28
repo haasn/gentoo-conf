@@ -1,0 +1,6 @@
+# Enable ICC support (disabled for now due to bugginess)
+##CXXFLAGS="${CXXFLAGS} -DUSE_CMSLIB=1 -DUSE_ICCJPEG=1 -DNDEBUG"
+
+# Disable debugging
+CXXFLAGS="${CXXFLAGS} -DNDEBUG"
+CFLAGS="${CFLAGS} -DNDEBUG"

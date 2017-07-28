@@ -1,0 +1,70 @@
+diff --git a/qt/Filters.h b/qt/Filters.h
+index ee8e4ba..5b3fbdc 100644
+--- a/qt/Filters.h
++++ b/qt/Filters.h
+@@ -79,6 +79,7 @@ class SortMode
+         SORT_BY_SIZE,
+         SORT_BY_STATE,
+         SORT_BY_ID,
++        SORT_BY_UPLOADED,
+         NUM_MODES
+     };
+ 
+diff --git a/qt/MainWindow.cc b/qt/MainWindow.cc
+index 29a0525..c57716a 100644
+--- a/qt/MainWindow.cc
++++ b/qt/MainWindow.cc
+@@ -257,6 +257,7 @@ MainWindow::MainWindow(Session& session, Prefs& prefs, TorrentModel& model, bool
+         qMakePair(ui.action_SortByProgress, static_cast<int>(SortMode::SORT_BY_PROGRESS)),
+         qMakePair(ui.action_SortByQueue, static_cast<int>(SortMode::SORT_BY_QUEUE)),
+         qMakePair(ui.action_SortByRatio, static_cast<int>(SortMode::SORT_BY_RATIO)),
++        qMakePair(ui.action_SortByUploaded, static_cast<int>(SortMode::SORT_BY_UPLOADED)),
+         qMakePair(ui.action_SortBySize, static_cast<int>(SortMode::SORT_BY_SIZE)),
+         qMakePair(ui.action_SortByState, static_cast<int>(SortMode::SORT_BY_STATE))
+     };
+diff --git a/qt/MainWindow.ui b/qt/MainWindow.ui
+index 13d0198..b3773b0 100644
+--- a/qt/MainWindow.ui
++++ b/qt/MainWindow.ui
+@@ -252,6 +252,7 @@
+     <addaction name="action_SortByProgress"/>
+     <addaction name="action_SortByQueue"/>
+     <addaction name="action_SortByRatio"/>
++    <addaction name="action_SortByUploaded"/>
+     <addaction name="action_SortBySize"/>
+     <addaction name="action_SortByState"/>
+     <addaction name="action_SortByETA"/>
+@@ -563,6 +564,14 @@
+     <string>Sort by Rati&amp;o</string>
+    </property>
+   </action>
++  <action name="action_SortByUploaded">
++   <property name="checkable">
++    <bool>true</bool>
++   </property>
++   <property name="text">
++    <string>Sort by &amp;Uploaded</string>
++   </property>
++  </action>
+   <action name="action_SortBySize">
+    <property name="checkable">
+     <bool>true</bool>
+diff --git a/qt/TorrentFilter.cc b/qt/TorrentFilter.cc
+index 5238ac7..75fe9c5 100644
+--- a/qt/TorrentFilter.cc
++++ b/qt/TorrentFilter.cc
+@@ -185,6 +185,14 @@ bool TorrentFilter::lessThan(QModelIndex const& left, QModelIndex const& right)
+ 
+         break;
+ 
++    case SortMode::SORT_BY_UPLOADED:
++        if (val == 0)
++        {
++            val = compare(a->uploadedEver(), b->uploadedEver());
++        }
++
++        break;
++
+     case SortMode::SORT_BY_ETA:
+         if (val == 0)
+         {

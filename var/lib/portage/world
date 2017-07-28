@@ -123,6 +123,7 @@ dev-util/debugedit
 dev-util/ltrace
 dev-util/nvidia-cuda-toolkit
 dev-util/perf
+dev-util/rr
 dev-util/scanmem
 dev-util/source-highlight
 dev-util/strace
@@ -172,6 +173,7 @@ media-libs/flac
 media-libs/fmod
 media-libs/icc-profiles-openicc
 media-libs/ladspa-cmt
+media-libs/libaom
 media-libs/libebur128
 media-libs/libsdl2
 media-libs/libtxc_dxtn

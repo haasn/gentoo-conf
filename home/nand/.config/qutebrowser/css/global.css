@@ -178,6 +178,12 @@ div[style^="position: absolute"] {
     background: none !important;
 }
 
+/* For youtube */
+
+div#yt-dialog-bg, div.yt-dialog {
+    display: none !important;
+}
+
 /* Ad element hiding */
 
 div#_Ltg { /* google search results */
