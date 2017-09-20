@@ -6,7 +6,6 @@ xset r rate 300 40
 # Set pointer speed
 xset m 0 0
 xinput set-prop 'Kingsis Peripherals ZOWIE Gaming mouse' 'libinput Accel Profile Enabled' 0, 1
-#xinput --set-ptr-feedback 9 0 120 100
 
 # Start up evrouter
 sudo evrouter /dev/input/by-id/usb-Kingsis_Peripherals_ZOWIE_Gaming_mouse-event-mouse -c ~/.evrouterrc &>/dev/null
@@ -17,9 +16,9 @@ xset s off
 xset +fp /usr/share/fonts/terminus/
 
 # Load the correct resolution
-#xrandr --output DP-0 --mode 4096x2160 --primary --output DVI-I-1 --mode 1920x1200 --rotate left --pos 4096x120
-xrandr --output DP-0 --mode 4096x2160 --primary --output HDMI-0 --off
-#xrandr --output DVI-I-1 --mode 1920x1200 --primary
+#xrandr --output DP-0 --mode 4096x2160 --primary --output HDMI-0 --off
+xrandr --dpi 150
+xrandr --output DisplayPort-0 --set TearFree on
 
 # Load the correct keyboard map
 xmodmap ~/.Xmodmap
@@ -44,7 +43,6 @@ urxvtd -q -o -f
 
 # Hide mouse cursor when not in use
 unclutter -noevents -idle 2 -jitter 1 -root &>/dev/null &
-swarp 0 0 &
 #easystroke &
 
 # Start MPD and autoplay

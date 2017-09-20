@@ -1,0 +1,69 @@
+From 749a449c76c0c84f20df29fd7fd5be586e6a73b7 Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Fri, 15 Sep 2017 09:05:09 +0200
+Subject: [PATCH] Revert "gallium/radeon: use a top-of-pipe timestamp for the
+ start of TIME_ELAPSED"
+
+This reverts commit bd4b224fa6630262df2b70fd6a6fc8080ad59086.
+---
+ src/amd/common/r600d_common.h           | 11 -----------
+ src/gallium/drivers/radeon/r600_query.c | 21 ++-------------------
+ 2 files changed, 2 insertions(+), 30 deletions(-)
+
+diff --git a/src/amd/common/r600d_common.h b/src/amd/common/r600d_common.h
+index 3374475336..3fdfb7c695 100644
+--- a/src/amd/common/r600d_common.h
++++ b/src/amd/common/r600d_common.h
+@@ -54,17 +54,6 @@
+ #define PKT3_WAIT_REG_MEM                      0x3C
+ #define		WAIT_REG_MEM_EQUAL		3
+ #define         WAIT_REG_MEM_MEM_SPACE(x)       (((unsigned)(x) & 0x3) << 4)
+-#define PKT3_COPY_DATA			       0x40
+-#define		COPY_DATA_SRC_SEL(x)		((x) & 0xf)
+-#define			COPY_DATA_REG		0
+-#define			COPY_DATA_MEM		1
+-#define                 COPY_DATA_PERF          4
+-#define                 COPY_DATA_IMM           5
+-#define                 COPY_DATA_TIMESTAMP     9
+-#define		COPY_DATA_DST_SEL(x)		(((unsigned)(x) & 0xf) << 8)
+-#define                 COPY_DATA_MEM_ASYNC     5
+-#define		COPY_DATA_COUNT_SEL		(1 << 16)
+-#define		COPY_DATA_WR_CONFIRM		(1 << 20)
+ #define PKT3_EVENT_WRITE                       0x46
+ #define PKT3_EVENT_WRITE_EOP                   0x47
+ #define         EOP_DATA_SEL(x)                         ((x) << 29)
+diff --git a/src/gallium/drivers/radeon/r600_query.c b/src/gallium/drivers/radeon/r600_query.c
+index 28c896a923..641816a837 100644
+--- a/src/gallium/drivers/radeon/r600_query.c
++++ b/src/gallium/drivers/radeon/r600_query.c
+@@ -732,25 +732,8 @@ static void r600_query_hw_do_emit_start(struct r600_common_context *ctx,
+ 		radeon_emit(cs, va >> 32);
+ 		break;
+ 	case PIPE_QUERY_TIME_ELAPSED:
+-		if (ctx->chip_class >= SI) {
+-			/* Write the timestamp from the CP not waiting for
+-			 * outstanding draws (top-of-pipe).
+-			 */
+-			radeon_emit(cs, PKT3(PKT3_COPY_DATA, 4, 0));
+-			radeon_emit(cs, COPY_DATA_COUNT_SEL |
+-					COPY_DATA_SRC_SEL(COPY_DATA_TIMESTAMP) |
+-					COPY_DATA_DST_SEL(COPY_DATA_MEM_ASYNC));
+-			radeon_emit(cs, 0);
+-			radeon_emit(cs, 0);
+-			radeon_emit(cs, va);
+-			radeon_emit(cs, va >> 32);
+-		} else {
+-			/* Write the timestamp after the last draw is done.
+-			 * (bottom-of-pipe)
+-			 */
+-			r600_gfx_write_event_eop(ctx, EVENT_TYPE_BOTTOM_OF_PIPE_TS,
+-						 0, 3, NULL, va, 0, 0);
+-		}
++		r600_gfx_write_event_eop(ctx, EVENT_TYPE_BOTTOM_OF_PIPE_TS,
++					 0, 3, NULL, va, 0, 0);
+ 		break;
+ 	case PIPE_QUERY_PIPELINE_STATISTICS:
+ 		radeon_emit(cs, PKT3(PKT3_EVENT_WRITE, 2, 0));
+-- 
+2.14.1
+

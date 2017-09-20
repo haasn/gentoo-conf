@@ -21,12 +21,12 @@ app-editors/mousepad
 app-editors/neovim
 app-editors/vim
 app-emulation/lxd
-app-emulation/qemu
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
 app-i18n/scim-anthy
 app-misc/adblock2privoxy
+app-misc/binwalk
 app-misc/colordiff
 app-misc/dtach
 app-misc/evtest
@@ -65,7 +65,10 @@ app-vim/vim-spell-en
 cross-avr/avr-libc
 cross-avr/binutils
 cross-avr/binutils:2.26.1
+cross-avr/binutils:2.28
 cross-avr/gcc
+cross-avr/gcc:4.8.5
+cross-avr/gcc:4.9.4
 cross-avr/gcc:5.4.0
 dev-embedded/dfu-programmer
 dev-haskell/acid-state
@@ -118,16 +121,17 @@ dev-texlive/texlive-fontsextra
 dev-texlive/texlive-langenglish
 dev-texlive/texlive-langgerman
 dev-texlive/texlive-xetex
+dev-util/apitrace
 dev-util/cloc
 dev-util/debugedit
 dev-util/ltrace
-dev-util/nvidia-cuda-toolkit
 dev-util/perf
 dev-util/rr
 dev-util/scanmem
 dev-util/source-highlight
 dev-util/strace
 dev-util/threadscope
+dev-util/trace-cmd
 dev-util/valgrind
 games-action/extreme-tuxracer
 games-emulation/pcsx2
@@ -136,8 +140,6 @@ games-misc/cowsay
 games-misc/fortune-mod
 games-roguelike/dwarf-fortress
 games-util/joystick
-games-util/xboxdrv
-gnome-extra/yad
 kde-apps/kcachegrind
 kde-apps/okular
 kde-frameworks/oxygen-icons
@@ -192,6 +194,7 @@ media-sound/mpd
 media-sound/opus-tools
 media-sound/pavucontrol
 media-sound/pulseaudio
+media-sound/pulsemixer
 media-sound/shntool
 media-sound/sox
 media-sound/teamspeak-client-bin
@@ -233,8 +236,6 @@ net-misc/telnet-bsd
 net-misc/whois
 net-misc/youtube-dl
 net-p2p/go-ipfs-bin
-net-p2p/nicotine+
-net-p2p/qbittorrent
 net-p2p/soulseek-qt
 net-p2p/transmission
 net-proxy/privoxy
@@ -277,6 +278,7 @@ sys-fs/zfs
 sys-fs/zfstools
 sys-kernel/dracut
 sys-kernel/gentoo-sources
+sys-kernel/linux-firmware
 sys-libs/freeipmi
 sys-power/apcupsd
 sys-power/cpupower
@@ -292,7 +294,7 @@ sys-process/systemd-cron
 virtual/cron
 virtual/latex-base
 virtual/mpi
-www-client/palemoon
+www-client/firefox
 www-client/qutebrowser
 www-client/w3m
 www-servers/nginx
@@ -300,6 +302,7 @@ x11-apps/mesa-progs
 x11-apps/xfontsel
 x11-base/xorg-x11
 x11-misc/dmenu
+x11-misc/driconf
 x11-misc/easystroke
 x11-misc/i3lock
 x11-misc/pcmanfm
@@ -316,6 +319,7 @@ x11-misc/xmobar
 x11-misc/xsnow
 x11-misc/xvfb-run
 x11-terms/rxvt-unicode
+x11-terms/st
 x11-themes/gtk-theme-switch
 x11-themes/vertex-theme
 x11-wm/xmonad

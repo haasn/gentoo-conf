@@ -61,13 +61,18 @@ alias sxiv='sxiv -Zf'
 
 # aliases because the profile system sucks
 alias mvi='mpv --profile=image'
-alias mvb='mpv --profile=booru --playlist=-'
+#alias mvb='mpv --profile=booru --playlist=-'
 alias mpa='mpv --profile=audio'
 alias mpn='mpv --profile=normalize'
 alias mpan='mpa --profile=normalize'
 alias mpy='mpv --profile=yeti'
 alias mpl='mpv --loop-file'
 alias mp4='mpv --profile=4k'
+alias mpviz='mpv --script-opts=visualizer-mode=force'
+
+mvb() {
+    mpv --profile=booru --playlist=<(booru $@)
+}
 
 # quicker root delete
 alias srm='sudo rm'
@@ -99,7 +104,7 @@ alias note='cat >> ~/notes'
 
 # 16 core make (ht)
 alias make='make -j32'
-alias waifu='./waf'
+alias waifu='CFLAGS="${CFLAGS} -fdiagnostics-color=always" ./waf'
 
 # Attach to weechat inside dtach
 alias weechat='dtach -a /tmp/weechat'
@@ -443,3 +448,4 @@ sepathdecode() {
 }
 
 alias np='mpc -f "%artist% - %title%  \[%album%\]" current | xclip'
+alias winserver='wineserver'

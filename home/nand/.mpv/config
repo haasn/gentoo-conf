@@ -7,18 +7,20 @@ scale-clamp=0.5
 cscale=ewa_lanczos
 icc-profile-auto=yes
 icc-cache-dir=/tmp/mpv-icc
-opengl-shader=~~/shaders/ravu-r4.hook
+#opengl-shader=~~/shaders/ravu-r3.hook
+opengl-shader-cache-dir=/tmp/mpv-shaders/
 
 # Interpolation
 video-sync=display-resample
 interpolation=yes
 tscale=oversample
-#blend-subtitles=yes
+blend-subtitles=yes
 
 # Misc video settings
 deband-iterations=2
 deband-range=12
 temporal-dither=yes
+vf-defaults=yadif:interlaced-only=no
 
 # TFW fell for the 64 GiB RAM meme
 cache=auto
@@ -34,7 +36,7 @@ cache-seek-min=2000
 
 # youtube-dl settings
 ytdl=yes
-ytdl-format=(bestvideo[vcodec=vp9.2]/bestvideo[vcodec=vp9][height>=1400]/bestvideo[vcodec=vp9][height>=1000][fps>30]/bestvideo[height>720]/bestvideo[fps>30])+(bestaudio[acodec=opus]/bestaudio)/best
+ytdl-format=(bestvideo[vcodec=vp9.2]/bestvideo[vcodec=vp9][fps>30]/bestvideo[vcodec=vp9][height>=1080]/bestvideo[fps>30]/bestvideo[height>720])+(bestaudio[acodec=opus]/bestaudio)/best
 
 # Sigh, ALSA is even worse than PulseAudio
 ao=pulse
@@ -69,7 +71,6 @@ ytdl-raw-options=sub-lang="en,eng,enUS,en-US",write-sub=
 term-playing-msg='Resolution: ${width}x${height}, Framerate: ${container-fps} Hz'
 
 # OSD rice (for file info)
-#osd-font="Liberation Sans"
 osd-font-size=20
 osd-color="#ffffffff"
 osd-border-color="#ff151515"
@@ -150,6 +151,7 @@ audio-file-auto=no
 # Image files (e.g. for using mpv as a pseudo image viewer)
 [image]
 profile=nodir
+opengl-shaders-clr
 mute=yes
 scale=ewa_lanczossharp
 background=0.1
@@ -197,3 +199,4 @@ screenshot-high-bit-depth=yes
 profile=normalize
 fullscreen=yes
 vd-lavc-threads=32
+deband=no

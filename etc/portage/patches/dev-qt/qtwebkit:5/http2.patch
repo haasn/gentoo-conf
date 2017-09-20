@@ -1,0 +1,17 @@
+diff --git a/Source/WebCore/platform/network/qt/ResourceRequestQt.cpp b/Source/WebCore/platform/network/qt/ResourceRequestQt.cpp
+index d74073ec53d..eccec9b4952 100644
+--- a/Source/WebCore/platform/network/qt/ResourceRequestQt.cpp
++++ b/Source/WebCore/platform/network/qt/ResourceRequestQt.cpp
+@@ -101,6 +101,12 @@ QNetworkRequest ResourceRequest::toNetworkRequest(NetworkingContext *context) co
+     request.setUrl(newurl);
+     request.setOriginatingObject(context ? context->originatingObject() : 0);
+ 
++#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
++    // HTTP2AllowedAttribute enforces HTTP2 instead of negotiating, see QTBUG-61397
++    if (newurl.scheme().toLower() == QLatin1String("https"))
++        request.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
++#endif
++
+     const HTTPHeaderMap &headers = httpHeaderFields();
+     for (HTTPHeaderMap::const_iterator it = headers.begin(), end = headers.end();
+          it != end; ++it) {

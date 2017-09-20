@@ -32,8 +32,8 @@ path=/home/nand/.imap
 
 [user]
 name=nand
-primary_email=nand@nand.wakku.to
-other_email=niklas.haas@uni-ulm.de;haskell@nand.wakku.to
+primary_email=nand@haasn.xyz
+other_email=niklas.haas@uni-ulm.de;haskell@nand.wakku.to;nand@nand.wakku.to
 
 # Configuration for "notmuch new"
 #

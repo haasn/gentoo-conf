@@ -153,6 +153,15 @@ div.reply.highlight {
     border: 1px solid #ff0 !important;
 }
 
+textarea[name=com] {
+    width: 1000px !important;
+    height: 300px !important;
+}
+
+tr#captchaFormPart {
+    display: none !important;
+}
+
 /* TeX images */
 
 img.tex, img.numberedequation, img.inlineformula, span.math,

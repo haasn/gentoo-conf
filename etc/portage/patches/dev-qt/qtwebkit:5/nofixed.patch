@@ -1,0 +1,29 @@
+diff --git a/Source/WebCore/css/CSSPrimitiveValueMappings.h b/Source/WebCore/css/CSSPrimitiveValueMappings.h
+index f7ebbcd76..d4a3ac34b 100644
+--- a/Source/WebCore/css/CSSPrimitiveValueMappings.h
++++ b/Source/WebCore/css/CSSPrimitiveValueMappings.h
+@@ -2366,10 +2366,10 @@ template<> inline CSSPrimitiveValue::CSSPrimitiveValue(EPosition e)
+         m_value.valueID = CSSValueAbsolute;
+         break;
+     case FixedPosition:
+-        m_value.valueID = CSSValueFixed;
++        m_value.valueID = CSSValueAbsolute; // fuck web people
+         break;
+     case StickyPosition:
+-        m_value.valueID = CSSValueWebkitSticky;
++        m_value.valueID = CSSValueRelative;
+         break;
+     }
+ }
+@@ -2386,9 +2386,9 @@ template<> inline CSSPrimitiveValue::operator EPosition() const
+     case CSSValueAbsolute:
+         return AbsolutePosition;
+     case CSSValueFixed:
+-        return FixedPosition;
++        return AbsolutePosition;
+     case CSSValueWebkitSticky:
+-        return StickyPosition;
++        return RelativePosition;
+     default:
+         break;
+     }

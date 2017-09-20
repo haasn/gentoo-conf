@@ -4,7 +4,7 @@
 #games-arcade/taisei::booboo
 
 # Deter
-gnome-extra/yad::deter
+#gnome-extra/yad::deter
 
 # Emery
 #net-p2p/cjdns::emery
@@ -24,19 +24,12 @@ dev-qt/qtnetwork::libressl
 www-client/lynx::libressl
 net-libs/nodejs::libressl
 
-# Mva
-dev-qt/qt5ct::mva
-
 # Palemoon
-www-client/palemoon::palemoon
+=www-client/palemoon-27.3.0::palemoon
 
 # Qt
 dev-qt/qtwebkit::qt
 =dev-qt/qtwebengine-5.9*::qt
-
-# Sunrise
-x11-misc/swarp::sunrise
-sys-apps/evrouter::sunrise
 
 # Tristelune
 app-admin/rofi-pass::tristelune

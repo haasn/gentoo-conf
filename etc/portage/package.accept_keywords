@@ -2,16 +2,17 @@
 #### Live ebuilds ####
 ######################
 
-# Compatibility with newer kernels
-sys-fs/zfs **
-sys-fs/zfs-kmod **
-sys-kernel/spl **
-sys-boot/grub **
+# Compatibility with newer kernels / newer features
+#sys-fs/zfs **
+#sys-fs/zfs-kmod **
+#sys-kernel/spl **
+#sys-boot/grub **
 
 #*/*::vapoursynth **
 app-admin/pass **
 app-editors/neovim **
 app-emulation/wine **
+app-misc/binwalk **
 media-libs/libaom **
 media-libs/libass **
 media-libs/vulkan-loader **
@@ -28,3 +29,6 @@ x11-misc/rofi **
 x11-misc/xmobar **
 x11-wm/xmonad **
 x11-wm/xmonad-contrib **
+
+media-libs/mesa **
+x11-drivers/xf86-video-amdgpu **

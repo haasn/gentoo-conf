@@ -1,0 +1,33 @@
+diff --git a/Source/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp b/Source/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp
+index 76038cbc03d..db92175f798 100644
+--- a/Source/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp
++++ b/Source/WebKit/qt/WebCoreSupport/FrameLoaderClientQt.cpp
+@@ -49,6 +49,7 @@
+ #include "HTTPStatusCodes.h"
+ #include "HistoryItem.h"
+ #include "HitTestResult.h"
++#include "IconController.h"
+ #include "JSDOMWindowBase.h"
+ #include "MIMETypeRegistry.h"
+ #include "MainFrame.h"
+@@ -448,16 +449,16 @@ void FrameLoaderClientQt::dispatchDidReceiveTitle(const StringWithDirection& tit
+ }
+ 
+ 
+-void FrameLoaderClientQt::dispatchDidChangeIcons(WebCore::IconType)
++void FrameLoaderClientQt::dispatchDidChangeIcons(WebCore::IconType type)
+ {
+     if (dumpFrameLoaderCallbacks)
+         printf("%s - didChangeIcons\n", qPrintable(drtDescriptionSuitableForTestResult(m_frame)));
+ 
+-    if (!m_webFrame)
++    if (type != WebCore::Favicon)
+         return;
+ 
+-    // FIXME: In order to get notified of icon URLS' changes, add a notification.
+-    // emit iconsChanged();
++    if (m_webFrame)
++        m_frame->loader().icon().startLoader();
+ }
+ 
+ 

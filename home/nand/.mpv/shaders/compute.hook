@@ -13,7 +13,7 @@ const ivec2 isize = ivec2(gl_WorkGroupSize) + ksize - 1;
 
 shared float inp[isize.y][isize.x];
 
-vec4 hook()
+void hook()
 {
     // load texels into shmem
     ivec2 base = ivec2(gl_WorkGroupID) * ivec2(gl_WorkGroupSize);
@@ -33,5 +33,6 @@ vec4 hook()
             sum += inp[gl_LocalInvocationID.y+y][gl_LocalInvocationID.x+x];
     }
 
-    return vec4(sum / (ksize.x * ksize.y), 0, 0, 1);
+    vec4 color = vec4(sum / (ksize.x * ksize.y), 0, 0, 1);
+    imageStore(out_image, ivec2(gl_GlobalInvocationID), color);
 }

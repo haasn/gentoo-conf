@@ -1,0 +1,32 @@
+From b5f82dad1aa30d8a1eadfd978d8112e7fc38d7a0 Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Sat, 1 Jul 2017 01:05:50 +0200
+Subject: [PATCH] Revert "wscript: rebuild on library header changes"
+
+This reverts commit b8b3163b859ab01cb5b2254e6c78fd63208d2f66.
+---
+ wscript | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/wscript b/wscript
+index 99263b7ee5..0b865c3a85 100644
+--- a/wscript
++++ b/wscript
+@@ -4,14 +4,10 @@ import sys, os, re
+ sys.path.insert(0, os.path.join(os.getcwd(), 'waftools'))
+ sys.path.insert(0, os.getcwd())
+ from waflib.Configure import conf
+-from waflib.Tools import c_preproc
+ from waflib import Utils
+ from waftools.checks.generic import *
+ from waftools.checks.custom import *
+ 
+-c_preproc.go_absolute=True # enable system folders
+-c_preproc.standard_includes.append('/usr/local/include')
+-
+ """
+ Dependency identifiers (for win32 vs. Unix):
+     wscript / C source      meaning
+-- 
+2.13.1
+

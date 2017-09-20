@@ -1,0 +1,13 @@
+diff --git a/qutebrowser/browser/commands.py b/qutebrowser/browser/commands.py
+index 9531af7aa..bb9beb6ee 100644
+--- a/qutebrowser/browser/commands.py
++++ b/qutebrowser/browser/commands.py
+@@ -779,7 +779,7 @@ class CommandDispatcher:
+             if key in config.get('general', 'yank-ignored-url-parameters'):
+                 url_query.removeQueryItem(key)
+         url.setQuery(url_query)
+-        return url.toString(flags)
++        return url.toString(flags).replace(" ", "+")
+ 
+     @cmdutils.register(instance='command-dispatcher', scope='window')
+     @cmdutils.argument('what', choices=['selection', 'url', 'pretty-url',
