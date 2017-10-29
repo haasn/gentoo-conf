@@ -21,6 +21,7 @@ app-editors/mousepad
 app-editors/neovim
 app-editors/vim
 app-emulation/lxd
+app-emulation/qemu
 app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
@@ -41,6 +42,7 @@ app-portage/genlop
 app-portage/gentoolkit
 app-portage/hackport
 app-portage/layman
+app-portage/pfl
 app-portage/repoman
 app-portage/smart-live-rebuild
 app-shells/dash
@@ -62,14 +64,6 @@ app-vim/pathogen
 app-vim/rust-vim
 app-vim/taglist
 app-vim/vim-spell-en
-cross-avr/avr-libc
-cross-avr/binutils
-cross-avr/binutils:2.26.1
-cross-avr/binutils:2.28
-cross-avr/gcc
-cross-avr/gcc:4.8.5
-cross-avr/gcc:4.9.4
-cross-avr/gcc:5.4.0
 dev-embedded/dfu-programmer
 dev-haskell/acid-state
 dev-haskell/arithmoi
@@ -102,6 +96,7 @@ dev-lang/perl
 dev-lang/python
 dev-lang/swi-prolog
 dev-libs/xapian-bindings
+dev-perl/Archive-Zip
 dev-python/awscli
 dev-python/flake8
 dev-python/flask
@@ -113,7 +108,6 @@ dev-python/pytest-cov
 dev-python/pytest-xdist
 dev-python/tox
 dev-qt/qtimageformats
-dev-qt/qtwebengine
 dev-tex/biber
 dev-tex/biblatex
 dev-tex/latex-beamer
@@ -168,8 +162,10 @@ media-gfx/displaycal
 media-gfx/imagemagick
 media-gfx/inkscape
 media-gfx/krita
+media-gfx/openexr_viewers
 media-gfx/optipng
 media-gfx/sxiv
+media-libs/ctl
 media-libs/exiftool
 media-libs/flac
 media-libs/fmod
@@ -177,6 +173,7 @@ media-libs/icc-profiles-openicc
 media-libs/ladspa-cmt
 media-libs/libaom
 media-libs/libebur128
+media-libs/libplacebo
 media-libs/libsdl2
 media-libs/libtxc_dxtn
 media-libs/openal

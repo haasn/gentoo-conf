@@ -1,0 +1,122 @@
+From fe105722349d0ba61c8485b19f053a049d433061 Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Fri, 18 Aug 2017 02:31:58 +0200
+Subject: [PATCH 07/22] vo_gpu: invalidate fbotex before drawing
+
+Don't discard the OSD or pass_draw_to_screen passes though. Could be
+faster on some hardware.
+---
+ video/out/gpu/osd.c          |  2 +-
+ video/out/gpu/shader_cache.c |  3 ++-
+ video/out/gpu/shader_cache.h |  2 +-
+ video/out/gpu/video.c        | 14 +++++++-------
+ 4 files changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/video/out/gpu/osd.c b/video/out/gpu/osd.c
+index 317deb6e4d..75f69f0c9b 100644
+--- a/video/out/gpu/osd.c
++++ b/video/out/gpu/osd.c
+@@ -314,7 +314,7 @@ void mpgl_osd_draw_finish(struct mpgl_osd *ctx, int index,
+     const int *factors = &blend_factors[part->format][0];
+     gl_sc_blend(sc, factors[0], factors[1], factors[2], factors[3]);
+ 
+-    gl_sc_dispatch_draw(sc, fbo.tex, vertex_vao, MP_ARRAY_SIZE(vertex_vao),
++    gl_sc_dispatch_draw(sc, fbo.tex, false, vertex_vao, MP_ARRAY_SIZE(vertex_vao),
+                         sizeof(struct vertex), part->vertices, part->num_vertices);
+ }
+ 
+diff --git a/video/out/gpu/shader_cache.c b/video/out/gpu/shader_cache.c
+index c3eccac9e9..3b2578eae0 100644
+--- a/video/out/gpu/shader_cache.c
++++ b/video/out/gpu/shader_cache.c
+@@ -984,13 +984,14 @@ static void gl_sc_generate(struct gl_shader_cache *sc,
+ }
+ 
+ struct mp_pass_perf gl_sc_dispatch_draw(struct gl_shader_cache *sc,
+-                                        struct ra_tex *target,
++                                        struct ra_tex *target, bool discard,
+                                         const struct ra_renderpass_input *vao,
+                                         int vao_len, size_t vertex_stride,
+                                         void *vertices, size_t num_vertices)
+ {
+     struct timer_pool *timer = NULL;
+ 
++    sc->params.invalidate_target = discard;
+     gl_sc_generate(sc, RA_RENDERPASS_TYPE_RASTER, target->params.format,
+                    vao, vao_len, vertex_stride);
+     if (!sc->current_shader)
+diff --git a/video/out/gpu/shader_cache.h b/video/out/gpu/shader_cache.h
+index 2fe7dcfb9d..547c6b6307 100644
+--- a/video/out/gpu/shader_cache.h
++++ b/video/out/gpu/shader_cache.h
+@@ -50,7 +50,7 @@ void gl_sc_blend(struct gl_shader_cache *sc,
+                  enum ra_blend blend_dst_alpha);
+ void gl_sc_enable_extension(struct gl_shader_cache *sc, char *name);
+ struct mp_pass_perf gl_sc_dispatch_draw(struct gl_shader_cache *sc,
+-                                        struct ra_tex *target,
++                                        struct ra_tex *target, bool discard,
+                                         const struct ra_renderpass_input *vao,
+                                         int vao_len, size_t vertex_stride,
+                                         void *ptr, size_t num);
+diff --git a/video/out/gpu/video.c b/video/out/gpu/video.c
+index eca74b4bb3..c993f6b353 100644
+--- a/video/out/gpu/video.c
++++ b/video/out/gpu/video.c
+@@ -1140,7 +1140,7 @@ static void dispatch_compute(struct gl_video *p, int w, int h,
+ }
+ 
+ static struct mp_pass_perf render_pass_quad(struct gl_video *p,
+-                                            struct ra_fbo fbo,
++                                            struct ra_fbo fbo, bool discard,
+                                             const struct mp_rect *dst)
+ {
+     // The first element is reserved for `vec2 position`
+@@ -1198,15 +1198,15 @@ static struct mp_pass_perf render_pass_quad(struct gl_video *p,
+             &p->tmp_vertex[num_vertex_attribs * 1],
+             vertex_stride);
+ 
+-    return gl_sc_dispatch_draw(p->sc, fbo.tex, p->vao, num_vertex_attribs,
++    return gl_sc_dispatch_draw(p->sc, fbo.tex, discard, p->vao, num_vertex_attribs,
+                                vertex_stride, p->tmp_vertex, num_vertices);
+ }
+ 
+ static void finish_pass_fbo(struct gl_video *p, struct ra_fbo fbo,
+-                            const struct mp_rect *dst)
++                            bool discard, const struct mp_rect *dst)
+ {
+     pass_prepare_src_tex(p);
+-    pass_record(p, render_pass_quad(p, fbo, dst));
++    pass_record(p, render_pass_quad(p, fbo, discard, dst));
+     debug_check_gl(p, "after rendering");
+     cleanup_binds(p);
+ }
+@@ -1235,7 +1235,7 @@ static void finish_pass_tex(struct gl_video *p, struct ra_tex **dst_tex,
+         debug_check_gl(p, "after dispatching compute shader");
+     } else {
+         struct ra_fbo fbo = { .tex = *dst_tex, };
+-        finish_pass_fbo(p, fbo, &(struct mp_rect){0, 0, w, h});
++        finish_pass_fbo(p, fbo, true, &(struct mp_rect){0, 0, w, h});
+     }
+ }
+ 
+@@ -2793,7 +2793,7 @@ static void pass_draw_to_screen(struct gl_video *p, struct ra_fbo fbo)
+ 
+     pass_dither(p);
+     pass_describe(p, "output to screen");
+-    finish_pass_fbo(p, fbo, &p->dst_rect);
++    finish_pass_fbo(p, fbo, false, &p->dst_rect);
+ }
+ 
+ static bool update_surface(struct gl_video *p, struct mp_image *mpi,
+@@ -3201,7 +3201,7 @@ static void reinterleave_vdpau(struct gl_video *p,
+         const struct ra_format *fmt = ra_find_unorm_format(p->ra, 1, comps);
+         ra_tex_resize(p->ra, p->log, tex, w, h * 2, fmt);
+         struct ra_fbo fbo = { *tex };
+-        finish_pass_fbo(p, fbo, &(struct mp_rect){0, 0, w, h * 2});
++        finish_pass_fbo(p, fbo, true, &(struct mp_rect){0, 0, w, h * 2});
+ 
+         output[n] = *tex;
+     }
+-- 
+2.14.3
+

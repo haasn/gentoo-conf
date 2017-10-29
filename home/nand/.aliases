@@ -105,6 +105,7 @@ alias note='cat >> ~/notes'
 # 16 core make (ht)
 alias make='make -j32'
 alias waifu='CFLAGS="${CFLAGS} -fdiagnostics-color=always" ./waf'
+alias ninja='ninja -Cbuild'
 
 # Attach to weechat inside dtach
 alias weechat='dtach -a /tmp/weechat'

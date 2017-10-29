@@ -1,0 +1,119 @@
+From e74d9aca28e108aa4546df0c15b470d0ef4ae62c Mon Sep 17 00:00:00 2001
+From: Drew DeVault <sir@cmpwn.com>
+Date: Tue, 18 Jul 2017 11:53:37 -0400
+Subject: [PATCH] Use /dev/tty instead of stdin for terminal input
+
+Fixes #4190
+
+This allows you to use terminal input even if you've piped something
+into mpv.
+---
+ osdep/terminal-unix.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
+
+diff --git a/osdep/terminal-unix.c b/osdep/terminal-unix.c
+index eca6c69461..239fceb155 100644
+--- a/osdep/terminal-unix.c
++++ b/osdep/terminal-unix.c
+@@ -55,6 +55,8 @@ static volatile struct termios tio_orig;
+ static volatile int tio_orig_set;
+ #endif
+ 
++int tty_in, tty_out;
++
+ struct key_entry {
+     const char *seq;
+     int mpkey;
+@@ -181,7 +183,7 @@ static struct termbuf buf;
+ 
+ static bool getch2(struct input_ctx *input_ctx)
+ {
+-    int retval = read(0, &buf.b[buf.len], BUF_LEN - buf.len);
++    int retval = read(tty_in, &buf.b[buf.len], BUF_LEN - buf.len);
+     /* Return false on EOF to stop running select() on the FD, as it'd
+      * trigger all the time. Note that it's possible to get temporary
+      * EOF on terminal if the user presses ctrl-d, but that shouldn't
+@@ -269,9 +271,9 @@ static void enable_kx(bool enable)
+     // tty. Note that stderr being redirected away has no influence over mpv's
+     // I/O handling except for disabling the terminal OSD, and thus stderr
+     // shouldn't be relied on here either.
+-    if (isatty(STDOUT_FILENO)) {
++    if (isatty(tty_out)) {
+         char *cmd = enable ? "\033=" : "\033>";
+-        (void)write(STDOUT_FILENO, cmd, strlen(cmd));
++        (void)write(tty_out, cmd, strlen(cmd));
+     }
+ }
+ 
+@@ -284,7 +286,7 @@ static void do_activate_getch2(void)
+ 
+ #if HAVE_TERMIOS
+     struct termios tio_new;
+-    tcgetattr(0,&tio_new);
++    tcgetattr(tty_in,&tio_new);
+ 
+     if (!tio_orig_set) {
+         tio_orig = tio_new;
+@@ -294,7 +296,7 @@ static void do_activate_getch2(void)
+     tio_new.c_lflag &= ~(ICANON|ECHO); /* Clear ICANON and ECHO. */
+     tio_new.c_cc[VMIN] = 1;
+     tio_new.c_cc[VTIME] = 0;
+-    tcsetattr(0,TCSANOW,&tio_new);
++    tcsetattr(tty_in,TCSANOW,&tio_new);
+ #endif
+ 
+     getch2_active = 1;
+@@ -311,7 +313,7 @@ static void do_deactivate_getch2(void)
+     if (tio_orig_set) {
+         // once set, it will never be set again
+         // so we can cast away volatile here
+-        tcsetattr(0, TCSANOW, (const struct termios *) &tio_orig);
++        tcsetattr(tty_in, TCSANOW, (const struct termios *) &tio_orig);
+     }
+ #endif
+ 
+@@ -340,7 +342,7 @@ static void getch2_poll(void)
+         return;
+ 
+     // check if stdin is in the foreground process group
+-    int newstatus = (tcgetpgrp(0) == getpgrp());
++    int newstatus = (tcgetpgrp(tty_in) == getpgrp());
+ 
+     // and activate getch2 if it is, deactivate otherwise
+     if (newstatus)
+@@ -394,7 +396,7 @@ static void *terminal_thread(void *ptr)
+         getch2_poll();
+         struct pollfd fds[2] = {
+             {.events = POLLIN, .fd = death_pipe[0]},
+-            {.events = POLLIN, .fd = STDIN_FILENO},
++            {.events = POLLIN, .fd = tty_in},
+         };
+         poll(fds, stdin_ok ? 2 : 1, -1);
+         if (fds[0].revents)
+@@ -421,10 +423,16 @@ void terminal_setup_getch(struct input_ctx *ictx)
+     if (mp_make_wakeup_pipe(death_pipe) < 0)
+         return;
+ 
++    tty_in = tty_out = open("/dev/tty", O_RDWR);
++    if (tty_in < 0) {
++        tty_in = STDIN_FILENO;
++        tty_out = STDOUT_FILENO;
++    }
++
+     // Disable reading from the terminal even if stdout is not a tty, to make
+     //   mpv ... | less
+     // do the right thing.
+-    read_terminal = isatty(STDIN_FILENO) && isatty(STDOUT_FILENO);
++    read_terminal = isatty(tty_in) && isatty(tty_out);
+ 
+     input_ctx = ictx;
+ 
+@@ -474,7 +482,7 @@ bool terminal_in_background(void)
+ void terminal_get_size(int *w, int *h)
+ {
+     struct winsize ws;
+-    if (ioctl(0, TIOCGWINSZ, &ws) < 0 || !ws.ws_row || !ws.ws_col)
++    if (ioctl(tty_in, TIOCGWINSZ, &ws) < 0 || !ws.ws_row || !ws.ws_col)
+         return;
+ 
+     *w = ws.ws_col;

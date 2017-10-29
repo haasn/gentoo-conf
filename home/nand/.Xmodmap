@@ -8,7 +8,7 @@ keycode  16 = ampersand 7 sevensuperior sevensubscript
 keycode  17 = asterisk 8 Greek_lamda eightsubscript
 keycode  18 = parenleft 9 leftsinglequotemark ninesubscript
 keycode  19 = parenright 0 rightsinglequotemark zerosubscript
-keycode  20 = minus underscore plusminus approxeq
+keycode  20 = underscore apostrophe plusminus approxeq
 keycode  21 = equal plus multiply division
 
 keycode  24 = q Q adiaeresis Adiaeresis
@@ -34,7 +34,7 @@ keycode  44 = j J aring Aring
 keycode  45 = k K U00F8 U00D8
 keycode  46 = l L omacron umacron
 keycode  47 = semicolon colon leftdoublequotemark degree
-keycode  48 = apostrophe quotedbl rightdoublequotemark U207A
+keycode  48 = minus quotedbl rightdoublequotemark U207A
 keycode  49 = grave asciitilde U2200 U2245
 !keycode  50 = Alt_L Alt_L Alt_L Alt_L
 !keycode  51 = Greek_pi Greek_PI notsign U2E2E

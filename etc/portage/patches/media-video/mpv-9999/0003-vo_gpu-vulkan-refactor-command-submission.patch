@@ -1,0 +1,315 @@
+From 01f9f08af24f183505d2b4c9df4a5b79628a5877 Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Thu, 28 Sep 2017 23:06:56 +0200
+Subject: [PATCH 03/22] vo_gpu: vulkan: refactor command submission
+
+Instead of being submitted immediately, commands are appended into an
+internal submission queue, and the actual submission is done once per
+frame (at the same time as queue cycling). Again, the benefits are not
+immediately obvious because nothing benefits from this yet, but it will
+make more sense for an upcoming vk_signal mechanism.
+
+This also cleans up the way the ra_vk submission interacts with the
+synchronization/callbacks from the ra_vk_ctx. Although currently, the
+way the dependency is signalled is a bit hacky: normally it would be
+associated with the ra_tex itself and waited on in the appropriate stage
+implicitly. But that code is just temporary, so I'm keeping it in there
+for a better commit order.
+---
+ video/out/vulkan/context.c | 27 +++++++++++++++++---
+ video/out/vulkan/ra_vk.c   | 44 ++++++++------------------------
+ video/out/vulkan/ra_vk.h   | 13 ++++------
+ video/out/vulkan/utils.c   | 63 +++++++++++++++++++++++++++++++---------------
+ video/out/vulkan/utils.h   | 15 ++++++-----
+ 5 files changed, 90 insertions(+), 72 deletions(-)
+
+diff --git a/video/out/vulkan/context.c b/video/out/vulkan/context.c
+index b51bb78578..20fa5fc6d9 100644
+--- a/video/out/vulkan/context.c
++++ b/video/out/vulkan/context.c
+@@ -467,6 +467,11 @@ error:
+     return false;
+ }
+ 
++static void present_cb(struct priv *p, void *arg)
++{
++    p->frames_in_flight--;
++}
++
+ static bool submit_frame(struct ra_swapchain *sw, const struct vo_frame *frame)
+ {
+     struct priv *p = sw->priv;
+@@ -475,18 +480,32 @@ static bool submit_frame(struct ra_swapchain *sw, const struct vo_frame *frame)
+     if (!p->swapchain)
+         goto error;
+ 
++    struct vk_cmd *cmd = ra_vk_submit(ra, p->images[p->last_imgidx]);
++    if (!cmd)
++        goto error;
++
+     int semidx = p->idx_sems++;
+     p->idx_sems %= p->num_sems;
++    vk_cmd_sig(cmd, p->sems_out[semidx]);
++
++    // XXX: These are the only two stages that we currently use/support for
++    // actually outputting to the swapchain. Normally, this would be handled by
++    // a dedicated vk_signal mechanism, but for now just hard-code it here as a
++    // quick work-around.
++    vk_cmd_dep(cmd, p->sems_in[semidx], VK_PIPELINE_STAGE_TRANSFER_BIT |
++               VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
++
++    p->frames_in_flight++;
++    vk_cmd_callback(cmd, (vk_cb) present_cb, p, NULL);
+ 
+-    if (!ra_vk_submit(ra, p->images[p->last_imgidx], p->sems_in[semidx],
+-                      p->sems_out[semidx], &p->frames_in_flight))
++    vk_cmd_queue(vk, cmd);
++    if (!vk_flush_commands(vk))
+         goto error;
+ 
+     // Older nvidia drivers can spontaneously combust when submitting to the
+     // same queue as we're rendering from, in a multi-queue scenario. Safest
+-    // option is to cycle the queues first and then submit to the next queue.
++    // option is to flush the commands first and then submit to the next queue.
+     // We can drop this hack in the future, I suppose.
+-    vk_cmd_cycle_queues(vk);
+     struct vk_cmdpool *pool = vk->pool;
+     VkQueue queue = pool->queues[pool->idx_queues];
+ 
+diff --git a/video/out/vulkan/ra_vk.c b/video/out/vulkan/ra_vk.c
+index bbd7ac2f26..3a9f859be9 100644
+--- a/video/out/vulkan/ra_vk.c
++++ b/video/out/vulkan/ra_vk.c
+@@ -34,18 +34,15 @@ static struct vk_cmd *vk_require_cmd(struct ra *ra)
+     return p->cmd;
+ }
+ 
+-static bool vk_flush(struct ra *ra)
++static void vk_submit(struct ra *ra)
+ {
+     struct ra_vk *p = ra->priv;
+     struct mpvk_ctx *vk = ra_vk_get(ra);
+ 
+     if (p->cmd) {
+-        if (!vk_cmd_submit(vk, p->cmd))
+-            return false;
++        vk_cmd_queue(vk, p->cmd);
+         p->cmd = NULL;
+     }
+-
+-    return true;
+ }
+ 
+ // The callback's *priv will always be set to `ra`
+@@ -71,7 +68,8 @@ static void vk_destroy_ra(struct ra *ra)
+     struct ra_vk *p = ra->priv;
+     struct mpvk_ctx *vk = ra_vk_get(ra);
+ 
+-    vk_flush(ra);
++    vk_submit(ra);
++    vk_flush_commands(vk);
+     mpvk_dev_wait_cmds(vk, UINT64_MAX);
+     ra_tex_free(ra, &p->clear_tex);
+ 
+@@ -1694,41 +1692,19 @@ static struct ra_fns ra_fns_vk = {
+     .timer_stop             = vk_timer_stop,
+ };
+ 
+-static void present_cb(void *priv, int *inflight)
+-{
+-    *inflight -= 1;
+-}
+-
+-bool ra_vk_submit(struct ra *ra, struct ra_tex *tex, VkSemaphore acquired,
+-                  VkSemaphore done, int *inflight)
++struct vk_cmd *ra_vk_submit(struct ra *ra, struct ra_tex *tex)
+ {
++    struct ra_vk *p = ra->priv;
+     struct vk_cmd *cmd = vk_require_cmd(ra);
+     if (!cmd)
+-        goto error;
+-
+-    if (inflight) {
+-        *inflight += 1;
+-        vk_cmd_callback(cmd, (vk_cb)present_cb, NULL, inflight);
+-    }
++        return NULL;
+ 
+     struct ra_tex_vk *tex_vk = tex->priv;
+     assert(tex_vk->external_img);
+     tex_barrier(cmd, tex_vk, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, 0,
+                 VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, false);
+ 
+-    // These are the only two stages that we use/support for actually
+-    // outputting to swapchain imagechain images, so just add a dependency
+-    // on both of them. In theory, we could maybe come up with some more
+-    // advanced mechanism of tracking dynamic dependencies, but that seems
+-    // like overkill.
+-    vk_cmd_dep(cmd, acquired,
+-               VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT |
+-               VK_PIPELINE_STAGE_TRANSFER_BIT);
+-
+-    vk_cmd_sig(cmd, done);
+-
+-    return vk_flush(ra);
+-
+-error:
+-    return false;
++    // Return this directly instead of going through vk_submit
++    p->cmd = NULL;
++    return cmd;
+ }
+diff --git a/video/out/vulkan/ra_vk.h b/video/out/vulkan/ra_vk.h
+index d15b6380f0..8939bc7ce0 100644
+--- a/video/out/vulkan/ra_vk.h
++++ b/video/out/vulkan/ra_vk.h
+@@ -16,14 +16,11 @@ VkDevice ra_vk_get_dev(struct ra *ra);
+ struct ra_tex *ra_vk_wrap_swapchain_img(struct ra *ra, VkImage vkimg,
+                                         VkSwapchainCreateInfoKHR info);
+ 
+-// This function flushes the command buffers, transitions `tex` (which must be
+-// a wrapped swapchain image) into a format suitable for presentation, and
+-// submits the current rendering commands. `acquired` must fire before the
+-// command can run, and `done` will fire after it completes. If `inflight`
+-// is non-NULL, it will be incremented when the command starts and decremented
+-// when it completes.
+-bool ra_vk_submit(struct ra *ra, struct ra_tex *tex, VkSemaphore acquired,
+-                  VkSemaphore done, int *inflight);
++// This function finalizes rendering, transitions `tex` (which must be a
++// wrapped swapchain image) into a format suitable for presentation, and returns
++// the resulting command buffer (or NULL on error). The caller may add their
++// own semaphores to this command buffer, and must submit it afterwards.
++struct vk_cmd *ra_vk_submit(struct ra *ra, struct ra_tex *tex);
+ 
+ // May be called on a struct ra of any type. Returns NULL if the ra is not
+ // a vulkan ra.
+diff --git a/video/out/vulkan/utils.c b/video/out/vulkan/utils.c
+index 7c8511a9d2..ee5a524947 100644
+--- a/video/out/vulkan/utils.c
++++ b/video/out/vulkan/utils.c
+@@ -665,42 +665,65 @@ error:
+     return NULL;
+ }
+ 
+-bool vk_cmd_submit(struct mpvk_ctx *vk, struct vk_cmd *cmd)
++void vk_cmd_queue(struct mpvk_ctx *vk, struct vk_cmd *cmd)
+ {
+     struct vk_cmdpool *pool = cmd->pool;
+ 
+     VK(vkEndCommandBuffer(cmd->buf));
+ 
+-    VkSubmitInfo sinfo = {
+-        .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+-        .commandBufferCount = 1,
+-        .pCommandBuffers = &cmd->buf,
+-        .waitSemaphoreCount = cmd->num_deps,
+-        .pWaitSemaphores = cmd->deps,
+-        .pWaitDstStageMask = cmd->depstages,
+-        .signalSemaphoreCount = cmd->num_sigs,
+-        .pSignalSemaphores = cmd->sigs,
+-    };
+-
+     VK(vkResetFences(vk->dev, 1, &cmd->fence));
+-    VK(vkQueueSubmit(cmd->queue, 1, &sinfo, cmd->fence));
+-    MP_TRACE(vk, "Submitted command on queue %p (QF %d)\n", (void *)cmd->queue,
+-             pool->qf);
+-
++    MP_TARRAY_APPEND(pool, pool->cmds_queued, pool->num_cmds_queued, cmd);
+     vk->last_cmd = cmd;
+-    MP_TARRAY_APPEND(pool, pool->cmds_pending, pool->num_cmds_pending, cmd);
+-    return true;
++    return;
+ 
+ error:
+     vk_cmd_reset(vk, cmd);
+     MP_TARRAY_APPEND(pool, pool->cmds_available, pool->num_cmds_available, cmd);
+-    return false;
+ }
+ 
+-void vk_cmd_cycle_queues(struct mpvk_ctx *vk)
++bool vk_flush_commands(struct mpvk_ctx *vk)
+ {
++    bool ret = true;
++
+     struct vk_cmdpool *pool = vk->pool;
++    for (int i = 0; i < pool->num_cmds_queued; i++) {
++        struct vk_cmd *cmd = pool->cmds_queued[i];
++
++        VkSubmitInfo sinfo = {
++            .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
++            .commandBufferCount = 1,
++            .pCommandBuffers = &cmd->buf,
++            .waitSemaphoreCount = cmd->num_deps,
++            .pWaitSemaphores = cmd->deps,
++            .pWaitDstStageMask = cmd->depstages,
++            .signalSemaphoreCount = cmd->num_sigs,
++            .pSignalSemaphores = cmd->sigs,
++        };
++
++        VK(vkQueueSubmit(cmd->queue, 1, &sinfo, cmd->fence));
++        MP_TARRAY_APPEND(pool, pool->cmds_pending, pool->num_cmds_pending, cmd);
++
++        if (mp_msg_test(vk->log, MSGL_TRACE)) {
++            MP_TRACE(vk, "Submitted command on queue %p (QF %d):\n",
++                     (void *)cmd->queue, pool->qf);
++            for (int n = 0; n < cmd->num_deps; n++)
++                MP_TRACE(vk, "    waits on semaphore %p\n", (void *)cmd->deps[n]);
++            for (int n = 0; n < cmd->num_sigs; n++)
++                MP_TRACE(vk, "    signals semaphore %p\n", (void *)cmd->sigs[n]);
++        }
++        continue;
++
++error:
++        vk_cmd_reset(vk, cmd);
++        MP_TARRAY_APPEND(pool, pool->cmds_available, pool->num_cmds_available, cmd);
++        ret = false;
++    }
++
++    pool->num_cmds_queued = 0;
++
++    // Rotate the queues to ensure good parallelism across frames
+     pool->idx_queues = (pool->idx_queues + 1) % pool->num_queues;
++    return ret;
+ }
+ 
+ const VkImageSubresourceRange vk_range = {
+diff --git a/video/out/vulkan/utils.h b/video/out/vulkan/utils.h
+index 3ade92d6a0..bdbbe0aa70 100644
+--- a/video/out/vulkan/utils.h
++++ b/video/out/vulkan/utils.h
+@@ -131,8 +131,10 @@ struct vk_cmdpool {
+     int idx_queues;
+     // Command buffers associated with this queue
+     struct vk_cmd **cmds_available; // available for re-recording
++    struct vk_cmd **cmds_queued;    // recorded but not yet submitted
+     struct vk_cmd **cmds_pending;   // submitted but not completed
+     int num_cmds_available;
++    int num_cmds_queued;
+     int num_cmds_pending;
+ };
+ 
+@@ -140,14 +142,15 @@ struct vk_cmdpool {
+ // Returns NULL on failure.
+ struct vk_cmd *vk_cmd_begin(struct mpvk_ctx *vk, struct vk_cmdpool *pool);
+ 
+-// Finish recording a command buffer and submit it for execution. This function
++// Finish recording a command buffer and queue it for execution. This function
+ // takes over ownership of *cmd, i.e. the caller should not touch it again.
+-// Returns whether successful.
+-bool vk_cmd_submit(struct mpvk_ctx *vk, struct vk_cmd *cmd);
++void vk_cmd_queue(struct mpvk_ctx *vk, struct vk_cmd *cmd);
+ 
+-// Rotate the queues for each vk_cmdpool. Call this once per frame to ensure
+-// good parallelism between frames when using multiple queues
+-void vk_cmd_cycle_queues(struct mpvk_ctx *vk);
++// Flush all currently queued commands. Call this once per frame, after
++// submitting all of the command buffers for that frame. Calling this more
++// often than that is possible but bad for performance.
++// Returns whether successful. Failed commands will be implicitly dropped.
++bool vk_flush_commands(struct mpvk_ctx *vk);
+ 
+ // Predefined structs for a simple non-layered, non-mipped image
+ extern const VkImageSubresourceRange vk_range;
+-- 
+2.14.3
+

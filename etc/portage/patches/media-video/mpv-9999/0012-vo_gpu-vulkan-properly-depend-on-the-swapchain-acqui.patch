@@ -1,0 +1,130 @@
+From c044db663b0f34193e66f3aac7b0a3daa1e42750 Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Fri, 29 Sep 2017 14:15:13 +0200
+Subject: [PATCH 12/22] vo_gpu: vulkan: properly depend on the swapchain
+ acquire semaphore
+
+This is now associated with the ra_tex directly and used in the correct
+way, rather than hackily done from submit_frame.
+---
+ video/out/vulkan/context.c | 23 ++++++++---------------
+ video/out/vulkan/ra_vk.c   | 13 +++++++++++++
+ video/out/vulkan/ra_vk.h   |  4 ++++
+ 3 files changed, 25 insertions(+), 15 deletions(-)
+
+diff --git a/video/out/vulkan/context.c b/video/out/vulkan/context.c
+index 98162eb12f..56bf496bb2 100644
+--- a/video/out/vulkan/context.c
++++ b/video/out/vulkan/context.c
+@@ -448,14 +448,13 @@ static bool start_frame(struct ra_swapchain *sw, struct ra_fbo *out_fbo)
+     if (!p->swapchain)
+         return false;
+ 
+-    MP_TRACE(vk, "vkAcquireNextImageKHR signals %p\n",
+-             (void *)p->sems_in[p->idx_sems]);
++    VkSemaphore sem_in = p->sems_in[p->idx_sems];
++    MP_TRACE(vk, "vkAcquireNextImageKHR signals %p\n", (void *)sem_in);
+ 
+     for (int attempts = 0; attempts < 2; attempts++) {
+         uint32_t imgidx = 0;
+         VkResult res = vkAcquireNextImageKHR(vk->dev, p->swapchain, UINT64_MAX,
+-                                             p->sems_in[p->idx_sems], NULL,
+-                                             &imgidx);
++                                             sem_in, NULL, &imgidx);
+ 
+         switch (res) {
+         case VK_SUCCESS:
+@@ -464,6 +463,7 @@ static bool start_frame(struct ra_swapchain *sw, struct ra_fbo *out_fbo)
+                 .tex = p->images[imgidx],
+                 .flip = false,
+             };
++            ra_tex_vk_external_dep(sw->ctx->ra, out_fbo->tex, sem_in);
+             return true;
+ 
+         case VK_ERROR_OUT_OF_DATE_KHR: {
+@@ -503,16 +503,9 @@ static bool submit_frame(struct ra_swapchain *sw, const struct vo_frame *frame)
+     if (!cmd)
+         return false;
+ 
+-    int semidx = p->idx_sems++;
++    VkSemaphore sem_out = p->sems_out[p->idx_sems++];
+     p->idx_sems %= p->num_sems;
+-    vk_cmd_sig(cmd, p->sems_out[semidx]);
+-
+-    // XXX: These are the only two stages that we currently use/support for
+-    // actually outputting to the swapchain. Normally, this would be handled by
+-    // a dedicated vk_signal mechanism, but for now just hard-code it here as a
+-    // quick work-around.
+-    vk_cmd_dep(cmd, p->sems_in[semidx], VK_PIPELINE_STAGE_TRANSFER_BIT |
+-               VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT);
++    vk_cmd_sig(cmd, sem_out);
+ 
+     p->frames_in_flight++;
+     vk_cmd_callback(cmd, (vk_cb) present_cb, p, NULL);
+@@ -531,13 +524,13 @@ static bool submit_frame(struct ra_swapchain *sw, const struct vo_frame *frame)
+     VkPresentInfoKHR pinfo = {
+         .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+         .waitSemaphoreCount = 1,
+-        .pWaitSemaphores = &p->sems_out[semidx],
++        .pWaitSemaphores = &sem_out,
+         .swapchainCount = 1,
+         .pSwapchains = &p->swapchain,
+         .pImageIndices = &p->last_imgidx,
+     };
+ 
+-    MP_TRACE(vk, "vkQueuePresentKHR waits on %p\n", (void *)p->sems_out[semidx]);
++    MP_TRACE(vk, "vkQueuePresentKHR waits on %p\n", (void *)sem_out);
+     VkResult res = vkQueuePresentKHR(queue, &pinfo);
+     switch (res) {
+     case VK_SUCCESS:
+diff --git a/video/out/vulkan/ra_vk.c b/video/out/vulkan/ra_vk.c
+index 7c194c84ca..22d9cc71ae 100644
+--- a/video/out/vulkan/ra_vk.c
++++ b/video/out/vulkan/ra_vk.c
+@@ -315,8 +315,16 @@ struct ra_tex_vk {
+     // the signal guards reuse, and can be NULL
+     struct vk_signal *sig;
+     VkPipelineStageFlags sig_stage;
++    VkSemaphore ext_dep; // external semaphore, not owned by the ra_tex
+ };
+ 
++void ra_tex_vk_external_dep(struct ra *ra, struct ra_tex *tex, VkSemaphore dep)
++{
++    struct ra_tex_vk *tex_vk = tex->priv;
++    assert(!tex_vk->ext_dep);
++    tex_vk->ext_dep = dep;
++}
++
+ // Small helper to ease image barrier creation. if `discard` is set, the contents
+ // of the image will be undefined after the barrier
+ static void tex_barrier(struct ra *ra, struct vk_cmd *cmd, struct ra_tex *tex,
+@@ -326,6 +334,11 @@ static void tex_barrier(struct ra *ra, struct vk_cmd *cmd, struct ra_tex *tex,
+     struct mpvk_ctx *vk = ra_vk_get(ra);
+     struct ra_tex_vk *tex_vk = tex->priv;
+ 
++    if (tex_vk->ext_dep) {
++        vk_cmd_dep(cmd, tex_vk->ext_dep, stage);
++        tex_vk->ext_dep = NULL;
++    }
++
+     VkImageMemoryBarrier imgBarrier = {
+         .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
+         .oldLayout = tex_vk->current_layout,
+diff --git a/video/out/vulkan/ra_vk.h b/video/out/vulkan/ra_vk.h
+index 8939bc7ce0..da613c7f5b 100644
+--- a/video/out/vulkan/ra_vk.h
++++ b/video/out/vulkan/ra_vk.h
+@@ -16,6 +16,10 @@ VkDevice ra_vk_get_dev(struct ra *ra);
+ struct ra_tex *ra_vk_wrap_swapchain_img(struct ra *ra, VkImage vkimg,
+                                         VkSwapchainCreateInfoKHR info);
+ 
++// Associates an external semaphore (dependency) with a ra_tex, such that this
++// ra_tex will not be used by the ra_vk until the external semaphore fires.
++void ra_tex_vk_external_dep(struct ra *ra, struct ra_tex *tex, VkSemaphore dep);
++
+ // This function finalizes rendering, transitions `tex` (which must be a
+ // wrapped swapchain image) into a format suitable for presentation, and returns
+ // the resulting command buffer (or NULL on error). The caller may add their
+-- 
+2.14.3
+

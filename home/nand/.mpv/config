@@ -1,14 +1,19 @@
 # Muh placebo
-profile=opengl-hq
+vo=gpu
+gpu-api=opengl
+profile=gpu-hq
 vd-lavc-dr=yes
 opengl-pbo=yes
+
 scale=haasnsoft
-scale-clamp=0.5
+scale-clamp=0.2
 cscale=ewa_lanczos
+glsl-shader=~~/shaders/ravu-r3-rgb.hook
+glsl-shader=~~/shaders/ravu-r3-rgb.hook
+
 icc-profile-auto=yes
 icc-cache-dir=/tmp/mpv-icc
-#opengl-shader=~~/shaders/ravu-r3.hook
-opengl-shader-cache-dir=/tmp/mpv-shaders/
+gpu-shader-cache-dir=/tmp/mpv-shaders/
 
 # Interpolation
 video-sync=display-resample
@@ -24,15 +29,10 @@ vf-defaults=yadif:interlaced-only=no
 
 # TFW fell for the 64 GiB RAM meme
 cache=auto
-cache-default=2000000
-cache-backbuffer=1000000
-cache-initial=1000
-cache-seek-min=2000
-#cache-file=TMP
-#cache-file-size=10000000
-
-# FFmpeg warns when setting more than 16 threads, but it *does* help
-#vd-lavc-threads=32
+cache-secs=1000000
+demuxer-seekable-cache=yes
+demuxer-max-bytes=2000000000
+demuxer-max-back-bytes=1000000000
 
 # youtube-dl settings
 ytdl=yes
@@ -56,6 +56,7 @@ audio-display=no
 # Miscellaneous
 fullscreen=no
 msg-color=yes
+msg-module=yes
 screenshot-directory=/mem
 load-unsafe-playlists=yes
 
@@ -151,9 +152,9 @@ audio-file-auto=no
 # Image files (e.g. for using mpv as a pseudo image viewer)
 [image]
 profile=nodir
-opengl-shaders-clr
+glsl-shaders-clr
 mute=yes
-scale=ewa_lanczossharp
+scale=ewa_lanczos
 background=0.1
 input-conf=~~/input-image.conf
 video-unscaled=yes
@@ -187,13 +188,21 @@ video-unscaled=no
 force-window=immediate
 
 # Higher quality screenshots. Low compression rate to speed up saving,
-# since I'm saving to a tmpfs and recompressing before uploading (with IM)
+# since I'm saving to tmpfs anyway
 [scrot]
 screenshot-format=png
 screenshot-png-compression=0
 screenshot-png-filter=0
 screenshot-tag-colorspace=yes
 screenshot-high-bit-depth=yes
+
+[bench]
+audio=no
+untimed=yes
+video-sync=display-desync
+vulkan-swap-mode=immediate
+opengl-swapinterval=0
+osd-msg1="FPS: ${estimated-display-fps}"
 
 [4k]
 profile=normalize

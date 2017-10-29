@@ -1,0 +1,68 @@
+From 6c248cf8e826d782bf93bea4e25b0ff78be1f801 Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Sun, 24 Sep 2017 15:21:37 +0200
+Subject: [PATCH 09/22] vo_gpu: aggressively prefer async compute
+
+On AMD devices, we only get one graphics pipe but several compute pipes
+which can (in theory) run independently. As such, we should prefer
+compute shaders over fragment shaders in scenarios where we expect them
+to be better for parallelism.
+
+This is amusingly trivial to do, and actually improves performance even
+in a single-queue scenario.
+---
+ video/out/gpu/ra.h       | 1 +
+ video/out/gpu/video.c    | 5 +++++
+ video/out/vulkan/ra_vk.c | 7 ++++++-
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/video/out/gpu/ra.h b/video/out/gpu/ra.h
+index 2fcd030700..3ace477070 100644
+--- a/video/out/gpu/ra.h
++++ b/video/out/gpu/ra.h
+@@ -52,6 +52,7 @@ enum {
+     RA_CAP_NESTED_ARRAY   = 1 << 7, // supports nested arrays
+     RA_CAP_SHARED_BINDING = 1 << 8, // sampler/image/buffer namespaces are disjoint
+     RA_CAP_GLOBAL_UNIFORM = 1 << 9, // supports using "naked" uniforms (not UBO)
++    RA_CAP_PARALLEL_COMPUTE  = 1 << 10, // supports parallel compute shaders
+ };
+ 
+ enum ra_ctype {
+diff --git a/video/out/gpu/video.c b/video/out/gpu/video.c
+index c993f6b353..59b9b00178 100644
+--- a/video/out/gpu/video.c
++++ b/video/out/gpu/video.c
+@@ -1224,6 +1224,11 @@ static void finish_pass_tex(struct gl_video *p, struct ra_tex **dst_tex,
+         return;
+     }
+ 
++    // If RA_CAP_PARALLEL_COMPUTE is set, try to prefer compute shaders
++    // over fragment shaders wherever possible.
++    if (!p->pass_compute.active && (p->ra->caps & RA_CAP_PARALLEL_COMPUTE))
++        pass_is_compute(p, 16, 16);
++
+     if (p->pass_compute.active) {
+         gl_sc_uniform_image2D_wo(p->sc, "out_image", *dst_tex);
+         if (!p->pass_compute.directly_writes)
+diff --git a/video/out/vulkan/ra_vk.c b/video/out/vulkan/ra_vk.c
+index fbade52873..448b7a45ac 100644
+--- a/video/out/vulkan/ra_vk.c
++++ b/video/out/vulkan/ra_vk.c
+@@ -206,8 +206,13 @@ struct ra *ra_create_vk(struct mpvk_ctx *vk, struct mp_log *log)
+     ra->max_shmem = vk->limits.maxComputeSharedMemorySize;
+     ra->max_pushc_size = vk->limits.maxPushConstantsSize;
+ 
+-    if (vk->pool_compute)
++    if (vk->pool_compute) {
+         ra->caps |= RA_CAP_COMPUTE;
++        // If we have more compute queues than graphics queues, we probably
++        // want to be using them. (This seems mostly relevant for AMD)
++        if (vk->pool_compute->num_queues > vk->pool_graphics->num_queues)
++            ra->caps |= RA_CAP_PARALLEL_COMPUTE;
++    }
+ 
+     if (!vk_setup_formats(ra))
+         goto error;
+-- 
+2.14.3
+

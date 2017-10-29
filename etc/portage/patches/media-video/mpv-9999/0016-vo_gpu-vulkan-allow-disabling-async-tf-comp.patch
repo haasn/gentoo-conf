@@ -1,0 +1,116 @@
+From 43fca140ca707269529874f8d6ea45bb334b8fb1 Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Sat, 7 Oct 2017 21:36:16 +0200
+Subject: [PATCH 16/22] vo_gpu: vulkan: allow disabling async tf/comp
+
+Async compute in particular seems to cause problems on some drivers, and
+even when supprted the benefits are not that massive from the tests I
+have seen, so it's probably safe to keep off by default.
+
+Async transfer on the other hand seems to work better and offers a more
+substantial improvement, so it's kept on.
+---
+ DOCS/man/options.rst       | 17 +++++++++++++++++
+ video/out/vulkan/context.c |  9 ++++++++-
+ video/out/vulkan/utils.c   | 14 +++++++++++---
+ video/out/vulkan/utils.h   |  2 ++
+ 4 files changed, 38 insertions(+), 4 deletions(-)
+
+diff --git a/DOCS/man/options.rst b/DOCS/man/options.rst
+index 2bc6e17d7f..ee88dee301 100644
+--- a/DOCS/man/options.rst
++++ b/DOCS/man/options.rst
+@@ -4247,6 +4247,23 @@ The following video options are currently all specific to ``--vo=gpu`` and
+     1), but it can also slow things down on hardware where there's no true
+     parallelism between queues. (Default: 1)
+ 
++``--vulkan-async-transfer``
++    Enables the use of async transfer queues on supported vulkan devices. Using
++    them allows transfer operations like texture uploads and blits to happen
++    concurrently with the actual rendering, thus improving overall throughput
++    and power consumption. Enabled by default, and should be relatively safe.
++
++``--vulkan-async-compute``
++    Enables the use of async compute queues on supported vulkan devices. Using
++    this, in theory, allows out-of-order scheduling of compute shaders with
++    graphics shaders, thus enabling the hardware to do more effective work while
++    waiting for pipeline bubbles and memory operations. Not beneficial on all
++    GPUs. It's worth noting that if async compute is enabled, and the device
++    supports more compute queues than graphics queues (bound by the restrictions
++    set by ``--vulkan-queue-count``), mpv will internally try and prefer the
++    use of compute shaders over fragment shaders wherever possible. Not enabled
++    by default, since it seems to cause issues with some drivers.
++
+ ``--spirv-compiler=<compiler>``
+     Controls which compiler is used to translate GLSL to SPIR-V. This is
+     (currently) only relevant for ``--gpu-api=vulkan``. The possible choices
+diff --git a/video/out/vulkan/context.c b/video/out/vulkan/context.c
+index 56bf496bb2..21ad5c30c7 100644
+--- a/video/out/vulkan/context.c
++++ b/video/out/vulkan/context.c
+@@ -104,9 +104,16 @@ const struct m_sub_options vulkan_conf = {
+                    {"immediate",    SWAP_IMMEDIATE})),
+         OPT_INTRANGE("vulkan-queue-count", dev_opts.queue_count, 0, 1, 8,
+                      OPTDEF_INT(1)),
++        OPT_FLAG("vulkan-async-transfer", dev_opts.async_transfer, 0),
++        OPT_FLAG("vulkan-async-compute", dev_opts.async_compute, 0),
+         {0}
+     },
+-    .size = sizeof(struct vulkan_opts)
++    .size = sizeof(struct vulkan_opts),
++    .defaults = &(struct vulkan_opts) {
++        .dev_opts = {
++            .async_transfer = 1,
++        },
++    },
+ };
+ 
+ struct priv {
+diff --git a/video/out/vulkan/utils.c b/video/out/vulkan/utils.c
+index 3dfb825032..5b9be3216f 100644
+--- a/video/out/vulkan/utils.c
++++ b/video/out/vulkan/utils.c
+@@ -455,9 +455,12 @@ bool mpvk_device_init(struct mpvk_ctx *vk, struct mpvk_device_opts opts)
+                    (unsigned)qfs[i].queueFlags, (int)qfs[i].queueCount);
+     }
+ 
+-    int idx_gfx  = find_qf(qfs, qfnum, VK_QUEUE_GRAPHICS_BIT),
+-        idx_comp = find_qf(qfs, qfnum, VK_QUEUE_COMPUTE_BIT),
+-        idx_tf   = find_qf(qfs, qfnum, VK_QUEUE_TRANSFER_BIT);
++    int idx_gfx = -1, idx_comp = -1, idx_tf = -1;
++    idx_gfx = find_qf(qfs, qfnum, VK_QUEUE_GRAPHICS_BIT);
++    if (opts.async_compute)
++        idx_comp = find_qf(qfs, qfnum, VK_QUEUE_COMPUTE_BIT);
++    if (opts.async_transfer)
++        idx_tf = find_qf(qfs, qfnum, VK_QUEUE_TRANSFER_BIT);
+ 
+     // Vulkan requires at least one GRAPHICS queue, so if this fails something
+     // is horribly wrong.
+@@ -477,6 +480,11 @@ bool mpvk_device_init(struct mpvk_ctx *vk, struct mpvk_device_opts opts)
+     if (idx_comp >= 0 && idx_comp != idx_gfx)
+         MP_VERBOSE(vk, "Using async compute (QF %d)\n", idx_comp);
+ 
++    // Fall back to supporting compute shaders via the graphics pool for
++    // devices which support compute shaders but not async compute.
++    if (idx_comp < 0 && qfs[idx_gfx].queueFlags & VK_QUEUE_COMPUTE_BIT)
++        idx_comp = idx_gfx;
++
+     // Now that we know which QFs we want, we can create the logical device
+     VkDeviceQueueCreateInfo *qinfos = NULL;
+     int num_qinfos = 0;
+diff --git a/video/out/vulkan/utils.h b/video/out/vulkan/utils.h
+index de3a757be3..2962313257 100644
+--- a/video/out/vulkan/utils.h
++++ b/video/out/vulkan/utils.h
+@@ -55,6 +55,8 @@ bool mpvk_pick_surface_format(struct mpvk_ctx *vk);
+ 
+ struct mpvk_device_opts {
+     int queue_count;    // number of queues to use
++    int async_transfer; // enable async transfer
++    int async_compute;  // enable async compute
+ };
+ 
+ // Create a logical device and initialize the vk_cmdpools
+-- 
+2.14.3
+

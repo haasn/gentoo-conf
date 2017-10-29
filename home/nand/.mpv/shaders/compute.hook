@@ -1,10 +1,10 @@
 //!HOOK LUMA
 //!BIND HOOKED
-//!COMPUTE 32 8
+//!COMPUTE 32 32
 //!DESC avg convolution
 
-// Kernel size, 9x9 as an example
-const ivec2 ksize = ivec2(9, 9);
+// Kernel size, 41x41 as an example
+const ivec2 ksize = ivec2(41, 41);
 const ivec2 offset = ksize / 2;
 
 // We need to load extra source texels to account for padding due to kernel

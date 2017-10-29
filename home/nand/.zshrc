@@ -123,6 +123,8 @@ export KDE_FORK_SLAVES=1
 #export MOZ_USE_OMTC=1
 export XZ_OPT="-T 0" # multithreading
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
+export MPV_LEAK_REPORT=1
+export LIBPLACEBO_LEAK_REPORT=1
 source /home/nand/.mpdpass
 
 # Stupid fucking, piece of shit, dirty, filthy, disgusting work-around

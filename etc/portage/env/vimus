@@ -1,0 +1,2 @@
+# Workaround for link failures
+LDFLAGS="${LDFLAGS} -z lazy"

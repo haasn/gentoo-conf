@@ -1,0 +1,25 @@
+From dfb342f1bba1d92925df4ee1f71b59aaa41e461b Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Mon, 16 Oct 2017 20:29:37 +0200
+Subject: [PATCH 20/22] vo_gpu: vulkan: fix sharing mode on malloc'd buffers
+
+Might explain some of the issues in multi-queue scenarios?
+---
+ video/out/vulkan/malloc.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/video/out/vulkan/malloc.c b/video/out/vulkan/malloc.c
+index a9aced33d8..32c2c6b4d0 100644
+--- a/video/out/vulkan/malloc.c
++++ b/video/out/vulkan/malloc.c
+@@ -147,7 +147,6 @@ static struct vk_slab *slab_alloc(struct mpvk_ctx *vk, struct vk_heap *heap,
+             .usage = heap->usage,
+             .sharingMode = vk->num_pools > 1 ? VK_SHARING_MODE_CONCURRENT
+                                              : VK_SHARING_MODE_EXCLUSIVE,
+-            .sharingMode = VK_SHARING_MODE_EXCLUSIVE,
+             .queueFamilyIndexCount = vk->num_pools,
+             .pQueueFamilyIndices = qfs,
+         };
+-- 
+2.14.3
+

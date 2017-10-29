@@ -13,8 +13,10 @@ app-admin/pass **
 app-editors/neovim **
 app-emulation/wine **
 app-misc/binwalk **
+dev-util/SPIRV-Tools **
 media-libs/libaom **
 media-libs/libass **
+media-libs/libplacebo **
 media-libs/vulkan-loader **
 media-libs/zimg **
 media-sound/autoplay **

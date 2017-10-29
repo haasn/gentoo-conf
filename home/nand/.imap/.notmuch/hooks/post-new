@@ -18,6 +18,7 @@ notmuch tag +tina -- tag:new and '(to: root@tina)'
 notmuch tag -new +spam -- tag:new and from:news@nvidia.com
 notmuch tag -new +spam -- tag:new and to:gog@nand.wakku.to
 notmuch tag -new +spam -- tag:new and to:jefta@haasn.xyz
+notmuch tag -new +spam -- tag:new and to:patreon@haasn.xyz
 notmuch tag -new +spam -- tag:new and to:spectrocoin@nand.wakku.to
 notmuch tag -new +spam -- tag:new and to:ecoin@nand.wakku.to
 notmuch tag -new +deleted -- tag:new and to:linuxpool.informatik@uni-ulm.de and from:gitlab@gitlab.informatik.uni-ulm.de

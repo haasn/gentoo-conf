@@ -42,7 +42,7 @@
 */* vdpau vaapi -xv
 */* lm_sensors
 */* scim -fcitx -ibus
-*/* libressl
+*/* -libressl
 */* -wayland
 
 ################################
@@ -94,7 +94,7 @@ dev-libs/libpcre2 pcre16 jit
 dev-libs/nss utils
 dev-libs/openssl -tls-heartbeat -sslv2 -sslv3
 dev-libs/xapian doc
-dev-python/PyQt5 declarative webkit webengine webchannel testlib sql
+dev-python/PyQt5 declarative webkit -webengine webchannel testlib sql
 dev-python/numpy lapack
 dev-qt/qtgui dbus accessibility # for qt5ct and ts3
 dev-qt/qtwebchannel qml
@@ -125,6 +125,7 @@ media-libs/openimageio -gif -ssl
 media-libs/phonon -pulseaudio -gstreamer -vlc qt5
 media-libs/vapoursynth -imagemagick
 media-libs/vulkan-loader vulkaninfo Xlib wayland # wayland is for vulkaninfo
+media-libs/vulkan-loader -abi_x86_32 # build failure
 media-libs/x264 10bit
 media-plugins/alsa-plugins pulseaudio
 media-sound/alsa-utils -doc # build failure
@@ -172,10 +173,10 @@ sys-libs/zlib minizip
 sys-process/lsof rpc
 sys-process/systemd-cron cron-boot minutely yearly
 www-client/firefox bindist
-www-client/firefox system-cairo system-harfbuzz system-icu system-jpeg system-libevent system-libvpx system-sqlite
+#www-client/firefox system-cairo system-harfbuzz system-icu system-jpeg system-libevent system-libvpx system-sqlite
 www-client/palemoon gtk2 -gtk3
 www-client/palemoon system-libs -official-branding
-www-client/qutebrowser python_targets_python3_6 webkit webengine
+www-client/qutebrowser python_targets_python3_6 webkit -webengine
 x11-base/xorg-server xvfb
 x11-drivers/nvidia-drivers kms uvm gtk3
 x11-libs/libdrm libkms video_cards_radeon
