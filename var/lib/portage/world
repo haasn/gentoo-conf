@@ -1,8 +1,7 @@
 app-admin/haskell-updater
-app-admin/mcelog
 app-admin/pass
 app-admin/pwgen
-app-admin/python-updater
+app-admin/rasdaemon
 app-admin/rofi-pass
 app-admin/sudo
 app-admin/sysstat
@@ -22,11 +21,9 @@ app-editors/neovim
 app-editors/vim
 app-emulation/lxd
 app-emulation/qemu
-app-emulation/wine
 app-emulation/winetricks
 app-forensics/rkhunter
 app-i18n/scim-anthy
-app-misc/adblock2privoxy
 app-misc/binwalk
 app-misc/colordiff
 app-misc/dtach
@@ -64,6 +61,8 @@ app-vim/pathogen
 app-vim/rust-vim
 app-vim/taglist
 app-vim/vim-spell-en
+cross-x86_64-w64-mingw32/binutils
+cross-x86_64-w64-mingw32/mingw64-runtime
 dev-embedded/dfu-programmer
 dev-haskell/acid-state
 dev-haskell/arithmoi
@@ -88,7 +87,6 @@ dev-haskell/split
 dev-haskell/sqlite-simple
 dev-haskell/xapian-haskell
 dev-lang/ghc
-dev-lang/idris
 dev-lang/lua
 dev-lang/mercury
 dev-lang/mono
@@ -132,7 +130,6 @@ games-emulation/pcsx2
 games-engines/scummvm
 games-misc/cowsay
 games-misc/fortune-mod
-games-roguelike/dwarf-fortress
 games-util/joystick
 kde-apps/kcachegrind
 kde-apps/okular
@@ -164,6 +161,7 @@ media-gfx/inkscape
 media-gfx/krita
 media-gfx/openexr_viewers
 media-gfx/optipng
+media-gfx/sane-backends
 media-gfx/sxiv
 media-libs/ctl
 media-libs/exiftool
@@ -171,9 +169,7 @@ media-libs/flac
 media-libs/fmod
 media-libs/icc-profiles-openicc
 media-libs/ladspa-cmt
-media-libs/libaom
 media-libs/libebur128
-media-libs/libplacebo
 media-libs/libsdl2
 media-libs/libtxc_dxtn
 media-libs/openal
@@ -183,8 +179,9 @@ media-libs/x265
 media-plugins/alsa-plugins
 media-plugins/ladspa-bs2b
 media-plugins/swh-plugins
-media-sound/audacity
 media-sound/autoplay
+media-sound/drumstick
+media-sound/gtick
 media-sound/mp3gain
 media-sound/mpc
 media-sound/mpd
@@ -204,11 +201,13 @@ media-video/mpv
 media-video/x264-encoder
 net-analyzer/arpoison
 net-analyzer/icinga2
+net-analyzer/iftop
 net-analyzer/mtr
 net-analyzer/munin
 net-analyzer/nagios-check_ipmi_sensor
 net-analyzer/netcat6
 net-analyzer/netdata
+net-analyzer/nethogs
 net-analyzer/nmap
 net-analyzer/tcpdump
 net-analyzer/traceroute
@@ -235,7 +234,6 @@ net-misc/youtube-dl
 net-p2p/go-ipfs-bin
 net-p2p/soulseek-qt
 net-p2p/transmission
-net-proxy/privoxy
 net-vpn/openvpn
 net-vpn/tor
 sci-mathematics/ent
@@ -262,7 +260,6 @@ sys-apps/systemd
 sys-block/fio
 sys-block/parted
 sys-boot/grub
-sys-boot/os-prober
 sys-devel/clang
 sys-devel/crossdev
 sys-devel/gdb
@@ -291,6 +288,7 @@ sys-process/systemd-cron
 virtual/cron
 virtual/latex-base
 virtual/mpi
+virtual/wine
 www-client/firefox
 www-client/qutebrowser
 www-client/w3m

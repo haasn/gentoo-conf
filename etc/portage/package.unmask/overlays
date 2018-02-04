@@ -14,6 +14,7 @@
 # Gentoo-GPU
 dev-util/glslang::gentoo-gpu
 dev-util/SPIRV-Tools::gentoo-gpu
+dev-util/shaderc::gentoo-gpu
 media-libs/vulkan-loader::gentoo-gpu
 
 # Libressl
@@ -30,6 +31,7 @@ net-libs/nodejs::libressl
 # Qt
 dev-qt/qtwebkit::qt
 =dev-qt/qtwebengine-5.9*::qt
+dev-qt/*:5/5.10::qt
 
 # Tristelune
 app-admin/rofi-pass::tristelune

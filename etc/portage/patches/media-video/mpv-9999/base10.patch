@@ -1,10 +1,19 @@
-diff --git a/player/command.c b/player/command.c
-index ac48a11..cec8dc9 100644
---- a/player/command.c
-+++ b/player/command.c
-@@ -231,20 +231,22 @@ static void mark_seek(struct MPContext *mpctx)
+From 895793a354f9f456dfe91be7e5fdc3e1e3859448 Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Sun, 24 Dec 2017 22:13:27 +0100
+Subject: [PATCH] player: use base 10 formatted file sizes
+
+---
+ options/m_option.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/options/m_option.c b/options/m_option.c
+index 522e771356..7bf3007638 100644
+--- a/options/m_option.c
++++ b/options/m_option.c
+@@ -454,20 +454,22 @@ static int parse_byte_size(struct mp_log *log, const m_option_t *opt,
  
- static char *format_file_size(int64_t size)
+ char *format_file_size(int64_t size)
  {
 +    size *= 8; // bits
 +
@@ -14,22 +23,25 @@ index ac48a11..cec8dc9 100644
          return talloc_asprintf(NULL, "%.0f", s);
  
 -    if (size < (1024 * 1024))
--        return talloc_asprintf(NULL, "%.3f Kb", s / (1024.0));
+-        return talloc_asprintf(NULL, "%.3f KiB", s / (1024.0));
 +    if (size < 1000000)
 +        return talloc_asprintf(NULL, "%.3f kb", s / 1e3);
  
 -    if (size < (1024 * 1024 * 1024))
--        return talloc_asprintf(NULL, "%.3f Mb", s / (1024.0 * 1024.0));
+-        return talloc_asprintf(NULL, "%.3f MiB", s / (1024.0 * 1024.0));
 +    if (size < 1000000000)
 +        return talloc_asprintf(NULL, "%.3f Mb", s / 1e6);
  
 -    if (size < (1024LL * 1024LL * 1024LL * 1024LL))
--        return talloc_asprintf(NULL, "%.3f Gb", s / (1024.0 * 1024.0 * 1024.0));
+-        return talloc_asprintf(NULL, "%.3f GiB", s / (1024.0 * 1024.0 * 1024.0));
 +    if (size < 1000000000000LL)
 +        return talloc_asprintf(NULL, "%.3f Gb", s / 1e9);
  
--    return talloc_asprintf(NULL, "%.3f Tb", s / (1024.0 * 1024.0 * 1024.0 * 1024.0));
+-    return talloc_asprintf(NULL, "%.3f TiB", s / (1024.0 * 1024.0 * 1024.0 * 1024.0));
 +    return talloc_asprintf(NULL, "%.3f Tb", s / 1e12);
  }
  
- static char *format_delay(double time)
+ static char *pretty_print_byte_size(const m_option_t *opt, const void *val)
+-- 
+2.16.1
+

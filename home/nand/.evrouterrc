@@ -2,6 +2,6 @@
 Window ""
 "Mouse" "" any key/276 "XKey/Pause"
 
-# Map RMB to repeat-macros for d3
+# Map side button to repeat-macros for d3
 Window "^Diablo III$"
-"Mouse" "" any key/275 "Shell/xdotool click --repeat 600 --delay 10 2 &"
+"Mouse" "" any key/275 "Shell//home/nand/games/'Diablo III'/macro.sh"

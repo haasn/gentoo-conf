@@ -5,6 +5,6 @@
 [push]
 	default = current
 [color]
-	ui = auto
+	ui = true
 [core]
 	excludesfile = ~/.gitignore

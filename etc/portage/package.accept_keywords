@@ -11,9 +11,10 @@
 #*/*::vapoursynth **
 app-admin/pass **
 app-editors/neovim **
-app-emulation/wine **
+app-emulation/wine-* **
 app-misc/binwalk **
 dev-util/SPIRV-Tools **
+dev-util/shaderc **
 media-libs/libaom **
 media-libs/libass **
 media-libs/libplacebo **
@@ -32,5 +33,7 @@ x11-misc/xmobar **
 x11-wm/xmonad **
 x11-wm/xmonad-contrib **
 
-media-libs/mesa **
+# GPU stuff
+x11-libs/libdrm **
 x11-drivers/xf86-video-amdgpu **
+media-libs/mesa **

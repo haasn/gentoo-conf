@@ -26,3 +26,6 @@ x11-themes/gnome-themes-standard
 # Breaks lots of rdeps
 >=dev-libs/boost-1.65.0
 >=dev-util/boost-build-1.65.0
+
+# No longer needed
+media-video/ffmpeg::local_overlay

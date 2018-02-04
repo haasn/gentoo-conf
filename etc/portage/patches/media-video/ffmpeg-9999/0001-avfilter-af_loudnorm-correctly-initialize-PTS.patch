@@ -1,0 +1,40 @@
+From dc048495ff44b3f0b174cc337b23e2fb4887eb44 Mon Sep 17 00:00:00 2001
+From: Niklas Haas <git@haasn.xyz>
+Date: Sat, 3 Feb 2018 14:54:20 +0100
+Subject: [PATCH] avfilter/af_loudnorm: correctly initialize PTS
+
+Right now, the PTS always starts out as 0, which causes problems on a
+seek or when inserting this filter mid-stream.
+
+Initialize it instead to AV_NOPTS_VALUE and copy the PTS from the first
+frame instead if this is the case.
+---
+ libavfilter/af_loudnorm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/libavfilter/af_loudnorm.c b/libavfilter/af_loudnorm.c
+index a7f11cbe6e..314b25fa39 100644
+--- a/libavfilter/af_loudnorm.c
++++ b/libavfilter/af_loudnorm.c
+@@ -431,6 +431,9 @@ static int filter_frame(AVFilterLink *inlink, AVFrame *in)
+         av_frame_copy_props(out, in);
+     }
+ 
++    if (s->pts == AV_NOPTS_VALUE)
++        s->pts = in->pts;
++
+     out->pts = s->pts;
+     src = (const double *)in->data[0];
+     dst = (double *)out->data[0];
+@@ -763,7 +766,7 @@ static int config_input(AVFilterLink *inlink)
+         inlink->partial_buf_size = frame_size(inlink->sample_rate, 3000);
+     }
+ 
+-    s->pts =
++    s->pts = AV_NOPTS_VALUE;
+     s->buf_index =
+     s->prev_buf_index =
+     s->limiter_buf_index = 0;
+-- 
+2.16.1
+

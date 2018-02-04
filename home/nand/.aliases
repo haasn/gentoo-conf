@@ -90,6 +90,7 @@ alias m='~/dev/bower/bower'
 #alias fixmon='xrandr --output DP-0 --mode 4096x2160 --primary --output DVI-I-1 --mode 1920x1200 --rotate left --pos 4096x120'
 #alias fixmon='xrandr --output DVI-I-1 --mode 1920x1200 --primary'
 alias fixmon='xrandr --output DP-0 --mode 4096x2160 --primary'
+#alias fixmon='xrandr --output DisplayPort-0 --mode 4096x2160 --primary'
 
 #alias fixcol='argyll-dispwin -I -d2 ~/icc/main.icc; argyll-dispwin -I -d1 ~/icc/alt.icc'
 #alias fixcol='argyll-dispwin -I -d1 ~/icc/alt.icc'
@@ -104,8 +105,8 @@ alias note='cat >> ~/notes'
 
 # 16 core make (ht)
 alias make='make -j32'
-alias waifu='CFLAGS="${CFLAGS} -fdiagnostics-color=always" ./waf'
-alias ninja='ninja -Cbuild'
+alias waifu='CFLAGS="${CFLAGS} -I/usr/include/ffmpeg-mpv/ -fdiagnostics-color=always" ./waf'
+#alias ninja='ninja -Cbuild'
 
 # Attach to weechat inside dtach
 alias weechat='dtach -a /tmp/weechat'
@@ -252,6 +253,11 @@ up() {
 
 short() {
     curl -sF "shorten=$1" https://0x0.st | tee /dev/stderr | xclip -selection primary
+}
+
+upfs() {
+    hash=$(cat "$@" | ssh nand@tina '/snap/bin/ipfs add -q')
+    up "https://ipfs.io/ipfs/$hash"
 }
 
 #mailsync() {
@@ -450,3 +456,12 @@ sepathdecode() {
 
 alias np='mpc -f "%artist% - %title%  \[%album%\]" current | xclip'
 alias winserver='wineserver'
+alias weather='curl wttr.in/Langenau'
+
+yt() {
+    mpn ytdl://ytsearch20:"$*"
+}
+
+yta() {
+    mpa ytdl://ytsearch20:"$*"
+}

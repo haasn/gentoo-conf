@@ -15,6 +15,7 @@ notmuch tag +highlight -- tag:new and 'to:mention@noreply.github.com'
 notmuch tag +tina -- tag:new and '(to: root@tina)'
 
 # Spam
+notmuch tag -new +spam -- tag:new and 'subject:/\*\*\*Spam\*\*\*/'
 notmuch tag -new +spam -- tag:new and from:news@nvidia.com
 notmuch tag -new +spam -- tag:new and to:gog@nand.wakku.to
 notmuch tag -new +spam -- tag:new and to:jefta@haasn.xyz
@@ -41,7 +42,7 @@ done
 # Other tags
 notmuch tag +rssqueue -- tag:new and to:rss@haasn.xyz
 notmuch tag +keybase -- tag:new and to:keybase@haasn.xyz
-notmuch tag +btc -- tag:new and '(to:coinbase@haasn.xyz or to:kraken@haasn.xyz or to:ecoin@haasn.xyz)'
+notmuch tag +btc -- tag:new and '(to:coinbase@haasn.xyz or to:kraken@haasn.xyz or to:ecoin@haasn.xyz or to:gate@haasn.xyz)'
 
 # Don't re-tag my own mails
 notmuch tag -new -- tag:new and tag:sent

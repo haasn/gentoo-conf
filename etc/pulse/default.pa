@@ -56,7 +56,7 @@ load-module module-jackdbus-detect channels=2
 .endif
 
 # Add an SC4 compressor device
-load-module module-ladspa-sink sink_name=compressor plugin=sc4m_1916 label=sc4m control=1,1.5,401,-30,20,5,12 master=alsa_output.usb-Yoyodyne_Consulting_ODAC-revB-01.iec958-stereo
+load-module module-ladspa-sink sink_name=compressor plugin=sc4m_1916 label=sc4m control=1,1.5,401,-30,20,5,12 sink_master=alsa_output.usb-Yoyodyne_Consulting_ODAC-revB-01.analog-stereo
 
 ### Load several protocols
 .ifexists module-esound-protocol-unix.so

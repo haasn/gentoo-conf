@@ -1,2 +1,2 @@
 #!/bin/sh
-python3.4 ~/dev/haskell/hsbooru/crap/booru.py "$@"
+python3.6 ~/dev/haskell/hsbooru/crap/booru.py "$@"
