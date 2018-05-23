@@ -20,6 +20,7 @@ global:
       ;V: hint links spawn -d mpv --profile=image {hint-url}
       ;Y: hint links yank
       ;gi: hint inputs
+      ;i: hint images yank-primary
       ;v: hint images spawn -d mpv --profile=image {hint-url}
       ;y: hint links yank-primary
       <alt+9>: tab-focus 9
@@ -87,7 +88,7 @@ global:
   colors.completion.category.border.bottom: '#85C600'
   colors.completion.category.fg: '#85C600'
   colors.completion.even.bg: '#0E1112'
-  colors.completion.fg: '#ddd'
+  colors.completion.fg: '#0c0'
   colors.completion.item.selected.bg: '#1E2224'
   colors.completion.item.selected.border.bottom: black
   colors.completion.item.selected.border.top: black
@@ -114,13 +115,13 @@ global:
   colors.prompts.fg: '#ddd'
   colors.prompts.selected.bg: '#B3FF1D'
   colors.statusbar.command.bg: '#0c1011'
-  colors.statusbar.command.fg: '#dcb'
+  colors.statusbar.command.fg: '#0d0'
   colors.statusbar.command.private.bg: '#666'
   colors.statusbar.command.private.fg: '#dcb'
   colors.statusbar.insert.bg: '#852F50'
   colors.statusbar.insert.fg: '#dcb'
   colors.statusbar.normal.bg: '#0c1011'
-  colors.statusbar.normal.fg: '#ddccbb'
+  colors.statusbar.normal.fg: '#0d0'
   colors.statusbar.private.fg: '#dcb'
   colors.statusbar.progress.bg: '#999'
   colors.statusbar.url.error.fg: '#E0374F'
@@ -147,7 +148,7 @@ global:
   confirm_quit:
   - multiple-tabs
   - downloads
-  content.cache.size: null
+  content.cache.size: 0
   content.developer_extras: true
   content.dns_prefetch: false
   content.geolocation: false
@@ -187,10 +188,10 @@ global:
   fonts.web.family.sans_serif: monospace
   fonts.web.family.serif: monospace
   fonts.web.family.standard: monospace
-  fonts.web.size.default: 14
-  fonts.web.size.default_fixed: 14
-  fonts.web.size.minimum: 14
-  fonts.web.size.minimum_logical: 10
+  fonts.web.size.default: 13
+  fonts.web.size.default_fixed: 13
+  fonts.web.size.minimum: 13
+  fonts.web.size.minimum_logical: 13
   hints.auto_follow: always
   hints.auto_follow_timeout: 250
   hints.chars: yuiophjklbnm
@@ -220,16 +221,5 @@ global:
   tabs.width: 200
   url.default_page: about:blank
   url.searchengines:
-    '!g': https://encrypted.google.com/search?hl=en&q={}
-    '!gi': https://google.com/search?tbm=isch&q={}&tbs=imgo:1
-    '!hayoo': http://holumbus.fh-wedel.de/hayoo/hayoo.html?query={}
-    '!hoogle': https://www.haskell.org/hoogle/?hoogle={}
-    '!jisho': http://jisho.org/search/{}
-    '!w': https://en.wikipedia.org/wiki/Special:Search?search={}&go=Go
-    '!wa': https://www.wolframalpha.com/input/?i={}
-    '!wde': https://de.wikipedia.org/wiki/{}
-    '!wt': https://en.wiktionary.org/wiki/{}
-    '!wtde': https://de.wiktionary.org/w/index.php?search={}
-    '!yt': https://www.youtube.com/results?search_query={}
     DEFAULT: https://duckduckgo.com/?q={}
   url.start_pages: about:blank

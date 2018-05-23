@@ -1,5 +1,9 @@
 ## Overlay unmasking
 
+# Bobwya
+www-client/firefox-kde-opensuse::bobwya
+kde-misc/kmozillahelper::bobwya
+
 # Booboo
 #games-arcade/taisei::booboo
 
@@ -12,21 +16,10 @@
 #media-fonts/unifraktur::emery
 
 # Gentoo-GPU
-dev-util/glslang::gentoo-gpu
-dev-util/SPIRV-Tools::gentoo-gpu
+#dev-util/glslang::gentoo-gpu
+#dev-util/SPIRV-Tools::gentoo-gpu
 dev-util/shaderc::gentoo-gpu
-media-libs/vulkan-loader::gentoo-gpu
-
-# Libressl
-app-arch/libarchive::libressl
-dev-libs/boost::libressl
-dev-python/cryptography::libressl
-dev-qt/qtnetwork::libressl
-www-client/lynx::libressl
-net-libs/nodejs::libressl
-
-# Palemoon
-=www-client/palemoon-27.3.0::palemoon
+media-libs/libplacebo::gentoo-gpu
 
 # Qt
 dev-qt/qtwebkit::qt

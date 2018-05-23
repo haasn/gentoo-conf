@@ -70,12 +70,12 @@ __git_files () {
 }
 
 # Update prompt before running commands
-function _update-time {
+function _update-prompt {
     zle reset-prompt
     zle .accept-line
 }
 
-zle -N accept-line _update-time
+zle -N accept-line _update-prompt
 
 # Fix special keys
 bindkey "${terminfo[kpp]}" history-beginning-search-backward
@@ -133,7 +133,4 @@ source /home/nand/.mpdpass
 #export VDPAU_TRACE_FILE=/dev/null
 
 # Mask o-r by default
-umask 026
-
-# Teach us something!
-fortune vimtips
+[ $UID -lt 1000 ] || umask 026

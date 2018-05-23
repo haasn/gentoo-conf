@@ -2,7 +2,5 @@
 Name=br0
 
 [Network]
-DHCP=yes
-
-[DHCP]
-RouteMetric=0
+Address=192.168.0.20/24
+Gateway=192.168.0.1

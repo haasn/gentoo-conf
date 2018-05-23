@@ -1,6 +1,19 @@
-# -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
-include "/usr/share/themes/Vertex-Dark/gtk-2.0/gtkrc"
+# DO NOT EDIT! This file will be overwritten by LXAppearance.
+# Any customization should be done in ~/.gtkrc-2.0.mine instead.
 
 include "/home/nand/.gtkrc-2.0.mine"
-
-# -- THEME AUTO-WRITTEN BY gtk-theme-switch2 DO NOT EDIT
+gtk-theme-name="Vertex-Dark"
+gtk-icon-theme-name="oxygen"
+gtk-font-name="Sans 10"
+gtk-cursor-theme-name="Vanilla-DMZ-AA"
+gtk-cursor-theme-size=0
+gtk-toolbar-style=GTK_TOOLBAR_BOTH
+gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
+gtk-button-images=1
+gtk-menu-images=1
+gtk-enable-event-sounds=1
+gtk-enable-input-feedback-sounds=1
+gtk-xft-antialias=0
+gtk-xft-hinting=1
+gtk-xft-hintstyle="hintfull"
+gtk-xft-rgba="none"

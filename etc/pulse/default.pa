@@ -67,7 +67,7 @@ load-module module-native-protocol-unix
 ### Network access (may be configured with paprefs, so leave this commented
 ### here if you plan to use paprefs)
 #load-module module-esound-protocol-tcp
-#load-module module-native-protocol-tcp
+load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/24 auth-anonymous=1
 
 ### Load the RTP receiver module (also configured via paprefs, see above)
 #load-module module-rtp-recv

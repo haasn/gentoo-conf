@@ -8,17 +8,18 @@ xset m 0 0
 xinput set-prop 'Kingsis Peripherals ZOWIE Gaming mouse' 'libinput Accel Profile Enabled' 0, 1
 
 # Start up evrouter
-sudo evrouter /dev/input/by-id/usb-Kingsis_Peripherals_ZOWIE_Gaming_mouse-event-mouse -c ~/.evrouterrc &>/dev/null
+sudo /usr/bin/evrouter /dev/input/by-id/usb-Kingsis_Peripherals_ZOWIE_Gaming_mouse-event-mouse -c ~/.evrouterrc &>/dev/null
 
 # Try to disable screensavers / monitor blanking
 setterm -blank 0 -powersave off -powerdown 0
 xset s off
+xset -dpms
 xset +fp /usr/share/fonts/terminus/
 
 # Load the correct resolution
-#xrandr --output DP-0 --mode 4096x2160 --primary --output HDMI-0 --off
-xrandr --dpi 150
+xrandr --output DisplayPort-0 --mode 3840x2160 --primary
 xrandr --output DisplayPort-0 --set TearFree on
+xrandr --dpi 150
 
 # Load the correct keyboard map
 xmodmap ~/.Xmodmap

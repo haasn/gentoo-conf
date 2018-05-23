@@ -1,0 +1,8 @@
+[Match]
+Name=usb0
+
+[Network]
+DHCP=yes
+
+[DHCP]
+RouteMetric=200

@@ -28,7 +28,8 @@ html > body[style="margin: 0px"] > img[style="-webkit-user-select: none; display
 
 :not(*[style*="transparent"], img, pre, code) {
     background: #080C0D !important;
-    color:      #DDCCBB !important;
+    /*color:      #DDCCBB !important;*/
+    color:      #00AA00 !important;
 }
 
 img, img.party-hat {
@@ -68,19 +69,19 @@ div.is-ignored {
 }
 
 /* Syntax highlighting */
-code > span.kw { color: #ffa600 !important; } /* Keyword */
-code > span.dt { color: #85c600 !important; } /* DataType */
-code > span.dv { color: #e0374f !important; } /* DecVal */
-code > span.bn { color: #e0374f !important; } /* BaseN */
-code > span.fl { color: #e0374f !important; } /* Float */
-code > span.ch { color: #e0374f !important; } /* Char */
-code > span.st { color: #e0374f !important; } /* String */
-code > span.co { color: #0099bc !important; } /* Comment */
-code > span.ot { color: #e50c88 !important; } /* Other */
-code > span.al { color: #e0374f !important; } /* Alert */
-code > span.fu { color: #d78787 !important; } /* Function */
-code > span.re { } /* RegionMarker */
-code > span.er { color: #ff0000 !important; font-weight: bold !important; } /* Error */
+code span.kw { color: #ffa600 !important; } /* Keyword */
+code span.dt { color: #85c600 !important; } /* DataType */
+code span.dv { color: #e0374f !important; } /* DecVal */
+code span.bn { color: #e0374f !important; } /* BaseN */
+code span.fl { color: #e0374f !important; } /* Float */
+code span.ch { color: #e0374f !important; } /* Char */
+code span.st { color: #e0374f !important; } /* String */
+code span.co { color: #0099bc !important; } /* Comment */
+code span.ot { color: #e50c88 !important; } /* Other */
+code span.al { color: #e0374f !important; } /* Alert */
+code span.fu { color: #d78787 !important; } /* Function */
+code span.re {                            } /* RegionMarker */
+code span.er { color: #ff0000 !important; font-weight: bold !important; } /* Error */
 
 span.qutehint {
     opacity: 100% !important;

@@ -30,7 +30,7 @@ URxvt.keysym.4-c: perl:clipboard:copy
 URxvt.keysym.4-v: perl:clipboard:paste
 
 ! ???
-! Xcursor.size: 16
+Xcursor.size: 48
 Xft.dpi: 150
 Xft.antialias: 0
 Xft.rgba: none
@@ -52,7 +52,8 @@ rofi.terminal: urxvtc
 ! photons color theme
 
 ! slightly beige white
-*foreground: #DDCCBB
+!*foreground: #DDCCBB
+*foreground: #00AA00
 *background: #080C0D
 
 ! black

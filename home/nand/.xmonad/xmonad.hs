@@ -4,7 +4,7 @@
 import XMonad
 import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops (fullscreenEventHook)
+import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 import XMonad.Util.Run (spawnPipe)
@@ -114,7 +114,7 @@ extraKeys =
     , ((mod4Mask, xK_u), withFocused $ windows . W.sink)
 
     -- Lock the screen when not in use
-    , ((mod4Mask, xK_s), spawn "exec /usr/local/bin/lock")
+    , ((mod4Mask, xK_b), spawn "exec /usr/local/bin/lock")
 
     -- Reset the mouse cursor
     , ((mod4Mask, xK_Escape), spawn "exec /usr/bin/swarp 0 0")
@@ -140,7 +140,7 @@ extraKeys =
     ++ [ ((mod4Mask .|. m, k), windows $ f i)
        | (i, k) <- zip (workspaceNames 10)
          [ xK_exclam, xK_at, xK_numbersign, xK_dollar, xK_percent, xK_asciicircum
-         , xK_ampersand, xK_asterisk, xK_bracketleft, xK_bracketright ]
+         , xK_ampersand, xK_asterisk, xK_parenleft, xK_parenright ]
        , (m, f) <- [(0, greedyView), (mod1Mask, shift)]
        ]
 
@@ -169,7 +169,7 @@ floatTitles =
     [ "Firefox Preferences", "About Firefox", "Resize Canvas"
     , "Downloads", "Software Update", "World of Warcraft", "Limbo"
     , "Audiosurf", "Audiosurf 2", "scaler_test", "mpv_test"
-    , "Convert Script", "Remote Viewer"
+    , "Convert Script", "Remote Viewer", "Kobalt", "ccgo"
     ]
 
 switchWorkspace' d = wsBy' d >>= windows . greedyView

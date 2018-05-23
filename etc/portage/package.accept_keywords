@@ -11,17 +11,18 @@
 #*/*::vapoursynth **
 app-admin/pass **
 app-editors/neovim **
-app-emulation/wine-* **
+app-emulation/wine-staging **
 app-misc/binwalk **
-dev-util/SPIRV-Tools **
+dev-util/glslang **
+dev-util/spirv-headers **
+dev-util/spirv-tools **
 dev-util/shaderc **
-media-libs/libaom **
 media-libs/libass **
 media-libs/libplacebo **
 media-libs/vulkan-loader **
-media-libs/zimg **
+#media-libs/zimg **
 media-sound/autoplay **
-media-sound/vimus **
+media-sound/mumble **
 media-video/ffmpeg **
 media-video/mpv **
 net-irc/weechat **
@@ -29,11 +30,12 @@ net-p2p/transmission **
 net-misc/youtube-dl **
 www-client/qutebrowser **
 x11-misc/rofi **
-x11-misc/xmobar **
+#x11-misc/xmobar **
 x11-wm/xmonad **
 x11-wm/xmonad-contrib **
 
 # GPU stuff
+media-libs/mesa **
 x11-libs/libdrm **
 x11-drivers/xf86-video-amdgpu **
-media-libs/mesa **
+#dev-libs/wayland **

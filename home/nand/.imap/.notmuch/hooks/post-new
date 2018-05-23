@@ -10,6 +10,7 @@ notmuch tag +important -- tag:new and '(to:wichtig@* or to:urgent@* or to:import
 notmuch tag +bank      -- tag:new and '(to:sparkasse@haasn.xyz)'
 notmuch tag +highlight -- tag:new and 'haasn and not (to:haasn or from:haasn)'
 notmuch tag +highlight -- tag:new and 'to:mention@noreply.github.com'
+notmuch tag +git       -- tag:new and 'from:haasn and to:git@haasn.xyz'
 
 # Servers
 notmuch tag +tina -- tag:new and '(to: root@tina)'
@@ -25,6 +26,7 @@ notmuch tag -new +spam -- tag:new and to:ecoin@nand.wakku.to
 notmuch tag -new +deleted -- tag:new and to:linuxpool.informatik@uni-ulm.de and from:gitlab@gitlab.informatik.uni-ulm.de
 notmuch tag -new +spam -- tag:new and 'to:trash*@nand.wakku.to'
 notmuch tag -new +spam -- tag:new and 'to:google-summer-of-code-students-list@googlegroups.com'
+notmuch tag -new +spam -- tag:new and to:amazon@haasn.xyz
 
 # Uni-related tags
 notmuch tag +icinga   -- tag:new and '(from:icinga@devel02.informatik.uni-ulm.de or from:nagios@haasn.xyz or to:icinga.*@haasn.xyz)'
@@ -38,6 +40,11 @@ notmuch tag +zfs -- tag:new and to:zfs@haasn.xyz
 for project in mpv bower sxiv qutebrowser; do
     notmuch tag +${project} -- tag:new and to:${project}@noreply.github.com
 done
+
+# Mailing list tags
+notmuch tag +list +ffmpeg -- tag:new and to:ffmpeg-devel@ffmpeg.org
+notmuch tag +list +argyll -- tag new and to:argyllcms@freelists.org
+notmuch tag +list +zfs -- tag:new and to:zfs-discuss@list.zfsonlinux.org
 
 # Other tags
 notmuch tag +rssqueue -- tag:new and to:rss@haasn.xyz

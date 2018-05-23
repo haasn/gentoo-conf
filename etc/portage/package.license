@@ -1,1 +1,12 @@
-dev-util/nvidia-cuda-toolkit NVIDIA-CUDA
+media-sound/teamspeak-client-bin teamspeak3
+# required by games-fps/ut2004-bonuspack-ece-1-r3::gentoo[-dedicated,opengl]
+>=games-fps/ut2004-3369.3-r1 ut2003
+# required by games-fps/ut2004-3369.3-r1::gentoo
+# required by games-fps/ut2004-bonuspack-mega-1-r2::gentoo[-dedicated,opengl]
+>=games-fps/ut2004-data-3186-r4 ut2003
+# required by games-fps/ut2004-3369.3-r1::gentoo
+# required by games-fps/ut2004-bonuspack-mega-1-r2::gentoo[-dedicated,opengl]
+>=games-fps/ut2004-bonuspack-ece-1-r3 ut2003
+# required by games-fps/ut2004-3369.3-r1::gentoo
+# required by games-fps/ut2004-bonuspack-ece-1-r3::gentoo[-dedicated,opengl]
+>=games-fps/ut2004-bonuspack-mega-1-r2 ut2003

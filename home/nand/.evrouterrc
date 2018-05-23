@@ -1,7 +1,10 @@
 # Map side button to pause for teamspeak push-to-talk
 Window ""
-"Mouse" "" any key/276 "XKey/Pause"
+"Mouse" "" any key/276 "XKey/Scroll_Lock"
 
 # Map side button to repeat-macros for d3
 Window "^Diablo III$"
 "Mouse" "" any key/275 "Shell//home/nand/games/'Diablo III'/macro.sh"
+
+Window "^FORCED$"
+"mouse" "" any key/275 "XKey/F1"

@@ -24,3 +24,20 @@
 # required by app-i18n/scim-anthy-1.2.7-r1::gentoo
 # required by scim-anthy (argument)
 >=app-i18n/scim-1.4.17 gtk3
+# required by app-office/libreoffice-6.0.1.1::gentoo
+# required by libreoffice (argument)
+>=dev-libs/xmlsec-1.2.25 nss
+# required by net-print/cups-filters-1.20.0::gentoo[postscript]
+# required by net-print/cups-2.2.6::gentoo
+# required by cups (argument)
+>=app-text/ghostscript-gpl-9.21 cups
+# required by media-sound/ladish-1::audio-overlay
+# required by ladish (argument)
+>=media-sound/jack2-1.9.12-r1 dbus
+# required by media-sound/teamspeak-client-bin-3.1.8::gentoo
+# required by @selected
+# required by @world (argument)
+>=dev-qt/qtwebengine-5.10.1 geolocation
+# required by dev-python/python-magic-0.4.15::gentoo
+# required by python-magic (argument)
+>=sys-apps/file-5.33 -python

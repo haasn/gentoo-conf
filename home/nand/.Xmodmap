@@ -1,4 +1,4 @@
-keycode  10 = exclam 1 onesuperior onesubscript
+keycode  10 = exclam 1 U2603 onesubscript
 keycode  11 = at 2 twosuperior twosubscript
 keycode  12 = numbersign 3 threesuperior threesubscript
 keycode  13 = dollar 4 foursuperior foursubscript

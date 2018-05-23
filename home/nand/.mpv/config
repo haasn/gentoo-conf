@@ -1,20 +1,19 @@
 # Muh placebo
 vo=gpu
-gpu-api=opengl
 profile=gpu-hq
 vd-lavc-dr=yes
 opengl-pbo=yes
 
 # year of the vulkan desktop!1
-#gpu-api=vulkan
-#vulkan-async-compute=yes
-#vulkan-async-transfer=yes
-#vulkan-queue-count=4
+gpu-api=vulkan
+vulkan-async-compute=yes
+vulkan-async-transfer=yes
+vulkan-queue-count=1
 
 scale=haasnsoft
 scale-clamp=0.2
 cscale=ewa_lanczos
-glsl-shader=~~/shaders/ravu-r3-rgb.hook
+#glsl-shader=~~/shaders/ravu-r3-rgb.hook
 #glsl-shader=~~/shaders/mpv-prescalers/ravu-r3-compute-vulkan.hook
 
 icc-profile-auto=yes
@@ -28,14 +27,13 @@ tscale=oversample
 blend-subtitles=yes
 
 # Misc video settings
-deband-iterations=2
-deband-range=12
+#deband-iterations=2
+#deband-range=12
 temporal-dither=yes
 vf-defaults=yadif:interlaced-only=no
 
 # TFW fell for the 64 GiB RAM meme
 cache=auto
-cache-secs=1000000
 demuxer-seekable-cache=yes
 demuxer-max-bytes=2000000000
 demuxer-max-back-bytes=1000000000
@@ -55,6 +53,7 @@ audio-normalize-downmix=yes
 audio-device='alsa_output.usb-Yoyodyne_Consulting_ODAC-revB-01.iec958-stereo'
 af-add=@audnorm:!loudnorm=I=-25:TP=-1.5:LRA=1:linear=false
 af-add=@dynnorm:!dynaudnorm=f=200:g=5:r=0.1
+af-add=format:srate=48000
 
 # Hide album art
 audio-display=no
@@ -187,8 +186,10 @@ icc-profile-auto=no
 [web]
 profile=normalize
 loop-file=yes
+sub-visibility=no
 
 [booru]
+gpu-api=opengl
 profile=image
 profile=normalize
 video-unscaled=no
@@ -216,3 +217,13 @@ profile=normalize
 fullscreen=yes
 vd-lavc-threads=32
 deband=no
+fbo-format=rgba16hf
+
+# Fake HDR simulation profile
+[hdr]
+icc-profile=~/icc/hdr.icc
+icc-profile-auto=no
+icc-contrast=1000000
+tone-mapping=mobius
+fbo-format=rgba16hf
+target-peak=300

@@ -1,7 +1,5 @@
 # Should work fine.
 media-libs/libass -harfbuzz
-net-im/bitlbee -skype
-sys-apps/portage -pypy2_0
 x11-drivers/nvidia-drivers -X -tools
 */* -video_cards_nvidia -cuda
 

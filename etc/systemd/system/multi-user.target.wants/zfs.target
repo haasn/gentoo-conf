@@ -1,1 +1,1 @@
-/usr/lib/systemd/system/zfs.target
+/lib/systemd/system/zfs.target

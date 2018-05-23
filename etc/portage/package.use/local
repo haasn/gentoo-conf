@@ -3,10 +3,10 @@
 ##########################
 
 */* numa
-*/* mmx sse sse2 sse3 ssse3 mmxext sse4 sse4_1 sse4_2 avx -avx2
-*/* pulseaudio sound -alsa -oss -jack
+*/* aes avx avx2 f16c fma3 mmx mmxext pclmul popcnt sse sse2 sse3 sse4_1 sse4_2 sse4a ssse3
+*/* pulseaudio -jack sound -alsa -oss
 */* perl python ruby guile lua luajit
-*/* socks socks5 ssl crypt -gnutls sasl gpg polarssl otr sha3
+*/* socks socks5 ssl crypt -gnutls sasl gpg otr sha3
 */* flac theora vorbis ffmpeg mp3 mpeg ogg png jpeg jpeg2k tiff svg jbig wavpack tta
 */* -libav
 */* lzma xz lzo
@@ -50,7 +50,6 @@
 ################################
 
 # Haskell-wide use flags
-*/*::gentoo-haskell profile doc hscolour
 dev-haskell/* profile doc hscolour
 dev-lang/ghc profile doc hscolour
 dev-vcs/darcs profile doc hscolour
@@ -59,14 +58,14 @@ app-text/pandoc profile doc hscolour
 # FFmpeg-wide use flags
 */ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx vdpau
 */ffmpeg dcadec libsoxr openssl modplug librtmp celt bluray zimg ebur128 -pic
+*/ffmpeg libaom lv2 libdrm
 
 # WINE-wide use flags
-app-emulation/wine-* realtime staging s3tc openal -d3d9
-virtual/wine staging -d3d9
+app-emulation/wine-* realtime staging s3tc openal d3d9
+virtual/wine staging d3d9
 
 # KDE-wide use flags
 kde-apps/* -handbook -kwallet
-kde-base/* -handbook -kwallet
 kde-frameworks/* -handbook -kwallet
 
 # Uncategorized
@@ -74,8 +73,7 @@ app-arch/p7zip -wxwidgets
 app-crypt/pinentry qt5 -qt4 -gtk
 app-editors/vim cscope vim-pager
 app-emulation/lxc cgmanager # for LXD
-app-emulation/qemu -spice usbredir virgl -curl -jpeg -png -python -vnc
-app-emulation/spice client
+app-emulation/qemu -spice -usbredir virgl -curl -jpeg -png -python -vnc
 app-eselect/eselect-php fpm
 app-i18n/fcitx -autostart -introspection -table
 #app-i18n/mozc qt4
@@ -86,6 +84,7 @@ app-text/tesseract -opencl osd
 app-text/texlive linguas_de
 app-text/zathura-meta pdf cb djvu postscript
 dev-db/sqlite secure-delete
+dev-games/ode double-precision
 #dev-lang/ghc ghcbootstrap # much faster
 dev-lang/perl berkdb
 dev-lang/php sqlite curl gd fpm
@@ -99,11 +98,11 @@ dev-libs/libpcre2 pcre16 jit
 dev-libs/nss utils
 dev-libs/openssl -tls-heartbeat -sslv2 -sslv3
 dev-libs/xapian doc
-dev-python/PyQt5 declarative webkit -webengine webchannel testlib sql
+dev-python/PyQt5 declarative webkit webengine webchannel testlib sql
 dev-python/numpy lapack
 dev-qt/qtgui dbus accessibility # for qt5ct and ts3
 dev-qt/qtwebchannel qml
-dev-qt/qtwebengine widgets -pulseaudio -geolocation
+dev-qt/qtwebengine widgets -pulseaudio -geolocation -system-ffmpeg
 dev-qt/qtwebkit printsupport webp ftpdir jit -geolocation
 dev-scheme/guile networking
 dev-util/apitrace qt5 system-snappy cli
@@ -112,6 +111,7 @@ dev-util/nvidia-cuda-sdk -examples # build failure
 dev-vcs/git tk
 dev-vcs/subversion -dso
 games-engines/scummvm fluidsynth
+games-fps/xonotic ode alsa
 kde-apps/libkexiv2 -xmp
 kde-apps/okular -crypt
 kde-frameworks/kdelibs -webkit
@@ -122,27 +122,30 @@ media-libs/libass harfbuzz
 media-libs/libcaca imlib
 media-libs/libcanberra -udev # pulls in alsa
 media-libs/libsamplerate sndfile
-media-libs/libsdl2 haptic
+media-libs/libsdl2 haptic alsa
+media-libs/libplacebo shaderc vulkan
 media-libs/libvpx svc postproc
 media-libs/mesa gbm opencl
 media-libs/mesa gles2
 media-libs/mesa d3d9
 media-libs/openimageio -gif -ssl -ffmpeg # build failure
 media-libs/phonon -pulseaudio -gstreamer -vlc qt5
-media-libs/vapoursynth -imagemagick
-media-libs/vulkan-loader vulkaninfo Xlib wayland # wayland is for vulkaninfo
-media-libs/x264 10bit
+media-libs/vulkan-loader demos vulkaninfo layers
+media-libs/x264 10bit -interlaced
 media-plugins/alsa-plugins pulseaudio -ffmpeg
 media-sound/alsa-utils -doc # build failure
 media-sound/audacity alsa ffmpeg id3tag libsamplerate -lv2
+media-sound/cadence ladish
 media-sound/kid3 acoustid
-media-sound/mpd alsa inotify cue mpg123 wavpack opus ffmpeg
+media-sound/jack2 alsa
+media-sound/ladish lash
+media-sound/mpd alsa inotify cue mpg123 wavpack opus -ffmpeg
 media-sound/pulseaudio alsa dbus realtime sox -ssl -gtk
 media-sound/sox -ffmpeg # build failure
 media-video/ffmpeg -hardcoded-tables # build failure
 media-video/mkvtoolnix -wxwidgets
-media-video/mpv cli cuda rubberband libmpv archive
-media-video/x264-encoder 10bit -mp4
+media-video/mpv bluray cli -cuda rubberband libmpv archive
+media-video/x264-encoder 10bit -mp4 -interlaced
 net-analyzer/icinga2 mail postgres -mysql
 net-analyzer/monitoring-plugins fping postgres ssh
 net-analyzer/munin minimal syslog ipmi -java
@@ -150,11 +153,14 @@ net-analyzer/netdata nfacct
 net-analyzer/nmap ncat nping -gtk -lua
 net-analyzer/vnstat gd
 net-dns/dnsmasq -lua
+net-dns/unbound dnscrypt
+net-fs/samba -fam -gpg
 net-im/bitlbee otr
-net-libs/polarssl programs
 net-vpn/openvpn passwordsave
-net-misc/youtube-dl offensive
 net-misc/curl -http2 # build failure in nghttp2
+net-misc/openssh -ldap
+net-misc/spice-gtk usbredir
+net-misc/youtube-dl offensive
 net-p2p/rtorrent color
 net-p2p/transmission -gtk -xfs
 net-p2p/deluge console gtk -sound
@@ -166,7 +172,7 @@ sys-apps/systemd elfutils sysv-utils -gcrypt -idn -kdbus -lzma -ssl
 sys-apps/util-linux tty-helpers
 sys-block/fio aio
 sys-block/gparted btrfs dmraid fat jfs ntfs
-sys-boot/grub multislot
+sys-boot/grub multislot -truetype -themes
 sys-devel/gcc fortran doc
 sys-devel/llvm lldb libedit gold
 sys-fs/ntfs3g ntfsprogs
@@ -177,15 +183,15 @@ sys-libs/libnih dbus # for LXD
 sys-libs/zlib minizip
 sys-process/lsof rpc
 sys-process/systemd-cron cron-boot minutely yearly
-www-client/firefox bindist
-#www-client/firefox system-cairo system-harfbuzz system-icu system-jpeg system-libevent system-libvpx system-sqlite
-www-client/palemoon gtk2 -gtk3
-www-client/palemoon system-libs -official-branding
+www-client/firefox* bindist eme-free
+www-client/firefox* system-harfbuzz system-icu system-jpeg system-libevent system-libvpx system-sqlite
+www-client/firefox-kde-opensuse -bindist kde
 www-client/qutebrowser python_targets_python3_6 webkit -webengine
 x11-base/xorg-server xvfb -suid
 x11-drivers/nvidia-drivers kms uvm gtk3
 x11-libs/libdrm libkms video_cards_radeon
 x11-libs/libfm -automount
+x11-libs/libva -vdpau
 x11-misc/rofi windowmode
 x11-misc/qt5ct dbus -systray # build failure
 x11-misc/xmobar timezone mail mpd inotify

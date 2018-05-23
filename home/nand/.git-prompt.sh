@@ -369,6 +369,10 @@ __git_ps1 ()
 	local inside_gitdir="${repo_info##*$'\n'}"
 	local g="${repo_info%$'\n'*}"
 
+        if [ "$g" = "/.git" ]; then
+            return
+        fi
+
 	local r=""
 	local b=""
 	local step=""

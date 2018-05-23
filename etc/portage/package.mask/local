@@ -1,24 +1,25 @@
 # Overlay masking
+*/*::bobwya
 #*/*::booboo
 #*/*::deter
 #*/*::emery
 #*/*::libressl
 */*::gentoo-gpu
-#*/*::mva
+*/*::mva
 #*/*::palemoon
 */*::qt
 #*/*::sunrise
-#*/*::tristelune
+*/*::tristelune
 #*/*::vapoursynth
 
 # Completely breaks for some reason I don't even want to bother figuring out
->=dev-cpp/gtkmm-3.20
->=x11-libs/gtk+-3.20
->=x11-misc/notification-daemon-3.20
->=dev-util/gtk-update-icon-cache-3.20
->=x11-libs/gtksourceview-3.20
-x11-themes/gnome-themes-standard
->x11-themes/vertex-theme-20170128-r1
+#>=dev-cpp/gtkmm-3.20
+#>=x11-libs/gtk+-3.20
+#>=x11-misc/notification-daemon-3.20
+#>=dev-util/gtk-update-icon-cache-3.20
+#>=x11-libs/gtksourceview-3.20
+#x11-themes/gnome-themes-standard
+#>x11-themes/vertex-theme-20170128-r1
 
 # Incompatible with ZFS
 >=sys-fs/udev-init-scripts-28
@@ -28,4 +29,5 @@ x11-themes/gnome-themes-standard
 >=dev-util/boost-build-1.65.0
 
 # No longer needed
+x11-themes/vertex-theme::local_overlay
 media-video/ffmpeg::local_overlay

@@ -16,11 +16,11 @@ GRUB_DEFAULT=0
 #GRUB_SAVEDEFAULT=true
 
 # Boot the default entry this many seconds after the menu is displayed
-GRUB_TIMEOUT=2
+GRUB_TIMEOUT=10
 #GRUB_TIMEOUT_STYLE=menu
 
 # Append parameters to the linux kernel command line
-GRUB_CMDLINE_LINUX="dozfs initrd=/boot/intel-ucode.img"
+GRUB_CMDLINE_LINUX="dozfs initrd=/boot/intel-ucode.img pci=nommconf"
 #
 # Examples:
 #

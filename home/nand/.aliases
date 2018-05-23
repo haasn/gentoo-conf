@@ -1,37 +1,5 @@
-# For SELinux compatibility
-#alias sudo='sudo -r sysadm_r -t sysadm_t'
-
-# unmount and remount media partition
-#typeset -A devices
-#devices=( #partuuid/5ae227ae-0bcd-43a4-8565-0ac14fbb6648     ygg1 # HGST 3TB
-#          #partuuid/40e1960e-cb5c-47ef-9511-0b4cb1bf0de5     ygg2 # Samsung F4 2TB
-#          #partuuid/68410f8c-9466-4d7b-a302-302d04e31207     ygg3 # WD Black 1TB
-#          #partuuid/6f547bde-0039-4c63-b044-bb1e9ce70cd1     ygg5 # Samsung F4 2TB
-#          partuuid/cf01d463-a574-4a01-aedc-f6a1b7ed6797     ygg6 # HGST 3TB
-#        )
-#
-#unmedia() {
-#    pkill -f /usr/bin/autoplay
-#    systemctl --user stop mpd
-#
-#    sudo umount /y || return 1
-#    for d in $devices; do
-#        sudo cryptsetup close $d
-#    done
-#}
-#
-#remedia() {
-#    for id in ${(k)devices}; do
-#        pass Disks/yggdrasil/${id##*/} | sudo cryptsetup open /dev/disk/by-$id $devices[$id]
-#    done
-#
-#    sudo btrfs device scan /dev/mapper/$^devices
-#    sudo mount -o noatime /dev/mapper/${${devices}[1]} /y || return 1
-#
-#    echo 'Mounted...'
-#    systemctl --user start mpd && nohup autoplay info >/dev/null 2>&1
-#    autoplay info
-#}
+# for alias expansion
+alias sudo='sudo '
 
 alias grep='grep --color=auto'
 alias igrep='grep -i'
@@ -46,7 +14,7 @@ alias df='df --total -H'
 alias du='du --si'
 alias ds='du --total --summarize -- *'
 
-alias numa='numactl -N0 -m0 --'
+alias numa='numactl -N0 -l --'
 alias wine='numa wine'
 
 # allow colors in less and tmux
@@ -54,7 +22,7 @@ alias less='less -R'
 alias tmux='tmux -2'
 
 # Sort by memory usage per default
-alias htop='htop -s PERCENT_MEM'
+#alias htop='htop -s PERCENT_MEM'
 
 # start in fullscreen mode
 alias sxiv='sxiv -Zf'
@@ -81,7 +49,7 @@ alias srm='sudo rm'
 alias vim='nvim'
 alias gvim='urxvt -e vim'
 alias gview='urxvt -e vim'
-alias svim='sudo vim'
+alias svim='sudo /usr/bin/vim'
 
 # new mail client and stuff
 alias m='~/dev/bower/bower'
@@ -89,8 +57,7 @@ alias m='~/dev/bower/bower'
 # restore secondary monitor after fullscreen botches it
 #alias fixmon='xrandr --output DP-0 --mode 4096x2160 --primary --output DVI-I-1 --mode 1920x1200 --rotate left --pos 4096x120'
 #alias fixmon='xrandr --output DVI-I-1 --mode 1920x1200 --primary'
-alias fixmon='xrandr --output DP-0 --mode 4096x2160 --primary'
-#alias fixmon='xrandr --output DisplayPort-0 --mode 4096x2160 --primary'
+alias fixmon='xrandr --output DisplayPort-0 --mode 3840x2160 --primary'
 
 #alias fixcol='argyll-dispwin -I -d2 ~/icc/main.icc; argyll-dispwin -I -d1 ~/icc/alt.icc'
 #alias fixcol='argyll-dispwin -I -d1 ~/icc/alt.icc'
@@ -105,7 +72,7 @@ alias note='cat >> ~/notes'
 
 # 16 core make (ht)
 alias make='make -j32'
-alias waifu='CFLAGS="${CFLAGS} -I/usr/include/ffmpeg-mpv/ -fdiagnostics-color=always" ./waf'
+alias waifu='CFLAGS="${CFLAGS} -fdiagnostics-color=always" ./waf'
 #alias ninja='ninja -Cbuild'
 
 # Attach to weechat inside dtach
@@ -314,7 +281,7 @@ alias ghci-head='PATH="~/ghc-head/bin:$PATH" ghci'
 # Tag an image file with my monitor's colorspace
 
 itag() {
-  convert "$1" -profile ~/icc/main-matrix.icc "$1"
+  convert "$1" -profile ~/icc/main.icc "$1"
 }
 
 iscrot() {
@@ -324,6 +291,12 @@ iscrot() {
 iup() {
   local tmpfile=$(mktemp scrot.XXXXXXXXX.png)
   iscrot "$tmpfile" && up "$tmpfile"
+  rm -f "$tmpfile"
+}
+
+jup() {
+  local tmpfile=$(mktemp scrot.XXXXXXXXX.jpg)
+  import -depth 8 -quality 90 "$tmpfile" && itag "$tmpfile" && up "$tmpfile"
   rm -f "$tmpfile"
 }
 

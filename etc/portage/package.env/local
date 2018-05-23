@@ -1,6 +1,6 @@
 ## Build with support for CUDA decoding
-media-video/ffmpeg cuda
-media-video/mpv cuda
+#media-video/ffmpeg cuda
+#media-video/mpv cuda
 
 ## LTO testing
 #media-video/ffmpeg lto
