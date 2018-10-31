@@ -59,5 +59,8 @@ eval $(gpg-agent --daemon)
 #export QT_IM_MODULE="scim"
 #scim -d
 
+# Start cadence etc. automatically
+#cadence-session-start --start
+
 # Start the window manager
 exec xmonad

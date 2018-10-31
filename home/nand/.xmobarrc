@@ -6,10 +6,10 @@ Config { font = "xft:Terminus-10,Liberation Mono-10,Sazanami Gothic-10,FontAweso
        , commands = [ Run Cpu ["-L","5","-H","50","--normal","#85c600","--high","#E03C52","--template","\xF201 <total>%"] 10
                     , Run Memory ["-t","\xF200 <usedratio>%"] 10
                     , Run Date "%Y %b %d (%a) %H:%M %Z" "date" 10
-                    , Run Network "eth0" ["-t", "<fc=#7FC5C6>\xF063 <rx></fc> <fc=#ffa600>\xF062 <tx></fc>"] 10
+                    , Run Network "br0" ["-t", "<fc=#7FC5C6>\xF063 <rx></fc> <fc=#ffa600>\xF062 <tx></fc>"] 10
                     , Run MPD ["-t", "<statei> <artist> - <fn=1><fc=#b3ff14><title></fc></fn>  (<album>)", "--", "-P","\xF04B", "-S","\xF04D", "-Z","\xF04C"] 10
                     , Run StdinReader
                     , Run CommandReader "/usr/local/bin/mailcount" "notmuch"
                     ]
-       , template = "%StdinReader% } <fc=#e50c88>%notmuch%</fc> <fc=#85c600>%mpd%</fc> { %eth0% %cpu% <fc=#85919b>%memory%</fc>   <fc=#DACCBB>%date%</fc>"
+       , template = "%StdinReader% } <fc=#e50c88>%notmuch%</fc> <fc=#85c600>%mpd%</fc> { %br0% %cpu% <fc=#85919b>%memory%</fc>   <fc=#DACCBB>%date%</fc>"
        }

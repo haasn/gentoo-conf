@@ -1,13 +1,16 @@
 # Overlay masking
-*/*::bobwya
+*/*::audio-overlay
+#*/*::bobwya
 #*/*::booboo
+*/*::decent-im
 #*/*::deter
 #*/*::emery
 #*/*::libressl
-*/*::gentoo-gpu
-*/*::mva
+#*/*::gentoo-gpu
+#*/*::mva
 #*/*::palemoon
-*/*::qt
+#*/*::qt
+*/*::simonvanderveldt
 #*/*::sunrise
 */*::tristelune
 #*/*::vapoursynth
@@ -21,6 +24,9 @@
 #x11-themes/gnome-themes-standard
 #>x11-themes/vertex-theme-20170128-r1
 
+# They decided to make everything stop working for some reason
+>=media-fonts/fontawesome-5
+
 # Incompatible with ZFS
 >=sys-fs/udev-init-scripts-28
 
@@ -31,3 +37,9 @@
 # No longer needed
 x11-themes/vertex-theme::local_overlay
 media-video/ffmpeg::local_overlay
+
+# Conflicts with pycrypto
+>=dev-python/dnspython-1.16
+
+# See mesonbuild#4248
+=dev-util/meson-0.48.0*

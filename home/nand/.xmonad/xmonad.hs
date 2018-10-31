@@ -169,7 +169,7 @@ floatTitles =
     [ "Firefox Preferences", "About Firefox", "Resize Canvas"
     , "Downloads", "Software Update", "World of Warcraft", "Limbo"
     , "Audiosurf", "Audiosurf 2", "scaler_test", "mpv_test"
-    , "Convert Script", "Remote Viewer", "Kobalt", "ccgo"
+    , "Convert Script", "Remote Viewer", "Kobalt", "ccgo", "HuniePop"
     ]
 
 switchWorkspace' d = wsBy' d >>= windows . greedyView

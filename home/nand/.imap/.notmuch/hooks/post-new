@@ -27,24 +27,28 @@ notmuch tag -new +deleted -- tag:new and to:linuxpool.informatik@uni-ulm.de and 
 notmuch tag -new +spam -- tag:new and 'to:trash*@nand.wakku.to'
 notmuch tag -new +spam -- tag:new and 'to:google-summer-of-code-students-list@googlegroups.com'
 notmuch tag -new +spam -- tag:new and to:amazon@haasn.xyz
+notmuch tag -new +spam -- tag:new and to:openraid@nand.wakku.to
+notmuch tag -new +spam -- tag:new and to:rss@haasn.xyz and subject:'Melonpan gemu streamu'
+notmuch tag -new +spam -- tag:new and to:git@nand.wakku.to
+notmuch tag -new +spam -- tag:new and to:aiw1aiti3d@nand.wakku.to
 
 # Uni-related tags
 notmuch tag +icinga   -- tag:new and '(from:icinga@devel02.informatik.uni-ulm.de or from:nagios@haasn.xyz or to:icinga.*@haasn.xyz)'
-notmuch tag +calm     -- tag:new and '(from:calm@lists.uni-ulm.de or to:calm@lists.uni-ulm.de)'
-
-# Mailing list-related tags
-notmuch tag +diagrams -new -- tag:new and to:diagrams-discuss@googlegroups.com
-notmuch tag +zfs -- tag:new and to:zfs@haasn.xyz
+notmuch tag +calm     -- tag:new and '(from:calm@lists.uni-ulm.de or to:calm@lists.uni-ulm.de or subject:[calm])'
+notmuch tag +calm     -- tag:new and '(from:linuxpool.informatik@uni-ulm.de and subject:Nachrichten)'
 
 # GitHub tags
-for project in mpv bower sxiv qutebrowser; do
+for project in mpv bower sxiv qutebrowser zfs; do
     notmuch tag +${project} -- tag:new and to:${project}@noreply.github.com
 done
 
 # Mailing list tags
 notmuch tag +list +ffmpeg -- tag:new and to:ffmpeg-devel@ffmpeg.org
 notmuch tag +list +argyll -- tag new and to:argyllcms@freelists.org
+notmuch tag +list +diagrams -- tag:new and to:diagrams-discuss@googlegroups.com
 notmuch tag +list +zfs -- tag:new and to:zfs-discuss@list.zfsonlinux.org
+notmuch tag +list +lugu -- tag:new and to:lugu@magrathea.ulm.ccc.de
+notmuch tag +list +vlc -- tag:new and to:vlc-devel@videolan.org
 
 # Other tags
 notmuch tag +rssqueue -- tag:new and to:rss@haasn.xyz

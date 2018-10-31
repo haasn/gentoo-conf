@@ -117,7 +117,7 @@ alias ghc-pkg='sudo ghc-pkg'
 alias elogv='sudo elogv'
 alias btrfs='sudo btrfs'
 alias gcc-config='sudo gcc-config'
-alias dmesg='sudo dmesg'
+#alias dmesg='sudo dmesg'
 alias paxctl-ng='sudo paxctl-ng'
 
 # stuff
@@ -126,6 +126,7 @@ alias jc='journalctl'
 alias scu='sc --user'
 alias jcu='jc --user'
 alias t-r='transmission-remote'
+alias jv='jack_vol'
 
 # SELinux
 alias ausearch='sudo ausearch'
@@ -281,7 +282,7 @@ alias ghci-head='PATH="~/ghc-head/bin:$PATH" ghci'
 # Tag an image file with my monitor's colorspace
 
 itag() {
-  convert "$1" -profile ~/icc/main.icc "$1"
+  #convert "$1" -profile ~/icc/main.icc "$1"
 }
 
 iscrot() {

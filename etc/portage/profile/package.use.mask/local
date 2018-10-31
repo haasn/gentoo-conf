@@ -8,6 +8,9 @@ dev-libs/libpcre -jit
 www-client/firefox -jit
 media-sound/pulseaudio -orc
 
+# Need this for development. I'll be careful, I promise
+sys-devel/gcc -sanitize
+
 # Not sure why it was masked
 dev-haskell/* -profile
 */*::haskell -profile

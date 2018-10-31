@@ -42,17 +42,21 @@ demuxer-max-back-bytes=1000000000
 ytdl=yes
 ytdl-format=(bestvideo[vcodec=vp9.2]/bestvideo[vcodec=vp9][fps>30]/bestvideo[vcodec=vp9][height>=1080]/bestvideo[fps>30]/bestvideo[height>720])+(bestaudio[acodec=opus]/bestaudio)/best
 
-# Sigh, ALSA is even worse than PulseAudio
-ao=pulse
-pulse-buffer=250
-pulse-latency-hacks=yes
+# Is 2018 the year of the JACK desktop?
+#ao=pulse
+#pulse-buffer=250
+#pulse-latency-hacks=yes
+ao=jack
+jack-connect=yes
+jack-port=jconvolver
+audio-channels=stereo
 volume=50
 volume-max=100
 audio-pitch-correction=no
 audio-normalize-downmix=yes
 audio-device='alsa_output.usb-Yoyodyne_Consulting_ODAC-revB-01.iec958-stereo'
 af-add=@audnorm:!loudnorm=I=-25:TP=-1.5:LRA=1:linear=false
-af-add=@dynnorm:!dynaudnorm=f=200:g=5:r=0.1
+af-add=@dynnorm:!dynaudnorm=f=500:g=17:r=0.1
 af-add=format:srate=48000
 
 # Hide album art
@@ -65,6 +69,8 @@ msg-module=yes
 screenshot-directory=/mem
 load-unsafe-playlists=yes
 reset-on-next-file-add=video-aspect
+stop-screensaver=no
+prefetch-playlist=yes
 
 # torque/progressbar is better
 no-osc
@@ -123,6 +129,12 @@ force-window=no
 no-video
 ytdl-format=bestaudio/best
 cache-initial=1
+jack-name=mpa
+jack-port=bass
+
+[movie]
+fullscreen
+volume=100
 
 [normalize]
 volume=70
@@ -190,6 +202,7 @@ sub-visibility=no
 
 [booru]
 gpu-api=opengl
+fbo-format=rgba16f
 profile=image
 profile=normalize
 video-unscaled=no
@@ -226,4 +239,4 @@ icc-profile-auto=no
 icc-contrast=1000000
 tone-mapping=mobius
 fbo-format=rgba16hf
-target-peak=300
+target-peak=400

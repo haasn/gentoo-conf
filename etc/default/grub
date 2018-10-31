@@ -20,7 +20,7 @@ GRUB_TIMEOUT=10
 #GRUB_TIMEOUT_STYLE=menu
 
 # Append parameters to the linux kernel command line
-GRUB_CMDLINE_LINUX="dozfs initrd=/boot/intel-ucode.img pci=nommconf"
+GRUB_CMDLINE_LINUX="dozfs pci=nommconf transparent_hugepage=never"
 #
 # Examples:
 #

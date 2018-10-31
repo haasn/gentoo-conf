@@ -1,1 +1,1 @@
-/usr/lib/systemd/system/multi-user.target
+/lib/systemd/system/multi-user.target

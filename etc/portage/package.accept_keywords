@@ -13,29 +13,52 @@ app-admin/pass **
 app-editors/neovim **
 app-emulation/wine-staging **
 app-misc/binwalk **
+app-text/zathura-pdf-mupdf **
+dev-python/python-nbxmpp **
 dev-util/glslang **
 dev-util/spirv-headers **
 dev-util/spirv-tools **
-dev-util/shaderc **
+media-libs/dav1d **
+media-libs/shaderc **
+media-libs/libaom **
 media-libs/libass **
 media-libs/libplacebo **
-media-libs/vulkan-loader **
 #media-libs/zimg **
+media-plugins/calf **
 media-sound/autoplay **
 media-sound/mumble **
 media-video/ffmpeg **
 media-video/mpv **
+net-im/gajim **
 net-irc/weechat **
 net-p2p/transmission **
 net-misc/youtube-dl **
 www-client/qutebrowser **
 x11-misc/rofi **
-#x11-misc/xmobar **
+x11-misc/xmobar **
 x11-wm/xmonad **
 x11-wm/xmonad-contrib **
+
+# JACK audio meme shit
+media-sound/cadence **
+media-sound/ladish **
+media-sound/mididings **
 
 # GPU stuff
 media-libs/mesa **
 x11-libs/libdrm **
 x11-drivers/xf86-video-amdgpu **
 #dev-libs/wayland **
+
+dev-util/vulkan-headers **
+dev-util/vulkan-tools **
+media-libs/vulkan-layers **
+media-libs/vulkan-loader **
+
+# Give me all the new and exciting breakage!
+dev-lang/ghc:0/8.4.3 **
+dev-haskell/cabal:0/2.2.0.1 **
+dev-haskell/cabal-install:0/2.2.0.0 **
+dev-haskell/haskeline:0/0.7.4.2 **
+dev-haskell/terminfo:0/0.4.1.1 **
+dev-haskell/transformers:0/0.5.5.0 **

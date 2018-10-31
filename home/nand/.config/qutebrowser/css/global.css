@@ -14,7 +14,9 @@ html > body[style="margin: 0px"] > img[style="-webkit-user-select: none; display
 }
 
 * {
-    font-family: Terminus, xos4 Terminus !important;
+    font-family: monospace !important;
+    font-smooth: never !important;
+    -webkit-font-smoothing: none !important;
     text-shadow: none !important;
     -webkit-user-select: text !important;
     animation-duration: 0 !important;
@@ -26,9 +28,15 @@ html > body[style="margin: 0px"] > img[style="-webkit-user-select: none; display
 
 /* Color overrides */
 
+/*
+* {
+    background: #080C0D !important;
+    color:      #00AA00 !important;
+}
+*/
+
 :not(*[style*="transparent"], img, pre, code) {
     background: #080C0D !important;
-    /*color:      #DDCCBB !important;*/
     color:      #00AA00 !important;
 }
 
@@ -40,11 +48,11 @@ img, img.party-hat {
     image-rendering: pixelated !important;
 }
 
-a[href], a[href] * {
+a[href], a[href] *, a[href] {
     color: #FFAA0F !important;
 }
 
-a:visited, a:visited * {
+a:visited, a:visited *, a:visited {
     color: #FF5D4A !important;
 }
 

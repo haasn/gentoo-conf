@@ -2,9 +2,10 @@
 #### Global USE flags ####
 ##########################
 
+*/* doc
 */* numa
 */* aes avx avx2 f16c fma3 mmx mmxext pclmul popcnt sse sse2 sse3 sse4_1 sse4_2 sse4a ssse3
-*/* pulseaudio -jack sound -alsa -oss
+*/* pulseaudio jack sound -alsa -oss
 */* perl python ruby guile lua luajit
 */* socks socks5 ssl crypt -gnutls sasl gpg otr sha3
 */* flac theora vorbis ffmpeg mp3 mpeg ogg png jpeg jpeg2k tiff svg jbig wavpack tta
@@ -58,10 +59,10 @@ app-text/pandoc profile doc hscolour
 # FFmpeg-wide use flags
 */ffmpeg X ass aacplus network ssh alsa v4l opus speex webp x265 vpx vdpau
 */ffmpeg dcadec libsoxr openssl modplug librtmp celt bluray zimg ebur128 -pic
-*/ffmpeg libaom lv2 libdrm
+*/ffmpeg libaom lv2 libdrm -abi_x86_32
 
 # WINE-wide use flags
-app-emulation/wine-* realtime staging s3tc openal d3d9
+app-emulation/wine-* realtime staging s3tc openal d3d9 vkd3d
 virtual/wine staging d3d9
 
 # KDE-wide use flags
@@ -69,16 +70,20 @@ kde-apps/* -handbook -kwallet
 kde-frameworks/* -handbook -kwallet
 
 # Uncategorized
+app-admin/pass-otp qrcode
 app-arch/p7zip -wxwidgets
 app-crypt/pinentry qt5 -qt4 -gtk
+app-doc/doxygen latex dot -clang
 app-editors/vim cscope vim-pager
 app-emulation/lxc cgmanager # for LXD
-app-emulation/qemu -spice -usbredir virgl -curl -jpeg -png -python -vnc
+app-emulation/qemu spice -usbredir virgl -curl -jpeg -png -python -vnc
 app-eselect/eselect-php fpm
 app-i18n/fcitx -autostart -introspection -table
 #app-i18n/mozc qt4
 app-portage/layman git subversion
 app-text/aspell linguas_de
+app-text/docbook-sgml-utils jadetex
+app-text/mupdf -javascript # breaks zathura-pdf-mupdf
 #app-text/poppler qt4
 app-text/tesseract -opencl osd
 app-text/texlive linguas_de
@@ -98,12 +103,13 @@ dev-libs/libpcre2 pcre16 jit
 dev-libs/nss utils
 dev-libs/openssl -tls-heartbeat -sslv2 -sslv3
 dev-libs/xapian doc
-dev-python/PyQt5 declarative webkit webengine webchannel testlib sql
+dev-python/PyQt5 declarative webkit webengine webchannel testlib sql dbus
 dev-python/numpy lapack
 dev-qt/qtgui dbus accessibility # for qt5ct and ts3
 dev-qt/qtwebchannel qml
 dev-qt/qtwebengine widgets -pulseaudio -geolocation -system-ffmpeg
 dev-qt/qtwebkit printsupport webp ftpdir jit -geolocation
+dev-ruby/neovim-ruby-client -doc # build failure
 dev-scheme/guile networking
 dev-util/apitrace qt5 system-snappy cli
 dev-util/ltrace unwind
@@ -125,6 +131,7 @@ media-libs/libsamplerate sndfile
 media-libs/libsdl2 haptic alsa
 media-libs/libplacebo shaderc vulkan
 media-libs/libvpx svc postproc
+media-libs/lv2 -doc # build hangs
 media-libs/mesa gbm opencl
 media-libs/mesa gles2
 media-libs/mesa d3d9
@@ -133,21 +140,26 @@ media-libs/phonon -pulseaudio -gstreamer -vlc qt5
 media-libs/vulkan-loader demos vulkaninfo layers
 media-libs/x264 10bit -interlaced
 media-plugins/alsa-plugins pulseaudio -ffmpeg
+media-plugins/calf jack lv2
 media-sound/alsa-utils -doc # build failure
-media-sound/audacity alsa ffmpeg id3tag libsamplerate -lv2
+media-sound/audacity alsa ffmpeg id3tag libsamplerate jack lv2
 media-sound/cadence ladish
+media-sound/carla distrho-prom gtk2 osc
 media-sound/kid3 acoustid
-media-sound/jack2 alsa
+media-sound/jack2 alsa libsamplerate
 media-sound/ladish lash
 media-sound/mpd alsa inotify cue mpg123 wavpack opus -ffmpeg
+media-sound/mumble -alsa -pulseaudio jack
 media-sound/pulseaudio alsa dbus realtime sox -ssl -gtk
 media-sound/sox -ffmpeg # build failure
+media-sound/sonic-visualiser -jack # depends on jack1
 media-video/ffmpeg -hardcoded-tables # build failure
 media-video/mkvtoolnix -wxwidgets
-media-video/mpv bluray cli -cuda rubberband libmpv archive
+media-video/mpv alsa jack bluray cli -cuda rubberband libmpv archive
 media-video/x264-encoder 10bit -mp4 -interlaced
 net-analyzer/icinga2 mail postgres -mysql
 net-analyzer/monitoring-plugins fping postgres ssh
+net-analyzer/mtr -gtk
 net-analyzer/munin minimal syslog ipmi -java
 net-analyzer/netdata nfacct
 net-analyzer/nmap ncat nping -gtk -lua
@@ -156,10 +168,11 @@ net-dns/dnsmasq -lua
 net-dns/unbound dnscrypt
 net-fs/samba -fam -gpg
 net-im/bitlbee otr
+net-im/gajim dbus -jingle
 net-vpn/openvpn passwordsave
 net-misc/curl -http2 # build failure in nghttp2
 net-misc/openssh -ldap
-net-misc/spice-gtk usbredir
+net-misc/spice-gtk -usbredir
 net-misc/youtube-dl offensive
 net-p2p/rtorrent color
 net-p2p/transmission -gtk -xfs
@@ -173,7 +186,7 @@ sys-apps/util-linux tty-helpers
 sys-block/fio aio
 sys-block/gparted btrfs dmraid fat jfs ntfs
 sys-boot/grub multislot -truetype -themes
-sys-devel/gcc fortran doc
+sys-devel/gcc fortran doc sanitize
 sys-devel/llvm lldb libedit gold
 sys-fs/ntfs3g ntfsprogs
 sys-fs/zfs rootfs
@@ -183,9 +196,10 @@ sys-libs/libnih dbus # for LXD
 sys-libs/zlib minizip
 sys-process/lsof rpc
 sys-process/systemd-cron cron-boot minutely yearly
-www-client/firefox* bindist eme-free
+www-client/firefox* bindist eme-free -clang
 www-client/firefox* system-harfbuzz system-icu system-jpeg system-libevent system-libvpx system-sqlite
 www-client/firefox-kde-opensuse -bindist kde
+www-client/firefox -pulseaudio -jack
 www-client/qutebrowser python_targets_python3_6 webkit -webengine
 x11-base/xorg-server xvfb -suid
 x11-drivers/nvidia-drivers kms uvm gtk3

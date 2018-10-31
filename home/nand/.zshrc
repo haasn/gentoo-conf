@@ -1,3 +1,7 @@
+# This normally gets implied by zprofile, but if anything about the environment
+# changes it can be helpful to re-load changes by just starting a new shell
+source /etc/profile.env
+
 # Custom completion settings
 zstyle ':completion:*' completer _expand _complete _ignored _match _correct _approximate _prefix
 zstyle ':completion:*' expand suffix

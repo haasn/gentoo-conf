@@ -8,3 +8,6 @@ Window "^Diablo III$"
 
 Window "^FORCED$"
 "mouse" "" any key/275 "XKey/F1"
+
+#Window "^Bastion$"
+#"ErgoDox EZ Ergodox EZ" "" any key/56 "XKey/F1"

@@ -1,11 +1,16 @@
 ## Overlay unmasking
 
-# Bobwya
-www-client/firefox-kde-opensuse::bobwya
-kde-misc/kmozillahelper::bobwya
+# Audio-overlay
+media-sound/cadence::audio-overlay
+media-sound/ladish::audio-overlay
+media-sound/mididings::audio-overlay
 
 # Booboo
 #games-arcade/taisei::booboo
+
+# Decent-IM
+dev-python/slixmpp::decent-im
+net-im/poezio::decent-im
 
 # Deter
 #gnome-extra/yad::deter
@@ -18,13 +23,16 @@ kde-misc/kmozillahelper::bobwya
 # Gentoo-GPU
 #dev-util/glslang::gentoo-gpu
 #dev-util/SPIRV-Tools::gentoo-gpu
-dev-util/shaderc::gentoo-gpu
+#dev-util/shaderc::gentoo-gpu
 media-libs/libplacebo::gentoo-gpu
 
+# Simonvanderveldt
+media-sound/carla::simonvanderveldt
+
 # Qt
-dev-qt/qtwebkit::qt
-=dev-qt/qtwebengine-5.9*::qt
-dev-qt/*:5/5.10::qt
+#dev-qt/qtwebkit::qt
+#=dev-qt/qtwebengine-5.9*::qt
+#dev-qt/*:5/5.11::qt
 
 # Tristelune
 app-admin/rofi-pass::tristelune
